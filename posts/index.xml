@@ -5,7 +5,21 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 23:20:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 23:23:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下设置静态IP（固定IP）</title>
+      <link>https://ruohai.wang/posts/static-ip-address-config/</link>
+      <pubDate>Fri, 14 Jul 2023 23:23:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/static-ip-address-config/</guid>
+      <description>先查看自己设备的网卡名称
+ifconfig 如果提示命令不存在，则先安装net-tools
+apt install net-tools 获取到网卡名称后，在/etc/network/interfaces文件中进行编辑。子网掩码、网关地址、dns地址可以根据自己的实际网络情况进行调整。完成编辑以后保存退出。
+# 开机自动启用eth0 auto eth0 # 使用静态ip iface eth0 inet static # ip地址 address 192.168.1.4 # 子网掩码 netmask 255.255.255.0 # 网关地址 gateway 192.168.1.1 # dns服务器 dns-nameservers 192.168.1.1 重启网络
+service network restart 或者
+systemctl restart network 如果以上两个命令都提示无效，直接重启吧。😄</description>
+    </item>
+    
     <item>
       <title>Linux下安装Docker Engine</title>
       <link>https://ruohai.wang/posts/install-docker-engine/</link>
