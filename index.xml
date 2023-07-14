@@ -5,7 +5,23 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 22:51:22 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 23:00:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装File Browser</title>
+      <link>https://ruohai.wang/posts/filebrowser-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 23:00:29 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/filebrowser-setup/</guid>
+      <description>第一步：新建安装目录
+mkdir /usr/local/filebrowser 第二步：根据自己的硬件平台从【官方github repo】下载对应版本的安装包，这里以armv7为例。
+# 进入安装文件夹 cd /usr/local/filebrowser # 下载安装包 wget https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf linux-armv7-filebrowser.tar.gz 第三步：在安装目录/usr/local/filebrowser下新建config.json，添加配置信息。
+# 创建配置文件 nano /usr/local/filebrowser/config.json 添加以下内容。其中root参数用来指定fireborwser展示的根目录，比如设定为/home，则webui中只能看到/home目录下的内容。
+{ &amp;#34;port&amp;#34;: 8600, &amp;#34;address&amp;#34;: &amp;#34;0.0.0.0&amp;#34;, &amp;#34;root&amp;#34;: &amp;#34;/&amp;#34;, &amp;#34;database&amp;#34;: &amp;#34;/usr/local/filebrowser/filebrowser.db&amp;#34;, &amp;#34;log&amp;#34;: &amp;#34;/var/log/filebrowser.log&amp;#34;, &amp;#34;username&amp;#34;: &amp;#34;admin&amp;#34; } 第四步：把filebrowser添加到systemd服务。
+# 创建配置文件 nano /etc/systemd/system/filebrowser.service 添加如下内容后保存退出。
+[Unit] Description=The filebrowser Process Manager After=network.target [Service] Type=simple ExecStart=/usr/local/filebrowser/filebrowser -c /usr/local/filebrowser/config.json ExecStop=/bin/killall filebrowser PrivateTmp=true [Install] WantedBy=multi-user.target 第五步：systemd重载服务并设置开机启动
+# 重载服务 systemctl daemon-reload # 启动filebrowser systemctl start filebrowser.service # 设置开机启动 systemctl enable filebrowser.</description>
+    </item>
+    
     <item>
       <title>Linux下Bash Shell开启命令自动补全</title>
       <link>https://ruohai.wang/posts/bash-completion-setup/</link>
