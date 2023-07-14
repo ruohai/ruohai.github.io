@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/about/</loc>
+    <lastmod>2023-07-15T03:06:48+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/posts/install-typecho-step-by-step/</loc>
     <lastmod>2023-07-15T02:52:12+08:00</lastmod>
   </url><url>
