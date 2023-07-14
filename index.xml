@@ -5,7 +5,30 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 15:15:15 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 22:28:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下修改ssh默认端口</title>
+      <link>https://ruohai.wang/posts/set-new-ssh-port/</link>
+      <pubDate>Fri, 14 Jul 2023 22:28:56 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/set-new-ssh-port/</guid>
+      <description>前言 这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。
+写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改sshd_config文件都无济于事。简中互联网上以关键字ssh、修改端口之类搜出来的文章都千篇一律，再搜端口修改以后无效，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。
+最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。
+找到问题原因以后就很好解决了，这里做简单记录。
+查看ssh服务类型 要修改ssh默认端口，首先要分清楚自己linux机器的ssh是ssh.socket还是ssh.service。
+systemctl status sshd 根据图中出现的ssh.socket字样区分。 ssh.service ssh.service的端口修改很简单，打开配置文件
+nano /etc/ssh/sshd_config 找到port的配置进行修改
+# 找到这条，默认是注释掉的，这里去掉注释 Port 22 # 添加一行自定义的端口 Port 12345 然后重启ssh服务即可
+systemctl restart sshd 测试新端口OK以后，再注释掉旧端口然后重启sshd即可。
+ssh.socket ssh.socket配置文件在/lib/systemd/system/ssh.socket，但我建议你千万不要去动原始文件。首先是这个配置文件会在更新openssh的时候被覆盖掉，其次在ssh.socket运行状态下修改配置文件，会导致ssh.socket服务出现异常（停止工作而且无法接受新的连接）。所以正确的配置方式如下
+# 新建配置文件目录 mkdir -p /etc/systemd/system/ssh.socket.d 新建配置文件并写入监听端口信息
+cat &amp;gt;/etc/systemd/system/ssh.socket.d/listen.conf &amp;lt;&amp;lt;EOF [Socket] # 这一栏需要保留，用来覆盖原配置文件中的22端口 ListenStream= # 这一栏填写新的ssh端口 ListenStream=1234 EOF 最后就是systemd重载服务并重启ssh了。
+# 重载服务 systemctl daemon-reload # 重启ssh systemctl restart ssh 这个配置方法的参考来源：
+https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10 https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6 从ssh.socket切换到ssh.service 讲真，我虽然已经掌握在ssh.socket模式下配置新端口的方法，但实际操作过程中还是碰到了ssh.socket异常的问题。那不如直接从ssh.socket切换到ssh.service吧！
+# 禁用ssh.socket服务 systemctl disable --now ssh.socket # 启用ssh.</description>
+    </item>
+    
     <item>
       <title>用Hugo搭建博客并部署到Github Pages</title>
       <link>https://ruohai.wang/posts/hugo-setup-and-deploy-to-github/</link>

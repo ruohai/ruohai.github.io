@@ -39,6 +39,16 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
       <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
       <span class="app-header-title">限盐少许</span>
       <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
     </header>
     <main class="app-container">
       
@@ -69,6 +79,7 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
 <p>后来网上搜了一圈【<a href="https://www.reddit.com/r/commandline/comments/x2hv2o/speedtestcli_list_returns_only_10_servers/">找到了原因</a>】，才知道这个包不是speedtest官方的。</p>
 <p>linux上真的是好多坑啊，一个简单的网络测速都是如此。</p>
 <p>好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。</p>
+<hr>
 <h2 id="安装">安装</h2>
 <ul>
 <li>找到【<a href="https://www.speedtest.net/apps/cli">speedtest官方网站</a>】，首页就有安装步骤。</li>
@@ -77,7 +88,8 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
 # 安装
 apt install speedtest
-</code></pre><h2 id="查询可用的测速服务器">查询可用的测速服务器</h2>
+</code></pre><hr>
+<h2 id="查询可用的测速服务器">查询可用的测速服务器</h2>
 <ol>
 <li>先<code>speedtest -h</code>看一下使用手册。</li>
 </ol>
@@ -129,7 +141,8 @@ apt install speedtest
  26352  China Telecom JiangSu 5G       Nanjing              China
   5317  江苏电信5G                 Yangzhou             China
  17145  China Telecom AnHui 5G         Hefei                China
-</code></pre><h2 id="测速">测速</h2>
+</code></pre><hr>
+<h2 id="测速">测速</h2>
 <ol>
 <li>开始测速，参数是<code>-s</code></li>
 </ol>
