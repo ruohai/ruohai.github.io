@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>限盐少许</title>
-    <link>https://ruohai.github.io/</link>
+    <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 15:15:15 +0800</lastBuildDate><atom:link href="https://ruohai.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 15:15:15 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用Hugo搭建博客并部署到Github Pages</title>
-      <link>https://ruohai.github.io/posts/hugo-setup-and-deploy-to-github/</link>
+      <link>https://ruohai.wang/posts/hugo-setup-and-deploy-to-github/</link>
       <pubDate>Fri, 14 Jul 2023 15:15:15 +0800</pubDate>
       
-      <guid>https://ruohai.github.io/posts/hugo-setup-and-deploy-to-github/</guid>
+      <guid>https://ruohai.wang/posts/hugo-setup-and-deploy-to-github/</guid>
       <description>前言 手上好几台armv7平台的电子垃圾，没错说的就是迅雷赚钱宝二代（ws1508）和迅雷玩客云（ws1608）。总琢磨着让这些电子垃圾在它们的生命末期发挥最后的光和热，给它们刷armbian、刷openwrt。正好我的搬瓦工vps还剩半个月要到期了，49.99刀/年的费用，对于现在的我也算是一笔不小的支出。能省则省，所以准备博客搬家。有很多捡垃圾玩家会把博客跑在自己的arm小主机上，但国内的网络环境下，自建服务器的备案和80/443端口解封根本无解，只能做到url:port进行公网访问，但这纯粹就是自娱自乐嘛。最后还是决定把博客部署到免费的github pages。
 既然要用github pages，那只能用静态博客，无论是hexo、hugo还是jekyll，都需要一个本地的编译环境。既然如此，正好尝试一下在赚钱宝二代（ws1508）这台设备上安装hugo。
 玩客云（ws1608）和赚钱宝二代（ws1508）主要硬件配置上一模一样，同样适用这个教程。
@@ -21,10 +21,10 @@
     
     <item>
       <title>Linux下用Speedtest CLI进行网络测速</title>
-      <link>https://ruohai.github.io/posts/speedtest-cli-setup/</link>
+      <link>https://ruohai.wang/posts/speedtest-cli-setup/</link>
       <pubDate>Fri, 14 Jul 2023 14:57:37 +0800</pubDate>
       
-      <guid>https://ruohai.github.io/posts/speedtest-cli-setup/</guid>
+      <guid>https://ruohai.wang/posts/speedtest-cli-setup/</guid>
       <description>前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
 debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个。但注意这个包不是speedtest官方在维护，不是官方的！这也解释了为什么我之前用debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，导致测速完全不准。而且通过命令speedtest --list|grep China也搜不出任何结果，一度离谱到speedtest --list出来只有taiwan的服务器。
 后来网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
