@@ -5,7 +5,21 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 22:28:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 22:51:22 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下Bash Shell开启命令自动补全</title>
+      <link>https://ruohai.wang/posts/bash-completion-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 22:51:22 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/bash-completion-setup/</guid>
+      <description>如果只是对单个用户生效，那下文中的/etc/bash.bashrc都要调整为~/.bashrc。
+第一步：安装bash-completion。
+apt install bash-completion 第二步：查看/etc/bash.bashrc文件中是否适配。
+# 打开bash的用户配置文件 nano /etc/bash.bashrc 查看是否有下面这段内容，如果没有就添加到最后，保存退出。这段代码的意思是判断系统是否安装了bash_completion，如果安装则启用自动补全功能。
+if ! shopt -oq posix; then if [ -f /usr/share/bash-completion/bash_completion ]; then . /usr/share/bash-completion/bash_completion elif [ -f /etc/bash_completion ]; then . /etc/bash_completion fi fi 第三步：重新加载用户的bash配置信息。
+source /etc/bash.bashrc </description>
+    </item>
+    
     <item>
       <title>Linux下修改ssh默认端口</title>
       <link>https://ruohai.wang/posts/set-new-ssh-port/</link>

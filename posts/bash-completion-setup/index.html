@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下Bash Shell开启命令自动补全 // 限盐少许</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下Bash Shell开启命令自动补全"/>
+<meta name="twitter:description" content="如果只是对单个用户生效，那下文中的/etc/bash.bashrc都要调整为~/.bashrc。
+第一步：安装bash-completion。
+apt install bash-completion 第二步：查看/etc/bash.bashrc文件中是否适配。
+# 打开bash的用户配置文件 nano /etc/bash.bashrc 查看是否有下面这段内容，如果没有就添加到最后，保存退出。这段代码的意思是判断系统是否安装了bash_completion，如果安装则启用自动补全功能。
+if ! shopt -oq posix; then if [ -f /usr/share/bash-completion/bash_completion ]; then . /usr/share/bash-completion/bash_completion elif [ -f /etc/bash_completion ]; then . /etc/bash_completion fi fi 第三步：重新加载用户的bash配置信息。
+source /etc/bash.bashrc "/>
+
+    <meta property="og:title" content="Linux下Bash Shell开启命令自动补全" />
+<meta property="og:description" content="如果只是对单个用户生效，那下文中的/etc/bash.bashrc都要调整为~/.bashrc。
+第一步：安装bash-completion。
+apt install bash-completion 第二步：查看/etc/bash.bashrc文件中是否适配。
+# 打开bash的用户配置文件 nano /etc/bash.bashrc 查看是否有下面这段内容，如果没有就添加到最后，保存退出。这段代码的意思是判断系统是否安装了bash_completion，如果安装则启用自动补全功能。
+if ! shopt -oq posix; then if [ -f /usr/share/bash-completion/bash_completion ]; then . /usr/share/bash-completion/bash_completion elif [ -f /etc/bash_completion ]; then . /etc/bash_completion fi fi 第三步：重新加载用户的bash配置信息。
+source /etc/bash.bashrc " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/posts/bash-completion-setup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-14T22:51:22+08:00" />
+<meta property="article:modified_time" content="2023-07-14T22:51:22+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">限盐少许</span>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下Bash Shell开启命令自动补全</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>如果只是对单个用户生效，那下文中的<code>/etc/bash.bashrc</code>都要调整为<code>~/.bashrc</code>。</p>
+<p>第一步：安装bash-completion。</p>
+<pre tabindex="0"><code>apt install bash-completion
+</code></pre><p>第二步：查看<code>/etc/bash.bashrc</code>文件中是否适配。</p>
+<pre tabindex="0"><code># 打开bash的用户配置文件
+nano /etc/bash.bashrc
+</code></pre><p>查看是否有下面这段内容，如果没有就添加到最后，保存退出。这段代码的意思是判断系统是否安装了bash_completion，如果安装则启用自动补全功能。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ! shopt -oq posix; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f /usr/share/bash-completion/bash_completion <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    . /usr/share/bash-completion/bash_completion
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> <span style="color:#f92672">[</span> -f /etc/bash_completion <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    . /etc/bash_completion
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><p>第三步：重新加载用户的bash配置信息。</p>
+<pre tabindex="0"><code>source /etc/bash.bashrc
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
