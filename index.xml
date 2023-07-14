@@ -5,7 +5,24 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 23:35:17 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 23:41:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用配置RSA公钥认证登录</title>
+      <link>https://ruohai.wang/posts/pub-key-auth-config/</link>
+      <pubDate>Fri, 14 Jul 2023 23:41:25 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/pub-key-auth-config/</guid>
+      <description>为了安全，linux主机一般都会禁掉密码登录 + rsa密钥认证登录。这里记录以下这两个操作的过程。
+第一步：生成rsa密钥对，不多赘述。
+ssh-keygen 生成俩文件，id_rsa和id_rsa.pub。
+第二步：确保在linux主机用户目录下有.ssh文件夹，没有的话就新建。
+mkdir ~/.ssh 第三步：用sftp命令或者sftp客户端，把id_rsa.pub上传到~/.ssh目录下。上传完成后，最好把id_rsa.pub文件重命名为authorized_keys。
+第四步：编辑/etc/ssh/sshd_config文件。
+# 找到这个配置，去掉注释启用 PubkeyAuthentication yes # 找到这个配置，去掉注释启用 AuthorizedKeysFile .ssh/authorized_keys 第五步：本地终端配置好id_rsa私钥就可以ssh免密码登录了。接下去就是禁用密码登录。
+# 找到这个配置，去掉注释启用，注意value是no，禁止密码验证 PasswordAuthentication no 修改后保存退出，重启sshd后配置生效。😄
+sysmtectl restart sshd </description>
+    </item>
+    
     <item>
       <title>Linux下安装qBittorrent</title>
       <link>https://ruohai.wang/posts/install-qbit/</link>
