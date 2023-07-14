@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>linux下用speedtest-cli进行网络测速 // 限盐少许</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="linux下用speedtest-cli进行网络测速"/>
+<meta name="twitter:description" content="debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个包，但注意这个包不是Speedtest官方的，不是官方的！这也解释了为什么我之前用这个debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，而且通过命令speedtest --list|grep china也搜不出任何结果，一度离谱到list出来只有taiwan的服务器。
+后网上搜了一圈才【找到了原因】，才知道这个包不是speedtest官方的。
+好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。
+第一步：找到【speedtest官方网站】，首页就有安装步骤。
+# 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 第二步：安装好以后就开始测速惹。先speedtest -h看一下使用手册。
+Usage: speedtest [&lt;options&gt;] -h, --help Print usage information -V, --version Print version number -L, --servers List nearest servers -s, --server-id=# Specify a server from the server list using its id -I, --interface=ARG Attempt to bind to the specified interface when connecting to servers -i, --ip=ARG Attempt to bind to the specified IP address when connecting to servers -o, --host=ARG Specify a server, from the server list, using its host&#39;s fully qualified domain name -p, --progress=yes|no Enable or disable progress bar (Note: only available for &#39;human-readable&#39; or &#39;json&#39; and defaults to yes when interactive) -P, --precision=# Number of decimals to use (0-8, default=2) -f, --format=ARG Output format (see below for valid formats) --progress-update-interval=# Progress update interval (100-1000 milliseconds) -u, --unit[=ARG] Output unit for displaying speeds (Note: this is only applicable for ‘human-readable’ output format and the default unit is Mbps) -a Shortcut for [-u auto-decimal-bits] -A Shortcut for [-u auto-decimal-bytes] -b Shortcut for [-u auto-binary-bits] -B Shortcut for [-u auto-binary-bytes] --selection-details Show server selection details --ca-certificate=ARG CA Certificate bundle path -v Logging verbosity."/>
+
+    <meta property="og:title" content="linux下用speedtest-cli进行网络测速" />
+<meta property="og:description" content="debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个包，但注意这个包不是Speedtest官方的，不是官方的！这也解释了为什么我之前用这个debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，而且通过命令speedtest --list|grep china也搜不出任何结果，一度离谱到list出来只有taiwan的服务器。
+后网上搜了一圈才【找到了原因】，才知道这个包不是speedtest官方的。
+好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。
+第一步：找到【speedtest官方网站】，首页就有安装步骤。
+# 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 第二步：安装好以后就开始测速惹。先speedtest -h看一下使用手册。
+Usage: speedtest [&lt;options&gt;] -h, --help Print usage information -V, --version Print version number -L, --servers List nearest servers -s, --server-id=# Specify a server from the server list using its id -I, --interface=ARG Attempt to bind to the specified interface when connecting to servers -i, --ip=ARG Attempt to bind to the specified IP address when connecting to servers -o, --host=ARG Specify a server, from the server list, using its host&#39;s fully qualified domain name -p, --progress=yes|no Enable or disable progress bar (Note: only available for &#39;human-readable&#39; or &#39;json&#39; and defaults to yes when interactive) -P, --precision=# Number of decimals to use (0-8, default=2) -f, --format=ARG Output format (see below for valid formats) --progress-update-interval=# Progress update interval (100-1000 milliseconds) -u, --unit[=ARG] Output unit for displaying speeds (Note: this is only applicable for ‘human-readable’ output format and the default unit is Mbps) -a Shortcut for [-u auto-decimal-bits] -A Shortcut for [-u auto-decimal-bytes] -b Shortcut for [-u auto-binary-bits] -B Shortcut for [-u auto-binary-bytes] --selection-details Show server selection details --ca-certificate=ARG CA Certificate bundle path -v Logging verbosity." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.github.io/posts/speedtest-cli/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-14T14:57:37+08:00" />
+<meta property="article:modified_time" content="2023-07-14T14:57:37+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">限盐少许</span>
+      <p>这种失落会持久吗~</p>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">linux下用speedtest-cli进行网络测速</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>debian的仓库里有一个<code>speedtest-cli</code>的包，一开始我用的就是这个包，但注意这个包不是Speedtest官方的，不是官方的！这也解释了为什么我之前用这个debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，而且通过命令<code>speedtest --list|grep china</code>也搜不出任何结果，一度离谱到list出来只有taiwan的服务器。</p>
+<p>后网上搜了一圈才【<a href="https://www.reddit.com/r/commandline/comments/x2hv2o/speedtestcli_list_returns_only_10_servers/">找到了原因</a>】，才知道这个包不是speedtest官方的。</p>
+<p>好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。</p>
+<hr>
+<p>第一步：找到【<a href="https://www.speedtest.net/apps/cli">speedtest官方网站</a>】，首页就有安装步骤。</p>
+<pre tabindex="0"><code># 下载sh脚本
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+# 安装
+apt install speedtest
+</code></pre><hr>
+<p>第二步：安装好以后就开始测速惹。先<code>speedtest -h</code>看一下使用手册。</p>
+<pre tabindex="0"><code>Usage: speedtest [&lt;options&gt;]
+  -h, --help                        Print usage information
+  -V, --version                     Print version number
+  -L, --servers                     List nearest servers
+  -s, --server-id=#                 Specify a server from the server list using its id
+  -I, --interface=ARG               Attempt to bind to the specified interface when connecting to servers
+  -i, --ip=ARG                      Attempt to bind to the specified IP address when connecting to servers
+  -o, --host=ARG                    Specify a server, from the server list, using its host&#39;s fully qualified domain name
+  -p, --progress=yes|no             Enable or disable progress bar (Note: only available for &#39;human-readable&#39;
+                                    or &#39;json&#39; and defaults to yes when interactive)
+  -P, --precision=#                 Number of decimals to use (0-8, default=2)
+  -f, --format=ARG                  Output format (see below for valid formats)
+      --progress-update-interval=#  Progress update interval (100-1000 milliseconds)
+  -u, --unit[=ARG]                  Output unit for displaying speeds (Note: this is only applicable
+                                    for ‘human-readable’ output format and the default unit is Mbps)
+  -a                                Shortcut for [-u auto-decimal-bits]
+  -A                                Shortcut for [-u auto-decimal-bytes]
+  -b                                Shortcut for [-u auto-binary-bits]
+  -B                                Shortcut for [-u auto-binary-bytes]
+      --selection-details           Show server selection details
+      --ca-certificate=ARG          CA Certificate bundle path
+  -v                                Logging verbosity. Specify multiple times for higher verbosity
+      --output-header               Show output header for CSV and TSV formats
+</code></pre><p>可以看到，想要查看服务器列表，用的<code>-L</code>命令。那就先看下本地的服务器列表，这里以杭州为例。</p>
+<pre tabindex="0"><code>speedtest -L|grep Hangzhou
+</code></pre><p>终端里会展示杭州的测速服务器。记住第一个数字编号54312就是这个测速服务器的ID，下面要用。</p>
+<pre tabindex="0"><code> 54312  China Mobile Zhejiang 5G       Hangzhou             China
+</code></pre><p>或者直接用<code>speedtest -L</code>命令，展示所有的最近的服务器</p>
+<pre tabindex="0"><code>Closest servers:
+
+    ID  Name                           Location             Country
+==============================================================================
+ 54312  China Mobile Zhejiang 5G       Hangzhou             China
+  5396  China Telecom JiangSu 5G       Suzhou               China
+ 45170  China Unicom                   Wu Xi                China
+ 30852  Duke Kunshan University        Kunshan              China
+ 24447  China Unicom 5G                ShangHai             China
+  3633  China Telecom                  Shanghai             China
+ 36663  China Telecom JiangSu 5G       Zhenjiang            China
+ 26352  China Telecom JiangSu 5G       Nanjing              China
+  5317  江苏电信5G                 Yangzhou             China
+ 17145  China Telecom AnHui 5G         Hefei                China
+</code></pre><p>开始测速，命令是<code>-s</code>。</p>
+<pre tabindex="0"><code> speedtest -s 54312
+</code></pre><p>如果是第一次使用speedtest，这时候会出现一个用户协议，需要输入<code>yes</code>来确认。</p>
+<pre tabindex="0"><code>==============================================================================
+
+You may only use this Speedtest software and information generated
+from it for personal, non-commercial use, through a command line
+interface on a personal computer. Your use of this software is subject
+to the End User License Agreement, Terms of Use and Privacy Policy at
+these URLs:
+
+        https://www.speedtest.net/about/eula
+        https://www.speedtest.net/about/terms
+        https://www.speedtest.net/about/privacy
+
+==============================================================================
+
+Do you accept the license? [type YES to accept]:
+</code></pre><p>测速结束以后会显示结果。</p>
+<pre tabindex="0"><code>      Server: China Mobile Zhejiang 5G - Hangzhou (id: 54312)
+         ISP: China Mobile
+Idle Latency:     3.17 ms   (jitter: 0.08ms, low: 3.06ms, high: 3.26ms)
+    Download:    94.71 Mbps (data used: 45.0 MB)
+                 13.59 ms   (jitter: 1.43ms, low: 6.14ms, high: 20.92ms)
+      Upload:    64.80 Mbps (data used: 110.5 MB)
+                 40.08 ms   (jitter: 43.70ms, low: 2.07ms, high: 872.28ms)
+ Packet Loss:     0.0%
+</code></pre><p>除了测速结果之外，还会提供一个网址（因为根据用户协议，测速信息都会上传到Speedtest官方），浏览器中打开可以看到图文并茂的测速信息。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
