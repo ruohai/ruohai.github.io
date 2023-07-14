@@ -5,7 +5,19 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 23:23:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 23:28:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下自定义主机名称（hostname）</title>
+      <link>https://ruohai.wang/posts/change-hostname/</link>
+      <pubDate>Fri, 14 Jul 2023 23:28:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/change-hostname/</guid>
+      <description>查看当前的主机名
+hostname 或者
+hostnamectl 图方便可以用一条命令修改，这条命令修改的是/etc/hostname文件。退出重新登录以后就可以看到是新的主机名
+hostnamectl set-hostname [newname] 严谨一些可以修改/etc/hosts，但上面这个操作后我的目的已经完成，所以这里不做记录。😄</description>
+    </item>
+    
     <item>
       <title>Linux下设置静态IP（固定IP）</title>
       <link>https://ruohai.wang/posts/static-ip-address-config/</link>
@@ -114,7 +126,7 @@ https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-
     </item>
     
     <item>
-      <title>用Hugo搭建博客并部署到Github Pages</title>
+      <title>Linux下用Hugo搭建博客并部署到Github Pages</title>
       <link>https://ruohai.wang/posts/hugo-setup-and-deploy-to-github/</link>
       <pubDate>Fri, 14 Jul 2023 15:15:15 +0800</pubDate>
       
