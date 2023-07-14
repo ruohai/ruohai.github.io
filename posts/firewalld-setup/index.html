@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下安装firewalld防火墙并简单配置 // 限盐少许</title>
+    <title>Linux下firewalld防火墙的安装和配置 // 限盐少许</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下安装firewalld防火墙并简单配置"/>
+<meta name="twitter:title" content="Linux下firewalld防火墙的安装和配置"/>
 <meta name="twitter:description" content="前几年买了vps以后都是跑ss一键脚本然后就扔那儿不管了，除了vps服务商默认提供的安全措施，其它防护为0。虽然做了好多年的web开发，但都只是做一些crud搬砖粗活，对linux维护并不了解。这次借着折腾玩客云小机器armbian的机会，正好摸索学习一下。
 😄
 linux下管理防火墙规则的工具，大致是iptables/firewalld/ufw，这里略过方案选型过程，只说firewalld的安装和简单配置。要注意firewalld安装好以后，默认只允许dhcpv6-client和ssh服务，其它服务、端口全部会被拦截，如果ssh改了自定义端口，务必要记得放行该端口。
@@ -26,7 +26,7 @@ firewall-cmd --list-ports 永久开放某个服务
 firewall-cmd --add-service=samba --permanent 永久关闭某个端口
 firewall-cmd --remove-port=22/tcp --permanent "/>
 
-    <meta property="og:title" content="Linux下安装firewalld防火墙并简单配置" />
+    <meta property="og:title" content="Linux下firewalld防火墙的安装和配置" />
 <meta property="og:description" content="前几年买了vps以后都是跑ss一键脚本然后就扔那儿不管了，除了vps服务商默认提供的安全措施，其它防护为0。虽然做了好多年的web开发，但都只是做一些crud搬砖粗活，对linux维护并不了解。这次借着折腾玩客云小机器armbian的机会，正好摸索学习一下。
 😄
 linux下管理防火墙规则的工具，大致是iptables/firewalld/ufw，这里略过方案选型过程，只说firewalld的安装和简单配置。要注意firewalld安装好以后，默认只允许dhcpv6-client和ssh服务，其它服务、端口全部会被拦截，如果ssh改了自定义端口，务必要记得放行该端口。
@@ -66,7 +66,7 @@ firewall-cmd --remove-port=22/tcp --permanent " />
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下安装firewalld防火墙并简单配置</h1>
+      <h1 class ="post-title">Linux下firewalld防火墙的安装和配置</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
