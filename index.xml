@@ -5,7 +5,27 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 23:41:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 00:19:54 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装firewalld防火墙并简单配置</title>
+      <link>https://ruohai.wang/posts/firewalld-setup/</link>
+      <pubDate>Sat, 15 Jul 2023 00:19:54 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/firewalld-setup/</guid>
+      <description>前几年买了vps以后都是跑ss一键脚本然后就扔那儿不管了，除了vps服务商默认提供的安全措施，其它防护为0。虽然做了好多年的web开发，但都只是做一些crud搬砖粗活，对linux维护并不了解。这次借着折腾玩客云小机器armbian的机会，正好摸索学习一下。
+😄
+linux下管理防火墙规则的工具，大致是iptables/firewalld/ufw，这里略过方案选型过程，只说firewalld的安装和简单配置。要注意firewalld安装好以后，默认只允许dhcpv6-client和ssh服务，其它服务、端口全部会被拦截，如果ssh改了自定义端口，务必要记得放行该端口。
+安装，很简单。安装好以后自动启用，自动配置为开机启动服务。
+apt install firewalld 查看firewalld当前状态
+systemctl status firewalld 永久开放某个端口
+firewall-cmd --add-port=80/tcp --permanent 修改规则以后重载生效
+firewall-cmd --reload 查看当前开放的服务
+firewall-cmd --list-service 查看当前开放的端口
+firewall-cmd --list-ports 永久开放某个服务
+firewall-cmd --add-service=samba --permanent 永久关闭某个端口
+firewall-cmd --remove-port=22/tcp --permanent </description>
+    </item>
+    
     <item>
       <title>Linux下配置RSA公钥认证登录</title>
       <link>https://ruohai.wang/posts/pub-key-auth-config/</link>
