@@ -5,14 +5,38 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 14 Jul 2023 23:07:44 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jul 2023 23:20:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装Docker Engine</title>
+      <link>https://ruohai.wang/posts/install-docker-engine/</link>
+      <pubDate>Fri, 14 Jul 2023 23:20:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/install-docker-engine/</guid>
+      <description>在linux上安装docker，官方有详细的教程指导如何安装。但如果你和我一样用的linux发行版是debian以及debian的衍生发行版，可以直接用debian官方维护的docker.io。
+apt install docker.io docker官方把docker.io称为unofficial packages非官方的版本。
+因为docker.io是debian在维护而不是docker官方，而且2019年的时候曾经停止维护了1年导致版本落后太多。但现在不用担心docker.io版本问题，目前仓库里已经是20.10.24。</description>
+    </item>
+    
+    <item>
+      <title>Linux下添加自定义alias</title>
+      <link>https://ruohai.wang/posts/add-alias/</link>
+      <pubDate>Fri, 14 Jul 2023 23:14:36 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/add-alias/</guid>
+      <description>linux下添加自定义alias，编辑的文件位置有俩地方，全局（对所有用户生效）生效是/etc/bash.bashrc，对当前用户生效是~/.bashrc。
+这里以仅针对单个用户进行配置为例。
+nano ~/.bashrc 在最底下添加一行
+alias ll=&amp;#39;ls -l&amp;#39; 保存，然后用source命令使生效
+source ~/.bashrc </description>
+    </item>
+    
     <item>
       <title>玩客云可用Armbian和openWRT固件分享</title>
       <link>https://ruohai.wang/posts/wky-fireware-share/</link>
       <pubDate>Fri, 14 Jul 2023 23:07:44 +0800</pubDate>
       
       <guid>https://ruohai.wang/posts/wky-fireware-share/</guid>
-      <description>玩客云，还有好多名字：赚钱宝、老母鸡、网心云，这里都指型号WS1608的那个小机器。
+      <description>玩客云，还有好多名字：赚钱宝、老母鸡、网心云，这里都指型号ws1608的那个小机器。
 这机器现在pdd、闲鱼上的价格稳定在30rmb左右，但闲鱼上都要求10个起包邮，咱也不是矿场，买一两个回来玩玩就够了，所以我更推荐从pdd入手。
 这机器玩了几个星期，目前来看，就能刷俩固件。第一刷armbian，然后根据自己需要手搓各种服务（file browser/qbittorrent/samba/alist/ddns-go/docker/typecho/cups/home assistant/&amp;hellip;），或者装casaos这种打包好各种服务的轻系统。第二刷openwrt当旁路由。也有很多人在armbian基础上再装openmediavault，但我根据omv官方的文档尝试了几次，不管是6.1内核还是5.9内核的固件，都没成功。
 玩这种小设备肯定得去恩山论坛了，但论坛这种资源分享模式实在是太old school了，我不太喜欢，因为找资源太累。所以这里直接分享我用下来非常稳定的armbian和openwrt的两个固件下载地址。
