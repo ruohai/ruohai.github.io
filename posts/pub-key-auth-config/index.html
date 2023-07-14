@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下用配置RSA公钥认证登录 // 限盐少许</title>
+    <title>Linux下配置RSA公钥认证登录 // 限盐少许</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下用配置RSA公钥认证登录"/>
+<meta name="twitter:title" content="Linux下配置RSA公钥认证登录"/>
 <meta name="twitter:description" content="为了安全，linux主机一般都会禁掉密码登录 &#43; rsa密钥认证登录。这里记录以下这两个操作的过程。
 第一步：生成rsa密钥对，不多赘述。
 ssh-keygen 生成俩文件，id_rsa和id_rsa.pub。
@@ -23,7 +23,7 @@ mkdir ~/.ssh 第三步：用sftp命令或者sftp客户端，把id_rsa.pub上传�
 # 找到这个配置，去掉注释启用，注意value是no，禁止密码验证 PasswordAuthentication no 修改后保存退出，重启sshd后配置生效。😄
 sysmtectl restart sshd "/>
 
-    <meta property="og:title" content="Linux下用配置RSA公钥认证登录" />
+    <meta property="og:title" content="Linux下配置RSA公钥认证登录" />
 <meta property="og:description" content="为了安全，linux主机一般都会禁掉密码登录 &#43; rsa密钥认证登录。这里记录以下这两个操作的过程。
 第一步：生成rsa密钥对，不多赘述。
 ssh-keygen 生成俩文件，id_rsa和id_rsa.pub。
@@ -60,7 +60,7 @@ sysmtectl restart sshd " />
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下用配置RSA公钥认证登录</h1>
+      <h1 class ="post-title">Linux下配置RSA公钥认证登录</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">

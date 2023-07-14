@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Fri, 14 Jul 2023 23:41:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Linux下用配置RSA公钥认证登录</title>
+      <title>Linux下配置RSA公钥认证登录</title>
       <link>https://ruohai.wang/posts/pub-key-auth-config/</link>
       <pubDate>Fri, 14 Jul 2023 23:41:25 +0800</pubDate>
       
