@@ -5,7 +5,25 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 限盐少许</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 00:25:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 00:28:12 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装Navidrome自建流媒体服务</title>
+      <link>https://ruohai.wang/posts/navidrome-setup/</link>
+      <pubDate>Sat, 15 Jul 2023 00:28:12 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/navidrome-setup/</guid>
+      <description>navidrome，开源的流媒体服务器，全平台客户端都有。功能和群晖的audio station一样，但首先不是人人都有群晖，其次有群晖的人也不一定都喜欢群晖那个沙雕的audio station。
+这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【官方安装教程】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。
+好了，让我们开始安装navidrome吧！
+第一步：安装ffmpeg（大概500MB）
+apt install ffmpeg -y 第二步：创建navidrome的安装文件夹和运行文件夹并分配用户和组。对的，这一步就要想好运行navidrome要分配的权限了，怕麻烦就root一把梭。这里用户和组我们都用jack。文件夹路径可以自定义，只是后面的配置过程中同步修改为自定义路径即可。
+install -d -o jack -g jack /opt/navidrome install -d -o jack -g jack /var/lib/navidrome 第三步：进入/opt/navidrome，到官方github下载对应自己硬件平台版本的安装包，我这里以amd64版本为例，解压并分配权限。
+cd /opt/navidrome wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_arm64.tar.gz tar -zxvf navidrome_0.49.3_Linux_arm64.tar.gz chown -R jack:jack /opt/navidrome 第四步：在/var/lib/navidrome目录下创建配置文件navidrome.toml，配置参数。默认只有一句，用来指定音乐的源文件路径。更多自定义参数看【官方页面】。
+MusicFolder = &amp;#34;/media/music&amp;#34; 注意配置这个媒体源文件夹的用户权限，如果弄不清就照样分配给jack。
+chown -R jack:jack /media/music 第五步：到这一步其实已经算大功告成了，接下去只是把navidrome添加到系统服务并设置开机自启。在/etc/systemd/system目录下新建navidrome.service文件，然后添加配置信息。注意参数中的User和Group两个参数对应的值要改成你自己的值。其它参数默认即可，如果你能看懂参数也可以自行修改。
+[Unit] Description=Navidrome Music Server and Streamer compatible with Subsonic/Airsonic After=remote-fs.target network.target AssertPathExists=/var/lib/navidrome [Install] WantedBy=multi-user.target [Service] User=jack Group=jack Type=simple ExecStart=/opt/navidrome/navidrome --configfile &amp;#34;/var/lib/navidrome/navidrome.toml&amp;#34; WorkingDirectory=/var/lib/navidrome TimeoutStopSec=20 KillMode=process Restart=on-failure # See https://www.</description>
+    </item>
+    
     <item>
       <title>Linux下Tailscale的安装和配置</title>
       <link>https://ruohai.wang/posts/tailscale-setup/</link>
