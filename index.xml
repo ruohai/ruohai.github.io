@@ -5,7 +5,57 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 02:43:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 02:52:12 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下从0开始安装Typecho</title>
+      <link>https://ruohai.wang/posts/install-typecho-step-by-step/</link>
+      <pubDate>Sat, 15 Jul 2023 02:52:12 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/install-typecho-step-by-step/</guid>
+      <description>typecho的安装，官方有【安装指导文档】，但讲实话我看完官方文档是一头雾水的，并不知道要怎么弄。搜其它教程，很多又是配合宝塔面板来部署。宝塔面板我试过官网的demo，并不是我对国产的软件产品有偏见啊，但主题和无处不在的付费升级到pro的入口，我觉得不行。
+所以这就是一篇从0开始完全手搓的安装教程。
+第一步：安装环境的准备。typecho说白就是一个php网站，要跑php网站，就需要web server。那就nginx或者apache2二选一。这些年nginx风头强劲，apache2日暮西山。但巧了么这不是，我选择apache2。
+apt install apache2 -y apache2安装好以后，在浏览器中输入http://host_ip看是否能访问到apache2 index页面，能访问说明安装成功。
+第二步：网站要跑起来，有了web server，接下去就是安装数据库。typecho官方说支持mysql、postgresql和sqlite，又到了技术选型的分岔口了。mysql因为oracel这个爹的原因，从debian的源仓库被移除了，postgresql我不熟，略过，那剩下的就只有sqlite惹。其实debian的源仓库里有mariadb-server可以装，但用mariadb的话和mysql一样需要安装mysqli这个php扩展，很不巧mysqli也从debian源仓库里被移除了。开源人都是有洁癖的，碰了oracel的统统都要清理掉。我这里偷懒，只想用apt install一键安装而不是去下mysql安装包，所以数据库最终选择：sqlite。
+apt install sqlite3 -y 安装完成后，输入sqlite3，看命令提示符是不是 sqlite3 来判断是否成功，敲.quit退出。
+第三步：现在要在apache2中进行virtualhost配置，也就是网站信息配置。可以在/etc/apahce2/apache2.conf文件中配置，也可以/etc/apache2/sites-enabled/目录下配置。为了方便管理，这里选择/sites-enabled/目录。
+将目录下的000-default.conf重命名为typecho.conf 在typecho.conf中的&amp;lt;VirtualHost *:80&amp;gt;标签内进行如下配置。DocumentRoot配置的是你网站的根目录。 DocumentRoot /data/typecho &amp;lt;Directory /data/typecho&amp;gt; Options Indexes FollowSymLinks AllowOverride All Require all granted &amp;lt;/Directory&amp;gt; 完成配置后，重启apahce2。 systemctl restart apache2 在网站根目录新建phpinfo.php，内容&amp;lt;?php phpinfo(); ?&amp;gt;，保存。然后浏览器访问http://host_ip/phpinfo.php，查看是否能正常访问页面。 这里有一个需要注意的问题。apache2跑起来的用户:组是www-data:www-data，记得给网站目录/data/typecho分配合理权限，要不然会提示【you don&amp;rsquo;t hava permission】无法访问。 第四步：开始安装php。全程没啥好注意的，等命令跑完就好了。
+apt install php -y 第五步：不知不觉终于到第五步了，写教程可真累啊。到此为止，安装环境算是都准备好了，现在可以去typecho官网下载安装包惹。
+# 进入网站根目录 cd /data/typecho # 下载最新版typecho代码 wget https://github.com/typecho/typecho/releases/download/v1.2.1/typecho.zip # 解压到当前目录 unzip typecho.zip 接着就可以在浏览器中输入http://host_ip/install.php进行安装，然后根据网页提示的报错信息进行debug。 第六步：马上大功告成了。点击下一步，马上就会看到红字错误提示。 不要慌，根据错误提示一个个处理即可。
+# 安装mbstring，需要重启apache2生效 apt install php-mbstring -y # 安装数据库扩展，我用的是sqlite3，就装sqlite3的扩展，需要重启apache2生效 apt install php-sqlite3 -y # usr/uploads目录分配权限。俩方法，把/typecho/目录指定给www-data:www-data，或者给755。因为等会还需要在网站根目录写入一个config.</description>
+    </item>
+    
+    <item>
+      <title>Linux下安装Syncthing</title>
+      <link>https://ruohai.wang/posts/install-syncthing/</link>
+      <pubDate>Sat, 15 Jul 2023 02:50:44 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/install-syncthing/</guid>
+      <description>不得不说在linux下随便安装一个软件都可以写一份教程，不像Windows下载exe双击运行然后下一步下一步就能搞定。
+这次是安装syncthing，debian12的仓库里就有，直接apt安装就行。
+apt install syncthing 但这一步只是把syncthing安装到系统，最最关键的启动服务然后访问webui还是需要自己琢磨。我大概能猜到启动命令是systemctl start syncthing，但实测启动不了。行吧，官网没写，自己找教程。
+网上有两份教程，一份是说用systemctl start syncthing@user.service，我测试以后发现确实能启动syncthing@user.service服务，但webui无法访问。
+所以正确是教程是这样：
+第一步：在/etc/systemd/system/目录下，新建一个syncthing.servce文件，内容如下。注意User一栏设置运行syncthing服务的用户，改成自己系统的用户。
+[Unit] Description=Syncthing - Open Source Continuous File Synchronization for %I Documentation=man:syncthing(1) After=network.target [Service] User=Jack ExecStart=/usr/bin/syncthing -no-browser -gui-address=&amp;#34;0.0.0.0:8384&amp;#34; -no-restart -logflags=0 Restart=on-failure SuccessExitStatus=3 4 RestartForceExitStatus=3 4 [Install] WantedBy=multi-user.target 第二步：daemon-reload/start/enable三件套。
+# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl start syncthing.service # 设置开机启动 systemctl enable syncthing.service 第三步：syncthing默认端口8384，打开浏览器，访问http://host_ip:8384，搞定~</description>
+    </item>
+    
+    <item>
+      <title>Linux下实现USB设备自动挂载</title>
+      <link>https://ruohai.wang/posts/usb-auto-mount/</link>
+      <pubDate>Sat, 15 Jul 2023 02:49:06 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/usb-auto-mount/</guid>
+      <description>给玩客云刷的armbian默认不支持usb设备自动挂载，接下去就是找实现方案了，有udev/udevil/udiskie/..。简单了解了一下，最后选择用udevil/devmon，因为casaos选择的就是udevil/devmon，而且装好以后不需要写脚本，😄。
+安装udevil/devmon
+apt install udevil -y 配置文件的默认路径是/etc/udevil/udevil.conf，默认会把usb设备挂载到/media/user/目录下（这里的user在后面的命令中体现）。要调整挂载路径，需要在udevil.conf中修改。
+接下去要启动udevil/devmon服务。注意命令中的user，这里对应的是你的linux系统的用户账户，如果你用的是root账户，那就是devmon@root，最后usb设备的挂载点就是/media/root/。你也可以指定挂载到其它存在的用户账户，比如devmon@jack，那挂载点就是/media/jack/。
+systemctl start devmon@user.service 将devmon添加到开机启动服务。
+systemctl enable devmon@user.service 完成以上配置以后，就不需要再做任何配置了，真无感使用。
+但我实际使用中发现有一点点小问题，系统重启以后，sd卡槽中的sd存储卡不能自动挂载，需要有一个重新插拔的动作以后才能识别。</description>
+    </item>
+    
     <item>
       <title>Apache2下实现Typecho永久链接（伪静态）</title>
       <link>https://ruohai.wang/posts/apache2-url-rewrite/</link>
@@ -14,7 +64,8 @@
       <guid>https://ruohai.wang/posts/apache2-url-rewrite/</guid>
       <description>伪静态通过url rewrite实现，这里记录下apahce开启rewrite功能的方法。
 首先第一步肯定是在typecho后台开启地址重写功能，不要管错误提示，选择【启用】并保存设置。 然后开始在apache2中进行配置：
-本地新建一个文件，文件名**.htaccess** ，把下面这段内容粘贴进去，保存，然后上传到网站根目录。 &amp;lt;IfModule mod_rewrite.c&amp;gt; RewriteEngine On RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1] &amp;lt;/IfModule&amp;gt; 文件位置示意图： 修改apache2.conf（如果你的网站路径信息配置在VirtualHost下则修改对应位置）。这里以默认的/var/www为例，把AllowOverride后的参数改为FileInfo，不需要改成all，fileinfo的权限就够了。 &amp;lt;Directory /var/www/&amp;gt; Options Indexes FollowSymLinks AllowOverride FileInfo Require all granted &amp;lt;/Directory&amp;gt; 完成以上两步以后，可以试着重启apache2，如果rewrite模块已经开启的话，到这一步伪静态就已经完成了。 systemctl restart apache2 如果很不幸操作apache2重启以后你的地址重写功能依然没有生效，那就是服务器没有启用rewrite模块，执行下面这条命令启用apache2-rewrite，然后再重启apache2。 a2enmod rewrite systemctl restart apache2 </description>
+本地新建一个文件，文件名**.htaccess** ，把下面这段内容粘贴进去，保存，然后上传到网站根目录。 &amp;lt;IfModule mod_rewrite.c&amp;gt; RewriteEngine On RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1] &amp;lt;/IfModule&amp;gt; 文件位置示意图：
+修改apache2.conf（如果你的网站路径信息配置在VirtualHost下则修改对应位置）。这里以默认的/var/www为例，把AllowOverride后的参数改为FileInfo，不需要改成all，fileinfo的权限就够了。 &amp;lt;Directory /var/www/&amp;gt; Options Indexes FollowSymLinks AllowOverride FileInfo Require all granted &amp;lt;/Directory&amp;gt; 完成以上两步以后，可以试着重启apache2，如果rewrite模块已经开启的话，到这一步伪静态就已经完成了。 systemctl restart apache2 如果很不幸操作apache2重启以后你的地址重写功能依然没有生效，那就是服务器没有启用rewrite模块，执行下面这条命令启用apache2-rewrite，然后再重启apache2。 a2enmod rewrite systemctl restart apache2 </description>
     </item>
     
     <item>
