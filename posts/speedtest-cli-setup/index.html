@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Linux下用Speedtest CLI进行网络测速"/>
 <meta name="twitter:description" content="前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
 debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个。但注意这个包不是speedtest官方在维护，不是官方的！这也解释了为什么我之前用debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，导致测速完全不准。而且通过命令speedtest --list|grep China也搜不出任何结果，一度离谱到speedtest --list出来只有taiwan的服务器。
-后网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
+后来网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
 linux上真的是好多坑啊，一个简单的网络测速都是如此。
 好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。
 安装 找到【speedtest官方网站】，首页就有安装步骤。 # 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 查询可用的测速服务器 先speedtest -h看一下使用手册。 Usage: speedtest [&lt;options&gt;] -h, --help Print usage information -V, --version Print version number -L, --servers List nearest servers -s, --server-id=# Specify a server from the server list using its id -I, --interface=ARG Attempt to bind to the specified interface when connecting to servers -i, --ip=ARG Attempt to bind to the specified IP address when connecting to servers -o, --host=ARG Specify a server, from the server list, using its host&#39;s fully qualified domain name -p, --progress=yes|no Enable or disable progress bar (Note: only available for &#39;human-readable&#39; or &#39;json&#39; and defaults to yes when interactive) -P, --precision=# Number of decimals to use (0-8, default=2) -f, --format=ARG Output format (see below for valid formats) --progress-update-interval=# Progress update interval (100-1000 milliseconds) -u, --unit[=ARG] Output unit for displaying speeds (Note: this is only applicable for ‘human-readable’ output format and the default unit is Mbps) -a Shortcut for [-u auto-decimal-bits] -A Shortcut for [-u auto-decimal-bytes] -b Shortcut for [-u auto-binary-bits] -B Shortcut for [-u auto-binary-bytes] --selection-details Show server selection details --ca-certificate=ARG CA Certificate bundle path -v Logging verbosity."/>
@@ -23,7 +23,7 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
     <meta property="og:title" content="Linux下用Speedtest CLI进行网络测速" />
 <meta property="og:description" content="前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
 debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个。但注意这个包不是speedtest官方在维护，不是官方的！这也解释了为什么我之前用debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，导致测速完全不准。而且通过命令speedtest --list|grep China也搜不出任何结果，一度离谱到speedtest --list出来只有taiwan的服务器。
-后网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
+后来网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
 linux上真的是好多坑啊，一个简单的网络测速都是如此。
 好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。
 安装 找到【speedtest官方网站】，首页就有安装步骤。 # 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 查询可用的测速服务器 先speedtest -h看一下使用手册。 Usage: speedtest [&lt;options&gt;] -h, --help Print usage information -V, --version Print version number -L, --servers List nearest servers -s, --server-id=# Specify a server from the server list using its id -I, --interface=ARG Attempt to bind to the specified interface when connecting to servers -i, --ip=ARG Attempt to bind to the specified IP address when connecting to servers -o, --host=ARG Specify a server, from the server list, using its host&#39;s fully qualified domain name -p, --progress=yes|no Enable or disable progress bar (Note: only available for &#39;human-readable&#39; or &#39;json&#39; and defaults to yes when interactive) -P, --precision=# Number of decimals to use (0-8, default=2) -f, --format=ARG Output format (see below for valid formats) --progress-update-interval=# Progress update interval (100-1000 milliseconds) -u, --unit[=ARG] Output unit for displaying speeds (Note: this is only applicable for ‘human-readable’ output format and the default unit is Mbps) -a Shortcut for [-u auto-decimal-bits] -A Shortcut for [-u auto-decimal-bytes] -b Shortcut for [-u auto-binary-bits] -B Shortcut for [-u auto-binary-bytes] --selection-details Show server selection details --ca-certificate=ARG CA Certificate bundle path -v Logging verbosity." />
@@ -66,7 +66,7 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
       <h2 id="前言">前言</h2>
 <p>想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。</p>
 <p>debian的仓库里有一个<code>speedtest-cli</code>的包，一开始我用的就是这个。但注意这个包不是speedtest官方在维护，不是官方的！这也解释了为什么我之前用debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，导致测速完全不准。而且通过命令<code>speedtest --list|grep China</code>也搜不出任何结果，一度离谱到<code>speedtest --list</code>出来只有taiwan的服务器。</p>
-<p>后网上搜了一圈【<a href="https://www.reddit.com/r/commandline/comments/x2hv2o/speedtestcli_list_returns_only_10_servers/">找到了原因</a>】，才知道这个包不是speedtest官方的。</p>
+<p>后来网上搜了一圈【<a href="https://www.reddit.com/r/commandline/comments/x2hv2o/speedtestcli_list_returns_only_10_servers/">找到了原因</a>】，才知道这个包不是speedtest官方的。</p>
 <p>linux上真的是好多坑啊，一个简单的网络测速都是如此。</p>
 <p>好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。</p>
 <h2 id="安装">安装</h2>
@@ -113,7 +113,7 @@ apt install speedtest
 </ol>
 <pre tabindex="0"><code> 54312  China Mobile Zhejiang 5G       Hangzhou             China
 </code></pre><ol start="4">
-<li>也可以直接用<code>speedtest -L</code>命令，展示附近所有可用的服务器。</li>
+<li>也可以不限定城市，直接用<code>speedtest -L</code>展示附近所有可用的服务器。</li>
 </ol>
 <pre tabindex="0"><code>Closest servers:
 
@@ -131,7 +131,7 @@ apt install speedtest
  17145  China Telecom AnHui 5G         Hefei                China
 </code></pre><h2 id="测速">测速</h2>
 <ol>
-<li>开始测速，命令是<code>-s</code></li>
+<li>开始测速，参数是<code>-s</code></li>
 </ol>
 <pre tabindex="0"><code> speedtest -s 54312
 </code></pre><ol start="2">
