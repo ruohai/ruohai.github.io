@@ -146,11 +146,9 @@ server { # 监听ipv6的22222端口 listen [::]:22222 ssl; # 域名 server_name 
 <p>完成上面的配置以后，先执行<code>nginx -t</code>测试配置文件的语法，没有报错就说明配置OK，接下去重启nginx即可。</p>
 <pre tabindex="0"><code>systemctl restart nginx
 </code></pre><h2 id="大功告成">大功告成</h2>
-<p>在浏览器中访问<code>https://jackiechang.cn:2222</code>就可以以https的形式访问filebrowser服务，也可以测试访问<code>http://jackiechang.cn:22222</code>，正常情况下它会自动跳转到https。</p>
+<p>在浏览器中访问<code>https://jackiechang.cn:22222</code>就可以以https的形式访问filebrowser服务，也可以测试访问<code>http://jackiechang.cn:22222</code>，正常情况下它会自动跳转到https。</p>
 <h2 id="防火墙的配置">防火墙的配置</h2>
 <p>在这个案例中，外网访问的端口是<code>22222</code>，防火墙需要开放它。本地端口是<code>8600</code>，因为不是外部访问，所以防火墙不需要开放它。</p>
-<h2 id="触类旁通">触类旁通</h2>
-<p>这篇教程中用filebrowser举例，同样的配置过程适用于ttyd、alist、qbittorrent、navidrome等其它服务，可以自行调整。</p>
 
     </div>
     <div class="post-footer">
