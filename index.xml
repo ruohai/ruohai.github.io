@@ -17,8 +17,8 @@
 Author identity unknown *** Please tell me who you are. Run git config --global user.email &amp;#34;you@example.com&amp;#34; git config --global user.name &amp;#34;Your Name&amp;#34; to set your account&amp;#39;s default identity. Omit --global to set the identity only in this repository. fatal: unable to auto-detect email address (got &amp;#39;user@hostname.(none)&amp;#39;) 意思就是git的用户身份认证信息未知，需要用git config --global进行配置。但我已经在系统中配置了git username&amp;amp;email，在本地终端中使用都正常，仅在ttyd中出现了这个bug。
 那既然都提示要设置了，就先git config --global设置一下，这时又出现了第二个报错。
 fatal: $HOME not set 到这里基本就明白错误原因了，ttyd下git无法识别$HOME环境变量，所以无法读取到~/.gitconfig文件内配置的username&amp;amp;email信息。
-根据这个报错搜了一下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
-git config --system user.email &amp;#34;you@example.</description>
+解决方案 根据这个报错搜了一下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
+git config --system user.</description>
     </item>
     
     <item>
