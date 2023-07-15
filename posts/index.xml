@@ -5,9 +5,63 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 14:40:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 14:53:09 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Linux下实现挂载smb共享文件夹</title>
+      <title>迅雷赚钱宝二代（WS1508）还能怎么玩</title>
+      <link>https://ruohai.wang/posts/ws1508-is-totally-a-rubbish/</link>
+      <pubDate>Sat, 15 Jul 2023 14:53:09 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/ws1508-is-totally-a-rubbish/</guid>
+      <description>玩客云，也叫赚钱宝三代，或者直接叫型号名字WS1608，我弄了好几台，这俩月玩的不亦乐乎，玩到后期，乐趣已经不是来自折腾硬件，而是玩linux系统，在armbian的基础上搓各种服务。
+然后偶然间在B站上看到了powersee这个up发布的赚钱宝二代（型号WS1508）的刷机视频，看了下二手市场，15块钱一个，配置是玩客云同款S805芯片，usb2.0 * 1/百兆lan，没了。硬件配置上看实在是鸡肋，完全可以称之为电子垃圾。但挡不住低价的诱惑，而且玩客云的可玩性已经得到验证。在恩山论坛搜了下赚钱宝二代能刷的硬件，还真有俩。遂闲鱼上挑挑拣拣，30元2个包邮入手。
+今天下午收到货，拆包通电，折腾一下午，目前就仨结论：
+目前能刷的固件，armbian的就俩，一个是【基于debian 11的固件】，只支持U盘启动，而且仅此一版，不像玩客云有稳定的固件更新。另一个是【基于debian 10的nand直刷版本】，但内核还是3.x，因为linux对nand的支持随着内核3.4/3.10停止而停止了，内核太老docker都没法装，并且debian 10已经EOL。 不刷armbian，那就是刷openwrt了。我本就对旁路由这种模式兴趣不大，这机器百兆网口，我就更没兴趣了。要固件的可以自己去恩山论坛找。 usb接口只支持2.0这还不是最致命的，最致命的是usb接口只有一个。目前它能用的固件，约等于就是只有一个U盘启动的armbian，那就没有多余的接口插U盘或者移动硬盘了，扩展性为0。 这机器，我思来想去，只适合用来当作对网速要求不高、也不需要usb接入的场景，也就是这么几种玩法：
+装cups做打印机服务器 装home assissant做智障家居中心 装cifs-utils挂载局域网上的共享文件夹以后做下载机 还有一个在实际使用中碰到的问题，刷入armbian 11以后，在apt upgrade或者修改ssh的配置以后，会碰到一个报错【kex_exchange_identification: read: Connection reset】，网上搜了一下没有什么解决的头绪，实测断电重启以后可解。</description>
+    </item>
+    
+    <item>
+      <title>Windows下用CMD实现SSH连接</title>
+      <link>https://ruohai.wang/posts/windows-cmd-use-ssh/</link>
+      <pubDate>Sat, 15 Jul 2023 14:51:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/windows-cmd-use-ssh/</guid>
+      <description>Windows下有很多终端，收费的，免费的。但很多终端不支持zmodem导致不能使用lrzsz，或者用户协议是限定场景下才免费，亦或者是electron套壳主题不好看。其实windows10已经默认安装openssh客户端，可以直接用系统自带的cmd/powershell/windows terminal来实现ssh访问远程服务器。虽然依然不支持zmodem，但如果你和我一样有三方软件洁癖，或者想严格遵守软件的用户协议，可以考虑cmd来替代那些第三方软件。
+如果你的Windows系统没有安装openssh，可以查看这篇【官方文章】进行安装。
+然后在cmd中直接敲命令即可。是默认端口22的话，【-p 22】这部分可以省略。
+ssh root@192.168.1.10 -p 22 如果不想每次都敲【root@192.168.1.10 -p 22】这几句，需要在C:\Users\Jack\.ssh\目录下新建一个config文件（文件名就是config，没有后缀），按如下格式写入服务器信息后保存。
+Host abc Hostname 192.168.1.10 User root Port 22
+然后就可以在cmd中敲【ssh abc】即可。
+如果想实现免密登录，rsa密钥生成、服务器端的配置这里不做赘述，只记录config文件中的配置格式。为方便管理多个主机的rsa密钥对，这里在.ssh目录下新建文件夹abc，rsa密钥对放在其中。
+Host abc Hostname 192.168.1.10 User root Port 22 IdentityFile C:\Users\Jack\.ssh\abc\id_rsa
+然后就可以在cmd中敲【ssh abc】即可实现免密登录。</description>
+    </item>
+    
+    <item>
+      <title>Linux下用SFTP命令操作文件上传下载</title>
+      <link>https://ruohai.wang/posts/use-sftp-to-handle-file/</link>
+      <pubDate>Sat, 15 Jul 2023 14:48:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/use-sftp-to-handle-file/</guid>
+      <description>一般要在一台远程vps上进行文件上传下载，一两个文件会用lrzsz(前提是你的终端要支持zmodem），批量文件会用winscp/xftp之类的客户端。但如果自己的终端不支持zmodem，也不想用第三方软件，而且文件也就一两个就想敲命令来完成，因为敲命令泰裤辣，那就用sftp命令。
+sftp连接服务器。连接成功后光标处的命令提示符变成 sftp&amp;gt; 。想要免密登录设置同ssh免密登录，可以看这篇文章。
+sftp jack@192.168.1.10 -p 22 sftp下载文件并保持源文件名
+get /home/jack/robots.txt C:\Users\Jack\Desktop\ sftp上传文件并保持源文件名
+put C:\Users\Jack\Desktop\robots.txt /home/jack/ 如果要上传下载一个文件夹，在put/get后面跟一个参数 -r 即可。</description>
+    </item>
+    
+    <item>
+      <title>Typecho添加favicon</title>
+      <link>https://ruohai.wang/posts/typecho-add-favicon/</link>
+      <pubDate>Sat, 15 Jul 2023 14:46:01 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/typecho-add-favicon/</guid>
+      <description>首先将制作好的favicon.ico文件上传到服务器目录，本例中保存在/usr/themes/default/目录下。接下去在网站管理后台操作。
+后台——控制台——外观 编辑当前外观——header.php，在&amp;lt;header&amp;gt;标签中插入一行
+&amp;lt;link rel=&amp;#34;shortcut icon&amp;#34; href=&amp;#34;/usr/themes/default/favicon.ico&amp;#34; type=&amp;#34;image/x-icon&amp;#34; /&amp;gt; 最后保存再刷新网站即可。</description>
+    </item>
+    
+    <item>
+      <title>Linux下实现挂载SMB共享文件夹</title>
       <link>https://ruohai.wang/posts/linux-smb-mount/</link>
       <pubDate>Sat, 15 Jul 2023 14:40:06 +0800</pubDate>
       
@@ -22,7 +76,7 @@ username=smb password=123456 然后 fstab中添加一行
     </item>
     
     <item>
-      <title>Linux下给apache2安装ssl证书</title>
+      <title>Linux下给Apache2安装SSL证书</title>
       <link>https://ruohai.wang/posts/apache2-ssl-cert-setup/</link>
       <pubDate>Sat, 15 Jul 2023 14:38:50 +0800</pubDate>
       

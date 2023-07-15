@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下给apache2安装ssl证书 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>Linux下给Apache2安装SSL证书 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下给apache2安装ssl证书"/>
+<meta name="twitter:title" content="Linux下给Apache2安装SSL证书"/>
 <meta name="twitter:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
 获取ssl证书的步骤这里就不赘述。直接开始重点。
 第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
@@ -25,7 +25,7 @@ ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/0
 systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。
 # 开放端口 firewall-cmd --add-port=443/tcp --permanent # 防火墙重载 firewall-cmd --reload "/>
 
-    <meta property="og:title" content="Linux下给apache2安装ssl证书" />
+    <meta property="og:title" content="Linux下给Apache2安装SSL证书" />
 <meta property="og:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
 获取ssl证书的步骤这里就不赘述。直接开始重点。
 第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
@@ -70,7 +70,7 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下给apache2安装ssl证书</h1>
+      <h1 class ="post-title">Linux下给Apache2安装SSL证书</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
