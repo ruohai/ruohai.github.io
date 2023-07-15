@@ -5,7 +5,22 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 16:38:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 17:50:39 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下ttyd使用git提示Author identity unknown和fatal: $HOME not set问题的解决</title>
+      <link>https://ruohai.wang/posts/git-home-not-set-bugfix/</link>
+      <pubDate>Sat, 15 Jul 2023 17:50:39 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/git-home-not-set-bugfix/</guid>
+      <description>我在ttyd下使用git commit -m &#39;xxx&#39;命令时，出现了一个无法识别git用户信息的错误。
+具体报错信息如下：
+Author identity unknown *** Please tell me who you are. Run git config --global user.email &amp;#34;you@example.com&amp;#34; git config --global user.name &amp;#34;Your Name&amp;#34; to set your account&amp;#39;s default identity. Omit --global to set the identity only in this repository. fatal: unable to auto-detect email address (got &amp;#39;user@hostname.(none)&amp;#39;) 意思就是git的用户身份认证信息未知，需要用git config --global进行配置。但我已经在系统中配置了git username&amp;amp;email，在本地终端中使用都正常，仅在ttyd中出现了这个bug。
+那既然都提示要设置了，就先git config --global设置一下，这时又出现了第二个报错。
+fatal: $HOME not set 到这里基本就明白错误原因了，ttyd下git无法识别$HOME环境变量，所以无法读取到~/.gitconfig文件内配置的username&amp;amp;email信息。
+根据这个报错搜了以下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
+git config --system user.email &amp;#34;you@example.</description>
+    </item>
+    
     <item>
       <title>Linux下安装ttyd</title>
       <link>https://ruohai.wang/posts/install-ttyd/</link>
