@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下给File Browser设置SSL开启HTTPS访问 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>Linux下用Nginx给File Browser设置SSL开启HTTPS访问 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下给File Browser设置SSL开启HTTPS访问"/>
+<meta name="twitter:title" content="Linux下用Nginx给File Browser设置SSL开启HTTPS访问"/>
 <meta name="twitter:description" content="前言 我用赚钱宝二代（ws1508）和玩客云（ws1608）刷入armbian，然后搓了很多服务，比如file browser、qbittorrent、ttyd、alist、ddns-go、navidrome。这些应用在启动以后，都提供了webui用来管理和控制。再配合当下ipv6的公网ip，实现了外网访问。
 但现在又碰到了新的需求（或者说问题），就是这些应用的webui都是http，为了安全，我准备升级到https。其中有一些应用（比如ttyd、firebrowser）确实支持ssl，但也有很多不支持ssl。而且就算支持ssl的应用，各自配置的方式也不相同，不方便后期统一管理。
 为了实现这个需求，就需要使用nginx。这里以filebrowser为例，做一下简单记录。
@@ -23,7 +23,7 @@ mkdir /etc/nginx/ssl 配置nginx nginx的默认配置文件是nginx.conf，但�
 nano sites-available/default 添加如下配置内容，然后保存退出。
 server { # 监听ipv6的22222端口 listen [::]:22222 ssl; # 域名 server_name jackiechang.cn; # ssl证书的位置 ssl_certificate ssl/jackiechang.cn.pem; ssl_certificate_key ssl/jackiechang.cn.key; # ssl session缓存和过期时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl的一些加密配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3; ssl_prefer_server_ciphers on; # 这句是用来http重定向到https。http访问时nginx会报错误码497，直接把error_page重定向到https # 同一个端口实现http重定向到https，也有另外更优雅的实现方式，但我用下来这个拦截error_page是最方便的 error_page 497 https://$host:$server_port$uri$is_args$args; location / { # 把请求转发到本机的8600端口 proxy_pass http://localhost:8600; } } 重启nginx 完成上面的配置以后，先执行nginx -t测试配置文件的语法，没有报错就说明配置OK，接下去重启nginx即可。"/>
 
-    <meta property="og:title" content="Linux下给File Browser设置SSL开启HTTPS访问" />
+    <meta property="og:title" content="Linux下用Nginx给File Browser设置SSL开启HTTPS访问" />
 <meta property="og:description" content="前言 我用赚钱宝二代（ws1508）和玩客云（ws1608）刷入armbian，然后搓了很多服务，比如file browser、qbittorrent、ttyd、alist、ddns-go、navidrome。这些应用在启动以后，都提供了webui用来管理和控制。再配合当下ipv6的公网ip，实现了外网访问。
 但现在又碰到了新的需求（或者说问题），就是这些应用的webui都是http，为了安全，我准备升级到https。其中有一些应用（比如ttyd、firebrowser）确实支持ssl，但也有很多不支持ssl。而且就算支持ssl的应用，各自配置的方式也不相同，不方便后期统一管理。
 为了实现这个需求，就需要使用nginx。这里以filebrowser为例，做一下简单记录。
@@ -66,7 +66,7 @@ server { # 监听ipv6的22222端口 listen [::]:22222 ssl; # 域名 server_name 
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下给File Browser设置SSL开启HTTPS访问</h1>
+      <h1 class ="post-title">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
