@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下ttyd使用git提示Author identity unknown和fatal: $HOME not set问题的解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>Linux下ttyd使用Git提示Author identity unknown和fatal: $HOME not set问题的解决 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,22 +12,22 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下ttyd使用git提示Author identity unknown和fatal: $HOME not set问题的解决"/>
+<meta name="twitter:title" content="Linux下ttyd使用Git提示Author identity unknown和fatal: $HOME not set问题的解决"/>
 <meta name="twitter:description" content="我在ttyd下使用git commit -m &#39;xxx&#39;命令时，出现了一个无法识别git用户信息的错误。
 具体报错信息如下：
 Author identity unknown *** Please tell me who you are. Run git config --global user.email &#34;you@example.com&#34; git config --global user.name &#34;Your Name&#34; to set your account&#39;s default identity. Omit --global to set the identity only in this repository. fatal: unable to auto-detect email address (got &#39;user@hostname.(none)&#39;) 意思就是git的用户身份认证信息未知，需要用git config --global进行配置。但我已经在系统中配置了git username&amp;email，在本地终端中使用都正常，仅在ttyd中出现了这个bug。
 那既然都提示要设置了，就先git config --global设置一下，这时又出现了第二个报错。
 fatal: $HOME not set 到这里基本就明白错误原因了，ttyd下git无法识别$HOME环境变量，所以无法读取到~/.gitconfig文件内配置的username&amp;email信息。
-根据这个报错搜了以下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
+根据这个报错搜了一下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
 git config --system user.email &#34;you@example."/>
 
-    <meta property="og:title" content="Linux下ttyd使用git提示Author identity unknown和fatal: $HOME not set问题的解决" />
+    <meta property="og:title" content="Linux下ttyd使用Git提示Author identity unknown和fatal: $HOME not set问题的解决" />
 <meta property="og:description" content="我在ttyd下使用git commit -m &#39;xxx&#39;命令时，出现了一个无法识别git用户信息的错误。
 具体报错信息如下：
 Author identity unknown *** Please tell me who you are. Run git config --global user.email &#34;you@example.com&#34; git config --global user.name &#34;Your Name&#34; to set your account&#39;s default identity. Omit --global to set the identity only in this repository. fatal: unable to auto-detect email address (got &#39;user@hostname.(none)&#39;) 意思就是git的用户身份认证信息未知，需要用git config --global进行配置。但我已经在系统中配置了git username&amp;email，在本地终端中使用都正常，仅在ttyd中出现了这个bug。
 那既然都提示要设置了，就先git config --global设置一下，这时又出现了第二个报错。
 fatal: $HOME not set 到这里基本就明白错误原因了，ttyd下git无法识别$HOME环境变量，所以无法读取到~/.gitconfig文件内配置的username&amp;email信息。
-根据这个报错搜了以下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
+根据这个报错搜了一下解决方案，根据【stackoverflow上的这个帖子】，解决方案就是用git config --system来设定git用户信息
 git config --system user.email &#34;you@example." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/posts/git-home-not-set-bugfix/" /><meta property="article:section" content="posts" />
@@ -62,7 +62,7 @@ git config --system user.email &#34;you@example." />
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下ttyd使用git提示Author identity unknown和fatal: $HOME not set问题的解决</h1>
+      <h1 class ="post-title">Linux下ttyd使用Git提示Author identity unknown和fatal: $HOME not set问题的解决</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -100,10 +100,10 @@ fatal: unable to auto-detect email address (got &#39;user@hostname.(none)&#39;)
 <p>那既然都提示要设置了，就先<code>git config --global</code>设置一下，这时又出现了第二个报错。</p>
 <pre tabindex="0"><code>fatal: $HOME not set
 </code></pre><p>到这里基本就明白错误原因了，ttyd下git无法识别<code>$HOME</code>环境变量，所以无法读取到<code>~/.gitconfig</code>文件内配置的username&amp;email信息。</p>
-<p>根据这个报错搜了以下解决方案，根据【<a href="https://stackoverflow.com/questions/40425201/aws-ubuntu-git-setup-error-fatal-home-not-set">stackoverflow上的这个帖子</a>】，解决方案就是用<code>git config --system</code>来设定git用户信息</p>
+<p>根据这个报错搜了一下解决方案，根据【<a href="https://stackoverflow.com/questions/40425201/aws-ubuntu-git-setup-error-fatal-home-not-set">stackoverflow上的这个帖子</a>】，解决方案就是用<code>git config --system</code>来设定git用户信息</p>
 <pre tabindex="0"><code>git config --system user.email &#34;you@example.com&#34;
 git config --system user.name &#34;your name&#34;
-</code></pre><p>查阅【<a href="https://git-scm.com/docs/git-config">git官方文档</a>】，可以知道<code>--system</code>参数是把配置信息写到<code>/etc/gitconfig</code>文件，也就是全局生效，而<code>--global</code>参数是把配置信息写道<code>~/.gitconfig</code>文件，只针对当前用户生效。所以当ttyd下git无法识别<code>$HOME</code>变量时，自然就无法读取到<code>~/.gitconfig</code>文件了。</p>
+</code></pre><p>查阅【<a href="https://git-scm.com/docs/git-config">git官方文档</a>】，可以知道<code>--system</code>参数是把配置信息写到<code>/etc/gitconfig</code>文件，也就是全局生效，而<code>--global</code>参数是把配置信息写到<code>~/.gitconfig</code>文件，只针对当前用户生效。所以当ttyd下git无法识别<code>$HOME</code>变量时，自然就无法读取到<code>~/.gitconfig</code>文件了。</p>
 <pre tabindex="0"><code>--system
 For writing options: write to system-wide $(prefix)/etc/gitconfig rather than the repository .git/config.
 
