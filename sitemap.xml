@@ -2,16 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/posts/linux-smb-mount/</loc>
+    <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/posts/</loc>
+    <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/posts/apache2-ssl-cert-setup/</loc>
+    <lastmod>2023-07-15T14:38:50+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/posts/change-typecho-admin-dir/</loc>
+    <lastmod>2023-07-15T14:37:42+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/about/</loc>
     <lastmod>2023-07-15T03:06:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/posts/install-typecho-step-by-step/</loc>
-    <lastmod>2023-07-15T02:52:12+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/posts/</loc>
-    <lastmod>2023-07-15T02:52:12+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-15T02:52:12+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/posts/install-syncthing/</loc>

@@ -5,18 +5,62 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 02:52:12 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jul 2023 14:40:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下实现挂载smb共享文件夹</title>
+      <link>https://ruohai.wang/posts/linux-smb-mount/</link>
+      <pubDate>Sat, 15 Jul 2023 14:40:06 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/linux-smb-mount/</guid>
+      <description>linux下访问局域网上的smb共享文件夹，需要安装cifs-utils。
+apt install cifs-utils 这里假定共享文件夹的网络位置是http://smb_ip/share，用户名smb，密码123456。
+mount -t cifs //smb_ip/share /mnt/share -o username=smb,password=123456 -t cifs，挂载的文件类型，smb为-t cifs。 //smb_ip/share，smb共享文件夹的网络位置 /mnt/share，本地挂载的位置 -o，-o后面跟的都是挂载的详细参数配置，smb协议、用户名、密码等等，具体可以看这里详细参数解释，或者看图片。 如果要设置开机自动挂载smb，在/etc/fstab文件中添加一行，保存退出即可。
+//smb_ip/share /mnt/share cifs username=smb,passwd=123456 0 0 也可以在/etc/samba/目录下新建配置文件smbpasswd用来保存smb的用户名和密码以方便管理，内容如下。
+username=smb password=123456 然后 fstab中添加一行
+//smb_ip/share /mnt/share cifs credentials=/etc/samba/smbpasswd 0 0 fstab的格式规范如下
+&amp;lt;file system&amp;gt; &amp;lt;dir&amp;gt; &amp;lt;type&amp;gt; &amp;lt;options&amp;gt; &amp;lt;dump&amp;gt; &amp;lt;pass&amp;gt; </description>
+    </item>
+    
+    <item>
+      <title>Linux下给apache2安装ssl证书</title>
+      <link>https://ruohai.wang/posts/apache2-ssl-cert-setup/</link>
+      <pubDate>Sat, 15 Jul 2023 14:38:50 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/apache2-ssl-cert-setup/</guid>
+      <description>拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
+获取ssl证书的步骤这里就不赘述。直接开始重点。
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&amp;lt;VirtualHost *:443&amp;gt;的标签内。
+SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
+网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&amp;lt;Directory&amp;gt;的信息也配置进去。
+第四步：现在需要把ssl配置文件用软链接映射到/etc/apache2/sites-enabled/目录，命令中的001-ssl.conf文件名可以取自己喜欢的。
+ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf 如果不喜欢用软链接，也可以直接把default-ssl.conf文件复制一份到/sites-enabled/目录下。
+第五步：重启apache2。
+systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。
+# 开放端口 firewall-cmd --add-port=443/tcp --permanent # 防火墙重载 firewall-cmd --reload </description>
+    </item>
+    
+    <item>
+      <title>Typecho更改后台登录地址</title>
+      <link>https://ruohai.wang/posts/change-typecho-admin-dir/</link>
+      <pubDate>Sat, 15 Jul 2023 14:37:42 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/change-typecho-admin-dir/</guid>
+      <description>typecho后台登录url默认就是/admin/，为了安全，还是自定义比较好。
+这里假定要把/admin/改成/abcd/，要改两个地方。
+网站根目录下的admin文件夹，重命名为abcd
+网站根目录下的config.inc.php，把define(&amp;rsquo;TYPECHO_ADMIN_DIR&amp;rsquo;, &amp;lsquo;/admin/&amp;rsquo;)中的admin修改为abcd，然后保存退出
+以上两步操作完以后就可以用/abcd/登录网站后台了，成功~</description>
+    </item>
+    
     <item>
       <title>关于</title>
       <link>https://ruohai.wang/about/</link>
       <pubDate>Sat, 15 Jul 2023 03:06:48 +0800</pubDate>
       
       <guid>https://ruohai.wang/about/</guid>
-      <description>关于你关于我， 是爱情，是自爱。
-关于昨天和明天， 是过去，是未来。
-关于大地和海洋， 是父亲，是母亲。
-关于春天和秋天， 是播种，是收获。
-关于红色和白色， 是出生，是死亡。</description>
+      <description>关于未来你总有周密的安排，然而剧情却总是被现实篡改。
+关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。</description>
     </item>
     
     <item>
