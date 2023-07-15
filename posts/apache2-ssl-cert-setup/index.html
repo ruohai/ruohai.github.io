@@ -15,7 +15,8 @@
 <meta name="twitter:title" content="Linux下给Apache2安装SSL证书"/>
 <meta name="twitter:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
 获取ssl证书的步骤这里就不赘述。直接开始重点。
-第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
 a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&lt;VirtualHost *:443&gt;的标签内。
 SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
 网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&lt;Directory&gt;的信息也配置进去。
@@ -28,7 +29,8 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
     <meta property="og:title" content="Linux下给Apache2安装SSL证书" />
 <meta property="og:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
 获取ssl证书的步骤这里就不赘述。直接开始重点。
-第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
 a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&lt;VirtualHost *:443&gt;的标签内。
 SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
 网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&lt;Directory&gt;的信息也配置进去。
@@ -92,9 +94,9 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
       <p>拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。</p>
 <p>获取ssl证书的步骤这里就不赘述。直接开始重点。</p>
 <hr>
-<p>第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
-<img src="https://img1.imgtp.com/2023/07/07/pRjcyI4R.png" alt="ssl证书文件">
-拿到证书文件以后，把这三个文件上传到<code>/etc/apache2/ssl</code>目录下，这里的<code>ssl</code>文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到<code>/etc/apache2/ssl</code>目录下直接用wget下载证书后解压。
+<p>第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。</p>
+<p><img src="https://img1.imgtp.com/2023/07/07/pRjcyI4R.png" alt="ssl证书文件"></p>
+<p>拿到证书文件以后，把这三个文件上传到<code>/etc/apache2/ssl</code>目录下，这里的<code>ssl</code>文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到<code>/etc/apache2/ssl</code>目录下直接用wget下载证书后解压。
 <img src="https://img1.imgtp.com/2023/07/07/zUOOEM2W.png" alt="ssl文件服务器位置"></p>
 <hr>
 <p>第二步：启用apache2的ssl模块</p>

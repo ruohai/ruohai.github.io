@@ -5,7 +5,24 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 15 Jul 2023 17:50:39 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jul 2023 00:25:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下给File Browser设置SSL开启HTTPS访问</title>
+      <link>https://ruohai.wang/posts/filebrowser-update-to-https/</link>
+      <pubDate>Sun, 16 Jul 2023 00:25:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/filebrowser-update-to-https/</guid>
+      <description>前言 我用赚钱宝二代（ws1508）和玩客云（ws1608）刷入armbian，然后搓了很多服务，比如file browser、qbittorrent、ttyd、alist、ddns-go、navidrome。这些应用在启动以后，都提供了webui用来管理和控制。再配合当下ipv6的公网ip，实现了外网访问。
+但现在又碰到了新的需求（或者说问题），就是这些应用的webui都是http，为了安全，我准备升级到https。其中有一些应用（比如ttyd、firebrowser）确实支持ssl，但也有很多不支持ssl。而且就算支持ssl的应用，各自配置的方式也不相同，不方便后期统一管理。
+为了实现这个需求，就需要使用nginx。这里以filebrowser为例，做一下简单记录。
+前期准备 设备已经实现了ipv6的外网访问，假定域名为：jackiechang.cn 系统已经安装了filebrowser且可以正常访问，假定端口为：8600 以上两个前提已经OK，那外网访问filebrowser的url应该是：http://jackiechang.cn:8600 已经有ssl证书，不管是阿里云买域名送的证书，还是Let&amp;rsquo;s Encrypt的免费证书。 ssl证书需要是nginx的格式，一共两个文件：jackiechang.cn.pem和jackiechang.cn.key。 8600一个端口不能被nginx和filebrowser同时监听，这里假定nginx监听端口是：22222 这里假定的外网端口、本地端口、域名、证书名称，在下面教程中记得根据自己的情况进行修改。 安装nginx 我的主机系统是armbian，debian仓库里有nginx。
+apt install nginx nginx安装好以后，可以先执行nginx -t测试一下nginx.conf配置文件的语法是否正确，顺便看一下nginx的路径。我的nginx目录是/etc/nginx。
+上传ssl证书 在nginx目录新建ssl文件夹，把两个证书文件放到ssl目录下
+mkdir /etc/nginx/ssl 配置nginx nginx的默认配置文件是nginx.conf，但现在为了整洁和方便管理，nginx分出了conf.d、sites-available、site-enabled三个文件夹用来分别存放不同用途的配置文件。我这里用的sites-available/default文件进行配置。
+nano sites-available/default 添加如下配置内容，然后保存退出。
+server { # 监听ipv6的22222端口 listen [::]:22222 ssl; # 域名 server_name jackiechang.cn; # ssl证书的位置 ssl_certificate ssl/jackiechang.cn.pem; ssl_certificate_key ssl/jackiechang.cn.key; # ssl session缓存和过期时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl的一些加密配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3; ssl_prefer_server_ciphers on; # 这句是用来http重定向到https。http访问时nginx会报错误码497，直接把error_page重定向到https # 同一个端口实现http重定向到https，也有另外更优雅的实现方式，但我用下来这个拦截error_page是最方便的 error_page 497 https://$host:$server_port$uri$is_args$args; location / { # 把请求转发到本机的8600端口 proxy_pass http://localhost:8600; } } 重启nginx 完成上面的配置以后，先执行nginx -t测试配置文件的语法，没有报错就说明配置OK，接下去重启nginx即可。</description>
+    </item>
+    
     <item>
       <title>Linux下ttyd使用Git提示Author identity unknown和fatal: $HOME not set问题的解决</title>
       <link>https://ruohai.wang/posts/git-home-not-set-bugfix/</link>
@@ -117,7 +134,8 @@ username=smb password=123456 然后 fstab中添加一行
       <guid>https://ruohai.wang/posts/apache2-ssl-cert-setup/</guid>
       <description>拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
 获取ssl证书的步骤这里就不赘述。直接开始重点。
-第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。 拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
 a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&amp;lt;VirtualHost *:443&amp;gt;的标签内。
 SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
 网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&amp;lt;Directory&amp;gt;的信息也配置进去。
