@@ -107,6 +107,7 @@ git config --system user.name &#34;your name&#34;
 </code></pre><h2 id="注意事项">注意事项</h2>
 <p>这个方案只适合用在自己一个人使用的电脑主机/vps上，因为<code>--system</code>配置的git用户信息是全局生效的，如果系统是多用户使用，那所有用户都会使用同一个git配置。这点务必留意。应该还有其它更合理的解决方案，但我的主机只有自己一个人用，所以用的这个方案。😄</p>
 <p>查阅【<a href="https://git-scm.com/docs/git-config">git官方文档</a>】，可以知道<code>--system</code>参数是把配置信息写到<code>/etc/gitconfig</code>文件，也就是全局生效，而<code>--global</code>参数是把配置信息写到<code>~/.gitconfig</code>文件，只针对当前用户生效。所以当ttyd下git无法识别<code>$HOME</code>变量时，自然就无法读取到<code>~/.gitconfig</code>文件了。</p>
+<p>update：如果这个git repo在本地只有自己一个人用，那可以直接在在repo目录下<code>git confit user.name/user.email</code>，也就是这个仅针对这个repo配置用户信息。</p>
 <pre tabindex="0"><code>--system
 For writing options: write to system-wide $(prefix)/etc/gitconfig rather than the repository .git/config.
 
