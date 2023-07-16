@@ -1,129 +1,0 @@
-<!doctype html>
-<html lang="en-us">
-  <head>
-    <title>Linux下用Nginx给ttyd设置SSL开启HTTPS访问 // 喵ฅ^•ﻌ•^ฅ</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.111.3">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="author" content="Ruohai Wang" />
-    <meta name="description" content="" />
-    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
-
-    
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下用Nginx给ttyd设置SSL开启HTTPS访问"/>
-<meta name="twitter:description" content="用nginx给ttyd实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。
-很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。
-网上搜了一下解决方案，根据【这个页面】和【这个页面】上的两个解答，需要对nginx的配置内容稍微修改。
-注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &#34;upgrade&#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} "/>
-
-    <meta property="og:title" content="Linux下用Nginx给ttyd设置SSL开启HTTPS访问" />
-<meta property="og:description" content="用nginx给ttyd实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。
-很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。
-网上搜了一下解决方案，根据【这个页面】和【这个页面】上的两个解答，需要对nginx的配置内容稍微修改。
-注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &#34;upgrade&#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} " />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://ruohai.wang/posts/ttyd-update-to-https/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-07-16T01:17:58+08:00" />
-<meta property="article:modified_time" content="2023-07-16T01:17:58+08:00" />
-
-
-  </head>
-  <body>
-    <header class="app-header">
-      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
-      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
-      <nav class="app-header-menu">
-          <a class="app-header-menu-item" href="/">主页</a>
-             - 
-          
-          <a class="app-header-menu-item" href="/about/">关于</a>
-      </nav>
-      <p>这种失落会持久吗~</p>
-      <div class="app-header-social">
-        
-          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
-  <title>Twitter</title>
-  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-</svg>
-          </a>
-        
-      </div>
-    </header>
-    <main class="app-container">
-      
-  <article class="post">
-    <header class="post-header">
-      <h1 class ="post-title">Linux下用Nginx给ttyd设置SSL开启HTTPS访问</h1>
-      <div class="post-meta">
-        <div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
-  <title>calendar</title>
-  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-</svg>
-          Jul 16, 2023
-        </div>
-        <div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
-  <title>clock</title>
-  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg>
-          1 min read
-        </div>
-      </div>
-    </header>
-    <div class="post-content">
-      <p>用nginx给ttyd实现https访问，99%的设置都和【<a href="https://ruohai.wang/posts/filebrowser-update-to-https/">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</a>】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。</p>
-<p>很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。</p>
-<p>网上搜了一下解决方案，根据【<a href="https://github.com/coolsnowwolf/lede/issues/5298">这个页面</a>】和【<a href="https://github.com/tsl0922/ttyd/issues/268">这个页面</a>】上的两个解答，需要对nginx的配置内容稍微修改。</p>
-<hr>
-<h2 id="注意">注意</h2>
-<ul>
-<li>设定域名为：<code>jackiechang.cn</code></li>
-<li>设定外网端口为：<code>11111</code></li>
-<li>设定内网端口为：<code>4533</code></li>
-</ul>
-<hr>
-<h2 id="配置文件">配置文件</h2>
-<pre tabindex="0"><code>server {
-	listen [::]:11111 ssl;
-
-	server_name jackiechang.cn;
-
-    ssl_certificate ssl/jackiechang.cn.pem;
-    ssl_certificate_key ssl/jackiechang.cn.key;
-	ssl_session_cache shared:SSL:1m;
-    ssl_session_timeout 5m;
-	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
-	ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
-	ssl_prefer_server_ciphers on;
-
-	error_page 497 https://$host:$server_port$uri$is_args$args;
-
-	location / {
-        # ###################################
-        # 这部分定义header是新加的，指定websocket
-		proxy_set_header Host $host;
-		proxy_set_header X-Forwarded-Proto $scheme;
-		proxy_set_header X-Forwarded-Port $server_port;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection &#34;upgrade&#34;;
-		proxy_http_version 1.1;
-        # ###################################
-
-		proxy_pass  http://localhost:4533;
-	}
-}
-</code></pre>
-    </div>
-    <div class="post-footer">
-      
-    </div>
-  </article>
-
-    </main>
-  </body>
-</html>
