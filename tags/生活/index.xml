@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>生活 on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</link>
+    <description>Recent content in 生活 on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 27 Jun 2023 02:38:42 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World</title>
+      <link>https://ruohai.wang/202307/hello-world/</link>
+      <pubDate>Tue, 27 Jun 2023 02:38:42 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/hello-world/</guid>
+      <description>2023/06/27，凌晨2:38，终于在armbian上手搓了typecho，两次。
+第一次主要是试错，手搓成功以后重新刷机按照刚刚实践成功的经验再搓一次，过程中因为有些配置调整，依然碰到了不少的问题。不过高兴的是，第二次又搓成功惹。
+搞定了，睡觉。😄</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -81,5 +81,16 @@ hexo入选是因为2015年的时候用hexo+github page搭过一个博客。typec
 免费。只要注册一个github账号，就可以把博客部署到github pages，不花钱，然后买个10块一年的廉价域名，搞定。如果用动态博客，自己的小主机没法备案吧，就不能解封80/443端口，那就得买vps。国内阿里云腾讯云各种云，要备案要审核，海外linode、vultr、azure、aws、digital ocean，各有优劣得挑好久吧而且价格不便宜。一年一年续费太心痛。</description>
     </item>
     
+    <item>
+      <title>Hello World</title>
+      <link>https://ruohai.wang/202307/hello-world/</link>
+      <pubDate>Tue, 27 Jun 2023 02:38:42 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/hello-world/</guid>
+      <description>2023/06/27，凌晨2:38，终于在armbian上手搓了typecho，两次。
+第一次主要是试错，手搓成功以后重新刷机按照刚刚实践成功的经验再搓一次，过程中因为有些配置调整，依然碰到了不少的问题。不过高兴的是，第二次又搓成功惹。
+搞定了，睡觉。😄</description>
+    </item>
+    
   </channel>
 </rss>
