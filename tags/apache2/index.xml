@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache2 on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/apache2/</link>
+    <description>Recent content in Apache2 on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 15 Jul 2023 14:38:50 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/apache2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下给Apache2安装SSL证书</title>
+      <link>https://ruohai.wang/202307/apache2-ssl-cert-setup/</link>
+      <pubDate>Sat, 15 Jul 2023 14:38:50 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/apache2-ssl-cert-setup/</guid>
+      <description>拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
+获取ssl证书的步骤这里就不赘述。直接开始重点。
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&amp;lt;VirtualHost *:443&amp;gt;的标签内。
+SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
+网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&amp;lt;Directory&amp;gt;的信息也配置进去。
+第四步：现在需要把ssl配置文件用软链接映射到/etc/apache2/sites-enabled/目录，命令中的001-ssl.conf文件名可以取自己喜欢的。
+ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf 如果不喜欢用软链接，也可以直接把default-ssl.conf文件复制一份到/sites-enabled/目录下。
+第五步：重启apache2。
+systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。
+# 开放端口 firewall-cmd --add-port=443/tcp --permanent # 防火墙重载 firewall-cmd --reload </description>
+    </item>
+    
+    <item>
+      <title>Apache2下实现Typecho永久链接（伪静态）</title>
+      <link>https://ruohai.wang/202307/apache2-url-rewrite/</link>
+      <pubDate>Sat, 15 Jul 2023 02:43:32 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/apache2-url-rewrite/</guid>
+      <description>伪静态通过url rewrite实现，这里记录下apahce开启rewrite功能的方法。
+首先第一步肯定是在typecho后台开启地址重写功能，不要管错误提示，选择【启用】并保存设置。 然后开始在apache2中进行配置：
+本地新建一个文件，文件名**.htaccess** ，把下面这段内容粘贴进去，保存，然后上传到网站根目录。 &amp;lt;IfModule mod_rewrite.c&amp;gt; RewriteEngine On RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1] &amp;lt;/IfModule&amp;gt; 文件位置示意图：
+修改apache2.conf（如果你的网站路径信息配置在VirtualHost下则修改对应位置）。这里以默认的/var/www为例，把AllowOverride后的参数改为FileInfo，不需要改成all，fileinfo的权限就够了。 &amp;lt;Directory /var/www/&amp;gt; Options Indexes FollowSymLinks AllowOverride FileInfo Require all granted &amp;lt;/Directory&amp;gt; 完成以上两步以后，可以试着重启apache2，如果rewrite模块已经开启的话，到这一步伪静态就已经完成了。 systemctl restart apache2 如果很不幸操作apache2重启以后你的地址重写功能依然没有生效，那就是服务器没有启用rewrite模块，执行下面这条命令启用apache2-rewrite，然后再重启apache2。 a2enmod rewrite systemctl restart apache2 </description>
+    </item>
+    
+  </channel>
+</rss>

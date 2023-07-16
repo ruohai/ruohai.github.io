@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SFTP on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/sftp/</link>
+    <description>Recent content in SFTP on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 15 Jul 2023 14:48:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/sftp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用SFTP命令操作文件上传下载</title>
+      <link>https://ruohai.wang/202307/use-sftp-to-handle-file/</link>
+      <pubDate>Sat, 15 Jul 2023 14:48:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/use-sftp-to-handle-file/</guid>
+      <description>一般要在一台远程vps上进行文件上传下载，一两个文件会用lrzsz(前提是你的终端要支持zmodem），批量文件会用winscp/xftp之类的客户端。但如果自己的终端不支持zmodem，也不想用第三方软件，而且文件也就一两个就想敲命令来完成，因为敲命令泰裤辣，那就用sftp命令。
+sftp连接服务器。连接成功后光标处的命令提示符变成 sftp&amp;gt; 。想要免密登录设置同ssh免密登录，可以看这篇文章。
+sftp jack@192.168.1.10 -p 22 sftp下载文件并保持源文件名
+get /home/jack/robots.txt C:\Users\Jack\Desktop\ sftp上传文件并保持源文件名
+put C:\Users\Jack\Desktop\robots.txt /home/jack/ 如果要上传下载一个文件夹，在put/get后面跟一个参数 -r 即可。</description>
+    </item>
+    
+  </channel>
+</rss>

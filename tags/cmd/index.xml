@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CMD on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/cmd/</link>
+    <description>Recent content in CMD on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 15 Jul 2023 14:51:46 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/cmd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows下用CMD实现SSH连接</title>
+      <link>https://ruohai.wang/202307/windows-cmd-use-ssh/</link>
+      <pubDate>Sat, 15 Jul 2023 14:51:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/windows-cmd-use-ssh/</guid>
+      <description>Windows下有很多终端，收费的，免费的。但很多终端不支持zmodem导致不能使用lrzsz，或者用户协议是限定场景下才免费，亦或者是electron套壳主题不好看。其实windows10已经默认安装openssh客户端，可以直接用系统自带的cmd/powershell/windows terminal来实现ssh访问远程服务器。虽然依然不支持zmodem，但如果你和我一样有三方软件洁癖，或者想严格遵守软件的用户协议，可以考虑cmd来替代那些第三方软件。
+如果你的Windows系统没有安装openssh，可以查看这篇【官方文章】进行安装。
+然后在cmd中直接敲命令即可。是默认端口22的话，【-p 22】这部分可以省略。
+ssh root@192.168.1.10 -p 22 如果不想每次都敲【root@192.168.1.10 -p 22】这几句，需要在C:\Users\Jack\.ssh\目录下新建一个config文件（文件名就是config，没有后缀），按如下格式写入服务器信息后保存。
+Host abc Hostname 192.168.1.10 User root Port 22
+然后就可以在cmd中敲【ssh abc】即可。
+如果想实现免密登录，rsa密钥生成、服务器端的配置这里不做赘述，只记录config文件中的配置格式。为方便管理多个主机的rsa密钥对，这里在.ssh目录下新建文件夹abc，rsa密钥对放在其中。
+Host abc Hostname 192.168.1.10 User root Port 22 IdentityFile C:\Users\Jack\.ssh\abc\id_rsa
+然后就可以在cmd中敲【ssh abc】即可实现免密登录。</description>
+    </item>
+    
+  </channel>
+</rss>

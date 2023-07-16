@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下修改ssh默认端口 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>Linux下修改SSH默认端口 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下修改ssh默认端口"/>
+<meta name="twitter:title" content="Linux下修改SSH默认端口"/>
 <meta name="twitter:description" content="前言 这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。
 写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改sshd_config文件都无济于事。简中互联网上以关键字ssh、修改端口之类搜出来的文章都千篇一律，再搜端口修改以后无效，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。
 最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。
@@ -29,7 +29,7 @@ cat &gt;/etc/systemd/system/ssh.socket.d/listen.conf &lt;&lt;EOF [Socket] # 这�
 https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10 https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6 从ssh.socket切换到ssh.service 讲真，我虽然已经掌握在ssh.socket模式下配置新端口的方法，但实际操作过程中还是碰到了ssh.socket异常的问题。那不如直接从ssh.socket切换到ssh.service吧！
 # 禁用ssh.socket服务 systemctl disable --now ssh.socket # 启用ssh."/>
 
-    <meta property="og:title" content="Linux下修改ssh默认端口" />
+    <meta property="og:title" content="Linux下修改SSH默认端口" />
 <meta property="og:description" content="前言 这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。
 写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改sshd_config文件都无济于事。简中互联网上以关键字ssh、修改端口之类搜出来的文章都千篇一律，再搜端口修改以后无效，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。
 最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。
@@ -60,7 +60,7 @@ https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-
           <a class="app-header-menu-item" href="/">主页</a>
              - 
           
-          <a class="app-header-menu-item" href="/categories/">归档</a>
+          <a class="app-header-menu-item" href="/tags/">标签</a>
              - 
           
           <a class="app-header-menu-item" href="/about/">关于</a>
@@ -81,7 +81,7 @@ https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下修改ssh默认端口</h1>
+      <h1 class ="post-title">Linux下修改SSH默认端口</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -96,6 +96,14 @@ https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
           1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
+              <a class="tag" href="https://ruohai.wang/tags/ssh/">SSH</a>
         </div>
       </div>
     </header>

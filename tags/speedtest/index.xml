@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speedtest on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/speedtest/</link>
+    <description>Recent content in Speedtest on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 14 Jul 2023 14:57:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/speedtest/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用Speedtest CLI进行网络测速</title>
+      <link>https://ruohai.wang/202307/speedtest-cli-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 14:57:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/speedtest-cli-setup/</guid>
+      <description>前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
+debian的仓库里有一个speedtest-cli的包，一开始我用的就是这个。但注意这个包不是speedtest官方在维护，不是官方的！这也解释了为什么我之前用debian仓库里的speedtest-cli进行测速的时候，它自动选择的服务器都是hongkong或者taiwan，导致测速完全不准。而且通过命令speedtest --list|grep China也搜不出任何结果，一度离谱到speedtest --list出来只有taiwan的服务器。
+后来网上搜了一圈【找到了原因】，才知道这个包不是speedtest官方的。
+linux上真的是好多坑啊，一个简单的网络测速都是如此。
+好了，现在记录一下怎么安装speedtest官方的工具来完成linux下的网络测速。
+安装 找到【speedtest官方网站】，首页就有安装步骤。 # 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 查询可用的测速服务器 先speedtest -h看一下使用手册。 Usage: speedtest [&amp;lt;options&amp;gt;] -h, --help Print usage information -V, --version Print version number -L, --servers List nearest servers -s, --server-id=# Specify a server from the server list using its id -I, --interface=ARG Attempt to bind to the specified interface when connecting to servers -i, --ip=ARG Attempt to bind to the specified IP address when connecting to servers -o, --host=ARG Specify a server, from the server list, using its host&amp;#39;s fully qualified domain name -p, --progress=yes|no Enable or disable progress bar (Note: only available for &amp;#39;human-readable&amp;#39; or &amp;#39;json&amp;#39; and defaults to yes when interactive) -P, --precision=# Number of decimals to use (0-8, default=2) -f, --format=ARG Output format (see below for valid formats) --progress-update-interval=# Progress update interval (100-1000 milliseconds) -u, --unit[=ARG] Output unit for displaying speeds (Note: this is only applicable for ‘human-readable’ output format and the default unit is Mbps) -a Shortcut for [-u auto-decimal-bits] -A Shortcut for [-u auto-decimal-bytes] -b Shortcut for [-u auto-binary-bits] -B Shortcut for [-u auto-binary-bytes] --selection-details Show server selection details --ca-certificate=ARG CA Certificate bundle path -v Logging verbosity.</description>
+    </item>
+    
+  </channel>
+</rss>

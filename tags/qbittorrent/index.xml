@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>qBittorrent on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/qbittorrent/</link>
+    <description>Recent content in qBittorrent on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 16 Jul 2023 20:14:40 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/qbittorrent/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用Nginx给qBittorrent设置SSL开启HTTPS访问</title>
+      <link>https://ruohai.wang/202307/qbittorrent-update-to-https/</link>
+      <pubDate>Sun, 16 Jul 2023 20:14:40 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/qbittorrent-update-to-https/</guid>
+      <description>用nginx反向代理给qbit实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，没错，又是99%的内容都是和filebrowser那篇一样。但还是那个问题，直接照搬的话会有一个坑，完成配置以后，用https访问qbit-webui会显示空白页面并提示unauthorized。
+很明显这是碰到了一个安全设置问题，访问被qbit拒绝了。
+有两个解决方案。
+方案一：关闭qbit的一些安全设置 qbit webui设置中的【启用host header属性验证】和【启用跨站请求伪造保护】两个功能去掉勾选。
+方案二：修改nginx反向代理的配置 参考qbit【官方wiki给出的方案】，调整nginx中的一些配置。
+假定原规则如下：
+location / { proxy_pass http://localhost:8089; } 调整以后的配置如下：
+location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set_header Host localhost:8089; proxy_set_header X-Forwarded-Host $http_host; proxy_set_header X-Forwarded-For $remote_addr; # qbit版本v4.2.2以上加入这条保护cookie安全 proxy_cookie_path / &amp;#34;/; Secure&amp;#34;; } 使用以上配置以后，实测qbit webui中可以开启安全设置，注意服务器域名哪里要填localhost。</description>
+    </item>
+    
+    <item>
+      <title>Linux下安装qBittorrent</title>
+      <link>https://ruohai.wang/202307/install-qbit/</link>
+      <pubDate>Fri, 14 Jul 2023 23:35:17 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/install-qbit/</guid>
+      <description>debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
+apt install qbittorrent-nox 安装完成后，直接用守护线程模式启动。
+qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，就可以开始使用了。
+也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
+第一步：在/etc/systemd/system/目录下新建文件qbittorrent.service，把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，需要根据自己的情况修改。
+[Unit] Description=qBittorrent Daemon Service After=network.target [Service] User=Jack ExecStart=/usr/bin/qbittorrent-nox ExecStop=/usr/bin/killall -w qbittorrent-nox [Install] WantedBy=multi-user.target 第二部：添加systemd服务的三条命令。
+# 服务重载 systemctl daemon-reload # 启动服务(如果已经启动qbit，这一步可以跳过） systemctl start qbittorrent.service # 添加为开机自启 systemctl enable qbittorrent.service </description>
+    </item>
+    
+  </channel>
+</rss>

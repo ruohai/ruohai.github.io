@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Typecho on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/typecho/</link>
+    <description>Recent content in Typecho on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 15 Jul 2023 14:46:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/typecho/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Typecho添加favicon</title>
+      <link>https://ruohai.wang/202307/typecho-add-favicon/</link>
+      <pubDate>Sat, 15 Jul 2023 14:46:01 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/typecho-add-favicon/</guid>
+      <description>首先将制作好的favicon.ico文件上传到服务器目录，本例中保存在/usr/themes/default/目录下。接下去在网站管理后台操作。
+后台——控制台——外观 编辑当前外观——header.php，在&amp;lt;header&amp;gt;标签中插入一行
+&amp;lt;link rel=&amp;#34;shortcut icon&amp;#34; href=&amp;#34;/usr/themes/default/favicon.ico&amp;#34; type=&amp;#34;image/x-icon&amp;#34; /&amp;gt; 最后保存再刷新网站即可。</description>
+    </item>
+    
+    <item>
+      <title>Typecho更改后台登录地址</title>
+      <link>https://ruohai.wang/202307/change-typecho-admin-dir/</link>
+      <pubDate>Sat, 15 Jul 2023 14:37:42 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/change-typecho-admin-dir/</guid>
+      <description>typecho后台登录url默认就是/admin/，为了安全，还是自定义比较好。
+这里假定要把/admin/改成/abcd/，要改两个地方。
+网站根目录下的admin文件夹，重命名为abcd
+网站根目录下的config.inc.php，把define(&amp;rsquo;TYPECHO_ADMIN_DIR&amp;rsquo;, &amp;lsquo;/admin/&amp;rsquo;)中的admin修改为abcd，然后保存退出
+以上两步操作完以后就可以用/abcd/登录网站后台了，成功~</description>
+    </item>
+    
+    <item>
+      <title>Linux下从0开始安装Typecho</title>
+      <link>https://ruohai.wang/202307/install-typecho-step-by-step/</link>
+      <pubDate>Sat, 15 Jul 2023 02:52:12 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/install-typecho-step-by-step/</guid>
+      <description>typecho的安装，官方有【安装指导文档】，但讲实话我看完官方文档是一头雾水的，并不知道要怎么弄。搜其它教程，很多又是配合宝塔面板来部署。宝塔面板我试过官网的demo，并不是我对国产的软件产品有偏见啊，但主题和无处不在的付费升级到pro的入口，我觉得不行。
+所以这就是一篇从0开始完全手搓的安装教程。
+第一步：安装环境的准备。typecho说白就是一个php网站，要跑php网站，就需要web server。那就nginx或者apache2二选一。这些年nginx风头强劲，apache2日暮西山。但巧了么这不是，我选择apache2。
+apt install apache2 -y apache2安装好以后，在浏览器中输入http://host_ip看是否能访问到apache2 index页面，能访问说明安装成功。
+第二步：网站要跑起来，有了web server，接下去就是安装数据库。typecho官方说支持mysql、postgresql和sqlite，又到了技术选型的分岔口了。mysql因为oracel这个爹的原因，从debian的源仓库被移除了，postgresql我不熟，略过，那剩下的就只有sqlite惹。其实debian的源仓库里有mariadb-server可以装，但用mariadb的话和mysql一样需要安装mysqli这个php扩展，很不巧mysqli也从debian源仓库里被移除了。开源人都是有洁癖的，碰了oracel的统统都要清理掉。我这里偷懒，只想用apt install一键安装而不是去下mysql安装包，所以数据库最终选择：sqlite。
+apt install sqlite3 -y 安装完成后，输入sqlite3，看命令提示符是不是 sqlite3 来判断是否成功，敲.quit退出。
+第三步：现在要在apache2中进行virtualhost配置，也就是网站信息配置。可以在/etc/apahce2/apache2.conf文件中配置，也可以/etc/apache2/sites-enabled/目录下配置。为了方便管理，这里选择/sites-enabled/目录。
+将目录下的000-default.conf重命名为typecho.conf 在typecho.conf中的&amp;lt;VirtualHost *:80&amp;gt;标签内进行如下配置。DocumentRoot配置的是你网站的根目录。 DocumentRoot /data/typecho &amp;lt;Directory /data/typecho&amp;gt; Options Indexes FollowSymLinks AllowOverride All Require all granted &amp;lt;/Directory&amp;gt; 完成配置后，重启apahce2。 systemctl restart apache2 在网站根目录新建phpinfo.php，内容&amp;lt;?php phpinfo(); ?&amp;gt;，保存。然后浏览器访问http://host_ip/phpinfo.php，查看是否能正常访问页面。 这里有一个需要注意的问题。apache2跑起来的用户:组是www-data:www-data，记得给网站目录/data/typecho分配合理权限，要不然会提示【you don&amp;rsquo;t hava permission】无法访问。 第四步：开始安装php。全程没啥好注意的，等命令跑完就好了。
+apt install php -y 第五步：不知不觉终于到第五步了，写教程可真累啊。到此为止，安装环境算是都准备好了，现在可以去typecho官网下载安装包惹。
+# 进入网站根目录 cd /data/typecho # 下载最新版typecho代码 wget https://github.com/typecho/typecho/releases/download/v1.2.1/typecho.zip # 解压到当前目录 unzip typecho.zip 接着就可以在浏览器中输入http://host_ip/install.php进行安装，然后根据网页提示的报错信息进行debug。 第六步：马上大功告成了。点击下一步，马上就会看到红字错误提示。 不要慌，根据错误提示一个个处理即可。
+# 安装mbstring，需要重启apache2生效 apt install php-mbstring -y # 安装数据库扩展，我用的是sqlite3，就装sqlite3的扩展，需要重启apache2生效 apt install php-sqlite3 -y # usr/uploads目录分配权限。俩方法，把/typecho/目录指定给www-data:www-data，或者给755。因为等会还需要在网站根目录写入一个config.</description>
+    </item>
+    
+    <item>
+      <title>为什么选择Typecho而不是Hexo来搭建博客</title>
+      <link>https://ruohai.wang/202307/why-choose-typecho/</link>
+      <pubDate>Sat, 15 Jul 2023 02:33:47 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/why-choose-typecho/</guid>
+      <description>前言 这篇文章是2023年7月4号写的，当时方案选择的时候，排除掉了静态博客hexo选择了typecho，然后做了这篇记录。
+谁曾想不到半个月的时间，因为拿来连手的vps快要到期，博客也要转移，最终新博客我选择了静态博客hugo。😄
+本来这篇文章是吐槽静态博客不好用不方便的，但今天（2023-07-15）对内容做了重新整理和补充，反而变成了一篇吹静态博客好的文章，笑死了。
+😄
+想要自建博客的时候，我的方案是二选一：hexo或者typecho。
+hexo入选是因为2015年的时候用hexo+github page搭过一个博客。typecho入选是因为玩客云这个机器硬件性能羸弱（没错一开始我是准备在玩客云上自建博客），看到有一个玩客云armbian固件里内置了typecho。
+接下去就是决定用hexo还是typecho了。搜了网上很多博客工具优劣的点评文章，啰啰嗦嗦一大堆，都喜欢说什么主题好不好看。有的会提到动态博客、静态博客之分，这个也好理解，但往往也只点到静态页面、动态数据这些。
+但是最最最关键的区别，他们都没说，我来说：
+静态博客是分成本地环境和服务器环境的！！！ 静态博客 静态博客存在如下几个问题：
+需要在本地搭建一个编译环境。hexo是nodejs，hugo是go，jekyll是ruby gem。想写博客，就需要本地写好markdown文件，然后本地编译成静态页面，然后git push到服务器（也可以用sftp工具）。文章发布以后发现有错误想要改，哎，本地编辑那份markdown文件，然后本地重新编译静态页面，然后再用git push到服务器。这也是小白容易理解错误的地方，按照hexo、hugo、jekyll的官方文档吭哧吭哧弄半天，最后发现只是在自己电脑上装了一个编译环境而已。
+没有原生评论系统。因为是都是静态页面没有什么交互，自然也就没有原生评论系统，但可以通过配置第三方服务外挂评论系统来实现。但随之而来的问题就是，这些评论都保存在第三方网站上，不归自己管。
+部署。静态博客如此流行，我觉着有很大的原因是免费的github pages吧。但如果想部署在主机上，那就和动态博客一样，需要开始ssh连上主机装nginx/apache2建站了。
+设备绑定。markdown编译成静态页面以后，需要push到服务器，或者github。如果push到服务器，那和动态博客一样，需要和主机做rsa密钥认证登录；如果push到github，那需要在github上配置rsa公钥。这都导致了客户端设备的绑定，也就是我用A电脑写markdown然后编译然后push，那我换电脑了怎么办？得重新配置一遍rsa密钥认证，或者其它电脑远程登录到A电脑进行push。
+不支持搜索。都是静态页面，往往没有交互功能，比如搜索文章。需要用搜索引擎配合一些搜索公式来实现。
+文章管理不便。标签、分类、置顶，还有很多基础功能缺失，需要自己手动管理。
+动态博客 动态博客最知名的就是wordpress，但很多人都会觉得它太重，typecho可以理解为wordpress的精简版。动态博客好处都有啥，谁说对了就给他。
+原生评论系统。虽然我的博客几乎没有什么访问量，评论也完全没有，但评论功能它必须得有。
+自带管理后台，可以直接在网站后台对全站资源进行配置，比如文章的编辑、发布、删除，评论的管理，主题的配置，页面的调整。
+不绑定设备。出门没带自己电脑，不得不用其它电脑，照样可以浏览器登录网站后台管理博客。
+动态博客系统都自带功能强大的富文本编辑器/markdown编辑器，不用再花心思去选什么支持语法高亮、支持实时预览、免费的markdown编辑器，系统自带。
+动态博客系统自带功能强大的文章分类功能、标签管理功能、搜索功能，这些网站标配的功能，静态博客都需要自己动手去实现。
+这么看下来，好像静态博客一无是处，动态博客全是优点。那为什么还有那么多人选择静态博客？
+网站精简，less is more，砍掉所有功能以后可以把全部注意力都用在【写博客】这件事上。
+免费。只要注册一个github账号，就可以把博客部署到github pages，不花钱，然后买个10块一年的廉价域名，搞定。如果用动态博客，自己的小主机没法备案吧，就不能解封80/443端口，那就得买vps。国内阿里云腾讯云各种云，要备案要审核，海外linode、vultr、azure、aws、digital ocean，各有优劣得挑好久吧而且价格不便宜。一年一年续费太心痛。</description>
+    </item>
+    
+  </channel>
+</rss>

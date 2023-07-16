@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/docker/</link>
+    <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 14 Jul 2023 23:20:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装Docker Engine</title>
+      <link>https://ruohai.wang/202307/install-docker-engine/</link>
+      <pubDate>Fri, 14 Jul 2023 23:20:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/install-docker-engine/</guid>
+      <description>在linux上安装docker，官方有详细的教程指导如何安装。但如果你和我一样用的linux发行版是debian以及debian的衍生发行版，可以直接用debian官方维护的docker.io。
+apt install docker.io docker官方把docker.io称为unofficial packages非官方的版本。
+因为docker.io是debian在维护而不是docker官方，而且2019年的时候曾经停止维护了1年导致版本落后太多。但现在不用担心docker.io版本问题，目前仓库里已经是20.10.24。</description>
+    </item>
+    
+  </channel>
+</rss>

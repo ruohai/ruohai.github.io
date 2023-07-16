@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bash on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/bash/</link>
+    <description>Recent content in bash on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 14 Jul 2023 23:14:36 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/bash/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下添加自定义alias</title>
+      <link>https://ruohai.wang/202307/add-alias/</link>
+      <pubDate>Fri, 14 Jul 2023 23:14:36 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/add-alias/</guid>
+      <description>linux下添加自定义alias，编辑的文件位置有俩地方，全局（对所有用户生效）生效是/etc/bash.bashrc，对当前用户生效是~/.bashrc。
+这里以仅针对单个用户进行配置为例。
+nano ~/.bashrc 在最底下添加一行
+alias ll=&amp;#39;ls -l&amp;#39; 保存，然后用source命令使生效
+source ~/.bashrc </description>
+    </item>
+    
+    <item>
+      <title>Linux下Bash Shell开启命令自动补全</title>
+      <link>https://ruohai.wang/202307/bash-completion-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 22:51:22 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/bash-completion-setup/</guid>
+      <description>如果只是对单个用户生效，那下文中的/etc/bash.bashrc都要调整为~/.bashrc。
+第一步：安装bash-completion。
+apt install bash-completion 第二步：查看/etc/bash.bashrc文件中是否适配。
+# 打开bash的用户配置文件 nano /etc/bash.bashrc 查看是否有下面这段内容，如果没有就添加到最后，保存退出。这段代码的意思是判断系统是否安装了bash_completion，如果安装则启用自动补全功能。
+if ! shopt -oq posix; then if [ -f /usr/share/bash-completion/bash_completion ]; then . /usr/share/bash-completion/bash_completion elif [ -f /etc/bash_completion ]; then . /etc/bash_completion fi fi 第三步：重新加载用户的bash配置信息。
+source /etc/bash.bashrc </description>
+    </item>
+    
+  </channel>
+</rss>

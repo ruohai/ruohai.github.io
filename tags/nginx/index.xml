@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/nginx/</link>
+    <description>Recent content in Nginx on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 16 Jul 2023 20:14:40 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用Nginx给qBittorrent设置SSL开启HTTPS访问</title>
+      <link>https://ruohai.wang/202307/qbittorrent-update-to-https/</link>
+      <pubDate>Sun, 16 Jul 2023 20:14:40 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/qbittorrent-update-to-https/</guid>
+      <description>用nginx反向代理给qbit实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，没错，又是99%的内容都是和filebrowser那篇一样。但还是那个问题，直接照搬的话会有一个坑，完成配置以后，用https访问qbit-webui会显示空白页面并提示unauthorized。
+很明显这是碰到了一个安全设置问题，访问被qbit拒绝了。
+有两个解决方案。
+方案一：关闭qbit的一些安全设置 qbit webui设置中的【启用host header属性验证】和【启用跨站请求伪造保护】两个功能去掉勾选。
+方案二：修改nginx反向代理的配置 参考qbit【官方wiki给出的方案】，调整nginx中的一些配置。
+假定原规则如下：
+location / { proxy_pass http://localhost:8089; } 调整以后的配置如下：
+location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set_header Host localhost:8089; proxy_set_header X-Forwarded-Host $http_host; proxy_set_header X-Forwarded-For $remote_addr; # qbit版本v4.2.2以上加入这条保护cookie安全 proxy_cookie_path / &amp;#34;/; Secure&amp;#34;; } 使用以上配置以后，实测qbit webui中可以开启安全设置，注意服务器域名哪里要填localhost。</description>
+    </item>
+    
+    <item>
+      <title>Linux下用Nginx给ttyd设置SSL开启HTTPS访问</title>
+      <link>https://ruohai.wang/202307/ttyd-update-to-https/</link>
+      <pubDate>Sun, 16 Jul 2023 01:17:58 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/ttyd-update-to-https/</guid>
+      <description>用nginx给ttyd实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。
+很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。
+网上搜了一下解决方案，根据【这个页面】和【这个页面】上的两个解答，需要对nginx的配置内容稍微修改。
+注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} </description>
+    </item>
+    
+  </channel>
+</rss>

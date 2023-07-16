@@ -508,7 +508,7 @@ source /etc/bash.bashrc </description>
     </item>
     
     <item>
-      <title>Linux下修改ssh默认端口</title>
+      <title>Linux下修改SSH默认端口</title>
       <link>https://ruohai.wang/202307/set-new-ssh-port/</link>
       <pubDate>Fri, 14 Jul 2023 22:28:56 +0800</pubDate>
       

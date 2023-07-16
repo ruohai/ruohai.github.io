@@ -5,7 +5,16 @@
     <loc>https://ruohai.wang/202307/</loc>
     <lastmod>2023-07-17T00:24:52+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/ddns-go/</loc>
+    <lastmod>2023-07-17T00:24:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2023-07-17T00:24:52+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/ddns-go-install/</loc>
+    <lastmod>2023-07-17T00:24:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
     <lastmod>2023-07-17T00:24:52+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
@@ -14,14 +23,35 @@
     <loc>https://ruohai.wang/202307/qbittorrent-update-to-https/</loc>
     <lastmod>2023-07-16T20:14:40+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/nginx/</loc>
+    <lastmod>2023-07-16T20:14:40+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/qbittorrent/</loc>
+    <lastmod>2023-07-16T20:14:40+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/ssl/</loc>
+    <lastmod>2023-07-16T20:14:40+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/samba-setup-to-share-files/</loc>
+    <lastmod>2023-07-16T13:15:51+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/samba/</loc>
     <lastmod>2023-07-16T13:15:51+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/ttyd-update-to-https/</loc>
     <lastmod>2023-07-16T01:17:58+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/ttyd/</loc>
+    <lastmod>2023-07-16T01:17:58+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/file-browser/</loc>
+    <lastmod>2023-07-16T00:25:11+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/filebrowser-update-to-https/</loc>
     <lastmod>2023-07-16T00:25:11+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/git/</loc>
+    <lastmod>2023-07-15T17:50:39+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/git-home-not-set-bugfix/</loc>
     <lastmod>2023-07-15T17:50:39+08:00</lastmod>
@@ -29,8 +59,20 @@
     <loc>https://ruohai.wang/202307/install-ttyd/</loc>
     <lastmod>2023-07-15T16:38:06+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2023-07-15T14:53:09+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/ws1508-is-totally-a-rubbish/</loc>
     <lastmod>2023-07-15T14:53:09+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/cmd/</loc>
+    <lastmod>2023-07-15T14:51:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/ssh/</loc>
+    <lastmod>2023-07-15T14:51:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/windows/</loc>
+    <lastmod>2023-07-15T14:51:46+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/windows-cmd-use-ssh/</loc>
     <lastmod>2023-07-15T14:51:46+08:00</lastmod>
@@ -38,11 +80,26 @@
     <loc>https://ruohai.wang/202307/use-sftp-to-handle-file/</loc>
     <lastmod>2023-07-15T14:48:48+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/sftp/</loc>
+    <lastmod>2023-07-15T14:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/typecho/</loc>
+    <lastmod>2023-07-15T14:46:01+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/typecho-add-favicon/</loc>
     <lastmod>2023-07-15T14:46:01+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/cifs/</loc>
+    <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/linux-smb-mount/</loc>
     <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/smb/</loc>
+    <lastmod>2023-07-15T14:40:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/apache2/</loc>
+    <lastmod>2023-07-15T14:38:50+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/apache2-ssl-cert-setup/</loc>
     <lastmod>2023-07-15T14:38:50+08:00</lastmod>
@@ -59,11 +116,17 @@
     <loc>https://ruohai.wang/202307/install-syncthing/</loc>
     <lastmod>2023-07-15T02:50:44+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/syncthing/</loc>
+    <lastmod>2023-07-15T02:50:44+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/usb-auto-mount/</loc>
     <lastmod>2023-07-15T02:49:06+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/apache2-url-rewrite/</loc>
     <lastmod>2023-07-15T02:43:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/hexo/</loc>
+    <lastmod>2023-07-15T02:33:47+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/why-choose-typecho/</loc>
     <lastmod>2023-07-15T02:33:47+08:00</lastmod>
@@ -71,8 +134,17 @@
     <loc>https://ruohai.wang/202307/navidrome-setup/</loc>
     <lastmod>2023-07-15T00:28:12+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/navidrome/</loc>
+    <lastmod>2023-07-15T00:28:12+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/tailscale-setup/</loc>
     <lastmod>2023-07-15T00:25:16+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/tailscale/</loc>
+    <lastmod>2023-07-15T00:25:16+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/firewalld/</loc>
+    <lastmod>2023-07-15T00:19:54+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/firewalld-setup/</loc>
     <lastmod>2023-07-15T00:19:54+08:00</lastmod>
@@ -89,8 +161,14 @@
     <loc>https://ruohai.wang/202307/static-ip-address-config/</loc>
     <lastmod>2023-07-14T23:23:33+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/docker/</loc>
+    <lastmod>2023-07-14T23:20:11+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/install-docker-engine/</loc>
     <lastmod>2023-07-14T23:20:11+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/bash/</loc>
+    <lastmod>2023-07-14T23:14:36+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/add-alias/</loc>
     <lastmod>2023-07-14T23:14:36+08:00</lastmod>
@@ -107,17 +185,24 @@
     <loc>https://ruohai.wang/202307/set-new-ssh-port/</loc>
     <lastmod>2023-07-14T22:28:56+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/github-pages/</loc>
+    <lastmod>2023-07-14T15:15:15+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/hugo/</loc>
+    <lastmod>2023-07-14T15:15:15+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/hugo-setup-and-deploy-to-github/</loc>
     <lastmod>2023-07-14T15:15:15+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/speedtest-cli-setup/</loc>
     <lastmod>2023-07-14T14:57:37+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/speedtest/</loc>
+    <lastmod>2023-07-14T14:57:37+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/hello-world/</loc>
     <lastmod>2023-06-27T02:38:42+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/categories/</loc>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
   </url>
 </urlset>
