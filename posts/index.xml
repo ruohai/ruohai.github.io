@@ -5,7 +5,6 @@
     <link>https://ruohai.wang/posts/</link>
     <description>Recent content in Posts on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
     <lastBuildDate>Sun, 16 Jul 2023 13:15:51 +0800</lastBuildDate><atom:link href="https://ruohai.wang/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux下安装Samba服务开启文件夹共享功能</title>
@@ -13,7 +12,7 @@
       <pubDate>Sun, 16 Jul 2023 13:15:51 +0800</pubDate>
       
       <guid>https://ruohai.wang/posts/samba-setup-to-share-files/</guid>
-      <description>前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用sanmba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
+      <description>前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用samba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
 在记录安装和配置的内容时，确实会发现很多细节没法具体一一记录，只能记录下符合我的需求的配置。这时候就会觉得类似casaos这种webui上直接鼠标点点就开启共享的方式方便多了。
 前期准备 一台24小时开机的低功耗linux主机，我这里用的是赚钱宝二代（ws1508） linux系统有一个非root的低权限账户，这里假定：jack 如果系统安装了防火墙，记得放行samba服务 samba的安装 debian仓库里就有samba，直接一键安装
 apt install samba 安装完成后，可以执行systemctl status smbd看下服务的运行状态。

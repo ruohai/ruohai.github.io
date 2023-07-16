@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-us">
   <head>
     <title>Linux下安装Samba服务开启文件夹共享功能 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="generator" content="Hugo 0.111.3">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Ruohai Wang" />
     <meta name="description" content="" />
@@ -13,14 +13,14 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux下安装Samba服务开启文件夹共享功能"/>
-<meta name="twitter:description" content="前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用sanmba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
+<meta name="twitter:description" content="前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用samba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
 在记录安装和配置的内容时，确实会发现很多细节没法具体一一记录，只能记录下符合我的需求的配置。这时候就会觉得类似casaos这种webui上直接鼠标点点就开启共享的方式方便多了。
 前期准备 一台24小时开机的低功耗linux主机，我这里用的是赚钱宝二代（ws1508） linux系统有一个非root的低权限账户，这里假定：jack 如果系统安装了防火墙，记得放行samba服务 samba的安装 debian仓库里就有samba，直接一键安装
 apt install samba 安装完成后，可以执行systemctl status smbd看下服务的运行状态。
 ● smbd.service - Samba SMB Daemon Loaded: loaded (/lib/systemd/system/smbd.service; enabled; preset: enabled) Active: active (running) since Sun 2023-07-16 13:44:59 CST; 11min ago Docs: man:smbd(8) man:samba(7) man:smb.conf(5) Process: 4040 ExecCondition=/usr/share/samba/is-configured smb (code=exited, status=0/SUCCESS) Process: 4043 ExecStartPre=/usr/share/samba/update-apparmor-samba-profile (code=exited, status=0/SUCCESS) Main PID: 4044 (smbd) Status: &#34;smbd: ready to serve connections...&#34; Tasks: 4 (limit: 986) Memory: 4.9M CPU: 9.725s CGroup: /system."/>
 
     <meta property="og:title" content="Linux下安装Samba服务开启文件夹共享功能" />
-<meta property="og:description" content="前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用sanmba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
+<meta property="og:description" content="前言 局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用samba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多手动挡的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。
 在记录安装和配置的内容时，确实会发现很多细节没法具体一一记录，只能记录下符合我的需求的配置。这时候就会觉得类似casaos这种webui上直接鼠标点点就开启共享的方式方便多了。
 前期准备 一台24小时开机的低功耗linux主机，我这里用的是赚钱宝二代（ws1508） linux系统有一个非root的低权限账户，这里假定：jack 如果系统安装了防火墙，记得放行samba服务 samba的安装 debian仓库里就有samba，直接一键安装
 apt install samba 安装完成后，可以执行systemctl status smbd看下服务的运行状态。
@@ -78,7 +78,7 @@ apt install samba 安装完成后，可以执行systemctl status smbd看下服�
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用sanmba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多<code>手动挡</code>的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。</p>
+<p>局域网如果里有一台24小时开机的低功耗linux主机，那自然是要给它装上samba开启文件共享功能，把它作为一个文件服务器来用。可能有人会问，想开共享文件夹，直接给主机装casaos不就好了，就算不用samba也可以用filebrowser、alist、dufs、chfs之类。emmm，说的很对，但那不是少了很多<code>手动挡</code>的乐趣嘛。而且自己手搓一边，也方便更好的理解samba。</p>
 <p>在记录安装和配置的内容时，确实会发现很多细节没法具体一一记录，只能记录下符合我的需求的配置。这时候就会觉得类似casaos这种webui上直接鼠标点点就开启共享的方式方便多了。</p>
 <hr>
 <h2 id="前期准备">前期准备</h2>
@@ -139,7 +139,7 @@ smbpasswd -a jack
 
    # 最低smb协议版本设定
    server min protocol = SMB2
-</code></pre><p>另一个就是共享文件夹的设定，假定添加共享文件夹<code>[movie]</code>，路径是<code>/data/movie</code>。</p>
+</code></pre><p>另一个就是共享文件夹的设定，假定添加共享文件夹<code>[movie]</code>，路径是<code>/data/movie</code>。其中的权限<code>0744</code>这里不做赘述，可以找其它文章了解。</p>
 <pre tabindex="0"><code>[movie]
    # 共享文件夹备注
    comment = blog file folder
@@ -149,8 +149,8 @@ smbpasswd -a jack
    create mask = 0744
    # 文件夹的权限
    directory mask = 0744
-   # 有效的用户
-   valid users = smb
+   # 有效的访问用户
+   valid users = jack
    # 局域网内是否可见
    browseable = yes
    # 是否可写
