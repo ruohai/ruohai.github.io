@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下给Apache2安装SSL证书 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下给Apache2安装SSL证书"/>
+<meta name="twitter:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
+获取ssl证书的步骤这里就不赘述。直接开始重点。
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&lt;VirtualHost *:443&gt;的标签内。
+SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
+网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&lt;Directory&gt;的信息也配置进去。
+第四步：现在需要把ssl配置文件用软链接映射到/etc/apache2/sites-enabled/目录，命令中的001-ssl.conf文件名可以取自己喜欢的。
+ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf 如果不喜欢用软链接，也可以直接把default-ssl.conf文件复制一份到/sites-enabled/目录下。
+第五步：重启apache2。
+systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。
+# 开放端口 firewall-cmd --add-port=443/tcp --permanent # 防火墙重载 firewall-cmd --reload "/>
+
+    <meta property="og:title" content="Linux下给Apache2安装SSL证书" />
+<meta property="og:description" content="拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。
+获取ssl证书的步骤这里就不赘述。直接开始重点。
+第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。
+拿到证书文件以后，把这三个文件上传到/etc/apache2/ssl目录下，这里的ssl文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到/etc/apache2/ssl目录下直接用wget下载证书后解压。 第二步：启用apache2的ssl模块
+a2enmod ssl 第三步：apache2默认的ssl配置文件的路径在/etc/apache2/sites-available/default-ssl.conf。现在把ssl证书三个文件的路径添加到&lt;VirtualHost *:443&gt;的标签内。
+SSLCertificateFile /etc/apache2/ssl/domain_public.crt SSLCertificateKeyFile /etc/apache2/ssl/domain.key SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt
+网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的DocumentRoot和&lt;Directory&gt;的信息也配置进去。
+第四步：现在需要把ssl配置文件用软链接映射到/etc/apache2/sites-enabled/目录，命令中的001-ssl.conf文件名可以取自己喜欢的。
+ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf 如果不喜欢用软链接，也可以直接把default-ssl.conf文件复制一份到/sites-enabled/目录下。
+第五步：重启apache2。
+systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。
+# 开放端口 firewall-cmd --add-port=443/tcp --permanent # 防火墙重载 firewall-cmd --reload " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/apache2-ssl-cert-setup/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-15T14:38:50+08:00" />
+<meta property="article:modified_time" content="2023-07-15T14:38:50+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">归档</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下给Apache2安装SSL证书</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 15, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>拖了好几天一直懒得弄ssl证书，因为这服务器是一朋友闲置我拿来练手的，剩1个月到期。但晚上被大学同学叫出去喝酒，完了回来以后有点精神焦虑，索性把ssl证书给弄了缓解一下情绪。</p>
+<p>获取ssl证书的步骤这里就不赘述。直接开始重点。</p>
+<hr>
+<p>第一步，获取到的apahce2的证书应该是三个文件：domain.key, domain_chain.crt, domain_public.crt。这仨文件名是阿里云证书的格式。我看到也有叫domain_bundle.crt的，没关系，最后都是写一起的。</p>
+<p><img src="https://img1.imgtp.com/2023/07/07/pRjcyI4R.png" alt="ssl证书文件"></p>
+<p>拿到证书文件以后，把这三个文件上传到<code>/etc/apache2/ssl</code>目录下，这里的<code>ssl</code>文件夹需要自己新建，名字可以用自己喜欢的，后面配置文件中记得路径同步修改就ok。也可以直接到<code>/etc/apache2/ssl</code>目录下直接用wget下载证书后解压。
+<img src="https://img1.imgtp.com/2023/07/07/zUOOEM2W.png" alt="ssl文件服务器位置"></p>
+<hr>
+<p>第二步：启用apache2的ssl模块</p>
+<pre tabindex="0"><code>a2enmod ssl
+</code></pre><hr>
+<p>第三步：apache2默认的ssl配置文件的路径在<code>/etc/apache2/sites-available/default-ssl.conf</code>。现在把ssl证书三个文件的路径添加到<code>&lt;VirtualHost *:443&gt;</code>的标签内。</p>
+<blockquote>
+<p>SSLCertificateFile /etc/apache2/ssl/domain_public.crt
+SSLCertificateKeyFile /etc/apache2/ssl/domain.key
+SSLCertificateChainFile /etc/apache2/ssl/domain_chain.crt</p>
+</blockquote>
+<p>网上很多教程写到这里就说可以保存退出了。但是要注意，如果你的网站根目录不是apache2默认的/var/www/html而是自定义的目录，那只加这3行是不行的！还需要把网站信息的<code>DocumentRoot</code>和<code>&lt;Directory&gt;</code>的信息也配置进去。</p>
+<hr>
+<p>第四步：现在需要把ssl配置文件用软链接映射到<code>/etc/apache2/sites-enabled/</code>目录，命令中的001-ssl.conf文件名可以取自己喜欢的。</p>
+<pre tabindex="0"><code>ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf
+</code></pre><p>如果不喜欢用软链接，也可以直接把default-ssl.conf文件复制一份到/sites-enabled/目录下。</p>
+<hr>
+<p>第五步：重启apache2。</p>
+<pre tabindex="0"><code>systemctl restart apache2
+</code></pre><hr>
+<p>第六步：如果没有开防火墙（firewalld/iptables），那到上一步就结束了。如果开启了防火墙（我用的是firewalld），记得开放443端口。</p>
+<pre tabindex="0"><code># 开放端口
+firewall-cmd --add-port=443/tcp --permanent
+# 防火墙重载
+firewall-cmd --reload
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下修改ssh默认端口 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下修改ssh默认端口"/>
+<meta name="twitter:description" content="前言 这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。
+写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改sshd_config文件都无济于事。简中互联网上以关键字ssh、修改端口之类搜出来的文章都千篇一律，再搜端口修改以后无效，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。
+最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。
+找到问题原因以后就很好解决了，这里做简单记录。
+查看ssh服务类型 要修改ssh默认端口，首先要分清楚自己linux机器的ssh是ssh.socket还是ssh.service。
+systemctl status sshd 根据图中出现的ssh.socket字样区分。 ssh.service ssh.service的端口修改很简单，打开配置文件
+nano /etc/ssh/sshd_config 找到port的配置进行修改
+# 找到这条，默认是注释掉的，这里去掉注释 Port 22 # 添加一行自定义的端口 Port 12345 然后重启ssh服务即可
+systemctl restart sshd 测试新端口OK以后，再注释掉旧端口然后重启sshd即可。
+ssh.socket ssh.socket配置文件在/lib/systemd/system/ssh.socket，但我建议你千万不要去动原始文件。首先是这个配置文件会在更新openssh的时候被覆盖掉，其次在ssh.socket运行状态下修改配置文件，会导致ssh.socket服务出现异常（停止工作而且无法接受新的连接）。所以正确的配置方式如下
+# 新建配置文件目录 mkdir -p /etc/systemd/system/ssh.socket.d 新建配置文件并写入监听端口信息
+cat &gt;/etc/systemd/system/ssh.socket.d/listen.conf &lt;&lt;EOF [Socket] # 这一栏需要保留，用来覆盖原配置文件中的22端口 ListenStream= # 这一栏填写新的ssh端口 ListenStream=1234 EOF 最后就是systemd重载服务并重启ssh了。
+# 重载服务 systemctl daemon-reload # 重启ssh systemctl restart ssh 这个配置方法的参考来源：
+https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10 https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6 从ssh.socket切换到ssh.service 讲真，我虽然已经掌握在ssh.socket模式下配置新端口的方法，但实际操作过程中还是碰到了ssh.socket异常的问题。那不如直接从ssh.socket切换到ssh.service吧！
+# 禁用ssh.socket服务 systemctl disable --now ssh.socket # 启用ssh."/>
+
+    <meta property="og:title" content="Linux下修改ssh默认端口" />
+<meta property="og:description" content="前言 这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。
+写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改sshd_config文件都无济于事。简中互联网上以关键字ssh、修改端口之类搜出来的文章都千篇一律，再搜端口修改以后无效，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。
+最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。
+找到问题原因以后就很好解决了，这里做简单记录。
+查看ssh服务类型 要修改ssh默认端口，首先要分清楚自己linux机器的ssh是ssh.socket还是ssh.service。
+systemctl status sshd 根据图中出现的ssh.socket字样区分。 ssh.service ssh.service的端口修改很简单，打开配置文件
+nano /etc/ssh/sshd_config 找到port的配置进行修改
+# 找到这条，默认是注释掉的，这里去掉注释 Port 22 # 添加一行自定义的端口 Port 12345 然后重启ssh服务即可
+systemctl restart sshd 测试新端口OK以后，再注释掉旧端口然后重启sshd即可。
+ssh.socket ssh.socket配置文件在/lib/systemd/system/ssh.socket，但我建议你千万不要去动原始文件。首先是这个配置文件会在更新openssh的时候被覆盖掉，其次在ssh.socket运行状态下修改配置文件，会导致ssh.socket服务出现异常（停止工作而且无法接受新的连接）。所以正确的配置方式如下
+# 新建配置文件目录 mkdir -p /etc/systemd/system/ssh.socket.d 新建配置文件并写入监听端口信息
+cat &gt;/etc/systemd/system/ssh.socket.d/listen.conf &lt;&lt;EOF [Socket] # 这一栏需要保留，用来覆盖原配置文件中的22端口 ListenStream= # 这一栏填写新的ssh端口 ListenStream=1234 EOF 最后就是systemd重载服务并重启ssh了。
+# 重载服务 systemctl daemon-reload # 重启ssh systemctl restart ssh 这个配置方法的参考来源：
+https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10 https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6 从ssh.socket切换到ssh.service 讲真，我虽然已经掌握在ssh.socket模式下配置新端口的方法，但实际操作过程中还是碰到了ssh.socket异常的问题。那不如直接从ssh.socket切换到ssh.service吧！
+# 禁用ssh.socket服务 systemctl disable --now ssh.socket # 启用ssh." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/set-new-ssh-port/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-14T22:28:56+08:00" />
+<meta property="article:modified_time" content="2023-07-14T22:28:56+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">归档</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下修改ssh默认端口</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>这是一篇从搬瓦工vps的typecho搬过来的文章。对内容和格式做了轻微调整。</p>
+<p>写这篇文章是因为前两天想动手改linux主机的默认ssh端口，但发现无论怎么改<code>sshd_config</code>文件都无济于事。简中互联网上以关键字<code>ssh</code>、<code>修改端口</code>之类搜出来的文章都千篇一律，再搜<code>端口修改以后无效</code>，出来的内容都说因为selinux。我就在这这个错误的方向上折腾了好久，但实际我的主机压根就没开启selinux。</p>
+<p>最后用google搜英文关键字，才找到原因：systemd环境下ssh分为ssh.socket和ssh.service，这俩不同服务的配置文件完全不同。而较新的debian/ubuntu系统用的是ssh.socket。</p>
+<p>找到问题原因以后就很好解决了，这里做简单记录。</p>
+<hr>
+<h2 id="查看ssh服务类型">查看ssh服务类型</h2>
+<p>要修改ssh默认端口，首先要分清楚自己linux机器的ssh是ssh.socket还是ssh.service。</p>
+<pre tabindex="0"><code>systemctl status sshd
+</code></pre><p>根据图中出现的<code>ssh.socket</code>字样区分。
+<img src="https://img1.imgtp.com/2023/07/14/0OHvffsd.png" alt="sshd_status"></p>
+<hr>
+<h2 id="sshservice">ssh.service</h2>
+<p>ssh.service的端口修改很简单，打开配置文件</p>
+<pre tabindex="0"><code>nano /etc/ssh/sshd_config
+</code></pre><p>找到port的配置进行修改</p>
+<pre tabindex="0"><code># 找到这条，默认是注释掉的，这里去掉注释
+Port 22
+# 添加一行自定义的端口
+Port 12345
+</code></pre><p>然后重启ssh服务即可</p>
+<pre tabindex="0"><code>systemctl restart sshd
+</code></pre><p>测试新端口OK以后，再注释掉旧端口然后重启sshd即可。</p>
+<hr>
+<h1 id="sshsocket">ssh.socket</h1>
+<p>ssh.socket配置文件在<code>/lib/systemd/system/ssh.socket</code>，但我建议你千万不要去动原始文件。首先是这个配置文件会在更新openssh的时候被覆盖掉，其次在ssh.socket运行状态下修改配置文件，会导致ssh.socket服务出现异常（停止工作而且无法接受新的连接）。所以正确的配置方式如下</p>
+<pre tabindex="0"><code># 新建配置文件目录
+mkdir -p /etc/systemd/system/ssh.socket.d
+</code></pre><p>新建配置文件并写入监听端口信息</p>
+<pre tabindex="0"><code>cat &gt;/etc/systemd/system/ssh.socket.d/listen.conf &lt;&lt;EOF
+[Socket]
+# 这一栏需要保留，用来覆盖原配置文件中的22端口
+ListenStream=
+# 这一栏填写新的ssh端口
+ListenStream=1234
+EOF
+</code></pre><p>最后就是systemd重载服务并重启ssh了。</p>
+<pre tabindex="0"><code># 重载服务
+systemctl daemon-reload
+# 重启ssh
+systemctl restart ssh
+</code></pre><p>这个配置方法的参考来源：</p>
+<ol>
+<li><a href="https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10">https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-10</a></li>
+<li><a href="https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6">https://discourse.ubuntu.com/t/sshd-now-uses-socket-based-activation-ubuntu-22-10-and-later/30189/6</a></li>
+</ol>
+<hr>
+<h2 id="从sshsocket切换到sshservice">从ssh.socket切换到ssh.service</h2>
+<p>讲真，我虽然已经掌握在ssh.socket模式下配置新端口的方法，但实际操作过程中还是碰到了ssh.socket异常的问题。那不如直接从ssh.socket切换到ssh.service吧！</p>
+<pre tabindex="0"><code># 禁用ssh.socket服务
+systemctl disable --now ssh.socket
+# 启用ssh.service服务
+systemctl enable --now ssh.service
+# 重启sshd
+systemctl restart sshd
+
+# 查看ssh.service状态，确认没有ssh.socket内容出现
+systemctl status sshd
+</code></pre><p>切换成功后，按照ssh.service模式进行端口配置就好惹。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

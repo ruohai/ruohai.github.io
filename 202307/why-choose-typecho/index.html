@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>为什么选择Typecho而不是Hexo来搭建博客 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="为什么选择Typecho而不是Hexo来搭建博客"/>
+<meta name="twitter:description" content="前言 这篇文章是2023年7月4号写的，当时方案选择的时候，排除掉了静态博客hexo选择了typecho，然后做了这篇记录。
+谁曾想不到半个月的时间，因为拿来连手的vps快要到期，博客也要转移，最终新博客我选择了静态博客hugo。😄
+本来这篇文章是吐槽静态博客不好用不方便的，但今天（2023-07-15）对内容做了重新整理和补充，反而变成了一篇吹静态博客好的文章，笑死了。
+😄
+想要自建博客的时候，我的方案是二选一：hexo或者typecho。
+hexo入选是因为2015年的时候用hexo&#43;github page搭过一个博客。typecho入选是因为玩客云这个机器硬件性能羸弱（没错一开始我是准备在玩客云上自建博客），看到有一个玩客云armbian固件里内置了typecho。
+接下去就是决定用hexo还是typecho了。搜了网上很多博客工具优劣的点评文章，啰啰嗦嗦一大堆，都喜欢说什么主题好不好看。有的会提到动态博客、静态博客之分，这个也好理解，但往往也只点到静态页面、动态数据这些。
+但是最最最关键的区别，他们都没说，我来说：
+静态博客是分成本地环境和服务器环境的！！！ 静态博客 静态博客存在如下几个问题：
+需要在本地搭建一个编译环境。hexo是nodejs，hugo是go，jekyll是ruby gem。想写博客，就需要本地写好markdown文件，然后本地编译成静态页面，然后git push到服务器（也可以用sftp工具）。文章发布以后发现有错误想要改，哎，本地编辑那份markdown文件，然后本地重新编译静态页面，然后再用git push到服务器。这也是小白容易理解错误的地方，按照hexo、hugo、jekyll的官方文档吭哧吭哧弄半天，最后发现只是在自己电脑上装了一个编译环境而已。
+没有原生评论系统。因为是都是静态页面没有什么交互，自然也就没有原生评论系统，但可以通过配置第三方服务外挂评论系统来实现。但随之而来的问题就是，这些评论都保存在第三方网站上，不归自己管。
+部署。静态博客如此流行，我觉着有很大的原因是免费的github pages吧。但如果想部署在主机上，那就和动态博客一样，需要开始ssh连上主机装nginx/apache2建站了。
+设备绑定。markdown编译成静态页面以后，需要push到服务器，或者github。如果push到服务器，那和动态博客一样，需要和主机做rsa密钥认证登录；如果push到github，那需要在github上配置rsa公钥。这都导致了客户端设备的绑定，也就是我用A电脑写markdown然后编译然后push，那我换电脑了怎么办？得重新配置一遍rsa密钥认证，或者其它电脑远程登录到A电脑进行push。
+不支持搜索。都是静态页面，往往没有交互功能，比如搜索文章。需要用搜索引擎配合一些搜索公式来实现。
+文章管理不便。标签、分类、置顶，还有很多基础功能缺失，需要自己手动管理。
+动态博客 动态博客最知名的就是wordpress，但很多人都会觉得它太重，typecho可以理解为wordpress的精简版。动态博客好处都有啥，谁说对了就给他。
+原生评论系统。虽然我的博客几乎没有什么访问量，评论也完全没有，但评论功能它必须得有。
+自带管理后台，可以直接在网站后台对全站资源进行配置，比如文章的编辑、发布、删除，评论的管理，主题的配置，页面的调整。
+不绑定设备。出门没带自己电脑，不得不用其它电脑，照样可以浏览器登录网站后台管理博客。
+动态博客系统都自带功能强大的富文本编辑器/markdown编辑器，不用再花心思去选什么支持语法高亮、支持实时预览、免费的markdown编辑器，系统自带。
+动态博客系统自带功能强大的文章分类功能、标签管理功能、搜索功能，这些网站标配的功能，静态博客都需要自己动手去实现。
+这么看下来，好像静态博客一无是处，动态博客全是优点。那为什么还有那么多人选择静态博客？
+网站精简，less is more，砍掉所有功能以后可以把全部注意力都用在【写博客】这件事上。
+免费。只要注册一个github账号，就可以把博客部署到github pages，不花钱，然后买个10块一年的廉价域名，搞定。如果用动态博客，自己的小主机没法备案吧，就不能解封80/443端口，那就得买vps。国内阿里云腾讯云各种云，要备案要审核，海外linode、vultr、azure、aws、digital ocean，各有优劣得挑好久吧而且价格不便宜。一年一年续费太心痛。"/>
+
+    <meta property="og:title" content="为什么选择Typecho而不是Hexo来搭建博客" />
+<meta property="og:description" content="前言 这篇文章是2023年7月4号写的，当时方案选择的时候，排除掉了静态博客hexo选择了typecho，然后做了这篇记录。
+谁曾想不到半个月的时间，因为拿来连手的vps快要到期，博客也要转移，最终新博客我选择了静态博客hugo。😄
+本来这篇文章是吐槽静态博客不好用不方便的，但今天（2023-07-15）对内容做了重新整理和补充，反而变成了一篇吹静态博客好的文章，笑死了。
+😄
+想要自建博客的时候，我的方案是二选一：hexo或者typecho。
+hexo入选是因为2015年的时候用hexo&#43;github page搭过一个博客。typecho入选是因为玩客云这个机器硬件性能羸弱（没错一开始我是准备在玩客云上自建博客），看到有一个玩客云armbian固件里内置了typecho。
+接下去就是决定用hexo还是typecho了。搜了网上很多博客工具优劣的点评文章，啰啰嗦嗦一大堆，都喜欢说什么主题好不好看。有的会提到动态博客、静态博客之分，这个也好理解，但往往也只点到静态页面、动态数据这些。
+但是最最最关键的区别，他们都没说，我来说：
+静态博客是分成本地环境和服务器环境的！！！ 静态博客 静态博客存在如下几个问题：
+需要在本地搭建一个编译环境。hexo是nodejs，hugo是go，jekyll是ruby gem。想写博客，就需要本地写好markdown文件，然后本地编译成静态页面，然后git push到服务器（也可以用sftp工具）。文章发布以后发现有错误想要改，哎，本地编辑那份markdown文件，然后本地重新编译静态页面，然后再用git push到服务器。这也是小白容易理解错误的地方，按照hexo、hugo、jekyll的官方文档吭哧吭哧弄半天，最后发现只是在自己电脑上装了一个编译环境而已。
+没有原生评论系统。因为是都是静态页面没有什么交互，自然也就没有原生评论系统，但可以通过配置第三方服务外挂评论系统来实现。但随之而来的问题就是，这些评论都保存在第三方网站上，不归自己管。
+部署。静态博客如此流行，我觉着有很大的原因是免费的github pages吧。但如果想部署在主机上，那就和动态博客一样，需要开始ssh连上主机装nginx/apache2建站了。
+设备绑定。markdown编译成静态页面以后，需要push到服务器，或者github。如果push到服务器，那和动态博客一样，需要和主机做rsa密钥认证登录；如果push到github，那需要在github上配置rsa公钥。这都导致了客户端设备的绑定，也就是我用A电脑写markdown然后编译然后push，那我换电脑了怎么办？得重新配置一遍rsa密钥认证，或者其它电脑远程登录到A电脑进行push。
+不支持搜索。都是静态页面，往往没有交互功能，比如搜索文章。需要用搜索引擎配合一些搜索公式来实现。
+文章管理不便。标签、分类、置顶，还有很多基础功能缺失，需要自己手动管理。
+动态博客 动态博客最知名的就是wordpress，但很多人都会觉得它太重，typecho可以理解为wordpress的精简版。动态博客好处都有啥，谁说对了就给他。
+原生评论系统。虽然我的博客几乎没有什么访问量，评论也完全没有，但评论功能它必须得有。
+自带管理后台，可以直接在网站后台对全站资源进行配置，比如文章的编辑、发布、删除，评论的管理，主题的配置，页面的调整。
+不绑定设备。出门没带自己电脑，不得不用其它电脑，照样可以浏览器登录网站后台管理博客。
+动态博客系统都自带功能强大的富文本编辑器/markdown编辑器，不用再花心思去选什么支持语法高亮、支持实时预览、免费的markdown编辑器，系统自带。
+动态博客系统自带功能强大的文章分类功能、标签管理功能、搜索功能，这些网站标配的功能，静态博客都需要自己动手去实现。
+这么看下来，好像静态博客一无是处，动态博客全是优点。那为什么还有那么多人选择静态博客？
+网站精简，less is more，砍掉所有功能以后可以把全部注意力都用在【写博客】这件事上。
+免费。只要注册一个github账号，就可以把博客部署到github pages，不花钱，然后买个10块一年的廉价域名，搞定。如果用动态博客，自己的小主机没法备案吧，就不能解封80/443端口，那就得买vps。国内阿里云腾讯云各种云，要备案要审核，海外linode、vultr、azure、aws、digital ocean，各有优劣得挑好久吧而且价格不便宜。一年一年续费太心痛。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/why-choose-typecho/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-15T02:33:47+08:00" />
+<meta property="article:modified_time" content="2023-07-15T02:33:47+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">归档</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">为什么选择Typecho而不是Hexo来搭建博客</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 15, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>这篇文章是2023年7月4号写的，当时方案选择的时候，排除掉了静态博客hexo选择了typecho，然后做了这篇记录。</p>
+<p>谁曾想不到半个月的时间，因为拿来连手的vps快要到期，博客也要转移，最终新博客我选择了静态博客hugo。😄</p>
+<p>本来这篇文章是吐槽静态博客不好用不方便的，但今天（2023-07-15）对内容做了重新整理和补充，反而变成了一篇吹静态博客好的文章，笑死了。</p>
+<p>😄</p>
+<hr>
+<p>想要自建博客的时候，我的方案是二选一：hexo或者typecho。</p>
+<p>hexo入选是因为2015年的时候用hexo+github page搭过一个博客。typecho入选是因为玩客云这个机器硬件性能羸弱（没错一开始我是准备在玩客云上自建博客），看到有一个玩客云armbian固件里内置了typecho。</p>
+<p>接下去就是决定用hexo还是typecho了。搜了网上很多博客工具优劣的点评文章，啰啰嗦嗦一大堆，都喜欢说什么主题好不好看。有的会提到动态博客、静态博客之分，这个也好理解，但往往也只点到静态页面、动态数据这些。</p>
+<p>但是最最最关键的区别，他们都没说，我来说：</p>
+<h1 id="静态博客是分成本地环境和服务器环境的">静态博客是分成本地环境和服务器环境的！！！</h1>
+<hr>
+<h2 id="静态博客">静态博客</h2>
+<p>静态博客存在如下几个问题：</p>
+<ul>
+<li>
+<p>需要在本地搭建一个编译环境。hexo是nodejs，hugo是go，jekyll是ruby gem。想写博客，就需要本地写好markdown文件，然后本地编译成静态页面，然后git push到服务器（也可以用sftp工具）。文章发布以后发现有错误想要改，哎，本地编辑那份markdown文件，然后本地重新编译静态页面，然后再用git push到服务器。这也是小白容易理解错误的地方，按照hexo、hugo、jekyll的官方文档吭哧吭哧弄半天，最后发现只是在自己电脑上装了一个编译环境而已。</p>
+</li>
+<li>
+<p>没有原生评论系统。因为是都是静态页面没有什么交互，自然也就没有原生评论系统，但可以通过配置第三方服务外挂评论系统来实现。但随之而来的问题就是，这些评论都保存在第三方网站上，不归自己管。</p>
+</li>
+<li>
+<p>部署。静态博客如此流行，我觉着有很大的原因是免费的github pages吧。但如果想部署在主机上，那就和动态博客一样，需要开始ssh连上主机装nginx/apache2建站了。</p>
+</li>
+<li>
+<p>设备绑定。markdown编译成静态页面以后，需要push到服务器，或者github。如果push到服务器，那和动态博客一样，需要和主机做rsa密钥认证登录；如果push到github，那需要在github上配置rsa公钥。这都导致了客户端设备的绑定，也就是我用A电脑写markdown然后编译然后push，那我换电脑了怎么办？得重新配置一遍rsa密钥认证，或者其它电脑远程登录到A电脑进行push。</p>
+</li>
+<li>
+<p>不支持搜索。都是静态页面，往往没有交互功能，比如搜索文章。需要用搜索引擎配合一些搜索公式来实现。</p>
+</li>
+<li>
+<p>文章管理不便。标签、分类、置顶，还有很多基础功能缺失，需要自己手动管理。</p>
+</li>
+</ul>
+<hr>
+<h2 id="动态博客">动态博客</h2>
+<p>动态博客最知名的就是wordpress，但很多人都会觉得它<code>太重</code>，typecho可以理解为wordpress的精简版。动态博客好处都有啥，谁说对了就给他。</p>
+<ul>
+<li>
+<p>原生评论系统。虽然我的博客几乎没有什么访问量，评论也完全没有，但评论功能它必须得有。</p>
+</li>
+<li>
+<p>自带管理后台，可以直接在网站后台对全站资源进行配置，比如文章的编辑、发布、删除，评论的管理，主题的配置，页面的调整。</p>
+</li>
+<li>
+<p>不绑定设备。出门没带自己电脑，不得不用其它电脑，照样可以浏览器登录网站后台管理博客。</p>
+</li>
+<li>
+<p>动态博客系统都自带功能强大的富文本编辑器/markdown编辑器，不用再花心思去选什么支持语法高亮、支持实时预览、免费的markdown编辑器，系统自带。</p>
+</li>
+<li>
+<p>动态博客系统自带功能强大的文章分类功能、标签管理功能、搜索功能，这些网站标配的功能，静态博客都需要自己动手去实现。</p>
+</li>
+</ul>
+<hr>
+<p>这么看下来，好像静态博客一无是处，动态博客全是优点。那为什么还有那么多人选择静态博客？</p>
+<ul>
+<li>
+<p>网站精简，less is more，砍掉所有功能以后可以把全部注意力都用在【写博客】这件事上。</p>
+</li>
+<li>
+<p>免费。只要注册一个github账号，就可以把博客部署到github pages，不花钱，然后买个10块一年的廉价域名，搞定。如果用动态博客，自己的小主机没法备案吧，就不能解封80/443端口，那就得买vps。国内阿里云腾讯云各种云，要备案要审核，海外linode、vultr、azure、aws、digital ocean，各有优劣得挑好久吧而且价格不便宜。一年一年续费太心痛。</p>
+</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下Tailscale的安装和配置 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下Tailscale的安装和配置"/>
+<meta name="twitter:description" content="我的nas和玩客云armbian小主机的外网访问方案一直用的是ipv6 &#43; ddns，因为我手上正好有个域名，这个方案确实很好用，不仅方便而且配置也很简单，除了ipv6地址更新的十分钟左右的时间会短暂掉线，其它方面我觉得已经十分完美。
+今天在twitter有朋友问题玩客云机器刷armbian后能不能跑tailscale，我说没用过不清楚，但勾起了我的好奇心，所以按照官方文档的手册安装配置了一下，emmm，同样很好用，同样很方便而且配置简单，简单到压根就没有几步操作，教程都没什么好写的。
+但我在安装组网好了以后还是碰到了一点简单的使用小疑惑。而且tailscale和ipv6公网使用场景虽然存在重叠，也是有一些差异化的，所以记录一下。
+首先就是去【tailscale官网】注册账号了，没啥好说的，根据官网提示操作就行了。注册好了以后，ssh进linux机器，开始安装。
+第一步：安装，一条命令，耐心等它跑完，跑完会提示安装成功。
+curl -fsSL https://tailscale.com/install.sh | sh 第二步：根据终端里安装成功的提示，启动tailscale。
+tailscale up 启动成功以后，终端会出现一个url链接，复制链接到浏览器中打开，根据提示下一步再下一步，把设备添加到自己账号。 在linux安装tailscale就这么简单，没了。
+然后在tailscale登录以后进入个人中心的machines页面，可以看到自己账号下的设备。 可以看到每个设备后面都分配了一个100开头的ipv4地址。
+假定我现在需要在debian这台机器上访问onecloud机器上的一个服务（比如群晖，端口是5000)，那只需要在debian机器上打开浏览器，输入onecloud的tailscale分配的ipv4地址和端口号，也就是100.xxx.xx.xx:5000，就可以惹~~实测基本能跑满带宽。
+实际体验下来，注册、安装、使用，完全就是傻瓜式操作，0配置就可以使用，比ipv6 &#43; ddns的方案还要简单。
+再说一下tailscale和ipv6方案使用场景的不同。默认配置下，ipv6是公网开放的，意味着只要知道ipv6地址和端口号，所有人都可以访问到，这就带来一个安全上问题，需要用户自己进行一些安全加固的配置，比如装防火墙、修改服务的默认端口、使用复杂密码等等。但tailscale只是一个账户下的局域网之内的设备之间开放访问，并不对公网开放，而且tailscale服务本身的安全措施就拉满。
+所以比较合适的使用场景是：
+网络资源（网上能下载到的各种电影电视剧电子书音乐图片文章），用ipv6 &#43; ddns即可，泄露也无妨。 个人资料（工作生活家庭中的照片音频文档等私密材料)，用tailscale，杜绝私密资料泄露。 "/>
+
+    <meta property="og:title" content="Linux下Tailscale的安装和配置" />
+<meta property="og:description" content="我的nas和玩客云armbian小主机的外网访问方案一直用的是ipv6 &#43; ddns，因为我手上正好有个域名，这个方案确实很好用，不仅方便而且配置也很简单，除了ipv6地址更新的十分钟左右的时间会短暂掉线，其它方面我觉得已经十分完美。
+今天在twitter有朋友问题玩客云机器刷armbian后能不能跑tailscale，我说没用过不清楚，但勾起了我的好奇心，所以按照官方文档的手册安装配置了一下，emmm，同样很好用，同样很方便而且配置简单，简单到压根就没有几步操作，教程都没什么好写的。
+但我在安装组网好了以后还是碰到了一点简单的使用小疑惑。而且tailscale和ipv6公网使用场景虽然存在重叠，也是有一些差异化的，所以记录一下。
+首先就是去【tailscale官网】注册账号了，没啥好说的，根据官网提示操作就行了。注册好了以后，ssh进linux机器，开始安装。
+第一步：安装，一条命令，耐心等它跑完，跑完会提示安装成功。
+curl -fsSL https://tailscale.com/install.sh | sh 第二步：根据终端里安装成功的提示，启动tailscale。
+tailscale up 启动成功以后，终端会出现一个url链接，复制链接到浏览器中打开，根据提示下一步再下一步，把设备添加到自己账号。 在linux安装tailscale就这么简单，没了。
+然后在tailscale登录以后进入个人中心的machines页面，可以看到自己账号下的设备。 可以看到每个设备后面都分配了一个100开头的ipv4地址。
+假定我现在需要在debian这台机器上访问onecloud机器上的一个服务（比如群晖，端口是5000)，那只需要在debian机器上打开浏览器，输入onecloud的tailscale分配的ipv4地址和端口号，也就是100.xxx.xx.xx:5000，就可以惹~~实测基本能跑满带宽。
+实际体验下来，注册、安装、使用，完全就是傻瓜式操作，0配置就可以使用，比ipv6 &#43; ddns的方案还要简单。
+再说一下tailscale和ipv6方案使用场景的不同。默认配置下，ipv6是公网开放的，意味着只要知道ipv6地址和端口号，所有人都可以访问到，这就带来一个安全上问题，需要用户自己进行一些安全加固的配置，比如装防火墙、修改服务的默认端口、使用复杂密码等等。但tailscale只是一个账户下的局域网之内的设备之间开放访问，并不对公网开放，而且tailscale服务本身的安全措施就拉满。
+所以比较合适的使用场景是：
+网络资源（网上能下载到的各种电影电视剧电子书音乐图片文章），用ipv6 &#43; ddns即可，泄露也无妨。 个人资料（工作生活家庭中的照片音频文档等私密材料)，用tailscale，杜绝私密资料泄露。 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/tailscale-setup/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-15T00:25:16+08:00" />
+<meta property="article:modified_time" content="2023-07-15T00:25:16+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/categories/">归档</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下Tailscale的安装和配置</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 15, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>我的nas和玩客云armbian小主机的外网访问方案一直用的是ipv6 + ddns，因为我手上正好有个域名，这个方案确实很好用，不仅方便而且配置也很简单，除了ipv6地址更新的十分钟左右的时间会短暂掉线，其它方面我觉得已经十分完美。</p>
+<p>今天在twitter有朋友问题玩客云机器刷armbian后能不能跑tailscale，我说没用过不清楚，但勾起了我的好奇心，所以按照官方文档的手册安装配置了一下，emmm，同样很好用，同样很方便而且配置简单，简单到压根就没有几步操作，教程都没什么好写的。</p>
+<p>但我在安装组网好了以后还是碰到了一点简单的使用小疑惑。而且tailscale和ipv6公网使用场景虽然存在重叠，也是有一些差异化的，所以记录一下。</p>
+<p>首先就是去【<a href="https://tailscale.com/">tailscale官网</a>】注册账号了，没啥好说的，根据官网提示操作就行了。注册好了以后，ssh进linux机器，开始安装。</p>
+<hr>
+<p>第一步：安装，一条命令，耐心等它跑完，跑完会提示安装成功。</p>
+<pre tabindex="0"><code>curl -fsSL https://tailscale.com/install.sh | sh
+</code></pre><p><img src="https://img1.imgtp.com/2023/07/07/aVUJiAy4.png" alt="安装成功"></p>
+<hr>
+<p>第二步：根据终端里安装成功的提示，启动tailscale。</p>
+<pre tabindex="0"><code>tailscale up
+</code></pre><p>启动成功以后，终端会出现一个url链接，复制链接到浏览器中打开，根据提示下一步再下一步，把设备添加到自己账号。
+<img src="https://img1.imgtp.com/2023/07/07/0XReAxU5.png" alt="启动成功"></p>
+<hr>
+<p>在linux安装tailscale就这么简单，没了。</p>
+<p>然后在tailscale登录以后进入个人中心的machines页面，可以看到自己账号下的设备。
+<img src="https://img1.imgtp.com/2023/07/07/SWIweUNp.png" alt="macheines">
+可以看到每个设备后面都分配了一个100开头的ipv4地址。</p>
+<p>假定我现在需要在debian这台机器上访问onecloud机器上的一个服务（比如群晖，端口是5000)，那只需要在debian机器上打开浏览器，输入onecloud的tailscale分配的ipv4地址和端口号，也就是<code>100.xxx.xx.xx:5000</code>，就可以惹~~实测基本能跑满带宽。</p>
+<p>实际体验下来，注册、安装、使用，完全就是傻瓜式操作，0配置就可以使用，比ipv6 + ddns的方案还要简单。</p>
+<p>再说一下tailscale和ipv6方案使用场景的不同。默认配置下，ipv6是公网开放的，意味着只要知道ipv6地址和端口号，所有人都可以访问到，这就带来一个安全上问题，需要用户自己进行一些安全加固的配置，比如装防火墙、修改服务的默认端口、使用复杂密码等等。但tailscale只是一个账户下的<code>局域网</code>之内的设备之间开放访问，并不对公网开放，而且tailscale服务本身的安全措施就拉满。</p>
+<p>所以比较合适的使用场景是：</p>
+<h3 id="网络资源网上能下载到的各种电影电视剧电子书音乐图片文章用ipv6--ddns即可泄露也无妨">网络资源（网上能下载到的各种电影电视剧电子书音乐图片文章），用ipv6 + ddns即可，泄露也无妨。</h3>
+<h3 id="个人资料工作生活家庭中的照片音频文档等私密材料用tailscale杜绝私密资料泄露">个人资料（工作生活家庭中的照片音频文档等私密材料)，用tailscale，杜绝私密资料泄露。</h3>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>喵ฅ^•ﻌ•^ฅ</title>
-    <link>https://ruohai.wang/</link>
-    <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
+    <title>202307s on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/202307/</link>
+    <description>Recent content in 202307s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 17 Jul 2023 00:24:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Jul 2023 00:24:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202307/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux下安装DDNS-GO</title>
       <link>https://ruohai.wang/202307/ddns-go-install/</link>
@@ -214,16 +214,6 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
 网站根目录下的admin文件夹，重命名为abcd
 网站根目录下的config.inc.php，把define(&amp;rsquo;TYPECHO_ADMIN_DIR&amp;rsquo;, &amp;lsquo;/admin/&amp;rsquo;)中的admin修改为abcd，然后保存退出
 以上两步操作完以后就可以用/abcd/登录网站后台了，成功~</description>
-    </item>
-    
-    <item>
-      <title>关于</title>
-      <link>https://ruohai.wang/about/</link>
-      <pubDate>Sat, 15 Jul 2023 03:06:48 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/about/</guid>
-      <description>关于未来你总有周密的安排，然而剧情却总是被现实篡改。
-关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。</description>
     </item>
     
     <item>
