@@ -5,8 +5,23 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Sun, 16 Jul 2023 20:14:40 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Jul 2023 00:24:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下安装DDNS-GO</title>
+      <link>https://ruohai.wang/posts/202307/ddns-go-install/</link>
+      <pubDate>Mon, 17 Jul 2023 00:24:52 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/posts/202307/ddns-go-install/</guid>
+      <description>前言 没有前言，懒得写了。
+DDNS-GO官方github repo指路：https://github.com/jeessy2/ddns-go
+下载 在系统里创建安装目录
+mkdir -p /usr/local/ddns-go 根据自己的硬件平台下载对应版本的安装包。我的设备依然是它，赚钱宝二代（ws1508），armv7。
+# 进目录 cd /usr/local/ddns-go # 下载 wget https://github.com/jeessy2/ddns-go/releases/download/v5.3.7/ddns-go_5.3.7_linux_armv7.tar.gz # 解压 tar -zxvf ddns-go_5.3.7_linux_armv7.tar.gz 运行 解压以后得到的ddns-go默认就有执行权限，所以直接./ddns-go就可以跑起来了。但我们肯定是要把添加到systemd服务，并设置开机自启的。
+# 新建服务文件 nano /etc/systemd/system/ddns-go.service 粘贴以下内容
+[Unit] Description=The DDNS-GO Process Manager After=network.target [Service] Type=simple ExecStart=/usr/local/ddns-go/ddns-go -c /usr/local/ddns-go/ddns_go_config.yaml ExecStop=/bin/killall ddns-go [Install] WantedBy=multi-user.target 然后就是大家都喜欢的systemd reload/start/enable三板斧了。
+# 重载 systemctl daemon-reload # 启动 systemctl start ddns-go.service # 开机启动 systemctl enable ddns-go.service 配置 ddns-go跑起来以后，默认端口是9876，打开浏览器，访问http://host-ip:9876，就进入ddns-go的webui了，之后就根据自己的需求进行配置。</description>
+    </item>
+    
     <item>
       <title>Linux下用Nginx给qBittorrent设置SSL开启HTTPS访问</title>
       <link>https://ruohai.wang/posts/qbittorrent-update-to-https/</link>
