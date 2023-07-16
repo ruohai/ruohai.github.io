@@ -88,7 +88,7 @@
       </div>
     </header>
     <div class="post-content">
-      <p>用nginx给ttyd实现https访问，99%的设置都和【<a href="https://ruohai.wang/posts/filebrowser-update-to-https/">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</a>】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。</p>
+      <p>用nginx给ttyd实现https访问，99%的设置都和【<a href="https://ruohai.wang/202307/filebrowser-update-to-https/">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</a>】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。</p>
 <p>很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。</p>
 <p>网上搜了一下解决方案，根据【<a href="https://github.com/coolsnowwolf/lede/issues/5298">这个页面</a>】和【<a href="https://github.com/tsl0922/ttyd/issues/268">这个页面</a>】上的两个解答，需要对nginx的配置内容稍微修改。</p>
 <hr>

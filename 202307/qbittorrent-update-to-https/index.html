@@ -96,7 +96,7 @@ location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set
       </div>
     </header>
     <div class="post-content">
-      <p>用nginx反向代理给qbit实现https访问，99%的设置都和【<a href="https://ruohai.wang/posts/filebrowser-update-to-https/">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</a>】一样，没错，又是99%的内容都是和filebrowser那篇一样。但还是那个问题，直接照搬的话会有一个坑，完成配置以后，用https访问qbit-webui会显示空白页面并提示<code>unauthorized</code>。</p>
+      <p>用nginx反向代理给qbit实现https访问，99%的设置都和【<a href="https://ruohai.wang/202307/filebrowser-update-to-https/">Linux下用Nginx给File Browser设置SSL开启HTTPS访问</a>】一样，没错，又是99%的内容都是和filebrowser那篇一样。但还是那个问题，直接照搬的话会有一个坑，完成配置以后，用https访问qbit-webui会显示空白页面并提示<code>unauthorized</code>。</p>
 <p>很明显这是碰到了一个安全设置问题，访问被qbit拒绝了。</p>
 <p>有两个解决方案。</p>
 <h2 id="方案一关闭qbit的一些安全设置">方案一：关闭qbit的一些安全设置</h2>
