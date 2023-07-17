@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>iptables on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/iptables/</link>
+    <description>Recent content in iptables on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 17 Jul 2023 21:10:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>iptables报错TABLE_ADD failed (Invalid argument): table filter问题处理</title>
+      <link>https://ruohai.wang/202307/iptables-table-add-failed-bugfix/</link>
+      <pubDate>Mon, 17 Jul 2023 21:10:56 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/iptables-table-add-failed-bugfix/</guid>
+      <description>用linux就是一直不断的在踩坑啊。😔
+今天在赚钱宝二代（ws1508）上装ufw，但启用ufw直接报错，提示如下
+ERROR: problem running iptables: iptables v1.8.2 (nf_tables): TABLE_ADD failed (Invalid argument): table filter
+这报错以前没见过啊，我在另外几台ws1508和ws1608上无论是装ufw还是firewald都没有报错。
+但区别是这台ws1508，我刷的是debian 10（buster）的固件，而且内核很老是3.10。
+行吧，上网搜一搜解决方案，大致明白了是debian 10的原因：
+debian 10（buster）中用的是iptables-nft而不是iptables-legacy。
+nft和legacy的区别，可以看下【别人写的文章】。
+那接下来就开始切换吧，从nft切换成legacy。
+# ipv4 update-alternatives --set iptables /usr/sbin/iptables-legacy # ipv6 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy # arp update-alternatives --set arptables /usr/sbin/arptables-legacy # eb update-alternatives --set ebtables /usr/sbin/ebtables-legacy </description>
+    </item>
+    
+  </channel>
+</rss>
