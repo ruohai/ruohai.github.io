@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-us">
   <head>
     <title>Linux更新源时提示the public key is not available问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="generator" content="Hugo 0.111.3">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Ruohai Wang" />
     <meta name="description" content="" />
@@ -14,12 +14,12 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux更新源时提示the public key is not available问题解决"/>
 <meta name="twitter:description" content="手上的赚钱宝二代（ws1508）尝试刷入了【唯一一个支持nand flash的版本】，这版固件是基于debian10/buster，内核3.10，不论是debian版本还是内核都比较老。
-刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置以后，操作apt update，很快就出现了错误提示。
+刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置，然后操作apt update，很快就出现了错误提示。
 Err:4 http://mirrors.ustc.edu.cn/debian buster-backports InRelease The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 Reading package lists... Done W: GPG error: http://mirrors.ustc.edu.cn/debian buster-backports InRelease: The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 E: The repository &#39;http://mirrors.ustc.edu.cn/debian buster-backports InRelease&#39; is not signed. N: Updating from such a repository can&#39;t be done securely, and is therefore disabled by default."/>
 
     <meta property="og:title" content="Linux更新源时提示the public key is not available问题解决" />
 <meta property="og:description" content="手上的赚钱宝二代（ws1508）尝试刷入了【唯一一个支持nand flash的版本】，这版固件是基于debian10/buster，内核3.10，不论是debian版本还是内核都比较老。
-刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置以后，操作apt update，很快就出现了错误提示。
+刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置，然后操作apt update，很快就出现了错误提示。
 Err:4 http://mirrors.ustc.edu.cn/debian buster-backports InRelease The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 Reading package lists... Done W: GPG error: http://mirrors.ustc.edu.cn/debian buster-backports InRelease: The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 E: The repository &#39;http://mirrors.ustc.edu.cn/debian buster-backports InRelease&#39; is not signed. N: Updating from such a repository can&#39;t be done securely, and is therefore disabled by default." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/apt-update-public-key-error/" /><meta property="article:section" content="202307" />
@@ -85,7 +85,7 @@ Err:4 http://mirrors.ustc.edu.cn/debian buster-backports InRelease The following
     </header>
     <div class="post-content">
       <p>手上的赚钱宝二代（ws1508）尝试刷入了【<a href="https://www.right.com.cn/forum/thread-4137698-1-1.html">唯一一个支持nand flash的版本</a>】，这版固件是基于debian10/buster，内核3.10，不论是debian版本还是内核都比较老。</p>
-<p>刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置以后，操作<code>apt update</code>，很快就出现了错误提示。</p>
+<p>刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置，然后操作<code>apt update</code>，很快就出现了错误提示。</p>
 <pre tabindex="0"><code>Err:4 http://mirrors.ustc.edu.cn/debian buster-backports InRelease
   The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131
 Reading package lists... Done

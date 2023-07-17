@@ -5,7 +5,6 @@
     <link>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</link>
     <description>Recent content in 玩客云 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
     <lastBuildDate>Mon, 17 Jul 2023 15:02:31 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux更新源时提示the public key is not available问题解决</title>
@@ -14,7 +13,7 @@
       
       <guid>https://ruohai.wang/202307/apt-update-public-key-error/</guid>
       <description>手上的赚钱宝二代（ws1508）尝试刷入了【唯一一个支持nand flash的版本】，这版固件是基于debian10/buster，内核3.10，不论是debian版本还是内核都比较老。
-刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置以后，操作apt update，很快就出现了错误提示。
+刷入系统，启动成功以后，根据帖子内容进行了简单的基础配置，然后操作apt update，很快就出现了错误提示。
 Err:4 http://mirrors.ustc.edu.cn/debian buster-backports InRelease The following signatures couldn&amp;#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 Reading package lists... Done W: GPG error: http://mirrors.ustc.edu.cn/debian buster-backports InRelease: The following signatures couldn&amp;#39;t be verified because the public key is not available: NO_PUBKEY 0E98404D386FA1D9 NO_PUBKEY 6ED0E7B82643E131 E: The repository &amp;#39;http://mirrors.ustc.edu.cn/debian buster-backports InRelease&amp;#39; is not signed. N: Updating from such a repository can&amp;#39;t be done securely, and is therefore disabled by default.</description>
     </item>
     
