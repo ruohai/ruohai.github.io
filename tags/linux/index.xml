@@ -447,7 +447,15 @@ https://askubuntu.com/questions/1439461/ssh-default-port-not-changing-ubuntu-22-
 既然要用github pages，那只能用静态博客，无论是hexo、hugo还是jekyll，都需要一个本地的编译环境。既然如此，正好尝试一下在赚钱宝二代（ws1508）这台设备上安装hugo。
 玩客云（ws1608）和赚钱宝二代（ws1508）主要硬件配置上一模一样，同样适用这个教程。
 其实全平台都适用这个教程，只需要把apt install换成自己系统的版本就行了。
-前期准备 一台功能正常的电脑/主机，linux/windows/macos/&amp;hellip;。赚钱宝二代的硬件是32位armv7，系统是armbian-bookworn github账号，假定用户名jack，并新建repo取名为jack.github.io 安装hugo 安装git apt install git 安装hugo。在armbian-bookworm的仓库里有hugo，在当下这个日期（2023-07-14），仓库里的hugo版本是v0.111.3，是2023年3月发布的。github hugo官方仓库的版本已经是v0.115.3。虽然都说喜新厌旧，但这不是巧了么，我就用armbian仓库的旧版。 apt install hugo 创建博客目录，下载主题 # 为方便管理在根目录新建data文件夹mkdir /data# 在data目录下创建博客目录cd data/hugo new site blog# 进入blog目录，进行git初始化cd blog/git init# 下载自己喜欢的主题（这里用m10c为例）git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c 编辑博客根目录的config.toml，添加一行。注意这里v0.111.3版本的hugo配置文件是config.toml，但v0.115.3版本的配置文件是hugo.toml。 theme = &amp;#39;m10c&amp;#39; 到这一步，本地hugo安装就算完成了。接下去是进行本地运行和预览。从这一步开始我碰到了不少的坑，本来30分钟就搞定的事情，我愣是折腾了几个小时，弄了一个通宵。这都是在我决定要用ssh在armv7电子垃圾上装hugo的那一刻就注定了的。天堂有路你不走，地狱无门你偏要闯。😔 本地运行和预览 预览主题。如果是本地安装hugo，然后本地运行本地预览，那网上的教程多如牛毛，都会教你敲命令hugo server然后打开浏览器输入http://localhost:1313就可以预览了。但很不巧，我是用局域网内其它机器预览。所以从这一步开始就有了区别。注意参数--bind=&amp;quot;0.0.0.0&amp;quot;用来监听局域网内的访问，下面这条命令执行成功以后，就可以浏览器中访问http://host_ip:1313进行主题预览了。 hugo server --bind=&amp;#34;0.0.0.0&amp;#34; 写文章。用下面这条命令创建markdown文档，然后用自己喜欢的文本编辑器（nano/vim/&amp;hellip;）打开它写内容。这里有一个坑，根据模板创建的markdown文档的头部信息里有个参数draft: true用来标记这个文档是一份草稿。注意啊，它标记了自己是草稿，不是正式文章，下面要考。 hugo new posts/hello-world.md 预览文章。网上的教程在这一步都会说执行hugo server，但是要注意，文章的头部信息里draft: true标记了它是一篇草稿，默认不会展示。所以想要看到文章，要么改头部信息draft: false，要么命令加上-D参数，这样它会把草稿也进行展示。我的建议是改文章头部信息draft: false，这样后面发布到github pages的时候就不会踩坑了。 hugo server --bind=&amp;#34;0.</description>
+前期准备 一台功能正常的电脑/主机，linux/windows/macos/&amp;hellip;。赚钱宝二代的硬件是32位armv7，系统是armbian-bookworn github账号，假定用户名jack，并新建repo取名为jack.github.io 安装hugo 安装git apt install git 安装hugo。在armbian-bookworm的仓库里有hugo，在当下这个日期（2023-07-14），仓库里的hugo版本是v0.111.3，是2023年3月发布的。github hugo官方仓库的版本已经是v0.115.3。虽然都说喜新厌旧，但这不是巧了么，我就用armbian仓库的旧版。 apt install hugo 2023-07-17 update 这里补充一下通过下载官方github repo的二进制包安装的方法。
+1-新建安装目录
+mkdir -p /usr/local/hugo 2-到官方github repo下载对应自己硬件平台的包，我的设备是赚钱宝二代（ws1508），老朋友了，armv7。
+cd /usr/local/hugowget https://github.com/gohugoio/hugo/releases/download/v0.115.3/hugo_0.115.3_linux-arm.tar.gztar -zxvf hugo_0.115.3_linux-arm.tar.gz 3-解压以后得到的hugo安装包默认就有可执行权限，接下去要做的是把hugo添加到环境变量。我这里把环境变量配置到~/.bashrc，仅对当前用户生效。如果要全局生效，可以添加到/etc/profile。
+nano ~/.bashrc 末尾添加一行。
+export PATH=$PATH:/usr/local/hugo 保存退出，重载配置使生效
+source ~/.bashrc 4-到这部就安装完成了。执行以下命令查看是否成功。
+hugo -h 如果安装成功的话，会出现hugo的帮助手册。
+创建博客目录，下载主题 # 为方便管理在根目录新建data文件夹mkdir /data# 在data目录下创建博客目录cd data/hugo new site blog# 进入blog目录，进行git初始化cd blog/git init# 下载自己喜欢的主题（这里用m10c为例）git clone https://github.</description>
     </item>
     
     <item>
