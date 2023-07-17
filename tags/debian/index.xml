@@ -21,7 +21,8 @@ ERROR: problem running iptables: iptables v1.8.2 (nf_tables): TABLE_ADD failed (
 debian 10（buster）中用的是iptables-nft而不是iptables-legacy。
 nft和legacy的区别，可以看下【别人写的文章】。
 那接下来就开始切换吧，从nft切换成legacy。
-# ipv4 update-alternatives --set iptables /usr/sbin/iptables-legacy # ipv6 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy # arp update-alternatives --set arptables /usr/sbin/arptables-legacy # eb update-alternatives --set ebtables /usr/sbin/ebtables-legacy </description>
+# ipv4 update-alternatives --set iptables /usr/sbin/iptables-legacy # ipv6 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy # arp update-alternatives --set arptables /usr/sbin/arptables-legacy # eb update-alternatives --set ebtables /usr/sbin/ebtables-legacy 想从nft换回legacy
+update-alternatives --set iptables /usr/sbin/iptables-nft update-alternatives --set ip6tables /usr/sbin/ip6tables-nft update-alternatives --set arptables /usr/sbin/arptables-nft update-alternatives --set ebtables /usr/sbin/ebtables-nft </description>
     </item>
     
   </channel>
