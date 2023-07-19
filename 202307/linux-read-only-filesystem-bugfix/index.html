@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Linux报错Read-only file system的问题处理 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux报错Read-only file system的问题处理"/>
+<meta name="twitter:description" content="前言 吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。
+这般固件又很多先天不足：
+内核太老 只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储） debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了 但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。
+装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。
+但是 没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：nand很容易出现坏块！！！！
+这个问题非常致命，当系统检测到nand坏块以后会报错errors，然后这版固件/etc/fstab配置的挂载参数中，有一个errors=remount-ro，也就意味着一旦使用过程中碰到坏块的block，整个系统立刻就会重新挂载为只读（readonly）模式保护数据。
+而赚钱宝二代这玩意是2015~2016年的设备，产品定位就是为了跑pdcn，至少是7年的老矿机了，nand出现坏块几乎是必然。
+解决方案 系统盘进入只读保护模式以后，任何写操作都会报错，提示如下：
+Read-only file system 解决办法就是文件系统修复。先用df -hT查看根目录挂载的分区和格式。
+Filesystem Type Size Used Avail Use% Mounted on udev devtmpfs 231M 0 231M 0% /dev tmpfs tmpfs 48M 4.0M 44M 9% /run /dev/data ext4 2.8G 795M 1.9G 30% / tmpfs tmpfs 238M 0 238M 0% /dev/shm tmpfs tmpfs 5.0M 0 5.0M 0% /run/lock tmpfs tmpfs 238M 0 238M 0% /sys/fs/cgroup tmpfs tmpfs 238M 4."/>
+
+    <meta property="og:title" content="Linux报错Read-only file system的问题处理" />
+<meta property="og:description" content="前言 吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。
+这般固件又很多先天不足：
+内核太老 只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储） debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了 但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。
+装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。
+但是 没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：nand很容易出现坏块！！！！
+这个问题非常致命，当系统检测到nand坏块以后会报错errors，然后这版固件/etc/fstab配置的挂载参数中，有一个errors=remount-ro，也就意味着一旦使用过程中碰到坏块的block，整个系统立刻就会重新挂载为只读（readonly）模式保护数据。
+而赚钱宝二代这玩意是2015~2016年的设备，产品定位就是为了跑pdcn，至少是7年的老矿机了，nand出现坏块几乎是必然。
+解决方案 系统盘进入只读保护模式以后，任何写操作都会报错，提示如下：
+Read-only file system 解决办法就是文件系统修复。先用df -hT查看根目录挂载的分区和格式。
+Filesystem Type Size Used Avail Use% Mounted on udev devtmpfs 231M 0 231M 0% /dev tmpfs tmpfs 48M 4.0M 44M 9% /run /dev/data ext4 2.8G 795M 1.9G 30% / tmpfs tmpfs 238M 0 238M 0% /dev/shm tmpfs tmpfs 5.0M 0 5.0M 0% /run/lock tmpfs tmpfs 238M 0 238M 0% /sys/fs/cgroup tmpfs tmpfs 238M 4." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/linux-read-only-filesystem-bugfix/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-19T17:35:02+08:00" />
+<meta property="article:modified_time" content="2023-07-19T17:35:02+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux报错Read-only file system的问题处理</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 19, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。</p>
+<p>这般固件又很多先天不足：</p>
+<ul>
+<li>内核太老</li>
+<li>只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储）</li>
+<li>debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了</li>
+</ul>
+<p>但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。</p>
+<p>装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。</p>
+<hr>
+<h2 id="但是">但是</h2>
+<p>没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：<strong>nand很容易出现坏块！！！！</strong></p>
+<p>这个问题非常致命，当系统检测到nand坏块以后会报错errors，然后这版固件<code>/etc/fstab</code>配置的挂载参数中，有一个<code>errors=remount-ro</code>，也就意味着一旦使用过程中碰到坏块的block，整个系统立刻就会重新挂载为只读（readonly）模式保护数据。</p>
+<p>而赚钱宝二代这玩意是2015~2016年的设备，产品定位就是为了跑pdcn，至少是7年的老矿机了，nand出现坏块几乎是必然。</p>
+<hr>
+<h2 id="解决方案">解决方案</h2>
+<p>系统盘进入只读保护模式以后，任何写操作都会报错，提示如下：</p>
+<pre tabindex="0"><code>Read-only file system
+</code></pre><p>解决办法就是文件系统修复。先用<code>df -hT</code>查看根目录挂载的分区和格式。</p>
+<pre tabindex="0"><code>Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  231M     0  231M   0% /dev
+tmpfs          tmpfs      48M  4.0M   44M   9% /run
+/dev/data      ext4      2.8G  795M  1.9G  30% /
+tmpfs          tmpfs     238M     0  238M   0% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     238M     0  238M   0% /sys/fs/cgroup
+tmpfs          tmpfs     238M  4.0K  238M   1% /tmp
+/dev/sda1      ext4      459G  4.3G  431G   1% /data
+/dev/zram0     ext4       49M  2.1M   43M   5% /var/log
+</code></pre><p>根目录<code>/</code>挂载的分区是<code>/dev/data</code>文件系统格式是<code>ext4</code>。执行修复命令：</p>
+<pre tabindex="0"><code>fsck.ext4 -y /dev/data
+</code></pre><p>等命令跑完，提示如下：</p>
+<pre tabindex="0"><code>ROOTFS: ***** FILE SYSTEM WAS MODIFIED *****
+ROOTFS: ***** REBOOT SYSTEM *****
+ROOTFS: 25275/157872 files (0.2% non-contiguous), 204658/724992 blocks
+</code></pre><p>按照提示重启系统，一般情况下文件系统就恢复正常了。如果重启以后依然提示只读，那就再跑一次然后再重启。是的我就碰到跑一次没解决又跑一次才恢复。</p>
+<p>还有一点要注意，<code>fsck</code>命令执行以后，有些存储在坏块上的数据会丢失，注意检查自己的软件是否运行正常，数据是不是完整。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

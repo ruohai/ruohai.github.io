@@ -6,7 +6,25 @@
     <description>Recent content in Linux on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Jul 2023 15:02:31 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jul 2023 17:35:02 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux报错Read-only file system的问题处理</title>
+      <link>https://ruohai.wang/202307/linux-read-only-filesystem-bugfix/</link>
+      <pubDate>Wed, 19 Jul 2023 17:35:02 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/linux-read-only-filesystem-bugfix/</guid>
+      <description>前言 吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。
+这般固件又很多先天不足：
+内核太老 只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储） debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了 但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。
+装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。
+但是 没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：nand很容易出现坏块！！！！
+这个问题非常致命，当系统检测到nand坏块以后会报错errors，然后这版固件/etc/fstab配置的挂载参数中，有一个errors=remount-ro，也就意味着一旦使用过程中碰到坏块的block，整个系统立刻就会重新挂载为只读（readonly）模式保护数据。
+而赚钱宝二代这玩意是2015~2016年的设备，产品定位就是为了跑pdcn，至少是7年的老矿机了，nand出现坏块几乎是必然。
+解决方案 系统盘进入只读保护模式以后，任何写操作都会报错，提示如下：
+Read-only file system 解决办法就是文件系统修复。先用df -hT查看根目录挂载的分区和格式。
+Filesystem Type Size Used Avail Use% Mounted on udev devtmpfs 231M 0 231M 0% /dev tmpfs tmpfs 48M 4.0M 44M 9% /run /dev/data ext4 2.8G 795M 1.9G 30% / tmpfs tmpfs 238M 0 238M 0% /dev/shm tmpfs tmpfs 5.0M 0 5.0M 0% /run/lock tmpfs tmpfs 238M 0 238M 0% /sys/fs/cgroup tmpfs tmpfs 238M 4.</description>
+    </item>
+    
     <item>
       <title>Linux更新源时提示the public key is not available问题解决</title>
       <link>https://ruohai.wang/202307/apt-update-public-key-error/</link>
