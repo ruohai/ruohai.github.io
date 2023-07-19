@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux报错Read-only file system的问题处理"/>
 <meta name="twitter:description" content="前言 吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。
-这般固件又很多先天不足：
+这版固件有很多先天不足：
 内核太老 只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储） debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了 但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。
 装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。
 但是 没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：nand很容易出现坏块！！！！
@@ -26,7 +26,7 @@ Filesystem Type Size Used Avail Use% Mounted on udev devtmpfs 231M 0 231M 0% /de
 
     <meta property="og:title" content="Linux报错Read-only file system的问题处理" />
 <meta property="og:description" content="前言 吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。
-这般固件又很多先天不足：
+这版固件有很多先天不足：
 内核太老 只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储） debian 10（buster）已经EOL，源仓库已经不再更新，里面的包都太老了 但如果能接受以上这些缺点，似乎也算是一个不错的选择。毕竟那个珍贵的usb2.0接口需要用来外挂数据盘。
 装samba测试了一下，可以跑满百兆带宽，也不会出现缓存写满以后卡io导致系统假死的问题。但就算跑满了百兆也就10~12MB/s而已，不堪大用。
 但是 没错，重点来了，系统直刷nand，我体验了2天以后，最大的问题是：nand很容易出现坏块！！！！
@@ -100,7 +100,7 @@ Filesystem Type Size Used Avail Use% Mounted on udev devtmpfs 231M 0 231M 0% /de
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>吐槽完赚钱宝二代（ws1508）的鸡肋配置以后，今天还是不太甘心，想来想去，最后给它刷了支持nand的那版固件，基于debian 10（buster），内核3.10。</p>
-<p>这般固件又很多先天不足：</p>
+<p>这版固件有很多先天不足：</p>
 <ul>
 <li>内核太老</li>
 <li>只能识别4GB的nand存储空间（虽然我俩机器的包装盒上都标了32GB的nand存储）</li>
