@@ -14,6 +14,7 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux下CIFS设置开机自动挂载smb共享文件夹"/>
 <meta name="twitter:description" content="前言 前两天写过一篇用cifs挂载smb共享文件夹的文章，但那篇文章中多有疏漏，本来直接在那篇文章中update补漏修正就行，但最近懒了，直接择重点重写一篇。
+linux挂载smb共享文件夹涉及到很多权限分配的设置，比如smb服务端设置的用户和组、本地分配的用户和组、是不是指定文件和文件夹的默认权限。如果实在搞不清，那就直接root:root和0777一把梭，但千万而且一定要意识到root和0777的潜在风险。
 设定 注意下面出现的配置文件中的ip地址、用户名、组名、密码都要根据自己的情况做修改。😄
 设定本地用户都是jack，所属的组是jack-group 设定的smb共享文件夹的访问地址是//192.168.1.1/share，访问用户smb，访问密码123456 设定本地挂载smb共享文件夹的路径是/mnt/share 挂载 linux下安装cifs-utils后，挂载局域网smb共享文件夹，注意-o参数中别忘记加上iocharset=utf8以避免中文乱码的问题。
 mount -t cifs //192.168.1.1/share /mnt/share -o username=smb,password=123456,iocharset=utf8 取消挂载
@@ -25,6 +26,7 @@ smb访问账户的用户名和密码，建议单独新建一个文件来保存�
 
     <meta property="og:title" content="Linux下CIFS设置开机自动挂载smb共享文件夹" />
 <meta property="og:description" content="前言 前两天写过一篇用cifs挂载smb共享文件夹的文章，但那篇文章中多有疏漏，本来直接在那篇文章中update补漏修正就行，但最近懒了，直接择重点重写一篇。
+linux挂载smb共享文件夹涉及到很多权限分配的设置，比如smb服务端设置的用户和组、本地分配的用户和组、是不是指定文件和文件夹的默认权限。如果实在搞不清，那就直接root:root和0777一把梭，但千万而且一定要意识到root和0777的潜在风险。
 设定 注意下面出现的配置文件中的ip地址、用户名、组名、密码都要根据自己的情况做修改。😄
 设定本地用户都是jack，所属的组是jack-group 设定的smb共享文件夹的访问地址是//192.168.1.1/share，访问用户smb，访问密码123456 设定本地挂载smb共享文件夹的路径是/mnt/share 挂载 linux下安装cifs-utils后，挂载局域网smb共享文件夹，注意-o参数中别忘记加上iocharset=utf8以避免中文乱码的问题。
 mount -t cifs //192.168.1.1/share /mnt/share -o username=smb,password=123456,iocharset=utf8 取消挂载
@@ -98,6 +100,7 @@ smb访问账户的用户名和密码，建议单独新建一个文件来保存�
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>前两天写过一篇用cifs挂载smb共享文件夹的文章，但那篇文章中多有疏漏，本来直接在那篇文章中update补漏修正就行，但最近懒了，直接择重点重写一篇。</p>
+<p>linux挂载smb共享文件夹涉及到很多权限分配的设置，比如smb服务端设置的用户和组、本地分配的用户和组、是不是指定文件和文件夹的默认权限。如果实在搞不清，那就直接<code>root:root</code>和<code>0777</code>一把梭，但<strong>千万</strong>而且<strong>一定</strong>要意识到<code>root</code>和<code>0777</code>的潜在风险。</p>
 <h2 id="设定">设定</h2>
 <p>注意下面出现的配置文件中的ip地址、用户名、组名、密码都要根据自己的情况做修改。😄</p>
 <ul>
