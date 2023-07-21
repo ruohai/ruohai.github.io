@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-21T00:37:06+08:00</lastmod>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/wordpress/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/wordpress-i-nailed-it/</loc>
+    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/cifs/</loc>
     <lastmod>2023-07-21T00:37:06+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2023-07-21T00:37:06+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202307/cifs-auto-mount-at-linux-start-up/</loc>
-    <lastmod>2023-07-21T00:37:06+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-21T00:37:06+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-21T00:37:06+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/linux-read-only-filesystem-bugfix/</loc>
@@ -213,9 +222,6 @@
     <lastmod>2023-07-14T14:57:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/hello-world/</loc>
-    <lastmod>2023-06-27T02:38:42+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2023-06-27T02:38:42+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/categories/</loc>

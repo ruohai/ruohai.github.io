@@ -6,7 +6,22 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Jul 2023 00:37:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Jul 2023 22:10:19 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>这个10多年的坑我今天终于把他趟平了~</title>
+      <link>https://ruohai.wang/202307/wordpress-i-nailed-it/</link>
+      <pubDate>Fri, 21 Jul 2023 22:10:19 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/wordpress-i-nailed-it/</guid>
+      <description>说起来大学的时候就想自己折腾wordpress了，但毕竟不是计算机专业，网上的教程搜了好几天，从vps到域名，从环境搭建到参数配置，各种wordpress五分钟教程琢磨了好几天，愣是没搞明白。
+这件事就这么搁置了，一搁置就是这么多年。因为之前受的折磨给我留下的太深的伤害，所以之后再弄博客，选hexo选typecho选hugo我都不会去选wordpress。
+但今天心血来潮，准备把这个坑填了。
+说来惭愧，虽然这些年中间我也转行当了几年水货程序员（java web），但今天弄wordpress，十多年前的那种茫然无措的感觉再一次体验到了。
+但是现在，right now，我搞定它了~
+明天我就写一篇【从0开始动手搓一个wordpress网站】的教程，要为wordpress的安装教程正本清源！让完全没有编码经验的小白也可以按部就班的完成搭建！
+😄</description>
+    </item>
+    
     <item>
       <title>Linux下CIFS设置开机自动挂载smb共享文件夹</title>
       <link>https://ruohai.wang/202307/cifs-auto-mount-at-linux-start-up/</link>
