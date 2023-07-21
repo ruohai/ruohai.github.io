@@ -6,7 +6,24 @@
     <description>Recent content in 202307s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Jul 2023 22:10:19 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202307/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Jul 2023 01:52:09 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202307/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下user is not in the sudoers file问题的解决</title>
+      <link>https://ruohai.wang/202307/linux-sudo-previlege-error-fix/</link>
+      <pubDate>Sat, 22 Jul 2023 01:52:09 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/linux-sudo-previlege-error-fix/</guid>
+      <description>前言 最近linux使用的越来越频繁，对用户、组、权限开始慢慢多了一些了解，慢慢就从之前root一把梭改成用禁掉root登录 + 低权限账号配合sudo进行系统管理。
+但这样谨慎的操作的日常使用中碰到了一些问题，比如在vps和自己的虚拟机上安装debian时，从root切换到低权限账户（假定是jack），用sudo会提示jack is not in the sudoers file，甚至在root账号下也会提示sudo: command not found。
+这种情况之之前在用ubuntu和armbian的时候没见过啊，搜了一些解决方案，这里做简单记录。
+报错：sudo: command not found 这个报错通常情况下是因为sudo没有安装。讲真我也用过好多linux发行版（在虚拟机里简单体验），这还是第一次见到连sudo都没装的。
+apt install sudo 报错：jack is not in the sudoers file 网上有一些劣质的文章里说这个报错的解决方案是在/etc/sudoers加一条。
+jack ALL=(ALL:ALL) ALL NO，不是这么改的。不是直接给用户授权，而是给sudo组授权，通过sudo命令来让低权限用户临时使用root权限。
+先确认/etc/sudoers配置文件里有没有这一条，没有就加上去，保存退出。
+%sudo ALL=(ALL:ALL) ALL 然后执行以下命令，把用户jack添加到sudo组。
+usermod -aG sudo jack 到这里就完成配置了。默认jack是低权限账户，需要root权限时通过加sudo命令来授权。</description>
+    </item>
+    
     <item>
       <title>这个10多年的坑我今天终于把他趟平了~</title>
       <link>https://ruohai.wang/202307/wordpress-i-nailed-it/</link>
