@@ -24,8 +24,10 @@ apt install apache2 等命令跑完以后，在浏览器中访问主机的地址
 默认到这一步就完成了apache2的安装，但这里有一些进阶内容（如何修改apache2配置文件），如果没有兴趣看的话，恭喜你，下面内容都不用看了！
 进阶内容 apache2的网站根目录默认路径是/var/www/html，有很多教程确实就会把wordpress安装到这个目录下。但这有两个问题，一个是我想自定义网站目录方便管理（假定/data/wordpress），二是var目录下涉及root权限。
 要自定义网站目录，就要编辑apache2的配置文件，路径/etc/apache2，目录结构如下：
-/etc/apache2/ |-- apache2.conf | `-- ports.conf |-- mods-enabled | `-- *.load | `-- *.conf |-- conf-enabled | `-- *.conf |-- sites-enabled | `-- *.conf |-- sites-available | `-- *.conf apache2.conf是总配置文件，一般不动 网站配置文件放在sites开头的两个文件夹下，其中sites-available是可用的配置，sites-enabled是实际生效的配置。 sites-enabled里面的的那个默认文件000-default.conf只是个软链接，真实文件在sites-available 所以合理的配置方法是：在sites-available修改或者直接新建，然后把配置文件通过软链接放到sites-enabled使其生效 那就开始配置吧！这里选择删掉默认的那个000文件，新建wordpress.conf，方便辨认和管理。
-# 进目录 cd /etc/apache2/sites-available # 删掉默认文件 rm 000-default.conf # 创建新文件 nano wordpress.</description>
+apache2.conf是总配置文件，一般不动 网站配置文件放在sites开头的两个文件夹下，其中sites-available是可用的配置，sites-enabled是实际生效的配置。 sites-enabled里面的的那个默认文件000-default.conf只是个软链接，真实文件在sites-available 所以合理的配置方法是：在sites-available修改或者直接新建，然后把配置文件通过软链接放到sites-enabled使其生效 那就开始配置吧！这里选择删掉默认的那个000文件，新建wordpress.conf，方便辨认和管理。
+# 进目录 cd /etc/apache2/sites-available # 删掉默认文件 rm 000-default.conf # 创建新文件 nano wordpress.conf 添加如下内容，保存后退出。网站默认80端口，端口要自定义的话改掉80。
+&amp;lt;VirtualHost *:80&amp;gt; DocumentRoot /data/wordpress &amp;lt;Directory /data/wordpress&amp;gt; AllowOverride none Require all granted &amp;lt;/Directory&amp;gt; ErrorLog ${APACHE_LOG_DIR}/error.log CustomLog ${APACHE_LOG_DIR}/access.log combined &amp;lt;/VirtualHost&amp;gt; 然后创建软链接
+# 进目录 cd /etc/apache2/sites-enabled # 创建软链接 ln -s .</description>
     </item>
     
     <item>
