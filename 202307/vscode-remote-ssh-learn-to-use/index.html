@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>VSCode插件Remote-SSH的使用与体验 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.a1b52f3f0f66f76e3e8d87d00f7f9c19c4aee8a2e78f448f384a2759833ae017.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VSCode插件Remote-SSH的使用与体验"/>
+<meta name="twitter:description" content="前言 久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。
+但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。
+配置 首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。
+安装完以后，vscode侧边栏会出现一个新的图标，就是remote-ssh的入口惹。
+但现在还暂时不能用，需要先配置远程主机的rsa密钥认证，实现免密登录。
+这里再简单记录以下配置过程。
+先确保windows已经安装了openssh，方法是打开cmd，输入ssh并回车，看是否有命令提示。没安装的话网上搜以下windows下安装openssh，教程很多。 生成rsa密钥、linux中sshd_config文件的配置，我之前已经写过了，【Linux下配置RSA公钥认证登录】。
+我本地电脑使用的是windows，文章我也写过了，【Windows下用CMD实现SSH连接】。
+完成上面几步之后，点击vscode侧边栏的remote-ssh入口，就可以看到配置好的远程主机了。
+选择主机，右键或者点击主机名右侧的小图标，选择当前窗口或者新窗口打开后，短暂的rsa密钥认证之后，就完成ssh远程访问主机了。
+连接成功以后。就可以点击侧边栏的【打开文件夹】或者按快捷键ctrl&#43;p，选择需要打开的文件。
+选完文件夹之后（我这里直接选了根目录/），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。 后记 没有体验之前，一直不明白很多人夸赞的vscode &#43; remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录/。所谓远程开发，也就是本地vscode &#43; 远程主机上的项目文件。
+那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。
+搜了下，还真有这样的方案，叫做sshfs-win，项目地址：https://github.com/winfsp/sshfs-win"/>
+
+    <meta property="og:title" content="VSCode插件Remote-SSH的使用与体验" />
+<meta property="og:description" content="前言 久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。
+但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。
+配置 首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。
+安装完以后，vscode侧边栏会出现一个新的图标，就是remote-ssh的入口惹。
+但现在还暂时不能用，需要先配置远程主机的rsa密钥认证，实现免密登录。
+这里再简单记录以下配置过程。
+先确保windows已经安装了openssh，方法是打开cmd，输入ssh并回车，看是否有命令提示。没安装的话网上搜以下windows下安装openssh，教程很多。 生成rsa密钥、linux中sshd_config文件的配置，我之前已经写过了，【Linux下配置RSA公钥认证登录】。
+我本地电脑使用的是windows，文章我也写过了，【Windows下用CMD实现SSH连接】。
+完成上面几步之后，点击vscode侧边栏的remote-ssh入口，就可以看到配置好的远程主机了。
+选择主机，右键或者点击主机名右侧的小图标，选择当前窗口或者新窗口打开后，短暂的rsa密钥认证之后，就完成ssh远程访问主机了。
+连接成功以后。就可以点击侧边栏的【打开文件夹】或者按快捷键ctrl&#43;p，选择需要打开的文件。
+选完文件夹之后（我这里直接选了根目录/），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。 后记 没有体验之前，一直不明白很多人夸赞的vscode &#43; remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录/。所谓远程开发，也就是本地vscode &#43; 远程主机上的项目文件。
+那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。
+搜了下，还真有这样的方案，叫做sshfs-win，项目地址：https://github.com/winfsp/sshfs-win" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-23T02:29:35+08:00" />
+<meta property="article:modified_time" content="2023-07-23T02:29:35+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">VSCode插件Remote-SSH的使用与体验</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 23, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/vscode/">VSCode</a>
+              <a class="tag" href="https://ruohai.wang/tags/ssh/">SSH</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。</p>
+<p>但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。</p>
+<h2 id="配置">配置</h2>
+<p>首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。</p>
+<p><img src="https://img1.imgtp.com/2023/07/23/cM70ZN5R.png" alt="1690051050045.png"></p>
+<p>安装完以后，vscode侧边栏会出现一个新的图标，就是remote-ssh的入口惹。</p>
+<p><img src="https://img1.imgtp.com/2023/07/23/4RlgnfDB.png" alt="1690051164181.png"></p>
+<p>但现在还暂时不能用，需要先配置远程主机的rsa密钥认证，实现免密登录。</p>
+<p>这里再简单记录以下配置过程。</p>
+<ol>
+<li>先确保windows已经安装了openssh，方法是打开cmd，输入<code>ssh</code>并回车，看是否有命令提示。没安装的话网上搜以下windows下安装openssh，教程很多。</li>
+</ol>
+<p><img src="https://img1.imgtp.com/2023/07/23/Rvx3vDe5.png" alt="1690051410024.png"></p>
+<ol start="2">
+<li>
+<p>生成rsa密钥、linux中sshd_config文件的配置，我之前已经写过了，【<a href="https://ruohai.wang/202307/pub-key-auth-config/">Linux下配置RSA公钥认证登录</a>】。</p>
+</li>
+<li>
+<p>我本地电脑使用的是windows，文章我也写过了，【<a href="https://ruohai.wang/202307/windows-cmd-use-ssh/">Windows下用CMD实现SSH连接</a>】。</p>
+</li>
+<li>
+<p>完成上面几步之后，点击vscode侧边栏的remote-ssh入口，就可以看到配置好的远程主机了。</p>
+</li>
+</ol>
+<p><img src="https://img1.imgtp.com/2023/07/23/9OhpheP9.png" alt="1690052082647.png"></p>
+<ol start="5">
+<li>
+<p>选择主机，右键或者点击主机名右侧的小图标，选择当前窗口或者新窗口打开后，短暂的rsa密钥认证之后，就完成ssh远程访问主机了。</p>
+</li>
+<li>
+<p>连接成功以后。就可以点击侧边栏的【打开文件夹】或者按快捷键<code>ctrl+p</code>，选择需要打开的文件。</p>
+</li>
+</ol>
+<p><img src="https://img1.imgtp.com/2023/07/23/DgEW3NUb.png" alt="1690052251671.png"></p>
+<ol start="7">
+<li>选完文件夹之后（我这里直接选了根目录<code>/</code>），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。</li>
+</ol>
+<p><img src="https://img1.imgtp.com/2023/07/23/Eg1yW9He.png" alt="1690052295162.png"></p>
+<h2 id="后记">后记</h2>
+<p>没有体验之前，一直不明白很多人夸赞的vscode + remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录<code>/</code>。所谓远程开发，也就是本地vscode + 远程主机上的项目文件。</p>
+<p>那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。</p>
+<p>搜了下，还真有这样的方案，叫做<code>sshfs-win</code>，项目地址：https://github.com/winfsp/sshfs-win</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

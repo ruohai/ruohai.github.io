@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VSCode on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/vscode/</link>
+    <description>Recent content in VSCode on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 23 Jul 2023 02:29:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VSCode插件Remote-SSH的使用与体验</title>
+      <link>https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/</link>
+      <pubDate>Sun, 23 Jul 2023 02:29:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/</guid>
+      <description>前言 久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。
+但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。
+配置 首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。
+安装完以后，vscode侧边栏会出现一个新的图标，就是remote-ssh的入口惹。
+但现在还暂时不能用，需要先配置远程主机的rsa密钥认证，实现免密登录。
+这里再简单记录以下配置过程。
+先确保windows已经安装了openssh，方法是打开cmd，输入ssh并回车，看是否有命令提示。没安装的话网上搜以下windows下安装openssh，教程很多。 生成rsa密钥、linux中sshd_config文件的配置，我之前已经写过了，【Linux下配置RSA公钥认证登录】。
+我本地电脑使用的是windows，文章我也写过了，【Windows下用CMD实现SSH连接】。
+完成上面几步之后，点击vscode侧边栏的remote-ssh入口，就可以看到配置好的远程主机了。
+选择主机，右键或者点击主机名右侧的小图标，选择当前窗口或者新窗口打开后，短暂的rsa密钥认证之后，就完成ssh远程访问主机了。
+连接成功以后。就可以点击侧边栏的【打开文件夹】或者按快捷键ctrl+p，选择需要打开的文件。
+选完文件夹之后（我这里直接选了根目录/），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。 后记 没有体验之前，一直不明白很多人夸赞的vscode + remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录/。所谓远程开发，也就是本地vscode + 远程主机上的项目文件。
+那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。
+搜了下，还真有这样的方案，叫做sshfs-win，项目地址：https://github.com/winfsp/sshfs-win</description>
+    </item>
+    
+  </channel>
+</rss>

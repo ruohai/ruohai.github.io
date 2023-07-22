@@ -6,7 +6,29 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 21:51:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jul 2023 02:29:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VSCode插件Remote-SSH的使用与体验</title>
+      <link>https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/</link>
+      <pubDate>Sun, 23 Jul 2023 02:29:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/</guid>
+      <description>前言 久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。
+但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。
+配置 首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。
+安装完以后，vscode侧边栏会出现一个新的图标，就是remote-ssh的入口惹。
+但现在还暂时不能用，需要先配置远程主机的rsa密钥认证，实现免密登录。
+这里再简单记录以下配置过程。
+先确保windows已经安装了openssh，方法是打开cmd，输入ssh并回车，看是否有命令提示。没安装的话网上搜以下windows下安装openssh，教程很多。 生成rsa密钥、linux中sshd_config文件的配置，我之前已经写过了，【Linux下配置RSA公钥认证登录】。
+我本地电脑使用的是windows，文章我也写过了，【Windows下用CMD实现SSH连接】。
+完成上面几步之后，点击vscode侧边栏的remote-ssh入口，就可以看到配置好的远程主机了。
+选择主机，右键或者点击主机名右侧的小图标，选择当前窗口或者新窗口打开后，短暂的rsa密钥认证之后，就完成ssh远程访问主机了。
+连接成功以后。就可以点击侧边栏的【打开文件夹】或者按快捷键ctrl+p，选择需要打开的文件。
+选完文件夹之后（我这里直接选了根目录/），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。 后记 没有体验之前，一直不明白很多人夸赞的vscode + remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录/。所谓远程开发，也就是本地vscode + 远程主机上的项目文件。
+那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。
+搜了下，还真有这样的方案，叫做sshfs-win，项目地址：https://github.com/winfsp/sshfs-win</description>
+    </item>
+    
     <item>
       <title>Linux下从0开始部署WordPress（一）</title>
       <link>https://ruohai.wang/202307/wordpress-installation-guide/</link>
@@ -280,12 +302,10 @@ update:2023/07/15 15:24
       <description>Windows下有很多终端，收费的，免费的。但很多终端不支持zmodem导致不能使用lrzsz，或者用户协议是限定场景下才免费，亦或者是electron套壳主题不好看。其实windows10已经默认安装openssh客户端，可以直接用系统自带的cmd/powershell/windows terminal来实现ssh访问远程服务器。虽然依然不支持zmodem，但如果你和我一样有三方软件洁癖，或者想严格遵守软件的用户协议，可以考虑cmd来替代那些第三方软件。
 如果你的Windows系统没有安装openssh，可以查看这篇【官方文章】进行安装。
 然后在cmd中直接敲命令即可。是默认端口22的话，【-p 22】这部分可以省略。
-ssh root@192.168.1.10 -p 22 如果不想每次都敲【root@192.168.1.10 -p 22】这几句，需要在C:\Users\Jack\.ssh\目录下新建一个config文件（文件名就是config，没有后缀），按如下格式写入服务器信息后保存。
-Host abc Hostname 192.168.1.10 User root Port 22
-然后就可以在cmd中敲【ssh abc】即可。
-如果想实现免密登录，rsa密钥生成、服务器端的配置这里不做赘述，只记录config文件中的配置格式。为方便管理多个主机的rsa密钥对，这里在.ssh目录下新建文件夹abc，rsa密钥对放在其中。
-Host abc Hostname 192.168.1.10 User root Port 22 IdentityFile C:\Users\Jack\.ssh\abc\id_rsa
-然后就可以在cmd中敲【ssh abc】即可实现免密登录。</description>
+ssh jack@192.168.1.10 -p 22 如果不想每次都敲【root@192.168.1.10 -p 22】这几句，需要在C:\Users\Jack\.ssh\目录下新建一个config文件（文件名就是config，没有后缀），按如下格式写入服务器信息后保存。
+Host abc Hostname 192.168.1.10 User jack Port 22 然后就可以在cmd中敲【ssh abc】即可。
+如果想实现免密登录，rsa密钥生成、服务器端的配置这里不做赘述，只记录config文件中的配置格式。为方便管理多个主机的rsa密钥对，这里在.ssh目录下新建文件夹abc，rsa密钥对放在其中
+Host abc Hostname 192.168.1.10 User jack Port 22 IdentityFile C:\Users\Jack\\.ssh\abc\id_rsa 然后就可以在cmd中敲【ssh abc】即可实现免密登录。</description>
     </item>
     
     <item>
