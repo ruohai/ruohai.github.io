@@ -6,7 +6,28 @@
     <description>Recent content in 202307s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 17:56:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202307/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Jul 2023 21:51:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202307/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下从0开始部署WordPress（一）</title>
+      <link>https://ruohai.wang/202307/wordpress-installation-guide/</link>
+      <pubDate>Sat, 22 Jul 2023 21:51:16 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/wordpress-installation-guide/</guid>
+      <description>前言 虽然上一篇文章说我炸了，哦不是，我悟了，以后不用linux了。但奈何我还有好几篇软件/服务的安装记录没有写，比如这篇wordpress的部署安装。
+wordpress的安装教程网上多如牛毛，本来也不差我这一篇。但我在wordpress这个坑，不是，这个软件上耽搁了十多年，有很大的原因正是网上的教程多如牛毛。十多年前如此，现在依然如此。
+wordpress官方有著名的5分钟安装教程，但这个教程前提是已经搭好了环境。很多热心网友写了很多教程，但大部分在记录的时候都省略了很多细节且毫无条理，有很多一上来就让装宝塔面板、让装xmapp。NO，这些都不是我想要的，我想要一个从一个干净的linux系统开始一步步记录的，我想要的是一个小白按照这篇文章一步步操作就能完成搭建自己的wordpress。
+wordpress说白了就是一个php网站模板，既然是网站，就需要一些配套的服务，简而言之，搭建wordpress，分为5个步骤：
+有一台主机或vps（系统选linux，这里以debian为例） 安装web server(选apache2) 安装数据库（选mariadb） 安装php 配置wordpress 因为内容比较多，所以准备分成几篇来写。这篇的主要内容是：apache2的安装和配置。
+前期准备 有一台linux主机，或者vps。这里以debian为例。
+安装apache2 web server可选nginx或者apache2，这里以apache2为例。
+apt install apache2 等命令跑完以后，在浏览器中访问主机的地址，http://host-ip，看是否显示apahce2的欢迎页面。
+默认到这一步就完成了apache2的安装，但这里有一些进阶内容（如何修改apache2配置文件），如果没有兴趣看的话，恭喜你，下面内容都不用看了！
+进阶内容 apache2的网站根目录默认路径是/var/www/html，有很多教程确实就会把wordpress安装到这个目录下。但这有两个问题，一个是我想自定义网站目录方便管理（假定/data/wordpress），二是var目录下涉及root权限。
+要自定义网站目录，就要编辑apache2的配置文件，路径/etc/apache2，目录结构如下：
+/etc/apache2/ |-- apache2.conf | `-- ports.conf |-- mods-enabled | `-- *.load | `-- *.conf |-- conf-enabled | `-- *.conf |-- sites-enabled | `-- *.conf |-- sites-available | `-- *.conf apache2.conf是总配置文件，一般不动 网站配置文件放在sites开头的两个文件夹下，其中sites-available是可用的配置，sites-enabled是实际生效的配置。 sites-enabled里面的的那个默认文件000-default.conf只是个软链接，真实文件在sites-available 所以合理的配置方法是：在sites-available修改或者直接新建，然后把配置文件通过软链接放到sites-enabled使其生效 那就开始配置吧！这里选择删掉默认的那个000文件，新建wordpress.conf，方便辨认和管理。
+# 进目录 cd /etc/apache2/sites-available # 删掉默认文件 rm 000-default.conf # 创建新文件 nano wordpress.</description>
+    </item>
+    
     <item>
       <title>我悟了~</title>
       <link>https://ruohai.wang/202307/i-boomed/</link>
