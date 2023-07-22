@@ -6,7 +6,25 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 01:52:09 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Jul 2023 17:56:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我悟了~</title>
+      <link>https://ruohai.wang/202307/i-boomed/</link>
+      <pubDate>Sat, 22 Jul 2023 17:56:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/i-boomed/</guid>
+      <description>翻看了闲鱼捡垃圾的记录，还有网心云的收益记录，开始折腾armbian应该是从6月18号开始，今天是7月22号，算起来一个月多4天。
+但给我的感觉是最近半年似乎都在折腾armbian/debian/linux。
+今天又是准备刷机，但不是给ws1608刷，不是给ws1508刷，是给闲置了两年多的intel nuc11pahi5刷，准备刷个debian。
+但一下午都在翻车，从中午12点开始，翻车到傍晚5点，整整5个小时。一开始是忘记了给x86刷机的U盘只是做引导 + 系统镜像的作用，不像armbian小主机那样u盘是启动盘+系统盘二合一。后来是debian netinst版本在装机的时候必须要联网，这我能理解，而且我已经在虚拟机里装过好多次了，虽然联网下载软件确实有点耗时，但之前每次耗时大概也就5~20分钟左右。不过下午在nuc上安装的时候，联网下载的预计时间竟然离谱的要3~4小时甚至一度出现了天（D）这个时间单位，卧槽我明明已经选择了国内ustc的镜像站啊，马勒戈壁。再然后我依然用netinst的镜像安装但是这次选择不选镜像站而是跳过这一步！结果还没来得及称赞自己机智就被debian打了脸，离线安装以后竟然连open ssh server都没有，意思是ssh都没法连。既然netinst版翻车，我换完整版吧，完整版（dvd）的体积竟然达到了惊人的3.7GB。作为debian衍生的ubuntu server才1.7G啊。我估计完整版里应该是塞了所有的桌面环境吧。
+到这一刻我对debian的厌恶已经达到了顶峰，为什么要有必须联网安装的netinst版，为什么完整版要塞那么多东西进去，为什么不能像ubuntu那样分出各种flavor的单独安装包和单独的server版本。马勒戈壁。
+(╯‵□′)╯︵┻━┻
+然后我觉得自己悟了（i boomed），获得了inner peace。我拆掉了nuc和它硕大笨重的电源适配器，重新装进包装盒，拆掉了显示器，拆掉了ws1508，删掉了虚拟机里的debian，重置了vps上的debian，把各种线缆绕好再用捆扎带邦好统统放进收纳箱。
+只保留了一台ws1608当作qbit下载机器和samba文件服务器。
+看了下时间，7月22号。
+不玩linux了。</description>
+    </item>
+    
     <item>
       <title>Linux下user is not in the sudoers file问题的解决</title>
       <link>https://ruohai.wang/202307/linux-sudo-previlege-error-fix/</link>

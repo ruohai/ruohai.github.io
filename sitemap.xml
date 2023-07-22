@@ -3,24 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-22T01:52:09+08:00</lastmod>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2023-07-22T01:52:09+08:00</lastmod>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/i-boomed/</loc>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/linux-sudo-previlege-error-fix/</loc>
     <lastmod>2023-07-22T01:52:09+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-22T01:52:09+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2023-07-22T01:52:09+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/wordpress/</loc>
-    <lastmod>2023-07-21T22:10:19+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2023-07-21T22:10:19+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/wordpress-i-nailed-it/</loc>
@@ -33,9 +39,6 @@
     <lastmod>2023-07-21T00:37:06+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/linux-read-only-filesystem-bugfix/</loc>
-    <lastmod>2023-07-19T17:35:02+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
     <lastmod>2023-07-19T17:35:02+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/ws1508-support-usb-hub/</loc>
