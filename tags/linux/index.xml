@@ -6,7 +6,26 @@
     <description>Recent content in Linux on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 21:51:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jul 2023 06:57:22 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux使用dd命令克隆磁盘（制作系统镜像）</title>
+      <link>https://ruohai.wang/202307/linux-use-dd-to-clone-disk/</link>
+      <pubDate>Mon, 24 Jul 2023 06:57:22 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/linux-use-dd-to-clone-disk/</guid>
+      <description>前言 最近经常玩电子垃圾，之前都是刷别人制作好的初始系统镜像img文件，每次刷机都要进行一些基础配置：替换固件中的一些文件、设置账户和密码、改国内源、改ssh配置、装基础软件。
+但因为我经常重刷，每次重刷又要把上面提到的基础配置流程走一遍，少说也要半个小时。重复了一次又一次以后，我肯定要考虑自己制作镜像文件了，类似早年的windows ghost，把完成了基础配置的系统直接做成镜像，下次刷机就不用再无意义的重复了。
+linux下实现这个功能，用dd命令。
+准备工作 目的是备份整个系统盘 假定系统盘是/dev/sda 要另一个u盘或者移动硬盘做备份盘，这里假定备份盘为/dev/sdb。 制作镜像 第一步：插上备份盘，用命令lsblk确认系统盘和备份盘的名称，系统盘为/dev/sda，备份盘为/dev/sdb。
+第二步：挂载备份盘到/mnt
+mount /dev/sdb /mnt 第三步：制作镜像。
+dd if=/dev/sda of=/mnt/sda_bakcup.img 这是最简单的备份方式，不考虑任何其它参数（比如bs和count），就是1:1的备份，如果系统盘是2GB（指整个盘的大小，不是指已使用的空间），那制作出来的镜像也就是2GB。
+如果想制作的镜像是压缩包，减少占用空间，这里以xz格式为例
+dd if=/dev/sda | xz &amp;gt; /mnt/sda_backup.img.xz 更高阶的操作，就是增加bs和count来优化传输数据和镜像大小。
+但我只是简单制作系统备份，暂时觉得不需要优化，就不再多写了。以后有优化需要的时候再来更新。
+😄</description>
+    </item>
+    
     <item>
       <title>Linux下从0开始部署WordPress（一）</title>
       <link>https://ruohai.wang/202307/wordpress-installation-guide/</link>
