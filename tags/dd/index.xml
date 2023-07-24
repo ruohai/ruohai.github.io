@@ -21,9 +21,14 @@ linux下实现这个功能，用dd命令。
 mount /dev/sdb /mnt 第三步：制作镜像。
 dd if=/dev/sda of=/mnt/sda_bakcup.img 这是最简单的备份方式，不考虑任何其它参数（比如bs和count），就是1:1的备份，如果系统盘是2GB（指整个盘的大小，不是指已使用的空间），那制作出来的镜像也就是2GB。
 如果想制作的镜像是压缩包，减少占用空间，这里以xz格式为例
-dd if=/dev/sda | xz &amp;gt; /mnt/sda_backup.img.xz 更高阶的操作，就是增加bs和count来优化传输数据和镜像大小。
-但我只是简单制作系统备份，暂时觉得不需要优化，就不再多写了。以后有优化需要的时候再来更新。
-😄</description>
+dd if=/dev/sda | xz &amp;gt; /mnt/sda_backup.img.xz 更高阶的操作，就是增加bs和count来优化传输速度和镜像大小。
+先看下bs和count的定义：
+bs=bytes：同时设置读入/输出的块大小为bytes个字节，可以分成ibs和obs两个参数分别设定读和写。
+count=blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数
+bs用来设定每次读写的数据量，读取指定数据量为一个块（block）到缓存，然后从缓存把指定的数据量写到备份盘。无论是u盘、hdd还是ssd，一般大文件的连续读写速度都是远远高于小文件的随机读写，所以这个值可以设置的大一些。但也要根据自己的实际情况调整，比如小文件特别多时，可以分开设定读的数据量（ibs）和写的数据量（obs），更好的优化速度。
+count用来设定读取多少个块（block）以后停止读取。如果这个值留空，全盘克隆时，原盘200G，生成的镜像也是200G，所谓1:1复制。但其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定bs=1M，计算以后可得count应该是8192，考虑到空间冗余，可以设定count=9000，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。
+╮(╯▽╰)╭
+参考文章 1： https://www.runoob.com/linux/linux-comm-dd.html</description>
     </item>
     
   </channel>
