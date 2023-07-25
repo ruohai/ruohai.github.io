@@ -23,13 +23,13 @@ dd if=/dev/sda of=/mnt/sda_bakcup.img 这是最简单的备份方式，不考虑
 如果想制作的镜像是压缩包，减少占用空间，这里以xz格式为例
 dd if=/dev/sda | xz &gt; /mnt/sda_backup.img.xz 优化 dd命令可以通过增加-bs和-count来优化传输速度和镜像大小。
 先看下bs和count的定义：
-bs=bytes：同时设置读入/输出的块大小为bytes个字节，可以分成ibs和obs两个参数分别设定读和写。
-count=blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数
+bs=bytes：指block size，用来设定多少了bytes为一个block，系统就以一个block为数据单位进行读取和写入。可以分成ibs和obs两个参数分别设定读和写。
+count=blocks：设定整个dd任务读取多少个blocks的数据。
 bs用来设定每次读写的数据量，读取指定数据量为一个块（block）到缓存，然后从缓存把指定的数据量写到备份盘。无论是u盘、hdd还是ssd，一般大文件的连续读写速度都是远远高于小文件的随机读写，所以这个值可以设置的大一些。但也要根据自己的实际情况调整，比如小文件特别多时，可以分开设定读的数据量（ibs）和写的数据量（obs），更好的优化速度。
-count用来设定读取多少个块（block）以后停止读取。如果这个值留空，全盘克隆时，原盘200G，生成的镜像也是200G，所谓1:1复制。但其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定bs=1M，计算以后可得count应该是8192，考虑到空间冗余，可以设定count=9000，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。
-xz命令可以通过-T增加线程数，默认是1
-增加三个参数以后的例子：
-dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/ws1508-backup-20230724.img.xz ╮(╯▽╰)╭
+count用来设定读取多少个块（block）以后停止读取。如果这个值留空，默认全盘克隆，也就意味着原盘20G，生成的镜像也是20G，原盘如果200G，镜像就是200G，所谓1:1复制。但实际其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定bs=1M，计算以后可得count应该是8192，考虑到空间冗余，可以设定count=9000，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。
+另外还可以整合xz、gzip之类的压缩命令，把镜像生成为压缩包，减少镜像文件的体积。但要注意，压缩需要cpu算力性能的支持，如果cpu性能孱弱（比如我的ws1508），使用xz命令以后会爆炸式的增加dd制作镜像的时间。所以cpu性能弱的就不用考虑整合xz命令。
+xz命令可以通过-T增加线程数，默认是1。 增加三个参数以后的例子：
+dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/backup-20230724.img.xz ╮(╯▽╰)╭
 参考文章 1： https://www.runoob.com/linux/linux-comm-dd.html"/>
 
     <meta property="og:title" content="Linux使用dd命令克隆磁盘（制作系统镜像）" />
@@ -43,13 +43,13 @@ dd if=/dev/sda of=/mnt/sda_bakcup.img 这是最简单的备份方式，不考虑
 如果想制作的镜像是压缩包，减少占用空间，这里以xz格式为例
 dd if=/dev/sda | xz &gt; /mnt/sda_backup.img.xz 优化 dd命令可以通过增加-bs和-count来优化传输速度和镜像大小。
 先看下bs和count的定义：
-bs=bytes：同时设置读入/输出的块大小为bytes个字节，可以分成ibs和obs两个参数分别设定读和写。
-count=blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数
+bs=bytes：指block size，用来设定多少了bytes为一个block，系统就以一个block为数据单位进行读取和写入。可以分成ibs和obs两个参数分别设定读和写。
+count=blocks：设定整个dd任务读取多少个blocks的数据。
 bs用来设定每次读写的数据量，读取指定数据量为一个块（block）到缓存，然后从缓存把指定的数据量写到备份盘。无论是u盘、hdd还是ssd，一般大文件的连续读写速度都是远远高于小文件的随机读写，所以这个值可以设置的大一些。但也要根据自己的实际情况调整，比如小文件特别多时，可以分开设定读的数据量（ibs）和写的数据量（obs），更好的优化速度。
-count用来设定读取多少个块（block）以后停止读取。如果这个值留空，全盘克隆时，原盘200G，生成的镜像也是200G，所谓1:1复制。但其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定bs=1M，计算以后可得count应该是8192，考虑到空间冗余，可以设定count=9000，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。
-xz命令可以通过-T增加线程数，默认是1
-增加三个参数以后的例子：
-dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/ws1508-backup-20230724.img.xz ╮(╯▽╰)╭
+count用来设定读取多少个块（block）以后停止读取。如果这个值留空，默认全盘克隆，也就意味着原盘20G，生成的镜像也是20G，原盘如果200G，镜像就是200G，所谓1:1复制。但实际其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定bs=1M，计算以后可得count应该是8192，考虑到空间冗余，可以设定count=9000，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。
+另外还可以整合xz、gzip之类的压缩命令，把镜像生成为压缩包，减少镜像文件的体积。但要注意，压缩需要cpu算力性能的支持，如果cpu性能孱弱（比如我的ws1508），使用xz命令以后会爆炸式的增加dd制作镜像的时间。所以cpu性能弱的就不用考虑整合xz命令。
+xz命令可以通过-T增加线程数，默认是1。 增加三个参数以后的例子：
+dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/backup-20230724.img.xz ╮(╯▽╰)╭
 参考文章 1： https://www.runoob.com/linux/linux-comm-dd.html" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/linux-use-dd-to-clone-disk/" /><meta property="article:section" content="202307" />
@@ -135,24 +135,28 @@ dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/ws1508-backup-20230724.img.xz
 </code></pre><p>这是最简单的备份方式，不考虑任何其它参数（比如<code>bs</code>和<code>count</code>），就是1:1的备份，如果系统盘是2GB（指整个盘的大小，不是指已使用的空间），那制作出来的镜像也就是2GB。</p>
 <p>如果想制作的镜像是压缩包，减少占用空间，这里以xz格式为例</p>
 <pre tabindex="0"><code>dd if=/dev/sda | xz &gt; /mnt/sda_backup.img.xz
-</code></pre><h2 id="优化">优化</h2>
+</code></pre><hr>
+<h2 id="优化">优化</h2>
 <p><code>dd</code>命令可以通过增加<code>-bs</code>和<code>-count</code>来优化传输速度和镜像大小。</p>
 <p>先看下<code>bs</code>和<code>count</code>的定义：</p>
 <blockquote>
-<p>bs=bytes：同时设置读入/输出的块大小为bytes个字节，可以分成<code>ibs</code>和<code>obs</code>两个参数分别设定读和写。</p>
-<p>count=blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数</p>
+<p>bs=bytes：指block size，用来设定多少了bytes为一个block，系统就以一个block为数据单位进行读取和写入。可以分成<code>ibs</code>和<code>obs</code>两个参数分别设定读和写。</p>
+<p>count=blocks：设定整个<code>dd</code>任务读取多少个blocks的数据。</p>
 </blockquote>
 <ul>
 <li>
 <p><code>bs</code>用来设定每次读写的数据量，读取指定数据量为一个块（block）到缓存，然后从缓存把指定的数据量写到备份盘。无论是u盘、hdd还是ssd，一般大文件的连续读写速度都是远远高于小文件的随机读写，所以这个值可以设置的大一些。但也要根据自己的实际情况调整，比如小文件特别多时，可以分开设定读的数据量（ibs）和写的数据量（obs），更好的优化速度。</p>
 </li>
 <li>
-<p><code>count</code>用来设定读取多少个块（block）以后停止读取。如果这个值留空，全盘克隆时，原盘200G，生成的镜像也是200G，所谓1:1复制。但其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定<code>bs=1M</code>，计算以后可得count应该是8192，考虑到空间冗余，可以设定<code>count=9000</code>，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。</p>
+<p><code>count</code>用来设定读取多少个块（block）以后停止读取。如果这个值留空，默认全盘克隆，也就意味着原盘20G，生成的镜像也是20G，原盘如果200G，镜像就是200G，所谓1:1复制。但实际其实只需要克隆数据就可以了，没有使用的空白空间不需要写到镜像里，比如200G的盘，实际只使用了8GB，假定<code>bs=1M</code>，计算以后可得count应该是8192，考虑到空间冗余，可以设定<code>count=9000</code>，那生成的镜像文件就是9000M，不会出现无意义的空白空间占用镜像体积。</p>
 </li>
 </ul>
-<p><code>xz</code>命令可以通过<code>-T</code>增加线程数，默认是1</p>
+<p>另外还可以整合<code>xz</code>、<code>gzip</code>之类的压缩命令，把镜像生成为压缩包，减少镜像文件的体积。但要注意，压缩需要cpu算力性能的支持，如果cpu性能孱弱（比如我的ws1508），使用<code>xz</code>命令以后会爆炸式的增加<code>dd</code>制作镜像的时间。所以cpu性能弱的就不用考虑整合<code>xz</code>命令。</p>
+<ul>
+<li><code>xz</code>命令可以通过<code>-T</code>增加线程数，默认是1。</li>
+</ul>
 <p>增加三个参数以后的例子：</p>
-<pre tabindex="0"><code>dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/ws1508-backup-20230724.img.xz
+<pre tabindex="0"><code>dd bs=1M count=1400 if=/dev/sda | xz -T3 &gt; /mnt/backup-20230724.img.xz
 </code></pre><p>╮(╯▽╰)╭</p>
 <hr>
 <h2 id="参考文章">参考文章</h2>
