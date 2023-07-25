@@ -109,6 +109,7 @@
       <h2 id="前言">前言</h2>
 <p>久闻vscode插件remote-ssh的大名，很多人用这个组合来进行远程开发。但作为一个水货前java web程序员，我之前并没有兴趣去了解它，一个是因为vscode做java web的ide功能太孱弱，另一个是我当时的工作并不需要我随时oncall上线写代码改bug。</p>
 <p>但最近我不是闲下来了嘛，而且经常在用linux，正好有机会可以了解一些错过的热点。</p>
+<hr>
 <h2 id="配置">配置</h2>
 <p>首先当然是在vscode里安装remote-ssh插件了。没啥难度，在扩展商店里搜remote-ssh，排第一那个插件，安装！排在后面的remote-explorer之类插件不用管，等需要的时候vscode会自己安装。</p>
 <p><img src="https://img1.imgtp.com/2023/07/23/cM70ZN5R.png" alt="1690051050045.png"></p>
@@ -145,6 +146,7 @@
 <li>选完文件夹之后（我这里直接选了根目录<code>/</code>），然后就可以把这个远程目录在vscode中当作本地文件夹来使用了。</li>
 </ol>
 <p><img src="https://img1.imgtp.com/2023/07/23/Eg1yW9He.png" alt="1690052295162.png"></p>
+<hr>
 <h2 id="后记">后记</h2>
 <p>没有体验之前，一直不明白很多人夸赞的vscode + remote-ssh具体是干嘛用的，到底是怎么个远程开发法。今天完成了安装配置和使用，终于明白了，它就是类似用ssh协议把远程主机的指定目录映射到本地当作本地文件夹使用，就像smb/samba和webdav，只是限定了文件管理器和ide都是vscode。它甚至可以直接映射远程linux主机的根目录<code>/</code>。所谓远程开发，也就是本地vscode + 远程主机上的项目文件。</p>
 <p>那我想，有没有可能，就不限制于vscode和remote-ssh，而是和smb/samba、webdav一样，通过ssh协议，真的把远程目录映射到本地，作为一个本地文件夹使用，这样的话，ide就可以随便选了。</p>
