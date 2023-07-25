@@ -6,7 +6,23 @@
     <description>Recent content in udevil on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 15 Jul 2023 02:49:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/udevil/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jul 2023 21:06:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/udevil/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下udevil无法自动挂载exfat格式U盘的问题解决</title>
+      <link>https://ruohai.wang/202307/udevil-doesnt-amount-exfat-bugfix/</link>
+      <pubDate>Tue, 25 Jul 2023 21:06:10 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/udevil-doesnt-amount-exfat-bugfix/</guid>
+      <description>前言 之前文章提到过，我在linux下用来实现u盘、移动硬盘自动挂载的方案是udevil。这个方案的好处是安装了udevil以后，几乎是0配置，随便插任何u盘、移动硬盘都可以自动挂载。而且udevil的软件包依赖关系非常简单，不会出现本体击败kb但是需要几个mb的依赖包。
+但是今天碰到了一个bug，就是udevil无法自动挂载exfat格式的u盘，换ext4、ntfs都正常，只有exfat不行。
+照例上网搜解决方案，最后在官方repo的issue里找到了解决方案。
+bugfix 先贴上两个解决方案的链接：
+Udevil dont mount usb-stick (exfat fs) with linux kernel 5.5.3 udevil doesn&amp;rsquo;t mount exfat media 可以留意到其中一个issue的发布时间是2014年，也就是从2014至今，快10年的时间了，这个bug都没有修复。
+解决方案就是编辑udevil的配置文件，路径/etc/udevil/udevil.conf，找到default options的配置块，其中有一条default_options_exfat记录，把这条记录中的noempty参数删掉，然后重启udevil服务即可。
+修改完以后重启udevil服务。注意命令中的jack改成自己linux系统的用户账户名。
+systemctl restart devmon@jack.service </description>
+    </item>
+    
     <item>
       <title>Linux下实现USB设备自动挂载</title>
       <link>https://ruohai.wang/202307/linux-auto-mount-usb-storage/</link>
