@@ -624,14 +624,17 @@ qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:808
     
     <item>
       <title>Linux下自定义主机名称（hostname）</title>
-      <link>https://ruohai.wang/202307/change-hostname/</link>
+      <link>https://ruohai.wang/202307/linux-change-hostname/</link>
       <pubDate>Fri, 14 Jul 2023 23:28:48 +0800</pubDate>
       
-      <guid>https://ruohai.wang/202307/change-hostname/</guid>
+      <guid>https://ruohai.wang/202307/linux-change-hostname/</guid>
       <description>查看当前的主机名
 hostname 或者
-hostnamectl 图方便可以用一条命令修改，这条命令修改的是/etc/hostname文件。退出重新登录以后就可以看到是新的主机名
-hostnamectl set-hostname [newname] 严谨一些可以修改/etc/hosts，但上面这个操作后我的目的已经完成，所以这里不做记录。😄</description>
+hostnamectl 假定我想把hostname修改为WS1508，也就是硬件的型号。
+修改hostname需要改两个文件，第一个/etc/hostname，可以用一条命令搞定，或者手动编辑。
+hostnamectl set-hostname WS1508 第二个地方修改的文件是/etc/hosts，这里需要手动编辑。
+nano /etc/hosts 示意图,ipv4和ipv6两个ip后面都需要改成WS1508，保存退出
+退出重新登录以后就可以看到是新的主机名。</description>
     </item>
     
     <item>
