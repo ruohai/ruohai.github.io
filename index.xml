@@ -13,7 +13,7 @@
       <pubDate>Wed, 26 Jul 2023 13:25:45 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/linux-ufw-setup/</guid>
-      <description>前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。
+      <description>前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。而且每次新增规则、删除规则，也不需要在一次次重载。使用体验上比firewalld不知道高到哪里去了。😄
 ufw是ubuntu默认的防火墙方案，用来简化iptables的配置。
 如果只是用防火墙的基础功能，可以试试ufw。
 使用 第一步就是安装了，没法难度，一条命令搞定

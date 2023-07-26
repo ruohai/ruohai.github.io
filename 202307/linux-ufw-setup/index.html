@@ -13,7 +13,7 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux下UFW的简单配置和使用"/>
-<meta name="twitter:description" content="前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。
+<meta name="twitter:description" content="前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。而且每次新增规则、删除规则，也不需要在一次次重载。使用体验上比firewalld不知道高到哪里去了。😄
 ufw是ubuntu默认的防火墙方案，用来简化iptables的配置。
 如果只是用防火墙的基础功能，可以试试ufw。
 使用 第一步就是安装了，没法难度，一条命令搞定
@@ -27,7 +27,7 @@ ufw allow samba 删除已经添加的规则。有两个办法，第一步是获�
 ufw delete allow 80/tcp 高阶功能 更多高阶使用方法，可以查看ubuntu官方的帮助手册，→ https://help.ubuntu.com/community/UFW"/>
 
     <meta property="og:title" content="Linux下UFW的简单配置和使用" />
-<meta property="og:description" content="前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。
+<meta property="og:description" content="前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。而且每次新增规则、删除规则，也不需要在一次次重载。使用体验上比firewalld不知道高到哪里去了。😄
 ufw是ubuntu默认的防火墙方案，用来简化iptables的配置。
 如果只是用防火墙的基础功能，可以试试ufw。
 使用 第一步就是安装了，没法难度，一条命令搞定
@@ -103,7 +103,7 @@ ufw delete allow 80/tcp 高阶功能 更多高阶使用方法，可以查看ubun
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>之前在armbian上用的防火墙是<code>firewalld</code>，基础使用挺方便的。但后来发现另一个防火墙软件，<code>ufw</code>，使用更简单更方便，至少命令行就简短了一大截。</p>
+<p>之前在armbian上用的防火墙是<code>firewalld</code>，基础使用挺方便的。但后来发现另一个防火墙软件，<code>ufw</code>，使用更简单更方便，至少命令行就简短了一大截。而且每次新增规则、删除规则，也不需要在一次次重载。使用体验上比<code>firewalld</code>不知道高到哪里去了。😄</p>
 <p><code>ufw</code>是ubuntu默认的防火墙方案，用来简化<code>iptables</code>的配置。</p>
 <p>如果只是用防火墙的基础功能，可以试试<code>ufw</code>。</p>
 <hr>
@@ -128,7 +128,8 @@ ufw delete 4
 </code></pre><p><img src="https://img1.imgtp.com/2023/07/26/keh4Yr4f.png" alt="1690350391208.png"></p>
 <p>第二种删除已有规则的方法就比较简单。假定当前有个规则是<code>allow 80/tcp</code>，直接delete即可。</p>
 <pre tabindex="0"><code>ufw delete allow 80/tcp
-</code></pre><h2 id="高阶功能">高阶功能</h2>
+</code></pre><hr>
+<h2 id="高阶功能">高阶功能</h2>
 <p>更多高阶使用方法，可以查看ubuntu官方的帮助手册，→  <a href="https://help.ubuntu.com/community/UFW">https://help.ubuntu.com/community/UFW</a></p>
 
     </div>
