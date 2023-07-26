@@ -6,7 +6,27 @@
     <description>Recent content in Linux on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 25 Jul 2023 21:06:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jul 2023 13:25:45 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下UFW的简单配置和使用</title>
+      <link>https://ruohai.wang/202307/linux-ufw-setup/</link>
+      <pubDate>Wed, 26 Jul 2023 13:25:45 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/linux-ufw-setup/</guid>
+      <description>前言 之前在armbian上用的防火墙是firewalld，基础使用挺方便的。但后来发现另一个防火墙软件，ufw，使用更简单更方便，至少命令行就简短了一大截。
+ufw是ubuntu默认的防火墙方案，用来简化iptables的配置。
+如果只是用防火墙的基础功能，可以试试ufw。
+使用 第一步就是安装了，没法难度，一条命令搞定
+apt install ufw 安装好以后，查看启用状态。ufw默认是不启用的。
+ufw status 启用ufw。ufw启用以后，默认放行所有出的流量，但拒绝所有进的流量。所以在启用以后，千万不要着急退出终端，务必要留意放行ssh服务，但ssh默认规则是22端口，如果是自定义的ssh端口，则需要放行指定端口。
+ufw enable 放行端口，不指定协议的话默认tcp + udp
+ufw allow 12345 放行端口并指定tcp协议
+ufw allow 23456/tcp 放行服务
+ufw allow samba 删除已经添加的规则。有两个办法，第一步是获取规则的数字编号，然后删除指定编号的规则。注意这里删除编号，每次删除一个以后，剩下的规则会重新排序，编号会变，所以每次删之前都要重新获取最新的数字编号。
+# 查看规则的编号 ufw status numbered # 删除指定编号的规则 ufw delete 4 第二种删除已有规则的方法就比较简单。假定当前有个规则是allow 80/tcp，直接delete即可。
+ufw delete allow 80/tcp 高阶功能 更多高阶使用方法，可以查看ubuntu官方的帮助手册，→ https://help.ubuntu.com/community/UFW</description>
+    </item>
+    
     <item>
       <title>Linux下udevil无法自动挂载exfat格式U盘的问题解决</title>
       <link>https://ruohai.wang/202307/udevil-doesnt-amount-exfat-bugfix/</link>

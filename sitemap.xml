@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-25T21:06:10+08:00</lastmod>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2023-07-25T21:06:10+08:00</lastmod>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/linux-ufw-setup/</loc>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/ufw/</loc>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-26T13:25:45+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/udevil-doesnt-amount-exfat-bugfix/</loc>
     <lastmod>2023-07-25T21:06:10+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-25T21:06:10+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/udevil/</loc>
-    <lastmod>2023-07-25T21:06:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-25T21:06:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/dd/</loc>
@@ -224,7 +230,7 @@
     <loc>https://ruohai.wang/202307/add-alias/</loc>
     <lastmod>2023-07-14T23:14:36+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/202307/wky-fireware-share/</loc>
+    <loc>https://ruohai.wang/202307/wky-firmware-share/</loc>
     <lastmod>2023-07-14T23:07:44+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/filebrowser-setup/</loc>
