@@ -23,7 +23,7 @@ bilibili官网就提供了【嵌入代码】，但实测不是简单的直接复
 &amp;lt;div style=&amp;#34;position:relative; padding-bottom:75%; width:100%; height:0&amp;#34;&amp;gt; &amp;lt;iframe src=&amp;#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;#34; scrolling=&amp;#34;no&amp;#34; border=&amp;#34;0&amp;#34; frameborder=&amp;#34;no&amp;#34; framespacing=&amp;#34;0&amp;#34; allowfullscreen=&amp;#34;true&amp;#34; style=&amp;#34;position:absolute; height: 100%; width: 100%;&amp;#34;&amp;gt; &amp;lt;/iframe&amp;gt; &amp;lt;/div&amp;gt; 然后在博客的markdown文件的内容中插入视频：
 {{&amp;lt; bilibili BV号 &amp;gt;}} 或 {{&amp;lt; bilibili BV号 选集号 &amp;gt;}}
 到此，就实现在markdown/静态页面中嵌入视频代码了。
-方案二：直接插入html代码 bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制。
+方案二：直接插入html代码 bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制粘贴到markdown页面。
 复制出来的代码如下：
 &amp;lt;iframe src=&amp;#34;//player.bilibili.com/player.html?aid=530985056&amp;amp;bvid=BV1Gu411L7iR&amp;amp;cid=1197648479&amp;amp;page=1&amp;#34; scrolling=&amp;#34;no&amp;#34; border=&amp;#34;0&amp;#34; frameborder=&amp;#34;no&amp;#34; framespacing=&amp;#34;0&amp;#34; allowfullscreen=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;/iframe&amp;gt; 但这段代码默认不会渲染成html，需要修改hugo的安全设置。
 编辑config.toml（新的hugo版本配置文件应该是hugo.toml），添加如下内容。
