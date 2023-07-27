@@ -29,11 +29,12 @@ location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set
       <pubDate>Fri, 14 Jul 2023 23:35:17 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-qbit/</guid>
-      <description>debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
+      <description>安装 debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
 apt install qbittorrent-nox 安装完成后，直接用守护线程模式启动。
 qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，就可以开始使用了。
-也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
-第一步：在/etc/systemd/system/目录下新建文件qbittorrent.service，把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，需要根据自己的情况修改。
+配置 也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
+第一步：添加配置文件
+nano /etc/systemd/system/qbittorrent.service 把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，涉及到一切文件权限之类。如果实在搞不清就填root，或者直接删掉User一栏。全局用root可以帮你省去很多关于权限、用户、组之类的烦恼，但也要意识到它潜在的风险。
 [Unit] Description=qBittorrent Daemon Service After=network.target [Service] User=Jack ExecStart=/usr/bin/qbittorrent-nox ExecStop=/usr/bin/killall -w qbittorrent-nox [Install] WantedBy=multi-user.target 第二部：添加systemd服务的三条命令。
 # 服务重载 systemctl daemon-reload # 启动服务(如果已经启动qbit，这一步可以跳过） systemctl start qbittorrent.service # 添加为开机自启 systemctl enable qbittorrent.service </description>
     </item>

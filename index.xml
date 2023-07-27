@@ -6,7 +6,31 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 27 Jul 2023 19:30:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jul 2023 21:28:20 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo实现插入Bilibili的视频</title>
+      <link>https://ruohai.wang/202307/hugo-add-bilibili-video-support/</link>
+      <pubDate>Thu, 27 Jul 2023 21:28:20 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/hugo-add-bilibili-video-support/</guid>
+      <description>前言 hugo博客想要插入视频，肯定是和图片一样的模式，先把视频上传到第三方视频网站（youtube、bilibili），然后通过嵌入代码的形式实现在博客内展示。
+bilibili官网就提供了【嵌入代码】，但实测不是简单的直接复制粘贴就可以。
+找到了两个方案，我实测以后，通过hugo的shortcodes功能实现的方式比较好，一劳永逸，而且也不用改安全设置。
+我推荐方案一。
+方案一：shortcodes shortcodes方案原理类似创建代码模板，然后页面直接调用模板来实现视频嵌入。
+在博客的根目录的layouts目录下新建shortcodes目录，然后新建文件bilibili.html。实际路径是/layouts/shortcodes/bilibili.html。
+在bilibili.html中添加如下内容：
+&amp;lt;div style=&amp;#34;position:relative; padding-bottom:75%; width:100%; height:0&amp;#34;&amp;gt; &amp;lt;iframe src=&amp;#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;#34; scrolling=&amp;#34;no&amp;#34; border=&amp;#34;0&amp;#34; frameborder=&amp;#34;no&amp;#34; framespacing=&amp;#34;0&amp;#34; allowfullscreen=&amp;#34;true&amp;#34; style=&amp;#34;position:absolute; height: 100%; width: 100%;&amp;#34;&amp;gt; &amp;lt;/iframe&amp;gt; &amp;lt;/div&amp;gt; 然后在博客的markdown文件的内容中插入视频：
+{{&amp;lt; bilibili BV号 &amp;gt;}} 或 {{&amp;lt; bilibili BV号 选集号 &amp;gt;}}
+到此，就实现在markdown/静态页面中嵌入视频代码了。
+方案二：直接插入html代码 bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制。
+复制出来的代码如下：
+&amp;lt;iframe src=&amp;#34;//player.bilibili.com/player.html?aid=530985056&amp;amp;bvid=BV1Gu411L7iR&amp;amp;cid=1197648479&amp;amp;page=1&amp;#34; scrolling=&amp;#34;no&amp;#34; border=&amp;#34;0&amp;#34; frameborder=&amp;#34;no&amp;#34; framespacing=&amp;#34;0&amp;#34; allowfullscreen=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;/iframe&amp;gt; 但这段代码默认不会渲染成html，需要修改hugo的安全设置。
+编辑config.toml（新的hugo版本配置文件应该是hugo.toml），添加如下内容。
+[markup] [markup.goldmark] [markup.goldmark.renderer] unsafe = true 现在就可以看到视频嵌入成功了。但是b站默认的视频嵌入代码可能展示的样式不太好看，可以参考方案一中的代码自行调整。
+参考文章 youtube/vimeo/bilibili/西瓜的视频嵌入方式：【在 gohugo 中如何嵌入视频 】 bilibili的视频嵌入方式：【利用hugo的短代码功能插入b站视频并且自适应】 </description>
+    </item>
+    
     <item>
       <title>今天吃鸭！</title>
       <link>https://ruohai.wang/202307/%E4%BB%8A%E5%A4%A9%E5%90%83%E9%B8%AD/</link>
@@ -297,7 +321,7 @@ apt install samba 安装完成后，可以执行systemctl status smbd看下服�
       <description>用nginx给ttyd实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。
 很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。
 网上搜了一下解决方案，根据【这个页面】和【这个页面】上的两个解答，需要对nginx的配置内容稍微修改。
-注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} </description>
+注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {proxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;proxy_pass http://localhost:4533;}} </description>
     </item>
     
     <item>
@@ -644,11 +668,12 @@ sysmtectl restart sshd </description>
       <pubDate>Fri, 14 Jul 2023 23:35:17 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-qbit/</guid>
-      <description>debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
+      <description>安装 debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
 apt install qbittorrent-nox 安装完成后，直接用守护线程模式启动。
 qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，就可以开始使用了。
-也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
-第一步：在/etc/systemd/system/目录下新建文件qbittorrent.service，把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，需要根据自己的情况修改。
+配置 也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
+第一步：添加配置文件
+nano /etc/systemd/system/qbittorrent.service 把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，涉及到一切文件权限之类。如果实在搞不清就填root，或者直接删掉User一栏。全局用root可以帮你省去很多关于权限、用户、组之类的烦恼，但也要意识到它潜在的风险。
 [Unit] Description=qBittorrent Daemon Service After=network.target [Service] User=Jack ExecStart=/usr/bin/qbittorrent-nox ExecStop=/usr/bin/killall -w qbittorrent-nox [Install] WantedBy=multi-user.target 第二部：添加systemd服务的三条命令。
 # 服务重载 systemctl daemon-reload # 启动服务(如果已经启动qbit，这一步可以跳过） systemctl start qbittorrent.service # 添加为开机自启 systemctl enable qbittorrent.service </description>
     </item>

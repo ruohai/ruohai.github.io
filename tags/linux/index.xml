@@ -243,7 +243,7 @@ apt install samba 安装完成后，可以执行systemctl status smbd看下服�
       <description>用nginx给ttyd实现https访问，99%的设置都和【Linux下用Nginx给File Browser设置SSL开启HTTPS访问】一样，直接照搬即可。但如果完全照搬，会发现https下登录ttyd以后，页面全黑，有一个浮窗显示【press enter to reconnect】，没有光标，也没有命令提示符。
 很容易就明白出现这个问题是因为ttyd使用的是websocket协议，通过nginx代理转发以后出现了bug。
 网上搜了一下解决方案，根据【这个页面】和【这个页面】上的两个解答，需要对nginx的配置内容稍微修改。
-注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} </description>
+注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {proxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;proxy_pass http://localhost:4533;}} </description>
     </item>
     
     <item>
@@ -504,11 +504,12 @@ sysmtectl restart sshd </description>
       <pubDate>Fri, 14 Jul 2023 23:35:17 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-qbit/</guid>
-      <description>debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
+      <description>安装 debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
 apt install qbittorrent-nox 安装完成后，直接用守护线程模式启动。
 qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，就可以开始使用了。
-也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
-第一步：在/etc/systemd/system/目录下新建文件qbittorrent.service，把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，需要根据自己的情况修改。
+配置 也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
+第一步：添加配置文件
+nano /etc/systemd/system/qbittorrent.service 把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，涉及到一切文件权限之类。如果实在搞不清就填root，或者直接删掉User一栏。全局用root可以帮你省去很多关于权限、用户、组之类的烦恼，但也要意识到它潜在的风险。
 [Unit] Description=qBittorrent Daemon Service After=network.target [Service] User=Jack ExecStart=/usr/bin/qbittorrent-nox ExecStop=/usr/bin/killall -w qbittorrent-nox [Install] WantedBy=multi-user.target 第二部：添加systemd服务的三条命令。
 # 服务重载 systemctl daemon-reload # 启动服务(如果已经启动qbit，这一步可以跳过） systemctl start qbittorrent.service # 添加为开机自启 systemctl enable qbittorrent.service </description>
     </item>

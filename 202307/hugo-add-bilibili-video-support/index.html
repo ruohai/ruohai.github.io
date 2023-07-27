@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Hugo实现插入Bilibili的视频 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hugo实现插入Bilibili的视频"/>
+<meta name="twitter:description" content="前言 hugo博客想要插入视频，肯定是和图片一样的模式，先把视频上传到第三方视频网站（youtube、bilibili），然后通过嵌入代码的形式实现在博客内展示。
+bilibili官网就提供了【嵌入代码】，但实测不是简单的直接复制粘贴就可以。
+找到了两个方案，我实测以后，通过hugo的shortcodes功能实现的方式比较好，一劳永逸，而且也不用改安全设置。
+我推荐方案一。
+方案一：shortcodes shortcodes方案原理类似创建代码模板，然后页面直接调用模板来实现视频嵌入。
+在博客的根目录的layouts目录下新建shortcodes目录，然后新建文件bilibili.html。实际路径是/layouts/shortcodes/bilibili.html。
+在bilibili.html中添加如下内容：
+&lt;div style=&#34;position:relative; padding-bottom:75%; width:100%; height:0&#34;&gt; &lt;iframe src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; style=&#34;position:absolute; height: 100%; width: 100%;&#34;&gt; &lt;/iframe&gt; &lt;/div&gt; 然后在博客的markdown文件的内容中插入视频：
+{{&lt; bilibili BV号 &gt;}} 或 {{&lt; bilibili BV号 选集号 &gt;}}
+到此，就实现在markdown/静态页面中嵌入视频代码了。
+方案二：直接插入html代码 bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制。
+复制出来的代码如下：
+&lt;iframe src=&#34;//player.bilibili.com/player.html?aid=530985056&amp;bvid=BV1Gu411L7iR&amp;cid=1197648479&amp;page=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34;&gt; &lt;/iframe&gt; 但这段代码默认不会渲染成html，需要修改hugo的安全设置。
+编辑config.toml（新的hugo版本配置文件应该是hugo.toml），添加如下内容。
+[markup] [markup.goldmark] [markup.goldmark.renderer] unsafe = true 现在就可以看到视频嵌入成功了。但是b站默认的视频嵌入代码可能展示的样式不太好看，可以参考方案一中的代码自行调整。
+参考文章 youtube/vimeo/bilibili/西瓜的视频嵌入方式：【在 gohugo 中如何嵌入视频 】 bilibili的视频嵌入方式：【利用hugo的短代码功能插入b站视频并且自适应】 "/>
+
+    <meta property="og:title" content="Hugo实现插入Bilibili的视频" />
+<meta property="og:description" content="前言 hugo博客想要插入视频，肯定是和图片一样的模式，先把视频上传到第三方视频网站（youtube、bilibili），然后通过嵌入代码的形式实现在博客内展示。
+bilibili官网就提供了【嵌入代码】，但实测不是简单的直接复制粘贴就可以。
+找到了两个方案，我实测以后，通过hugo的shortcodes功能实现的方式比较好，一劳永逸，而且也不用改安全设置。
+我推荐方案一。
+方案一：shortcodes shortcodes方案原理类似创建代码模板，然后页面直接调用模板来实现视频嵌入。
+在博客的根目录的layouts目录下新建shortcodes目录，然后新建文件bilibili.html。实际路径是/layouts/shortcodes/bilibili.html。
+在bilibili.html中添加如下内容：
+&lt;div style=&#34;position:relative; padding-bottom:75%; width:100%; height:0&#34;&gt; &lt;iframe src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; style=&#34;position:absolute; height: 100%; width: 100%;&#34;&gt; &lt;/iframe&gt; &lt;/div&gt; 然后在博客的markdown文件的内容中插入视频：
+{{&lt; bilibili BV号 &gt;}} 或 {{&lt; bilibili BV号 选集号 &gt;}}
+到此，就实现在markdown/静态页面中嵌入视频代码了。
+方案二：直接插入html代码 bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制。
+复制出来的代码如下：
+&lt;iframe src=&#34;//player.bilibili.com/player.html?aid=530985056&amp;bvid=BV1Gu411L7iR&amp;cid=1197648479&amp;page=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34;&gt; &lt;/iframe&gt; 但这段代码默认不会渲染成html，需要修改hugo的安全设置。
+编辑config.toml（新的hugo版本配置文件应该是hugo.toml），添加如下内容。
+[markup] [markup.goldmark] [markup.goldmark.renderer] unsafe = true 现在就可以看到视频嵌入成功了。但是b站默认的视频嵌入代码可能展示的样式不太好看，可以参考方案一中的代码自行调整。
+参考文章 youtube/vimeo/bilibili/西瓜的视频嵌入方式：【在 gohugo 中如何嵌入视频 】 bilibili的视频嵌入方式：【利用hugo的短代码功能插入b站视频并且自适应】 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/hugo-add-bilibili-video-support/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-27T21:28:20+08:00" />
+<meta property="article:modified_time" content="2023-07-27T21:28:20+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Hugo实现插入Bilibili的视频</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 27, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/hugo/">Hugo</a>
+              <a class="tag" href="https://ruohai.wang/tags/bilibili/">Bilibili</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>hugo博客想要插入视频，肯定是和图片一样的模式，先把视频上传到第三方视频网站（youtube、bilibili），然后通过嵌入代码的形式实现在博客内展示。</p>
+<p>bilibili官网就提供了【嵌入代码】，但实测不是简单的直接复制粘贴就可以。</p>
+<p>找到了两个方案，我实测以后，通过hugo的shortcodes功能实现的方式比较好，一劳永逸，而且也不用改安全设置。</p>
+<p>我推荐方案一。</p>
+<hr>
+<h2 id="方案一shortcodes">方案一：shortcodes</h2>
+<p>shortcodes方案原理类似创建代码模板，然后页面直接调用模板来实现视频嵌入。</p>
+<p>在博客的根目录的<code>layouts</code>目录下新建<code>shortcodes</code>目录，然后新建文件<code>bilibili.html</code>。实际路径是<code>/layouts/shortcodes/bilibili.html</code>。</p>
+<p>在<code>bilibili.html</code>中添加如下内容：</p>
+<pre tabindex="0"><code>&lt;div style=&#34;position:relative; padding-bottom:75%; width:100%; height:0&#34;&gt;
+    &lt;iframe
+        src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&#34;
+        scrolling=&#34;no&#34;
+        border=&#34;0&#34;
+        frameborder=&#34;no&#34;
+        framespacing=&#34;0&#34;
+        allowfullscreen=&#34;true&#34;
+        style=&#34;position:absolute; height: 100%; width: 100%;&#34;&gt;
+    &lt;/iframe&gt;
+&lt;/div&gt; 
+</code></pre><p>然后在博客的markdown文件的内容中插入视频：</p>
+<blockquote>
+<p>{{&lt; bilibili BV号 &gt;}} 或 {{&lt; bilibili BV号 选集号 &gt;}}</p>
+</blockquote>
+<p>到此，就实现在markdown/静态页面中嵌入视频代码了。</p>
+<hr>
+<h2 id="方案二直接插入html代码">方案二：直接插入html代码</h2>
+<p>bilibili的每个视频下方的分享方式里都提供了嵌入代码，直接复制。</p>
+<p><img src="https://img1.imgtp.com/2023/07/27/Oabo2Wxi.png" alt="1690466175054.png"></p>
+<p>复制出来的代码如下：</p>
+<pre tabindex="0"><code>&lt;iframe 
+    src=&#34;//player.bilibili.com/player.html?aid=530985056&amp;bvid=BV1Gu411L7iR&amp;cid=1197648479&amp;page=1&#34; 
+    scrolling=&#34;no&#34; 
+    border=&#34;0&#34; 
+    frameborder=&#34;no&#34; 
+    framespacing=&#34;0&#34; 
+    allowfullscreen=&#34;true&#34;&gt; 
+&lt;/iframe&gt;
+</code></pre><p>但这段代码默认不会渲染成html，需要修改hugo的安全设置。</p>
+<p>编辑<code>config.toml</code>（新的hugo版本配置文件应该是<code>hugo.toml</code>），添加如下内容。</p>
+<pre tabindex="0"><code>[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+</code></pre><p>现在就可以看到视频嵌入成功了。但是b站默认的视频嵌入代码可能展示的样式不太好看，可以参考方案一中的代码自行调整。</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li>youtube/vimeo/bilibili/西瓜的视频嵌入方式：【<a href="https://youwu.today/skill/hugo/how-to-embed-video-in-hugo-template/">在 gohugo 中如何嵌入视频</a> 】</li>
+<li>bilibili的视频嵌入方式：【<a href="https://www.bilibili.com/read/cv15198621/">利用hugo的短代码功能插入b站视频并且自适应</a>】</li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
