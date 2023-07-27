@@ -6,7 +6,27 @@
     <description>Recent content in WordPress on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 21:51:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 06:36:23 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下从0开始部署WordPress（二）</title>
+      <link>https://ruohai.wang/202307/wordpress-installation-guide-2/</link>
+      <pubDate>Fri, 28 Jul 2023 06:36:23 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/wordpress-installation-guide-2/</guid>
+      <description>前言 上篇文章链接：Linux下从0开始部署WordPress（一）
+上篇说到了apache2的安装与配置，一直想着继续完成wordpress的教程，但拖延症发作，😄
+复习一下wordpress的安装步骤：
+有一台主机或vps（系统选linux，这里以debian为例） 安装web server(选apache2) 安装数据库（选mariadb） 安装php 配置wordpress 这篇就写一下安装数据库吧！
+安装数据库 wordpress官方对数据库的要求：
+MySQL5.7或更高版本 MariaDB 10.3或更高版本。
+sun公司自从被oracle收购以后，原来sun公司旗下的产品都变成了oracle公司的资产，开源社区对oracle也是唯恐避之不及，现在debian仓库里连mysql都没有了。我不想去下安装包，所以这里数据库方案选择用mariadb。
+一键安装
+apt install mariadb-server 安装完成后，先用数据库自带的mysql_secure_installation进行简单的安全加固。执行下面这个命令，接下去会出现6个交互对话，需要选择yes/no。
+mysql_secure_installation 第一个问题：是否切换到unix_socket认证。这里指mariadb的root账户身份认证是用密码还是unix_socket。unix_socket在简中互联网上几乎搜索不到什么有用的资料，出问题了不好解决，所以选n，用密码认证。
+Setting the root password or using the unix_socket ensures that nobody can log into the MariaDB root user without the proper authorisation. You already have your root account protected, so you can safely answer &amp;#39;n&amp;#39;. Switch to unix_socket authentication [Y/n] 第二个问题：是否修改root账户的密码。毫无疑问这里选Y。然后就是设置root账户的新密码了。
+Change the root password? [Y/n] 第三个问题：是否移除匿名用户。选Y</description>
+    </item>
+    
     <item>
       <title>Linux下从0开始部署WordPress（一）</title>
       <link>https://ruohai.wang/202307/wordpress-installation-guide/</link>

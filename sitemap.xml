@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-28T03:09:16+08:00</lastmod>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/wordpress-installation-guide-2/</loc>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/wordpress/</loc>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/dd/</loc>
     <lastmod>2023-07-28T03:09:16+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2023-07-28T03:09:16+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202307/linux-disk-io-speed-test/</loc>
-    <lastmod>2023-07-28T03:09:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-28T03:09:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-28T03:09:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/iperf3/</loc>
@@ -72,9 +78,6 @@
     <lastmod>2023-07-23T02:29:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/wordpress-installation-guide/</loc>
-    <lastmod>2023-07-22T21:51:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/wordpress/</loc>
     <lastmod>2023-07-22T21:51:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/i-boomed/</loc>

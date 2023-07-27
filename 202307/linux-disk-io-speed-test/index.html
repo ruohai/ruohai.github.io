@@ -99,6 +99,7 @@ dd if=/home/jack/testfile of=/dev/null iflag=direct 测速结果如下：
       <h2 id="前言">前言</h2>
 <p>linux想要对磁盘进行测速，有几个方案，比如<code>hdparm</code>、<code>fio</code>，还有最简单的<code>dd</code>。</p>
 <p>因为另外俩软件都要安装，而且我对测速结果的精度要求也不高，本着<code>less is more</code>原则，这里就用系统自带的<code>dd</code>来进行测试。</p>
+<hr>
 <h2 id="测速">测速</h2>
 <p>开头先定义（解释）一下<code>/dev/zero</code>和<code>/dev/null</code>这俩设备。这俩官方名称叫伪设备，或者空设备，只用来做一些特殊用途。比如这里就用它俩来测磁盘的io性能。</p>
 <ul>
@@ -119,6 +120,7 @@ dd if=/home/jack/testfile of=/dev/null iflag=direct 测速结果如下：
 <pre tabindex="0"><code>dd if=/home/jack/testfile of=/dev/null iflag=direct
 </code></pre><p>测速结果如下：</p>
 <p><img src="https://img1.imgtp.com/2023/07/28/mTiPwFTZ.png" alt="1690487258987.png"></p>
+<hr>
 <h2 id="参考文章">参考文章</h2>
 <ol>
 <li>Linux如何查看与测试磁盘IO性能：https://www.cnblogs.com/mauricewei/p/10502539.html</li>

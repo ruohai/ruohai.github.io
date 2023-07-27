@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Linux下从0开始部署WordPress（二） // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下从0开始部署WordPress（二）"/>
+<meta name="twitter:description" content="前言 上篇文章链接：Linux下从0开始部署WordPress（一）
+上篇说到了apache2的安装与配置，一直想着继续完成wordpress的教程，但拖延症发作，😄
+复习一下wordpress的安装步骤：
+有一台主机或vps（系统选linux，这里以debian为例） 安装web server(选apache2) 安装数据库（选mariadb） 安装php 配置wordpress 这篇就写一下安装数据库吧！
+安装数据库 wordpress官方对数据库的要求：
+MySQL5.7或更高版本 MariaDB 10.3或更高版本。
+sun公司自从被oracle收购以后，原来sun公司旗下的产品都变成了oracle公司的资产，开源社区对oracle也是唯恐避之不及，现在debian仓库里连mysql都没有了。我不想去下安装包，所以这里数据库方案选择用mariadb。
+一键安装
+apt install mariadb-server 安装完成后，先用数据库自带的mysql_secure_installation进行简单的安全加固。执行下面这个命令，接下去会出现6个交互对话，需要选择yes/no。
+mysql_secure_installation 第一个问题：是否切换到unix_socket认证。这里指mariadb的root账户身份认证是用密码还是unix_socket。unix_socket在简中互联网上几乎搜索不到什么有用的资料，出问题了不好解决，所以选n，用密码认证。
+Setting the root password or using the unix_socket ensures that nobody can log into the MariaDB root user without the proper authorisation. You already have your root account protected, so you can safely answer &#39;n&#39;. Switch to unix_socket authentication [Y/n] 第二个问题：是否修改root账户的密码。毫无疑问这里选Y。然后就是设置root账户的新密码了。
+Change the root password? [Y/n] 第三个问题：是否移除匿名用户。选Y"/>
+
+    <meta property="og:title" content="Linux下从0开始部署WordPress（二）" />
+<meta property="og:description" content="前言 上篇文章链接：Linux下从0开始部署WordPress（一）
+上篇说到了apache2的安装与配置，一直想着继续完成wordpress的教程，但拖延症发作，😄
+复习一下wordpress的安装步骤：
+有一台主机或vps（系统选linux，这里以debian为例） 安装web server(选apache2) 安装数据库（选mariadb） 安装php 配置wordpress 这篇就写一下安装数据库吧！
+安装数据库 wordpress官方对数据库的要求：
+MySQL5.7或更高版本 MariaDB 10.3或更高版本。
+sun公司自从被oracle收购以后，原来sun公司旗下的产品都变成了oracle公司的资产，开源社区对oracle也是唯恐避之不及，现在debian仓库里连mysql都没有了。我不想去下安装包，所以这里数据库方案选择用mariadb。
+一键安装
+apt install mariadb-server 安装完成后，先用数据库自带的mysql_secure_installation进行简单的安全加固。执行下面这个命令，接下去会出现6个交互对话，需要选择yes/no。
+mysql_secure_installation 第一个问题：是否切换到unix_socket认证。这里指mariadb的root账户身份认证是用密码还是unix_socket。unix_socket在简中互联网上几乎搜索不到什么有用的资料，出问题了不好解决，所以选n，用密码认证。
+Setting the root password or using the unix_socket ensures that nobody can log into the MariaDB root user without the proper authorisation. You already have your root account protected, so you can safely answer &#39;n&#39;. Switch to unix_socket authentication [Y/n] 第二个问题：是否修改root账户的密码。毫无疑问这里选Y。然后就是设置root账户的新密码了。
+Change the root password? [Y/n] 第三个问题：是否移除匿名用户。选Y" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/wordpress-installation-guide-2/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-28T06:36:23+08:00" />
+<meta property="article:modified_time" content="2023-07-28T06:36:23+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下从0开始部署WordPress（二）</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 28, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
+              <a class="tag" href="https://ruohai.wang/tags/wordpress/">WordPress</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>上篇文章链接：<a href="https://ruohai.wang/202307/wordpress-installation-guide/">Linux下从0开始部署WordPress（一）</a></p>
+<p>上篇说到了apache2的安装与配置，一直想着继续完成wordpress的教程，但拖延症发作，😄</p>
+<p>复习一下wordpress的安装步骤：</p>
+<ol>
+<li><del>有一台主机或vps（系统选linux，这里以debian为例）</del></li>
+<li><del>安装web server(选apache2)</del></li>
+<li>安装数据库（选mariadb）</li>
+<li>安装php</li>
+<li>配置wordpress</li>
+</ol>
+<p>这篇就写一下安装数据库吧！</p>
+<hr>
+<h2 id="安装数据库">安装数据库</h2>
+<p>wordpress官方对数据库的要求：</p>
+<blockquote>
+<p>MySQL5.7或更高版本 MariaDB 10.3或更高版本。</p>
+</blockquote>
+<p>sun公司自从被oracle收购以后，原来sun公司旗下的产品都变成了oracle公司的资产，开源社区对oracle也是唯恐避之不及，现在debian仓库里连mysql都没有了。我不想去下安装包，所以这里数据库方案选择用mariadb。</p>
+<p>一键安装</p>
+<pre tabindex="0"><code>apt install mariadb-server
+</code></pre><p>安装完成后，先用数据库自带的<code>mysql_secure_installation</code>进行简单的安全加固。执行下面这个命令，接下去会出现6个交互对话，需要选择yes/no。</p>
+<pre tabindex="0"><code>mysql_secure_installation
+</code></pre><p>第一个问题：是否切换到unix_socket认证。这里指mariadb的root账户身份认证是用密码还是unix_socket。unix_socket在简中互联网上几乎搜索不到什么有用的资料，出问题了不好解决，所以选<code>n</code>，用密码认证。</p>
+<pre tabindex="0"><code>Setting the root password or using the unix_socket ensures that nobody
+can log into the MariaDB root user without the proper authorisation.
+
+You already have your root account protected, so you can safely answer &#39;n&#39;.
+
+Switch to unix_socket authentication [Y/n]
+</code></pre><p>第二个问题：是否修改root账户的密码。毫无疑问这里选<code>Y</code>。然后就是设置root账户的新密码了。</p>
+<pre tabindex="0"><code>Change the root password? [Y/n]
+</code></pre><p>第三个问题：是否移除匿名用户。选<code>Y</code></p>
+<pre tabindex="0"><code>By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n]
+</code></pre><p>第四个问题：是否禁止root远程登录。选<code>Y</code></p>
+<pre tabindex="0"><code>Normally, root should only be allowed to connect from &#39;localhost&#39;.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n]
+</code></pre><p>第五个问题：是否删除测试数据库和它的访问权限。选<code>Y</code></p>
+<pre tabindex="0"><code>By default, MariaDB comes with a database named &#39;test&#39; that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n]
+</code></pre><p>第六个问题：是否重新载入权限配置表让修改生效。选<code>Y</code></p>
+<pre tabindex="0"><code>Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n]
+</code></pre><p>好了，到这一步，已经完成了mardiadb的安装和基础配置。接下来要开始进行建表了~</p>
+<hr>
+<h2 id="建库">建库</h2>
+<p>首先进入mariadb的数据库命令行界面，敲<code>mysql</code>并回车。（明明是牛夫人却还用的小甜甜的名字😄</p>
+<pre tabindex="0"><code>mysql -u root -p
+</code></pre><p>然后建库</p>
+<pre tabindex="0"><code>create database wordpress;
+</code></pre><p>创建一个<code>wordpress</code>账户专门来管理wordpress数据库，123456记得修改为自己想要的密码</p>
+<pre tabindex="0"><code>create user wordpress@localhost identified by &#39;123456&#39;;
+</code></pre><p>给用户<code>wordpress</code>赋权管理wordpress数据库</p>
+<pre tabindex="0"><code>grant all privileges on wordpress.* to wordpress@localhost identified by &#39;123456&#39;;
+</code></pre><p>使权限生效</p>
+<pre tabindex="0"><code>flush privileges;
+</code></pre><p>查看授权</p>
+<pre tabindex="0"><code>show grants for wordpress@localhost;
+</code></pre><p>看到输入如下的授权信息，说明建库、建用户、授权都完成了。</p>
+<p><img src="https://img1.imgtp.com/2023/07/28/uHvSxn3d.png" alt="1690501010370.png"></p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li>关于mysql：为MariaDB根用户启用密码和unix_socket身份验证？ <a href="https://www.codenong.com/41846000/">https://www.codenong.com/41846000/</a></li>
+<li>mysqld/mariadb安全配置向导:mysql_secure_installation <a href="https://www.cnblogs.com/ccku/p/13657828.html">https://www.cnblogs.com/ccku/p/13657828.html</a></li>
+<li>认证插件-Unix Socket <a href="https://runebook.dev/zh/docs/mariadb/authentication-plugin-unix-socket/index">https://runebook.dev/zh/docs/mariadb/authentication-plugin-unix-socket/index</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
