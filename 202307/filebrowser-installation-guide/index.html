@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Linux下安装File Browser // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下安装File Browser"/>
+<meta name="twitter:description" content="第一步：新建安装目录
+mkdir /usr/local/filebrowser 第二步：根据自己的硬件平台从【官方github repo】下载对应版本的安装包，这里以armv7为例。
+# 进入安装文件夹 cd /usr/local/filebrowser # 下载安装包 wget https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf linux-armv7-filebrowser.tar.gz 第三步：在安装目录/usr/local/filebrowser下新建config.json，添加配置信息。
+# 创建配置文件 nano config.json 添加以下内容。其中root参数用来指定fireborwser展示的根目录，比如设定为/home，则webui中只能看到/home目录下的内容。
+{ &#34;port&#34;: 8600, &#34;address&#34;: &#34;0.0.0.0&#34;, &#34;root&#34;: &#34;/&#34;, &#34;database&#34;: &#34;/usr/local/filebrowser/filebrowser.db&#34;, &#34;log&#34;: &#34;/var/log/filebrowser.log&#34;, &#34;username&#34;: &#34;admin&#34; } 第四步：把filebrowser添加到systemd服务。
+# 创建配置文件 nano /etc/systemd/system/filebrowser.service 添加如下内容后保存退出。
+[Unit] Description=The filebrowser Process Manager After=network.target [Service] Type=simple ExecStart=/usr/local/filebrowser/filebrowser -c /usr/local/filebrowser/config.json ExecStop=/bin/killall filebrowser PrivateTmp=true [Install] WantedBy=multi-user.target 第五步：systemd重载服务并设置开机启动
+# 重载服务 systemctl daemon-reload # 启动filebrowser systemctl start filebrowser.service # 设置开机启动 systemctl enable filebrowser."/>
+
+    <meta property="og:title" content="Linux下安装File Browser" />
+<meta property="og:description" content="第一步：新建安装目录
+mkdir /usr/local/filebrowser 第二步：根据自己的硬件平台从【官方github repo】下载对应版本的安装包，这里以armv7为例。
+# 进入安装文件夹 cd /usr/local/filebrowser # 下载安装包 wget https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf linux-armv7-filebrowser.tar.gz 第三步：在安装目录/usr/local/filebrowser下新建config.json，添加配置信息。
+# 创建配置文件 nano config.json 添加以下内容。其中root参数用来指定fireborwser展示的根目录，比如设定为/home，则webui中只能看到/home目录下的内容。
+{ &#34;port&#34;: 8600, &#34;address&#34;: &#34;0.0.0.0&#34;, &#34;root&#34;: &#34;/&#34;, &#34;database&#34;: &#34;/usr/local/filebrowser/filebrowser.db&#34;, &#34;log&#34;: &#34;/var/log/filebrowser.log&#34;, &#34;username&#34;: &#34;admin&#34; } 第四步：把filebrowser添加到systemd服务。
+# 创建配置文件 nano /etc/systemd/system/filebrowser.service 添加如下内容后保存退出。
+[Unit] Description=The filebrowser Process Manager After=network.target [Service] Type=simple ExecStart=/usr/local/filebrowser/filebrowser -c /usr/local/filebrowser/config.json ExecStop=/bin/killall filebrowser PrivateTmp=true [Install] WantedBy=multi-user.target 第五步：systemd重载服务并设置开机启动
+# 重载服务 systemctl daemon-reload # 启动filebrowser systemctl start filebrowser.service # 设置开机启动 systemctl enable filebrowser." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/filebrowser-installation-guide/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-14T23:00:29+08:00" />
+<meta property="article:modified_time" content="2023-07-14T23:00:29+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下安装File Browser</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>第一步：新建安装目录</p>
+<pre tabindex="0"><code>mkdir /usr/local/filebrowser
+</code></pre><hr>
+<p>第二步：根据自己的硬件平台从【<a href="https://github.com/filebrowser/filebrowser">官方github repo</a>】下载对应版本的安装包，这里以armv7为例。</p>
+<pre tabindex="0"><code># 进入安装文件夹
+cd /usr/local/filebrowser
+# 下载安装包
+wget https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-armv7-filebrowser.tar.gz
+# 解压
+tar -zxvf linux-armv7-filebrowser.tar.gz
+</code></pre><hr>
+<p>第三步：在安装目录<code>/usr/local/filebrowser</code>下新建config.json，添加配置信息。</p>
+<pre tabindex="0"><code># 创建配置文件
+nano config.json
+</code></pre><p>添加以下内容。其中root参数用来指定fireborwser展示的根目录，比如设定为<code>/home</code>，则webui中只能看到<code>/home</code>目录下的内容。</p>
+<pre tabindex="0"><code>{
+    &#34;port&#34;: 8600,
+    &#34;address&#34;: &#34;0.0.0.0&#34;,
+    &#34;root&#34;: &#34;/&#34;,
+    &#34;database&#34;: &#34;/usr/local/filebrowser/filebrowser.db&#34;,
+    &#34;log&#34;: &#34;/var/log/filebrowser.log&#34;,
+    &#34;username&#34;: &#34;admin&#34;  
+}
+</code></pre><hr>
+<p>第四步：把filebrowser添加到systemd服务。</p>
+<pre tabindex="0"><code># 创建配置文件
+nano /etc/systemd/system/filebrowser.service
+</code></pre><p>添加如下内容后保存退出。</p>
+<pre tabindex="0"><code>[Unit]
+Description=The filebrowser Process Manager
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/filebrowser/filebrowser -c /usr/local/filebrowser/config.json
+ExecStop=/bin/killall filebrowser
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target 
+</code></pre><hr>
+<p>第五步：systemd重载服务并设置开机启动</p>
+<pre tabindex="0"><code># 重载服务
+systemctl daemon-reload
+# 启动filebrowser
+systemctl start filebrowser.service
+# 设置开机启动
+systemctl enable filebrowser.service
+</code></pre><hr>
+<p>好了，现在可以打开浏览器访问<code>http://host_ip:8600</code>使用filebrowser了，默认用户admin，默认密码admin。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

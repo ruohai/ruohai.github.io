@@ -35,5 +35,24 @@ location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set
 注意 设定域名为：jackiechang.cn 设定外网端口为：11111 设定内网端口为：4533 配置文件 server {listen [::]:11111 ssl;server_name jackiechang.cn;ssl_certificate ssl/jackiechang.cn.pem;ssl_certificate_key ssl/jackiechang.cn.key;ssl_session_cache shared:SSL:1m;ssl_session_timeout 5m;ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;ssl_prefer_server_ciphers on;error_page 497 https://$host:$server_port$uri$is_args$args;location / {# #################################### 这部分定义header是新加的，指定websocketproxy_set_header Host $host;proxy_set_header X-Forwarded-Proto $scheme;proxy_set_header X-Forwarded-Port $server_port;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;proxy_set_header Upgrade $http_upgrade;proxy_set_header Connection &amp;#34;upgrade&amp;#34;;proxy_http_version 1.1;# ###################################proxy_pass http://localhost:4533;}} </description>
     </item>
     
+    <item>
+      <title>Linux下用Nginx给File Browser设置SSL开启HTTPS访问</title>
+      <link>https://ruohai.wang/202307/filebrowser-update-to-https/</link>
+      <pubDate>Sun, 16 Jul 2023 00:25:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/filebrowser-update-to-https/</guid>
+      <description>前言 我用赚钱宝二代（ws1508）和玩客云（ws1608）刷入armbian，然后搓了很多服务，比如file browser、qbittorrent、ttyd、alist、ddns-go、navidrome。这些应用在启动以后，都提供了webui用来管理和控制。再配合当下ipv6的公网ip，实现了外网访问。
+但现在又碰到了新的需求（或者说问题），就是这些应用的webui都是http，为了安全，我准备升级到https。其中有一些应用（比如ttyd、firebrowser）确实支持ssl，但也有很多不支持ssl。而且就算支持ssl的应用，各自配置的方式也不相同，不方便后期统一管理。
+为了实现这个需求，就需要使用nginx做反向代理。这里以filebrowser为例，做一下简单记录。
+前期准备 设备已经实现了ipv6的外网访问 假定域名为：jackiechang.cn 系统已经安装了filebrowser且可以正常访问，假定访问端口为：8600 以上两个前提已经OK，那外网访问filebrowser的url应该是：http://jackiechang.cn:8600 已经有ssl证书，不管是阿里云买域名送的证书，还是Let&amp;rsquo;s Encrypt的免费证书。 ssl证书需要是nginx的格式，一共两个文件：jackiechang.cn.pem和jackiechang.cn.key。 8600一个端口不能被nginx和filebrowser同时监听，这里假定nginx监听端口是：22222。最终实现效果是：https://jackiechang.cn:22222 这里假定的外网端口、本地端口、域名、证书名称，在下面教程中记得根据自己的情况进行修改。 安装nginx 我的主机系统是armbian，debian仓库里有nginx，直接一键安装。
+apt install nginx nginx安装好以后，可以先执行nginx -t测试一下nginx.conf配置文件的语法是否正确，顺便看一下nginx的路径。我的nginx目录是/etc/nginx。
+上传ssl证书 在nginx目录新建ssl文件夹，把两个证书文件放到ssl目录下
+mkdir /etc/nginx/ssl 配置nginx nginx的默认配置文件是nginx.conf，但现在为了整洁和方便管理，nginx分出了conf.d、sites-available、site-enabled三个文件夹用来分别存放不同用途的配置文件。目录结构示意图如下。
+nginx.conf总文件不动，/sites-enabled/default是实际生效的配置文件，但这里的文件实际是软链接到/sites-avaliable/default。搞得这么复杂，其实是为了方便配置和管理。（真的嘛我不信）
+好了，开始编辑配置文件。
+nano sites-available/default 添加如下配置内容，然后保存退出。
+server { # 监听端口 listen [::]:22222 ssl; # 域名 server_name jackiechang.cn; # 证书 ssl_certificate ssl/jackiechang.cn.pem; ssl_certificate_key ssl/jackiechang.cn.key; # session缓存 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # 加密 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3; ssl_prefer_server_ciphers on; # http请求拦截报错页面，自动跳转到https error_page 497 https://$host:$server_port$uri$is_args$args; location / { proxy_pass http://localhost:8600; } } 重启nginx 完成上面的配置以后，先执行nginx -t测试配置文件的语法，没有报错就说明配置OK，接下去重启nginx即可。</description>
+    </item>
+    
   </channel>
 </rss>
