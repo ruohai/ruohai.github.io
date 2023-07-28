@@ -6,7 +6,19 @@
     <description>Recent content in 玩客云 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jul 2023 17:56:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 07:52:03 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>玩客云WS1608控制LED灯的颜色</title>
+      <link>https://ruohai.wang/202307/wky-turn-on-led-color/</link>
+      <pubDate>Fri, 28 Jul 2023 07:52:03 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/wky-turn-on-led-color/</guid>
+      <description>玩客云这设备有个红、绿、蓝三色led灯，在刷入armbian系统以后，这个灯的颜色就会显示异常，往往是一直显示红色。
+如果要自动动手调整led灯的颜色，控制命令如下（需要root用户执行）
+echo 1 &amp;gt; /sys/class/leds/onecloud:blue:alive/brightness echo 1 &amp;gt; /sys/class/leds/onecloud:green:alive/brightness echo 1 &amp;gt; /sys/class/leds/onecloud:red:alive/brightness echo 1是开，echo 0就是关。现在可以组合出多种颜色，蓝绿、红蓝、红绿、红绿蓝。😄
+但这个设置重启后失效。╮(╯▽╰)╭</description>
+    </item>
+    
     <item>
       <title>我悟了~</title>
       <link>https://ruohai.wang/202307/i-boomed/</link>

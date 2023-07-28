@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Linux下ssh.socket模式变更SSH端口（终结篇） // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下ssh.socket模式变更SSH端口（终结篇）"/>
+<meta name="twitter:description" content="前言 讲真我之前已经写文章记录过了怎么修改ssh的默认端口，不管是ssh.service还是ssh.socket，两个运行模式下的方法都有。
+但是 是的，但是，我重装了这么多次的armbian，在ssh.socket模式下调整了n次默认端口，最后发现，无论怎么弄，都会出现问题，弄不好还容易搞得ssh都连不上。
+行吧，经过我反复验证，得出最终有效的修改方法，100%有效，绝对有效。
+如果你有更好的办法，可以twitter上给我发dm。
+方案一：切换到ssh.service 是的，抛弃ssh.socket，回到传统的ssh.service，不要再去管什么socket什么listenstream，就用ssh.service，方便又好用。
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 然后在/etc/ssh/sshd_config改成自己喜欢的端口就行了。
+方案二：我TM就是要用ssh.socket 很好，你清高，你很棒。
+办法有没有？还真有，需要在之前的方案上增加几个步骤，算是曲线救国。在ssh.socket运行的状态变更配置，最大的问题是它可能会突然异常停掉，或者重启ssh服务但新端口不生效。所以要让新端口生效的办法，就是先下手为强，上来就停掉ssh.socket，在它不运行的时候改配置，改完了再启动它。
+第一步：禁用ssh.socket这个小可爱，换成ssh.service
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 第二步：配置ssh.socket端口。是的，曲线救国，先tmd换成ssh.service，保证ssh.socket彻底停止，然后配置ssh.socket的端口。
+# 新建目录 mkdir -p /etc/systemd/system/ssh.socket.d # 新建端口配置文件 touch /etc/systemd/system/ssh.socket.d/listen.conf 在listen.conf中添加如下内容，记得把12345改成自己喜欢的端口，保存退出。
+[Socket] ListenStream= ListenStream=12345 修改完以后，重载服务
+systemctl daemon-reload 第三步：从ssh.service换回ssh.socket 是的，所谓的曲线救国就是在这里~
+# 老朋友完成任务了，送走 systemctl disable --now ssh.service # 把小可爱ssh.socket接回来 systemctl enable --now ssh.socket 完成这步曲线救国以后，可以查看下ssh的状态，看是否换成了新端口。
+systemctl status ssh 第四步：到上面一步，ssh."/>
+
+    <meta property="og:title" content="Linux下ssh.socket模式变更SSH端口（终结篇）" />
+<meta property="og:description" content="前言 讲真我之前已经写文章记录过了怎么修改ssh的默认端口，不管是ssh.service还是ssh.socket，两个运行模式下的方法都有。
+但是 是的，但是，我重装了这么多次的armbian，在ssh.socket模式下调整了n次默认端口，最后发现，无论怎么弄，都会出现问题，弄不好还容易搞得ssh都连不上。
+行吧，经过我反复验证，得出最终有效的修改方法，100%有效，绝对有效。
+如果你有更好的办法，可以twitter上给我发dm。
+方案一：切换到ssh.service 是的，抛弃ssh.socket，回到传统的ssh.service，不要再去管什么socket什么listenstream，就用ssh.service，方便又好用。
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 然后在/etc/ssh/sshd_config改成自己喜欢的端口就行了。
+方案二：我TM就是要用ssh.socket 很好，你清高，你很棒。
+办法有没有？还真有，需要在之前的方案上增加几个步骤，算是曲线救国。在ssh.socket运行的状态变更配置，最大的问题是它可能会突然异常停掉，或者重启ssh服务但新端口不生效。所以要让新端口生效的办法，就是先下手为强，上来就停掉ssh.socket，在它不运行的时候改配置，改完了再启动它。
+第一步：禁用ssh.socket这个小可爱，换成ssh.service
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 第二步：配置ssh.socket端口。是的，曲线救国，先tmd换成ssh.service，保证ssh.socket彻底停止，然后配置ssh.socket的端口。
+# 新建目录 mkdir -p /etc/systemd/system/ssh.socket.d # 新建端口配置文件 touch /etc/systemd/system/ssh.socket.d/listen.conf 在listen.conf中添加如下内容，记得把12345改成自己喜欢的端口，保存退出。
+[Socket] ListenStream= ListenStream=12345 修改完以后，重载服务
+systemctl daemon-reload 第三步：从ssh.service换回ssh.socket 是的，所谓的曲线救国就是在这里~
+# 老朋友完成任务了，送走 systemctl disable --now ssh.service # 把小可爱ssh.socket接回来 systemctl enable --now ssh.socket 完成这步曲线救国以后，可以查看下ssh的状态，看是否换成了新端口。
+systemctl status ssh 第四步：到上面一步，ssh." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/linux-change-ssh-port-under-ssh-socket/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-28T10:55:34+08:00" />
+<meta property="article:modified_time" content="2023-07-28T10:55:34+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下ssh.socket模式变更SSH端口（终结篇）</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 28, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/xxx/">xxx</a>
+              <a class="tag" href="https://ruohai.wang/tags/xxx/">xxx</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>讲真我之前已经<a href="https://ruohai.wang/202307/set-new-ssh-port/">写文章记录过了</a>怎么修改ssh的默认端口，不管是ssh.service还是ssh.socket，两个运行模式下的方法都有。</p>
+<h2 id="但是">但是</h2>
+<p>是的，但是，我重装了这么多次的armbian，在ssh.socket模式下调整了n次默认端口，最后发现，无论怎么弄，都会出现问题，弄不好还容易搞得ssh都连不上。</p>
+<p>行吧，经过我反复验证，得出最终有效的修改方法，100%有效，绝对有效。</p>
+<p>如果你有更好的办法，可以<a href="https://twitter.com/Ruohai">twitter</a>上给我发dm。</p>
+<hr>
+<h2 id="方案一切换到sshservice">方案一：切换到ssh.service</h2>
+<p>是的，抛弃<code>ssh.socket</code>，回到传统的<code>ssh.service</code>，不要再去管什么socket什么listenstream，就用<code>ssh.service</code>，方便又好用。</p>
+<pre tabindex="0"><code># 滚他妈的socket
+systemctl disable --now ssh.socket
+
+# 欢迎service
+systemctl enable --now ssh.service
+</code></pre><p>然后在<code>/etc/ssh/sshd_config</code>改成自己喜欢的端口就行了。</p>
+<hr>
+<h2 id="方案二我tm就是要用sshsocket">方案二：我TM就是要用ssh.socket</h2>
+<p>很好，你清高，你很棒。</p>
+<p>办法有没有？还真有，需要在之前的方案上增加几个步骤，算是曲线救国。在ssh.socket运行的状态变更配置，最大的问题是它可能会突然异常停掉，或者重启ssh服务但新端口不生效。所以要让新端口生效的办法，就是先下手为强，上来就停掉ssh.socket，在它不运行的时候改配置，改完了再启动它。</p>
+<p>第一步：禁用ssh.socket这个小可爱，换成ssh.service</p>
+<pre tabindex="0"><code># 滚他妈的socket
+systemctl disable --now ssh.socket
+
+# 欢迎service
+systemctl enable --now ssh.service
+</code></pre><p>第二步：配置ssh.socket端口。是的，曲线救国，先tmd换成ssh.service，保证ssh.socket彻底停止，然后配置ssh.socket的端口。</p>
+<pre tabindex="0"><code># 新建目录
+mkdir -p /etc/systemd/system/ssh.socket.d
+
+# 新建端口配置文件
+touch /etc/systemd/system/ssh.socket.d/listen.conf
+</code></pre><p>在<code>listen.conf</code>中添加如下内容，记得把12345改成自己喜欢的端口，保存退出。</p>
+<pre tabindex="0"><code>[Socket]
+ListenStream=
+ListenStream=12345
+</code></pre><p>修改完以后，重载服务</p>
+<pre tabindex="0"><code>systemctl daemon-reload
+</code></pre><p>第三步：从<code>ssh.service</code>换回<code>ssh.socket</code>
+是的，所谓的曲线救国就是在这里~</p>
+<pre tabindex="0"><code># 老朋友完成任务了，送走
+systemctl disable --now ssh.service
+
+# 把小可爱ssh.socket接回来
+systemctl enable --now ssh.socket
+</code></pre><p>完成这步曲线救国以后，可以查看下<code>ssh</code>的状态，看是否换成了新端口。</p>
+<pre tabindex="0"><code>systemctl status ssh
+</code></pre><p>第四步：到上面一步，<code>ssh.socket</code>下变更ssh端口算是完成了而且成功了。但是还有一些收尾的工作要处理。在反复的<code>disable</code>和<code>enable</code>过程中，有个文件被误伤了，那就是<code>sshd.service</code>，这个软链接被删了，需要补上。</p>
+<pre tabindex="0"><code># 进目录
+cd /etc/systemd/system
+
+# 生成软链接
+ln -s /lib/systemd/system/ssh.service sshd.service
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -3,7 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/linux-change-ssh-port-under-ssh-socket/</loc>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/xxx/</loc>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2023-07-28T07:52:03+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/wky-turn-on-led-color/</loc>
+    <lastmod>2023-07-28T07:52:03+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/linux/</loc>
     <lastmod>2023-07-28T06:36:23+08:00</lastmod>
@@ -11,13 +29,7 @@
     <loc>https://ruohai.wang/202307/wordpress-installation-guide-2/</loc>
     <lastmod>2023-07-28T06:36:23+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/wordpress/</loc>
-    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-28T06:36:23+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/dd/</loc>
@@ -81,9 +93,6 @@
     <lastmod>2023-07-22T21:51:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/i-boomed/</loc>
-    <lastmod>2023-07-22T17:56:35+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
     <lastmod>2023-07-22T17:56:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/linux-sudo-previlege-error-fix/</loc>
