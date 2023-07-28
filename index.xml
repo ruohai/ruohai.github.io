@@ -6,7 +6,27 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Jul 2023 17:26:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 20:30:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>迅雷赚钱宝一代（WS1408)可用固件分享</title>
+      <link>https://ruohai.wang/202307/ws1408-firmware-share/</link>
+      <pubDate>Fri, 28 Jul 2023 20:30:01 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/ws1408-firmware-share/</guid>
+      <description>因为捡垃圾，手上有了两台赚钱宝一代，型号ws1408，接近10年龄的老机器了，硬件配置现在看来已经严重落伍。
+但电子垃圾到了垃圾佬手上，但凡它还有一点点残余价值可以压榨，都不会把它丢进垃圾桶。
+在恩山论坛一阵搜索以后，目前确定，ws1408能用的固件，只有openwrt。有线刷和u盘/tf卡卡刷两个版本。
+openwrt可以装很多插件来实现qbittorrent、samba、ddns之类的功能，虽然百兆网口限制了用它当旁路由，但拿来当个samba文件共享服务器和下载及也是不错的。
+因为原帖是要求回复可见固件获取地址，为了遵守社区规则，我这里只做帖子引路：
+更新直刷包2023.03.27 赚钱宝1代WS1408 旁路由openwrt 22.03.3 内存卡或者U盘启动 线刷和卡刷两个版本都在这个帖子里下载。
+这篇文章简单记录下线刷的注意事项：
+双公头usb线 usb burning tool软件，最好是v2.1.6.8版本，因为其它版本存在一个bug，固件太大刷入成功后校验时间过长会直接跳任务失败 线刷的openwrt固件 实际刷机步骤注意事项：
+机器先不要插usb线，我实测usb的供电会被这机器识别为通电，然后会自动开机 usb burning tool软件里选好固件，然后直接点击【开始】 用卡针捅进reset孔，并保持住 先插上usb线，如果识别为通电也无妨，usb burning tool会检测到硬件并开始刷机，如果未识别为通电，在插上电源 然后灯usb burning tool完成刷机，提示成功以后拔usb线、拔电源。再捅上网线和电源，等开机，然后在路由器网关界面查看新增设备的ip，在浏览器中访问该ip即可。
+线刷固件默认用户root，默认密码lanlan。
+到此刷机完成，可以开始折腾卵路由，不是，软路由惹~
+😄</description>
+    </item>
+    
     <item>
       <title>今天又捡了几个电子垃圾</title>
       <link>https://ruohai.wang/202307/i-picked-up-some-rubbish-today/</link>
