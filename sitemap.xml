@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202307/</loc>
-    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202307/i-picked-up-some-rubbish-today/</loc>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2023-07-28T17:26:33+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/linux/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
@@ -12,12 +27,6 @@
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/ssh/</loc>
-    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
@@ -60,9 +69,6 @@
     <lastmod>2023-07-27T19:30:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E7%8C%AB/</loc>
-    <lastmod>2023-07-27T19:30:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2023-07-27T19:30:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/linux-ufw-setup/</loc>

@@ -6,7 +6,24 @@
     <description>Recent content in 生活 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 27 Jul 2023 19:30:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 17:26:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>今天又捡了几个电子垃圾</title>
+      <link>https://ruohai.wang/202307/i-picked-up-some-rubbish-today/</link>
+      <pubDate>Fri, 28 Jul 2023 17:26:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/i-picked-up-some-rubbish-today/</guid>
+      <description>今天收到了一个快递，是昨天在闲鱼上淘的几个电子垃圾：赚钱宝一代（ws1408）两个，赚钱宝二代（ws1508）两个。
+感觉自己和迅雷赚钱宝系列磕上了。😄
+一共4个设备，打包了网线和充电头，40块钱包邮，这个价格很难不让人心动啊！
+赚钱宝一代ws1408 在恩山论坛搜了一下，这机器太老了而且硬件配置比二代ws1508更缩水
+百兆网口，当旁路由都显得鸡肋 256MB的ram，😔 1GB nand flash rom，存储空间倒是给的很大方，但是受nand分区大小限制，最多只能识别256MB。 有1个tf卡槽 有一个usb2.0接口 目前能用的固件只有一版opewrt，支持直刷。下午尝试了刷机，都没啥难度，很快就刷上了openwrt。
+那目前来看，ws1408的扩展可玩性的方案，就只能基于openwrt了。还好openwrt的可装的软件也挺多的，虽然灵活性上比不过armbian什么都能手搓，但总比没有固件要好。
+赚钱宝二代ws1508 ws1508是老朋友了，之前已经30包邮收过两个，硬件配置：
+百兆网口 usb2.0接口一个 nand flash，多少容量不记得了。但能直刷nand的固件最多只能识别4GB 512MB ram，比一代的内存容量翻倍 ws1508因为接口少了，所以可玩性差很多，唯一的usb2.0接口需要用来插启动u盘，导致没有任何扩展存储的可能。目前的玩法，刷armbian或者刷openwrt。
+这次捡的俩ws1508里，有一个是emmc版本的，这算捡漏了，emmc版本有直刷固件，那一个金贵的usb2.0接口终于可以释放出来了。</description>
+    </item>
+    
     <item>
       <title>今天吃鸭！</title>
       <link>https://ruohai.wang/202307/%E4%BB%8A%E5%A4%A9%E5%90%83%E9%B8%AD/</link>
