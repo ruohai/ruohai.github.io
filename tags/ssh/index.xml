@@ -6,7 +6,30 @@
     <description>Recent content in SSH on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 23 Jul 2023 02:29:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Jul 2023 10:55:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下ssh.socket模式变更SSH端口（终结篇）</title>
+      <link>https://ruohai.wang/202307/linux-change-ssh-port-under-ssh-socket/</link>
+      <pubDate>Fri, 28 Jul 2023 10:55:34 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/linux-change-ssh-port-under-ssh-socket/</guid>
+      <description>前言 讲真我之前已经写文章记录过了怎么修改ssh的默认端口，不管是ssh.service还是ssh.socket，两个运行模式下的方法都有。
+但是 是的，但是，我重装了这么多次的armbian，在ssh.socket模式下调整了n次默认端口，最后发现，无论怎么弄，都会出现问题，弄不好还容易搞得ssh都连不上。
+行吧，经过我反复验证，得出最终有效的修改方法，100%有效，绝对有效。
+如果你有更好的办法，可以twitter上给我发dm。
+方案一：切换到ssh.service 是的，抛弃ssh.socket，回到传统的ssh.service，不要再去管什么socket什么listenstream，就用ssh.service，方便又好用。
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 然后在/etc/ssh/sshd_config改成自己喜欢的端口就行了。
+方案二：我TM就是要用ssh.socket 很好，你清高，你很棒。
+办法有没有？还真有，需要在之前的方案上增加几个步骤，算是曲线救国。在ssh.socket运行的状态变更配置，最大的问题是它可能会突然异常停掉，或者重启ssh服务但新端口不生效。所以要让新端口生效的办法，就是先下手为强，上来就停掉ssh.socket，在它不运行的时候改配置，改完了再启动它。
+第一步：禁用ssh.socket这个小可爱，换成ssh.service
+# 滚他妈的socket systemctl disable --now ssh.socket # 欢迎service systemctl enable --now ssh.service 第二步：配置ssh.socket端口。是的，曲线救国，先tmd换成ssh.service，保证ssh.socket彻底停止，然后配置ssh.socket的端口。
+# 新建目录 mkdir -p /etc/systemd/system/ssh.socket.d # 新建端口配置文件 touch /etc/systemd/system/ssh.socket.d/listen.conf 在listen.conf中添加如下内容，记得把12345改成自己喜欢的端口，保存退出。
+[Socket] ListenStream= ListenStream=12345 修改完以后，重载服务
+systemctl daemon-reload 第三步：从ssh.service换回ssh.socket 是的，所谓的曲线救国就是在这里~
+# 老朋友完成任务了，送走 systemctl disable --now ssh.service # 把小可爱ssh.socket接回来 systemctl enable --now ssh.socket 完成这步曲线救国以后，可以查看下ssh的状态，看是否换成了新端口。
+systemctl status ssh 第四步：到上面一步，ssh.</description>
+    </item>
+    
     <item>
       <title>VSCode插件Remote-SSH的使用与体验</title>
       <link>https://ruohai.wang/202307/vscode-remote-ssh-learn-to-use/</link>

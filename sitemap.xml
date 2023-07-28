@@ -5,13 +5,16 @@
     <loc>https://ruohai.wang/202307/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2023-07-28T10:55:34+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202307/linux-change-ssh-port-under-ssh-socket/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
+    <loc>https://ruohai.wang/tags/ssh/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/xxx/</loc>
+    <loc>https://ruohai.wang/tags/</loc>
     <lastmod>2023-07-28T10:55:34+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
@@ -22,9 +25,6 @@
   </url><url>
     <loc>https://ruohai.wang/202307/wky-turn-on-led-color/</loc>
     <lastmod>2023-07-28T07:52:03+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2023-07-28T06:36:23+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/wordpress-installation-guide-2/</loc>
     <lastmod>2023-07-28T06:36:23+08:00</lastmod>
@@ -79,9 +79,6 @@
   </url><url>
     <loc>https://ruohai.wang/202307/linux-use-dd-to-clone-disk/</loc>
     <lastmod>2023-07-24T06:57:22+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/ssh/</loc>
-    <lastmod>2023-07-23T02:29:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/vscode/</loc>
     <lastmod>2023-07-23T02:29:35+08:00</lastmod>
