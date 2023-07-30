@@ -6,7 +6,32 @@
     <description>Recent content in 玩客云 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Jul 2023 20:30:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Jul 2023 23:58:50 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>迅雷赚钱宝一代（WS1408）的OpenWrt使用方法</title>
+      <link>https://ruohai.wang/202307/ws1408-openwrt-use-guide/</link>
+      <pubDate>Sun, 30 Jul 2023 23:58:50 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/ws1408-openwrt-use-guide/</guid>
+      <description>前言 周末回了一趟乡下，耽误了搞机。😄
+ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。
+首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。
+其次，这里要着重讲一下，ws1408用usb burning tool软件刷openwrt固件的时候，
+【擦除flash】选项选【普通擦除】，千万不要选【全部擦除】
+选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。
+换源 首先是ws1408的软件源配置，固件自带的源是supes.top，访问不稳定，先换掉。这里用ustc中科大的源。
+src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony 注意ws1408要选at91/sama5和arm_cortex-a5_vfpv4这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。
+常用命令 webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。
+更新软件仓库
+opkg update 查找软件（比如samba）
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。
+opkg install shadow-useradd 添加用户
+useradd jack 设置密码
+passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。
+/etc/init.d/samba4 restart </description>
+    </item>
+    
     <item>
       <title>迅雷赚钱宝一代（WS1408)可用固件分享</title>
       <link>https://ruohai.wang/202307/ws1408-firmware-share/</link>

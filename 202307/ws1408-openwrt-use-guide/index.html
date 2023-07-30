@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>迅雷赚钱宝一代（WS1408）的OpenWrt使用方法 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt使用方法"/>
+<meta name="twitter:description" content="前言 周末回了一趟乡下，耽误了搞机。😄
+ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。
+首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。
+其次，这里要着重讲一下，ws1408用usb burning tool软件刷openwrt固件的时候，
+【擦除flash】选项选【普通擦除】，千万不要选【全部擦除】
+选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。
+换源 首先是ws1408的软件源配置，固件自带的源是supes.top，访问不稳定，先换掉。这里用ustc中科大的源。
+src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony 注意ws1408要选at91/sama5和arm_cortex-a5_vfpv4这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。
+常用命令 webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。
+更新软件仓库
+opkg update 查找软件（比如samba）
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。
+opkg install shadow-useradd 添加用户
+useradd jack 设置密码
+passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。
+/etc/init.d/samba4 restart "/>
+
+    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt使用方法" />
+<meta property="og:description" content="前言 周末回了一趟乡下，耽误了搞机。😄
+ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。
+首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。
+其次，这里要着重讲一下，ws1408用usb burning tool软件刷openwrt固件的时候，
+【擦除flash】选项选【普通擦除】，千万不要选【全部擦除】
+选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。
+换源 首先是ws1408的软件源配置，固件自带的源是supes.top，访问不稳定，先换掉。这里用ustc中科大的源。
+src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony 注意ws1408要选at91/sama5和arm_cortex-a5_vfpv4这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。
+常用命令 webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。
+更新软件仓库
+opkg update 查找软件（比如samba）
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。
+opkg install shadow-useradd 添加用户
+useradd jack 设置密码
+passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。
+/etc/init.d/samba4 restart " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202307/ws1408-openwrt-use-guide/" /><meta property="article:section" content="202307" />
+<meta property="article:published_time" content="2023-07-30T23:58:50+08:00" />
+<meta property="article:modified_time" content="2023-07-30T23:58:50+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）的OpenWrt使用方法</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 30, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+              <a class="tag" href="https://ruohai.wang/tags/openwrt/">OpenWrt</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>周末回了一趟乡下，耽误了搞机。😄</p>
+<p>ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。</p>
+<p>首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。</p>
+<p>其次，这里要着重讲一下，ws1408用usb burning tool软件刷openwrt固件的时候，</p>
+<blockquote>
+<p>【擦除flash】选项选【普通擦除】，千万不要选【全部擦除】</p>
+</blockquote>
+<p>选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。</p>
+<hr>
+<h2 id="换源">换源</h2>
+<p>首先是ws1408的软件源配置，固件自带的源是<code>supes.top</code>，访问不稳定，先换掉。这里用ustc中科大的源。</p>
+<pre tabindex="0"><code>src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages
+src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base
+src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci
+src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages
+src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing
+src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony
+</code></pre><p>注意ws1408要选<code>at91/sama5</code>和<code>arm_cortex-a5_vfpv4</code>这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。</p>
+<hr>
+<h2 id="常用命令">常用命令</h2>
+<p>webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。</p>
+<p>更新软件仓库</p>
+<pre tabindex="0"><code>opkg update
+</code></pre><p>查找软件（比如samba）</p>
+<pre tabindex="0"><code>opkg list | grep samba
+</code></pre><p>安装软件</p>
+<pre tabindex="0"><code>opkg install luci-app-samba4
+</code></pre><p>ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。</p>
+<pre tabindex="0"><code>opkg install shadow-useradd
+</code></pre><p>添加用户</p>
+<pre tabindex="0"><code>useradd jack
+</code></pre><p>设置密码</p>
+<pre tabindex="0"><code>passwd jack
+</code></pre><p>重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。</p>
+<pre tabindex="0"><code>/etc/init.d/samba4 restart
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
