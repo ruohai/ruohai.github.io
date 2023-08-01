@@ -18,13 +18,13 @@
 一开始我用剪映来处理，但实际使用过成功，无论是素材的管理，还是全选120个素材进行统一加速调节，或者最终的视频导出，都算不上是好的体验。
 正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。所以拆分步骤，用ffmpeg来处理视频拼接，再把拼接出来的长视频导进剪映处理。
 ffmpeg官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
-拼接 首先，要有一份包含了所有视频片段完整文件名的文档，mylist.txt，内容如下：
+拼接 首先，要有一份包含了所有视频片段完整文件名的文档（怎么生成这个文档看后面的脚本），mylist.txt，内容如下：
 file &#39;/path/to/file1.mp4&#39; file &#39;/path/to/file2.mp4&#39; file &#39;/path/to/file3.mp4&#39; 然后用命令拼接视频
 ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4 也可以用相对路径的格式，mylist.txt文档和视频文件放在同一个目录，内容如下：
 file &#39;file1.mp4&#39; file &#39;file2.mp4&#39; file &#39;file3.mp4&#39; 拼接视频命令，相对路径的情况下，-safe 0可以省略
 ffmpeg -f concat -i /path/to/mylist.txt -c copy output.mp4 参数解释：
 -f 用来指定输入/输出的文件格式。 -i 用来指定输入的文件 -c 用来指定编码，copy就是直接复制，不重新编码 好了，到这里用ffmpeg拼接视频的过程就完成了，因为-c copy不涉及编码转换，所以任务处理速度非常快，基本取决于硬盘的读写速度。
-官网还提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
+生成文档 官网提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
 windows cmd命令
 (for %i in (*.wav) do @echo file &#39;%i&#39;) &gt; mylist.txt windows powershell命令
 foreach ($i in Get-ChildItem ."/>
@@ -35,13 +35,13 @@ foreach ($i in Get-ChildItem ."/>
 一开始我用剪映来处理，但实际使用过成功，无论是素材的管理，还是全选120个素材进行统一加速调节，或者最终的视频导出，都算不上是好的体验。
 正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。所以拆分步骤，用ffmpeg来处理视频拼接，再把拼接出来的长视频导进剪映处理。
 ffmpeg官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
-拼接 首先，要有一份包含了所有视频片段完整文件名的文档，mylist.txt，内容如下：
+拼接 首先，要有一份包含了所有视频片段完整文件名的文档（怎么生成这个文档看后面的脚本），mylist.txt，内容如下：
 file &#39;/path/to/file1.mp4&#39; file &#39;/path/to/file2.mp4&#39; file &#39;/path/to/file3.mp4&#39; 然后用命令拼接视频
 ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4 也可以用相对路径的格式，mylist.txt文档和视频文件放在同一个目录，内容如下：
 file &#39;file1.mp4&#39; file &#39;file2.mp4&#39; file &#39;file3.mp4&#39; 拼接视频命令，相对路径的情况下，-safe 0可以省略
 ffmpeg -f concat -i /path/to/mylist.txt -c copy output.mp4 参数解释：
 -f 用来指定输入/输出的文件格式。 -i 用来指定输入的文件 -c 用来指定编码，copy就是直接复制，不重新编码 好了，到这里用ffmpeg拼接视频的过程就完成了，因为-c copy不涉及编码转换，所以任务处理速度非常快，基本取决于硬盘的读写速度。
-官网还提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
+生成文档 官网提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
 windows cmd命令
 (for %i in (*.wav) do @echo file &#39;%i&#39;) &gt; mylist.txt windows powershell命令
 foreach ($i in Get-ChildItem ." />
@@ -115,7 +115,7 @@ foreach ($i in Get-ChildItem ." />
 <p>ffmpeg官网wiki有<a href="https://trac.ffmpeg.org/wiki/Concatenate">非常详细的操作指导</a>，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。</p>
 <hr>
 <h2 id="拼接">拼接</h2>
-<p>首先，要有一份包含了所有视频片段完整文件名的文档，<code>mylist.txt</code>，内容如下：</p>
+<p>首先，要有一份包含了所有视频片段完整文件名的文档（怎么生成这个文档看后面的脚本），<code>mylist.txt</code>，内容如下：</p>
 <pre tabindex="0"><code>file &#39;/path/to/file1.mp4&#39;
 file &#39;/path/to/file2.mp4&#39;
 file &#39;/path/to/file3.mp4&#39;
@@ -134,7 +134,9 @@ file &#39;file3.mp4&#39;
 <li>-c 用来指定编码，<code>copy</code>就是直接复制，不重新编码</li>
 </ul>
 <p>好了，到这里用ffmpeg拼接视频的过程就完成了，因为<code>-c copy</code>不涉及编码转换，所以任务处理速度非常快，基本取决于硬盘的读写速度。</p>
-<p>官网还提供了脚本用例，用来生成<code>mylist.txt</code>这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。</p>
+<hr>
+<h2 id="生成文档">生成文档</h2>
+<p>官网提供了脚本用例，用来生成<code>mylist.txt</code>这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。</p>
 <p>windows cmd命令</p>
 <pre tabindex="0"><code>(for %i in (*.wav) do @echo file &#39;%i&#39;) &gt; mylist.txt
 </code></pre><p>windows powershell命令</p>
