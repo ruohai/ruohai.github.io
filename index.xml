@@ -6,7 +6,24 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 00:10:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 03:13:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syncthing实现增量备份/增量同步</title>
+      <link>https://ruohai.wang/202308/syncthing-set-ignore-delete/</link>
+      <pubDate>Wed, 02 Aug 2023 03:13:25 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/syncthing-set-ignore-delete/</guid>
+      <description>脱水精简结论 Q：syncthing是否支持增量备份（增量同步）？
+A：支持。把ignoreDelete参数从false改成true即可。
+以下就是水内容 syncthing服务用来多个设备之间对某个文件夹进行内容的完全同步，从这个目的来说，增量备份这个功能就显得有点冲突。
+所以syncthing虽然支持这个功能，但是把这个设置的入口隐藏在配置文件之中，在webui上并没有入口可以修改。官方甚至还有专门一个页面用来阐述这个功能开启以后，会出现的冲突场景。指路 → ignoreDelete
+简单来讲，假定有A和B两个设备，B设备开始了ignoreDelete，那如果A设备上删除了某文件以后，B设备上并不会同步删除，此后如果B修改了这个文件，那是否需要同步到A设备上。这里就出现了一个违背【完全同步】设计初衷的冲突场景。
+但我不一样啊！我是想实现增量备份功能，这个冲突的使用场景，然而正是我需要的！我的使用模式，就是一个服务端（server）只接收，加多个客户端（client）只发送。
+服务端安装并启用syncthing可以看我之前写的这篇文章：Linux下Syncthing的安装和配置
+现在需要在服务端开启ignoreDelete，修改syncthing的配置文件
+nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。</description>
+    </item>
+    
     <item>
       <title>用FFmpeg拼接行车记录仪的视频片段</title>
       <link>https://ruohai.wang/202308/ffmpeg-concat-video-clips/</link>
