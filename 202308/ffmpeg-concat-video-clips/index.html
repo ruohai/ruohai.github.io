@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="前言 行车记录仪的视频具有相同编码、相同分辨率、相同视频格式的特点。行车记录仪往往都是设定视频每n分钟为一个片段，比如我的行车记录仪设定就是1分钟一个片段。
 假定现在有一段2小时的行车记录，那就意味着120个视频片段。我的需求是把这120个片段拼接成一个长视频，然后加速10~20倍，最后形成一个10分钟左右时长的小视频，然后扔youtube上存档。
 一开始我用剪映来处理，但实际使用过成功，无论是素材的管理，还是全选120个素材进行统一加速调节，或者最终的视频导出，都算不上是好的体验。
-正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
+正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。所以拆分步骤，用ffmpeg来处理视频拼接，再把拼接出来的长视频导进剪映处理。
+ffmpeg官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
 拼接 首先，要有一份包含了所有视频片段完整文件名的文档，mylist.txt，内容如下：
 file &#39;/path/to/file1.mp4&#39; file &#39;/path/to/file2.mp4&#39; file &#39;/path/to/file3.mp4&#39; 然后用命令拼接视频
 ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4 也可以用相对路径的格式，mylist.txt文档和视频文件放在同一个目录，内容如下：
@@ -26,13 +27,14 @@ ffmpeg -f concat -i /path/to/mylist.txt -c copy output.mp4 参数解释：
 官网还提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
 windows cmd命令
 (for %i in (*.wav) do @echo file &#39;%i&#39;) &gt; mylist.txt windows powershell命令
-foreach ($i in Get-ChildItem .\*.wav) {&#34;file &#39;$i&#39;&#34; | Out-File mylist."/>
+foreach ($i in Get-ChildItem ."/>
 
     <meta property="og:title" content="用FFmpeg拼接行车记录仪的视频片段" />
 <meta property="og:description" content="前言 行车记录仪的视频具有相同编码、相同分辨率、相同视频格式的特点。行车记录仪往往都是设定视频每n分钟为一个片段，比如我的行车记录仪设定就是1分钟一个片段。
 假定现在有一段2小时的行车记录，那就意味着120个视频片段。我的需求是把这120个片段拼接成一个长视频，然后加速10~20倍，最后形成一个10分钟左右时长的小视频，然后扔youtube上存档。
 一开始我用剪映来处理，但实际使用过成功，无论是素材的管理，还是全选120个素材进行统一加速调节，或者最终的视频导出，都算不上是好的体验。
-正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
+正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。所以拆分步骤，用ffmpeg来处理视频拼接，再把拼接出来的长视频导进剪映处理。
+ffmpeg官网wiki有非常详细的操作指导，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。
 拼接 首先，要有一份包含了所有视频片段完整文件名的文档，mylist.txt，内容如下：
 file &#39;/path/to/file1.mp4&#39; file &#39;/path/to/file2.mp4&#39; file &#39;/path/to/file3.mp4&#39; 然后用命令拼接视频
 ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4 也可以用相对路径的格式，mylist.txt文档和视频文件放在同一个目录，内容如下：
@@ -42,7 +44,7 @@ ffmpeg -f concat -i /path/to/mylist.txt -c copy output.mp4 参数解释：
 官网还提供了脚本用例，用来生成mylist.txt这种符合格式的、包含了视频文件完整路径的文档。以下举例中的wav调整为自己视频的格式即可。
 windows cmd命令
 (for %i in (*.wav) do @echo file &#39;%i&#39;) &gt; mylist.txt windows powershell命令
-foreach ($i in Get-ChildItem .\*.wav) {&#34;file &#39;$i&#39;&#34; | Out-File mylist." />
+foreach ($i in Get-ChildItem ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/ffmpeg-concat-video-clips/" /><meta property="article:section" content="202308" />
 <meta property="article:published_time" content="2023-08-02T00:10:32+08:00" />
@@ -109,7 +111,8 @@ foreach ($i in Get-ChildItem .\*.wav) {&#34;file &#39;$i&#39;&#34; | Out-File my
 <p>行车记录仪的视频具有相同编码、相同分辨率、相同视频格式的特点。行车记录仪往往都是设定视频每n分钟为一个片段，比如我的行车记录仪设定就是1分钟一个片段。</p>
 <p>假定现在有一段2小时的行车记录，那就意味着120个视频片段。我的需求是把这120个片段拼接成一个长视频，然后加速10~20倍，最后形成一个10分钟左右时长的小视频，然后扔youtube上存档。</p>
 <p>一开始我用剪映来处理，但实际使用过成功，无论是素材的管理，还是全选120个素材进行统一加速调节，或者最终的视频导出，都算不上是好的体验。</p>
-<p>正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。官网wiki有<a href="https://trac.ffmpeg.org/wiki/Concatenate">非常详细的操作指导</a>，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。</p>
+<p>正好这种同编码、同分辨率、同视频格式的视频拼接，用ffmpeg来实现非常方便且快速。所以拆分步骤，用ffmpeg来处理视频拼接，再把拼接出来的长视频导进剪映处理。</p>
+<p>ffmpeg官网wiki有<a href="https://trac.ffmpeg.org/wiki/Concatenate">非常详细的操作指导</a>，啃完文档以后，实测单纯拼接视频确实很快。这里就做简单的操作记录和英翻中。</p>
 <hr>
 <h2 id="拼接">拼接</h2>
 <p>首先，要有一份包含了所有视频片段完整文件名的文档，<code>mylist.txt</code>，内容如下：</p>
