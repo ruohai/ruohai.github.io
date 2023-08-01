@@ -32,5 +32,21 @@ passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是sy
 /etc/init.d/samba4 restart </description>
     </item>
     
+    <item>
+      <title>玩客云可用Armbian和OpenWrt固件分享</title>
+      <link>https://ruohai.wang/202307/wky-firmware-share/</link>
+      <pubDate>Fri, 14 Jul 2023 23:07:44 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/wky-firmware-share/</guid>
+      <description>玩客云，还有好多名字：赚钱宝、老母鸡、网心云，这里都指型号ws1608的那个小机器。
+这机器现在pdd、闲鱼上的价格稳定在30rmb左右，但闲鱼上都要求10个起包邮，咱也不是矿场，买一两个回来玩玩就够了，所以我更推荐从pdd入手。
+这机器玩了几个星期，目前来看，就能刷俩固件。第一刷armbian，然后根据自己需要手搓各种服务（file browser/qbittorrent/samba/alist/ddns-go/docker/typecho/cups/home assistant/&amp;hellip;），或者装casaos这种打包好各种服务的轻系统。第二刷openwrt当旁路由。也有很多人在armbian基础上再装openmediavault，但我根据omv官方的文档尝试了几次，不管是6.1内核还是5.9内核的固件，都没成功。
+玩这种小设备肯定得去恩山论坛了，但论坛这种资源分享模式实在是太old school了，我不太喜欢，因为找资源太累。所以这里直接分享我用下来非常稳定的armbian和openwrt的两个固件下载地址。
+armbian固件地址:https://github.com/hzyitc/armbian-onecloud
+这个repo是根据上游armbian/build编译的玩客云专用固件。这里重点说下，固件名称中带burn字样的是线刷版本，刷入机内emmc；带minimal字样的是精简版。我用下来非常稳定。
+openwrt固件地址：https://cloud.189.cn/t/rAv6v2ENnmAn （访问码：6hhb）
+这个是恩山论坛里id:2224758988的用户分享的版本，我短暂体验了几天，也很稳定。如果上面这个链接失效，可以去【原帖地址】这里找。我对旁路由这种使用模式并不是很满意，所以用了几天以后就撤掉了。</description>
+    </item>
+    
   </channel>
 </rss>
