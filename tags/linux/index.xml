@@ -460,19 +460,20 @@ apt install php -y 第五步：不知不觉终于到第五步了，写教程可�
     </item>
     
     <item>
-      <title>Linux下安装Syncthing</title>
+      <title>Linux下Syncthing的安装和配置</title>
       <link>https://ruohai.wang/202307/install-syncthing/</link>
       <pubDate>Sat, 15 Jul 2023 02:50:44 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-syncthing/</guid>
-      <description>不得不说在linux下随便安装一个软件都可以写一份教程，不像Windows下载exe双击运行然后下一步下一步就能搞定。
-这次是安装syncthing，debian12的仓库里就有，直接apt安装就行。
-apt install syncthing 但这一步只是把syncthing安装到系统，最最关键的启动服务然后访问webui还是需要自己琢磨。我大概能猜到启动命令是systemctl start syncthing，但实测启动不了。行吧，官网没写，自己找教程。
-网上有两份教程，一份是说用systemctl start syncthing@user.service，我测试以后发现确实能启动syncthing@user.service服务，但webui无法访问。
-所以正确是教程是这样：
-第一步：在/etc/systemd/system/目录下，新建一个syncthing.servce文件，内容如下。注意User一栏设置运行syncthing服务的用户，改成自己系统的用户。
-[Unit] Description=Syncthing - Open Source Continuous File Synchronization for %I Documentation=man:syncthing(1) After=network.target [Service] User=Jack ExecStart=/usr/bin/syncthing -no-browser -gui-address=&amp;#34;0.0.0.0:8384&amp;#34; -no-restart -logflags=0 Restart=on-failure SuccessExitStatus=3 4 RestartForceExitStatus=3 4 [Install] WantedBy=multi-user.target 第二步：daemon-reload/start/enable三件套。
-# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl start syncthing.service # 设置开机启动 systemctl enable syncthing.service 第三步：syncthing默认端口8384，打开浏览器，访问http://host_ip:8384，搞定~</description>
+      <description>前言 不得不说在linux下随便安装一个软件都可以写一份教程，不像Windows下载exe双击运行然后下一步下一步就能搞定。
+安装 debian仓库里就有，直接apt安装就行。虽然版本略微旧了一些，但简单省事，apt一把梭！
+apt install syncthing 配置 通过apt方式安装syncthing服务，配置文件的默认路径是/lib/systemd/system/syncthing@.service。配置文件的默认内容如下
+[Unit] Description=Syncthing - Open Source Continuous File Synchronization for %I Documentation=man:syncthing(1) After=network.target StartLimitIntervalSec=60 StartLimitBurst=4 [Service] User=%i ExecStart=/usr/bin/syncthing serve --no-browser --no-restart --logflags=0 Restart=on-failure RestartSec=1 SuccessExitStatus=3 4 RestartForceExitStatus=3 4 # Hardening ProtectSystem=full PrivateTmp=true SystemCallArchitectures=native MemoryDenyWriteExecute=true NoNewPrivileges=true [Install] WantedBy=multi-user.target 根据这份默认的配置信息可以判断，想要启动syncthing服务，命令中需要指定用户。假定我的系统账户是jack，使用如下命令启动syncthing服务
+systemctl start syncthing@jack.service 用以上默认配置启动以后，在jack的home目录会生成配置文件，默认是/home/jack/.config/syncthing/config.xml，其中可以看到gui的默认访问地址
+&amp;lt;gui enabled=&amp;#34;true&amp;#34; tls=&amp;#34;false&amp;#34; debugging=&amp;#34;false&amp;#34;&amp;gt; &amp;lt;address&amp;gt;127.0.0.1:8384&amp;lt;/address&amp;gt; &amp;lt;apikey&amp;gt;xxxxxxxxxxxxxxxxxxx&amp;lt;/apikey&amp;gt; &amp;lt;theme&amp;gt;default&amp;lt;/theme&amp;gt; &amp;lt;/gui&amp;gt; 注意这里的&amp;lt;address&amp;gt;127.0.0.1:8384&amp;lt;/address&amp;gt;，默认只监听本机的访问请求，如果是远程访问，需要改成&amp;lt;address&amp;gt;0.0.0.0:8384&amp;lt;/address&amp;gt;。
+总结：
+apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是sysmted三件套了
+# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl restart syncthing.</description>
     </item>
     
     <item>
