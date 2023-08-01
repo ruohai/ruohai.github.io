@@ -20,8 +20,8 @@ apt install syncthing 配置 通过apt方式安装syncthing服务，配置文件
 systemctl start syncthing@jack.service 用以上默认配置启动以后，在jack的home目录会生成配置文件，默认是/home/jack/.config/syncthing/config.xml，其中可以看到gui的默认访问地址
 &lt;gui enabled=&#34;true&#34; tls=&#34;false&#34; debugging=&#34;false&#34;&gt; &lt;address&gt;127.0.0.1:8384&lt;/address&gt; &lt;apikey&gt;xxxxxxxxxxxxxxxxxxx&lt;/apikey&gt; &lt;theme&gt;default&lt;/theme&gt; &lt;/gui&gt; 注意这里的&lt;address&gt;127.0.0.1:8384&lt;/address&gt;，默认只监听本机的访问请求，如果是远程访问，需要改成&lt;address&gt;0.0.0.0:8384&lt;/address&gt;。
 总结：
-apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是sysmted三件套了
-# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl restart syncthing."/>
+apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是熟悉的重启和开机自启。
+# 启动syncthing服务 systemctl restart syncthing@jack."/>
 
     <meta property="og:title" content="Linux下Syncthing的安装和配置" />
 <meta property="og:description" content="前言 不得不说在linux下随便安装一个软件都可以写一份教程，不像Windows下载exe双击运行然后下一步下一步就能搞定。
@@ -31,8 +31,8 @@ apt install syncthing 配置 通过apt方式安装syncthing服务，配置文件
 systemctl start syncthing@jack.service 用以上默认配置启动以后，在jack的home目录会生成配置文件，默认是/home/jack/.config/syncthing/config.xml，其中可以看到gui的默认访问地址
 &lt;gui enabled=&#34;true&#34; tls=&#34;false&#34; debugging=&#34;false&#34;&gt; &lt;address&gt;127.0.0.1:8384&lt;/address&gt; &lt;apikey&gt;xxxxxxxxxxxxxxxxxxx&lt;/apikey&gt; &lt;theme&gt;default&lt;/theme&gt; &lt;/gui&gt; 注意这里的&lt;address&gt;127.0.0.1:8384&lt;/address&gt;，默认只监听本机的访问请求，如果是远程访问，需要改成&lt;address&gt;0.0.0.0:8384&lt;/address&gt;。
 总结：
-apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是sysmted三件套了
-# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl restart syncthing." />
+apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是熟悉的重启和开机自启。
+# 启动syncthing服务 systemctl restart syncthing@jack." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/install-syncthing/" /><meta property="article:section" content="202307" />
 <meta property="article:published_time" content="2023-07-15T02:50:44+08:00" />
@@ -146,13 +146,11 @@ WantedBy=multi-user.target
 <li>修改端口，和上一条一样，把<code>8384</code>改成自己喜欢的端口号</li>
 </ul>
 </blockquote>
-<p>完成以上的配置后，就是sysmted三件套了</p>
-<pre tabindex="0"><code># 服务重载
-systemctl daemon-reload
-# 启动syncthing服务
-systemctl restart syncthing.service
+<p>完成以上的配置后，就是熟悉的重启和开机自启。</p>
+<pre tabindex="0"><code># 启动syncthing服务
+systemctl restart syncthing@jack.service
 # 设置开机启动
-systemctl enable syncthing.service
+systemctl enable syncthing@jack.service
 </code></pre><p>然后打开浏览器，访问<code>http://host_ip:8384</code>，搞定~</p>
 
     </div>

@@ -472,8 +472,8 @@ apt install syncthing 配置 通过apt方式安装syncthing服务，配置文件
 systemctl start syncthing@jack.service 用以上默认配置启动以后，在jack的home目录会生成配置文件，默认是/home/jack/.config/syncthing/config.xml，其中可以看到gui的默认访问地址
 &amp;lt;gui enabled=&amp;#34;true&amp;#34; tls=&amp;#34;false&amp;#34; debugging=&amp;#34;false&amp;#34;&amp;gt; &amp;lt;address&amp;gt;127.0.0.1:8384&amp;lt;/address&amp;gt; &amp;lt;apikey&amp;gt;xxxxxxxxxxxxxxxxxxx&amp;lt;/apikey&amp;gt; &amp;lt;theme&amp;gt;default&amp;lt;/theme&amp;gt; &amp;lt;/gui&amp;gt; 注意这里的&amp;lt;address&amp;gt;127.0.0.1:8384&amp;lt;/address&amp;gt;，默认只监听本机的访问请求，如果是远程访问，需要改成&amp;lt;address&amp;gt;0.0.0.0:8384&amp;lt;/address&amp;gt;。
 总结：
-apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是sysmted三件套了
-# 服务重载 systemctl daemon-reload # 启动syncthing服务 systemctl restart syncthing.</description>
+apt安装syncthing以后，启动命令：systemctl start syncthing@jack.service 如果是远程访问，修改/home/jack/.config/syncthing/config.xml中的gui标签，把127.0.0.1改成0.0.0.0 修改端口，和上一条一样，把8384改成自己喜欢的端口号 完成以上的配置后，就是熟悉的重启和开机自启。
+# 启动syncthing服务 systemctl restart syncthing@jack.</description>
     </item>
     
     <item>
