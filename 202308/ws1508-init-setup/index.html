@@ -16,26 +16,26 @@
 <meta name="twitter:description" content="前言 不知不觉进入8月了，生活就这么碌碌无为又怅然若失。
 ws1508的可用固件分为三种：
 nand直刷armbian u盘启动armbian u盘启动openwrt 其中nand直刷armbian方案，在刷入固件以后，并不是开箱即用，还需要做一些初始化设置，这里做一些记录。
-nand直刷固件原帖之路：【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～
+nand直刷固件原帖指路：【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～
 初始化 首先就是重新调整分区大小
 resize2fs /dev/data 因为原固件没有预装ntp，需要手动设置时区
 timedatectl set-timezone Asia/Shanghai 再手动设置时间，为避免后续update出异常，这里要求时间比正确时间晚一天。比如今天是2023-08-01
 timedatectl set-time 2023-07-31 换源/etc/apt/source.list，这里选择用清华的源。固件是debian 10（buster），默认不支持https，所以这里用http。如果想上https，在清华debian源页面有提供设置方法，可以自行查阅。
-deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free 还是换源，这次是文件/etc/apt/source.list.d/armbian.list,依然用清华的，依然是http。
-deb http://mirrors.tuna.tsinghua.edu.cn/armbian buster main buster-utils buster-desktop 然后就可以执行apt update更新软件仓库了。但更新的时候会报错public key is not available，一般确实的两个公钥是0E98404D386FA1D9和6ED0E7B82643E131，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。
+deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free 还是换源，这次是文件/etc/apt/source.list.d/armbian.list，依然用清华的，依然是http。
+deb http://mirrors.tuna.tsinghua.edu.cn/armbian buster main buster-utils buster-desktop 然后就可以执行apt update更新软件仓库了。但更新的时候会报错public key is not available，一般缺失的两个公钥是0E98404D386FA1D9和6ED0E7B82643E131，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0E98404D386FA1D9 apt-key adv --keyserver hkp://keyserver."/>
 
     <meta property="og:title" content="赚钱宝二代（WS1508）直刷固件的初始化设置" />
 <meta property="og:description" content="前言 不知不觉进入8月了，生活就这么碌碌无为又怅然若失。
 ws1508的可用固件分为三种：
 nand直刷armbian u盘启动armbian u盘启动openwrt 其中nand直刷armbian方案，在刷入固件以后，并不是开箱即用，还需要做一些初始化设置，这里做一些记录。
-nand直刷固件原帖之路：【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～
+nand直刷固件原帖指路：【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～
 初始化 首先就是重新调整分区大小
 resize2fs /dev/data 因为原固件没有预装ntp，需要手动设置时区
 timedatectl set-timezone Asia/Shanghai 再手动设置时间，为避免后续update出异常，这里要求时间比正确时间晚一天。比如今天是2023-08-01
 timedatectl set-time 2023-07-31 换源/etc/apt/source.list，这里选择用清华的源。固件是debian 10（buster），默认不支持https，所以这里用http。如果想上https，在清华debian源页面有提供设置方法，可以自行查阅。
-deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free 还是换源，这次是文件/etc/apt/source.list.d/armbian.list,依然用清华的，依然是http。
-deb http://mirrors.tuna.tsinghua.edu.cn/armbian buster main buster-utils buster-desktop 然后就可以执行apt update更新软件仓库了。但更新的时候会报错public key is not available，一般确实的两个公钥是0E98404D386FA1D9和6ED0E7B82643E131，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。
+deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free 还是换源，这次是文件/etc/apt/source.list.d/armbian.list，依然用清华的，依然是http。
+deb http://mirrors.tuna.tsinghua.edu.cn/armbian buster main buster-utils buster-desktop 然后就可以执行apt update更新软件仓库了。但更新的时候会报错public key is not available，一般缺失的两个公钥是0E98404D386FA1D9和6ED0E7B82643E131，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0E98404D386FA1D9 apt-key adv --keyserver hkp://keyserver." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/ws1508-init-setup/" /><meta property="article:section" content="202308" />
@@ -109,7 +109,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0E98404D386FA1D9 ap
 <li>u盘启动openwrt</li>
 </ul>
 <p>其中<code>nand直刷armbian</code>方案，在刷入固件以后，并不是开箱即用，还需要做一些初始化设置，这里做一些记录。</p>
-<p><code>nand直刷固件</code>原帖之路：<a href="https://www.right.com.cn/forum/thread-4137698-1-1.html">【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～</a></p>
+<p><code>nand直刷固件</code>原帖指路：<a href="https://www.right.com.cn/forum/thread-4137698-1-1.html">【赚钱宝2代 Armbian 直刷包】软件随便装，可以apt-get，可以挂甜糖～</a></p>
 <hr>
 <h2 id="初始化">初始化</h2>
 <p>首先就是重新调整分区大小</p>
@@ -123,9 +123,9 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0E98404D386FA1D9 ap
 deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
 deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
 deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
-</code></pre><p>还是换源，这次是文件<code>/etc/apt/source.list.d/armbian.list</code>,依然用清华的，依然是http。</p>
+</code></pre><p>还是换源，这次是文件<code>/etc/apt/source.list.d/armbian.list</code>，依然用清华的，依然是http。</p>
 <pre tabindex="0"><code>deb http://mirrors.tuna.tsinghua.edu.cn/armbian buster main buster-utils buster-desktop
-</code></pre><p>然后就可以执行<code>apt update</code>更新软件仓库了。但更新的时候会报错<code>public key is not available</code>，一般确实的两个公钥是<code>0E98404D386FA1D9</code>和<code>6ED0E7B82643E131</code>，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。</p>
+</code></pre><p>然后就可以执行<code>apt update</code>更新软件仓库了。但更新的时候会报错<code>public key is not available</code>，一般缺失的两个公钥是<code>0E98404D386FA1D9</code>和<code>6ED0E7B82643E131</code>，这里需要用命令重新导入公钥。注意俩公钥的编号，需要根据实际报错的公钥编号来调整。</p>
 <pre tabindex="0"><code>apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0E98404D386FA1D9
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6ED0E7B82643E131
 </code></pre><p>好了，操作到这里以后，nand直刷的armbian算是初始化完毕，接下去可以安装软件。</p>
