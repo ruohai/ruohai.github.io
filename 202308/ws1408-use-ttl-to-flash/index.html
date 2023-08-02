@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机"/>
+<meta name="twitter:description" content="前言 这是一篇图片比较多的文章。
+前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。
+然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。
+刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。
+准备 有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。 电脑已经安装了putty 拆机 要刷机，首先需要把ws1408的主板拆出来。
+撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。
+取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。
+到这里就完成拆机了。
+刷机 先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。
+接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
+先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
+然后电脑上打开putty，连接类型选Serial，Serial line填COM3，Speed填115200。然后点击Open打开终端。
+这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
+到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
+最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
+到这里就大功告成了，用usb转ttl工具刷机结束~
+😄"/>
+
+    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机" />
+<meta property="og:description" content="前言 这是一篇图片比较多的文章。
+前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。
+然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。
+刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。
+准备 有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。 电脑已经安装了putty 拆机 要刷机，首先需要把ws1408的主板拆出来。
+撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。
+取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。
+到这里就完成拆机了。
+刷机 先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。
+接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
+先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
+然后电脑上打开putty，连接类型选Serial，Serial line填COM3，Speed填115200。然后点击Open打开终端。
+这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
+到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
+最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
+到这里就大功告成了，用usb转ttl工具刷机结束~
+😄" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202308/ws1408-use-ttl-to-flash/" /><meta property="article:section" content="202308" />
+<meta property="article:published_time" content="2023-08-02T17:36:56+08:00" />
+<meta property="article:modified_time" content="2023-08-02T17:36:56+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>这是一篇图片比较多的文章。</p>
+<p>前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。</p>
+<p>然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。</p>
+<p>刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。</p>
+<hr>
+<h2 id="准备">准备</h2>
+<ul>
+<li>有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → <a href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=683362260002">CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线</a></li>
+<li>有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。</li>
+<li>电脑已经安装了putty</li>
+</ul>
+<hr>
+<h2 id="拆机">拆机</h2>
+<p>要刷机，首先需要把ws1408的主板拆出来。</p>
+<p>撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/XtLCNINL.jpg" alt="1690971715949.jpg"></p>
+<p>取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/rDBRMk2f.png" alt="1690972136441.png"></p>
+<p>到这里就完成拆机了。</p>
+<hr>
+<h2 id="刷机">刷机</h2>
+<p>先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/9CqdR3wX.jpg" alt="1690972229868.jpg"></p>
+<p>接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。</p>
+<p>先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/Pt7nSX6Y.png" alt="1690972690327.png"></p>
+<p>然后电脑上打开putty，连接类型选<code>Serial</code>，Serial line填<code>COM3</code>，Speed填<code>115200</code>。然后点击<code>Open</code>打开终端。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/go4bPRQt.png" alt="1690972839371.png"></p>
+<p>这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入<code>update</code>后敲回车键确认，此时终端中会显示进入了线刷模式。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/tR2SIXuo.jpg" alt="1690973001239.jpg"></p>
+<p>到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择<code>普通擦除</code>，然后点开始。</p>
+<p><img src="https://img1.imgtp.com/2023/08/02/nbn6lju5.jpg" alt="1690973162123.jpg"></p>
+<p>最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。</p>
+<p>到这里就大功告成了，用usb转ttl工具刷机结束~</p>
+<p>😄</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
