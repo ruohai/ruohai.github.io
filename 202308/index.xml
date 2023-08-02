@@ -6,7 +6,30 @@
     <description>Recent content in 202308s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 17:36:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 22:35:07 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>迅雷赚钱宝一代（WS1408）在OpenWrt固件基础上安装和配置Samba</title>
+      <link>https://ruohai.wang/202308/ws1408-samba-use-guide/</link>
+      <pubDate>Wed, 02 Aug 2023 22:35:07 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/ws1408-samba-use-guide/</guid>
+      <description>前言 ws1408只有一版openwrt固件，要在openwrt的基础上安装samba，和armbian有点不太一样，这里做简单记录。
+其实在oenwrt的webui上也有入口可以安装软件和配置，但我实际用下来总是会有各种问题。所以最后放弃了webui安装和配置的方法，直接手搓。真的，自己手搓比webui上勾勾点点成功率高多了。
+要安装软件，记得先换源，指路：迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享
+安装samba 先更新软件仓库
+opkg update 查找软件
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 添加系统用户 ws1408的openwrt固件比较精简，默认只有root账户，想新增系统用户需要安装useradd。
+opkg install shadow-useradd 添加用户jack。这里指定jack这个用户无法登录，因为只是用来做samba的用户，不会登录系统。
+useradd jack -s /bin/false 如果jack这个用户需要登录系统，那上面的命令中去掉-s /bin/false，然后给他设置密码
+passwd jack samba中添加用户 添加了系统用户以后，需要在samba中添加用户。下面这条命令敲完后回车，根据系统会提示设置密码
+smbpasswd -a jack 如果想要删除samba用户，命令应该如下
+smbpasswd -x jack 但我实际使用下来，这条删除用户的命令会一直提示处理失败。所以有效的办法是用nano打开/etc/samba/smbpasswd这个保存用户信息的文件，删除或者清空里面的内容。
+配置共享文件夹 samba配置文件的路径是/etc/samba/smb.conf，但默认的这个smb.conf配置文件只是一个软链接，实际指向了/var/etc/smb.conf。我尝试直接修改这个软链接版的smb.conf文件，但每次一重启samba服务就会被重置。那正好，原始文件不动，咱另立门户。
+# 进目录 cd /etc/samba # 把原文件重命名 mv smb.conf smb.conf.default # 新建一个配置文件 touch smb.conf 然后用nano编辑smb.conf，填写以下内容。因为我对samba共享的安全性要求略高，所以限定smb最低版本是smb2，限定只有jack可以访问，而且禁止匿名访问。
+#======================= Global Setting ======================= [global] workgroup = WORKGROUP security = user server role = standalone server map to guest = never server min protocol = SMB2 #======================= Share Definitions ======================= [ShareFolder] comment = share comment path = /path/to/folder create mask = 0755 directory mask = 0755 valid users = jack browseable = yes writable = yes read only = no public = no guest ok = no 完成以上的配置以后，重启samba。</description>
+    </item>
+    
     <item>
       <title>迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机</title>
       <link>https://ruohai.wang/202308/ws1408-use-ttl-to-flash/</link>

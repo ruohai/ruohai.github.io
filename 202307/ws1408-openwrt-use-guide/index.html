@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>迅雷赚钱宝一代（WS1408）的OpenWrt使用方法 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.115.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt使用方法"/>
+<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享"/>
 <meta name="twitter:description" content="前言 周末回了一趟乡下，耽误了搞机。😄
 ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。
 首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。
@@ -21,17 +21,10 @@ ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾
 选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。
 换源 首先是ws1408的软件源配置，固件自带的源是supes.top，访问不稳定，先换掉。这里用ustc中科大的源。
 src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony 注意ws1408要选at91/sama5和arm_cortex-a5_vfpv4这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。
-常用命令 webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。
-更新软件仓库
-opkg update 查找软件（比如samba）
-opkg list | grep samba 安装软件
-opkg install luci-app-samba4 ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。
-opkg install shadow-useradd 添加用户
-useradd jack 设置密码
-passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。
-/etc/init.d/samba4 restart "/>
+换源以后，就可以在webui中点击更新列表，如果web端操作依然报错，可以ssh进系统以后执行以下命令
+opkg update "/>
 
-    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt使用方法" />
+    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享" />
 <meta property="og:description" content="前言 周末回了一趟乡下，耽误了搞机。😄
 ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾armbian，对openwrt没啥经验，这里简单记录下这两天折腾openwrt的内容。
 首先openwrt也是linux魔改，意味着除了webui之外，还以ssh连上用命令行操作。
@@ -40,15 +33,8 @@ ws1408只有一版openwrt固件，没有armbian。但之前俩月我都在折腾
 选后者会导致机器变砖，或者导致机器刷成功以后无法再刷机，必须要用usb ttl工具。
 换源 首先是ws1408的软件源配置，固件自带的源是supes.top，访问不稳定，先换掉。这里用ustc中科大的源。
 src/gz openwrt_core http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/targets/at91/sama5/packages src/gz openwrt_base http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/base src/gz openwrt_luci http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/luci src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/packages src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony 注意ws1408要选at91/sama5和arm_cortex-a5_vfpv4这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。
-常用命令 webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。
-更新软件仓库
-opkg update 查找软件（比如samba）
-opkg list | grep samba 安装软件
-opkg install luci-app-samba4 ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。
-opkg install shadow-useradd 添加用户
-useradd jack 设置密码
-passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。
-/etc/init.d/samba4 restart " />
+换源以后，就可以在webui中点击更新列表，如果web端操作依然报错，可以ssh进系统以后执行以下命令
+opkg update " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/ws1408-openwrt-use-guide/" /><meta property="article:section" content="202307" />
 <meta property="article:published_time" content="2023-07-30T23:58:50+08:00" />
@@ -85,7 +71,7 @@ passwd jack 重启软件/服务。ws1408的openwrt固件用的init程序不是sy
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）的OpenWrt使用方法</h1>
+      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -132,23 +118,8 @@ src/gz openwrt_packages http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/pack
 src/gz openwrt_routing http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/routing
 src/gz openwrt_telephony http://mirrors.ustc.edu.cn/openwrt/releases/22.03.3/packages/arm_cortex-a5_vfpv4/telephony
 </code></pre><p>注意ws1408要选<code>at91/sama5</code>和<code>arm_cortex-a5_vfpv4</code>这俩硬件分支的源。至于为啥我也不清楚，实际用下来确实没问题，试着装了samba4，一切正常。</p>
-<hr>
-<h2 id="常用命令">常用命令</h2>
-<p>webui很多操作容易报错，有时候一些关键报错信息也不显示，所以还是命令行比较方便，真男人都用命令行。</p>
-<p>更新软件仓库</p>
+<p>换源以后，就可以在webui中点击<code>更新列表</code>，如果web端操作依然报错，可以ssh进系统以后执行以下命令</p>
 <pre tabindex="0"><code>opkg update
-</code></pre><p>查找软件（比如samba）</p>
-<pre tabindex="0"><code>opkg list | grep samba
-</code></pre><p>安装软件</p>
-<pre tabindex="0"><code>opkg install luci-app-samba4
-</code></pre><p>ws1408的openwrt固件比较精简，默认只有root账户而且无法添加用户，需要安装useradd。</p>
-<pre tabindex="0"><code>opkg install shadow-useradd
-</code></pre><p>添加用户</p>
-<pre tabindex="0"><code>useradd jack
-</code></pre><p>设置密码</p>
-<pre tabindex="0"><code>passwd jack
-</code></pre><p>重启软件/服务。ws1408的openwrt固件用的init程序不是systemd，所以不能systemctl三件套了。比如这里要重启samba。</p>
-<pre tabindex="0"><code>/etc/init.d/samba4 restart
 </code></pre>
     </div>
     <div class="post-footer">

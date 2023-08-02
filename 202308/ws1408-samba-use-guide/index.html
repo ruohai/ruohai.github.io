@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>迅雷赚钱宝一代（WS1408）在OpenWrt固件基础上安装和配置Samba // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.115.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）在OpenWrt固件基础上安装和配置Samba"/>
+<meta name="twitter:description" content="前言 ws1408只有一版openwrt固件，要在openwrt的基础上安装samba，和armbian有点不太一样，这里做简单记录。
+其实在oenwrt的webui上也有入口可以安装软件和配置，但我实际用下来总是会有各种问题。所以最后放弃了webui安装和配置的方法，直接手搓。真的，自己手搓比webui上勾勾点点成功率高多了。
+要安装软件，记得先换源，指路：迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享
+安装samba 先更新软件仓库
+opkg update 查找软件
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 添加系统用户 ws1408的openwrt固件比较精简，默认只有root账户，想新增系统用户需要安装useradd。
+opkg install shadow-useradd 添加用户jack。这里指定jack这个用户无法登录，因为只是用来做samba的用户，不会登录系统。
+useradd jack -s /bin/false 如果jack这个用户需要登录系统，那上面的命令中去掉-s /bin/false，然后给他设置密码
+passwd jack samba中添加用户 添加了系统用户以后，需要在samba中添加用户。下面这条命令敲完后回车，根据系统会提示设置密码
+smbpasswd -a jack 如果想要删除samba用户，命令应该如下
+smbpasswd -x jack 但我实际使用下来，这条删除用户的命令会一直提示处理失败。所以有效的办法是用nano打开/etc/samba/smbpasswd这个保存用户信息的文件，删除或者清空里面的内容。
+配置共享文件夹 samba配置文件的路径是/etc/samba/smb.conf，但默认的这个smb.conf配置文件只是一个软链接，实际指向了/var/etc/smb.conf。我尝试直接修改这个软链接版的smb.conf文件，但每次一重启samba服务就会被重置。那正好，原始文件不动，咱另立门户。
+# 进目录 cd /etc/samba # 把原文件重命名 mv smb.conf smb.conf.default # 新建一个配置文件 touch smb.conf 然后用nano编辑smb.conf，填写以下内容。因为我对samba共享的安全性要求略高，所以限定smb最低版本是smb2，限定只有jack可以访问，而且禁止匿名访问。
+#======================= Global Setting ======================= [global] workgroup = WORKGROUP security = user server role = standalone server map to guest = never server min protocol = SMB2 #======================= Share Definitions ======================= [ShareFolder] comment = share comment path = /path/to/folder create mask = 0755 directory mask = 0755 valid users = jack browseable = yes writable = yes read only = no public = no guest ok = no 完成以上的配置以后，重启samba。"/>
+
+    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）在OpenWrt固件基础上安装和配置Samba" />
+<meta property="og:description" content="前言 ws1408只有一版openwrt固件，要在openwrt的基础上安装samba，和armbian有点不太一样，这里做简单记录。
+其实在oenwrt的webui上也有入口可以安装软件和配置，但我实际用下来总是会有各种问题。所以最后放弃了webui安装和配置的方法，直接手搓。真的，自己手搓比webui上勾勾点点成功率高多了。
+要安装软件，记得先换源，指路：迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享
+安装samba 先更新软件仓库
+opkg update 查找软件
+opkg list | grep samba 安装软件
+opkg install luci-app-samba4 添加系统用户 ws1408的openwrt固件比较精简，默认只有root账户，想新增系统用户需要安装useradd。
+opkg install shadow-useradd 添加用户jack。这里指定jack这个用户无法登录，因为只是用来做samba的用户，不会登录系统。
+useradd jack -s /bin/false 如果jack这个用户需要登录系统，那上面的命令中去掉-s /bin/false，然后给他设置密码
+passwd jack samba中添加用户 添加了系统用户以后，需要在samba中添加用户。下面这条命令敲完后回车，根据系统会提示设置密码
+smbpasswd -a jack 如果想要删除samba用户，命令应该如下
+smbpasswd -x jack 但我实际使用下来，这条删除用户的命令会一直提示处理失败。所以有效的办法是用nano打开/etc/samba/smbpasswd这个保存用户信息的文件，删除或者清空里面的内容。
+配置共享文件夹 samba配置文件的路径是/etc/samba/smb.conf，但默认的这个smb.conf配置文件只是一个软链接，实际指向了/var/etc/smb.conf。我尝试直接修改这个软链接版的smb.conf文件，但每次一重启samba服务就会被重置。那正好，原始文件不动，咱另立门户。
+# 进目录 cd /etc/samba # 把原文件重命名 mv smb.conf smb.conf.default # 新建一个配置文件 touch smb.conf 然后用nano编辑smb.conf，填写以下内容。因为我对samba共享的安全性要求略高，所以限定smb最低版本是smb2，限定只有jack可以访问，而且禁止匿名访问。
+#======================= Global Setting ======================= [global] workgroup = WORKGROUP security = user server role = standalone server map to guest = never server min protocol = SMB2 #======================= Share Definitions ======================= [ShareFolder] comment = share comment path = /path/to/folder create mask = 0755 directory mask = 0755 valid users = jack browseable = yes writable = yes read only = no public = no guest ok = no 完成以上的配置以后，重启samba。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202308/ws1408-samba-use-guide/" /><meta property="article:section" content="202308" />
+<meta property="article:published_time" content="2023-08-02T22:35:07+08:00" />
+<meta property="article:modified_time" content="2023-08-02T22:35:07+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）在OpenWrt固件基础上安装和配置Samba</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 2, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+              <a class="tag" href="https://ruohai.wang/tags/openwrt/">OpenWrt</a>
+              <a class="tag" href="https://ruohai.wang/tags/samba/">Samba</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>ws1408只有一版openwrt固件，要在openwrt的基础上安装samba，和armbian有点不太一样，这里做简单记录。</p>
+<p>其实在oenwrt的webui上也有入口可以安装软件和配置，但我实际用下来总是会有各种问题。所以最后放弃了webui安装和配置的方法，直接手搓。真的，自己手搓比webui上勾勾点点成功率高多了。</p>
+<p>要安装软件，记得先换源，指路：<a href="https://ruohai.wang/202307/ws1408-openwrt-use-guide/">迅雷赚钱宝一代（WS1408）的OpenWrt可用源分享</a></p>
+<hr>
+<h2 id="安装samba">安装samba</h2>
+<p>先更新软件仓库</p>
+<pre tabindex="0"><code>opkg update
+</code></pre><p>查找软件</p>
+<pre tabindex="0"><code>opkg list | grep samba
+</code></pre><p>安装软件</p>
+<pre tabindex="0"><code>opkg install luci-app-samba4
+</code></pre><hr>
+<h2 id="添加系统用户">添加系统用户</h2>
+<p>ws1408的openwrt固件比较精简，默认只有root账户，想新增系统用户需要安装useradd。</p>
+<pre tabindex="0"><code>opkg install shadow-useradd
+</code></pre><p>添加用户jack。这里指定jack这个用户无法登录，因为只是用来做samba的用户，不会登录系统。</p>
+<pre tabindex="0"><code>useradd jack -s /bin/false
+</code></pre><p>如果jack这个用户需要登录系统，那上面的命令中去掉<code>-s /bin/false</code>，然后给他设置密码</p>
+<pre tabindex="0"><code>passwd jack
+</code></pre><hr>
+<h2 id="samba中添加用户">samba中添加用户</h2>
+<p>添加了系统用户以后，需要在samba中添加用户。下面这条命令敲完后回车，根据系统会提示设置密码</p>
+<pre tabindex="0"><code>smbpasswd -a jack
+</code></pre><p>如果想要删除samba用户，命令应该如下</p>
+<pre tabindex="0"><code>smbpasswd -x jack
+</code></pre><p>但我实际使用下来，这条删除用户的命令会一直提示处理失败。所以有效的办法是用nano打开<code>/etc/samba/smbpasswd</code>这个保存用户信息的文件，删除或者清空里面的内容。</p>
+<hr>
+<h2 id="配置共享文件夹">配置共享文件夹</h2>
+<p>samba配置文件的路径是<code>/etc/samba/smb.conf</code>，但默认的这个<code>smb.conf</code>配置文件只是一个软链接，实际指向了<code>/var/etc/smb.conf</code>。我尝试直接修改这个软链接版的smb.conf文件，但每次一重启samba服务就会被重置。那正好，原始文件不动，咱另立门户。</p>
+<pre tabindex="0"><code># 进目录
+cd /etc/samba
+
+# 把原文件重命名
+mv smb.conf smb.conf.default
+
+# 新建一个配置文件
+touch smb.conf
+</code></pre><p>然后用nano编辑smb.conf，填写以下内容。因为我对samba共享的安全性要求略高，所以限定smb最低版本是smb2，限定只有jack可以访问，而且禁止匿名访问。</p>
+<pre tabindex="0"><code>#======================= Global Setting =======================
+
+[global]
+   workgroup = WORKGROUP
+   security = user
+   server role = standalone server
+   map to guest = never
+   server min protocol = SMB2
+
+#======================= Share Definitions =======================
+
+[ShareFolder]
+   comment = share comment
+   path = /path/to/folder
+   create mask = 0755
+   directory mask = 0755
+   valid users = jack
+   browseable = yes
+   writable = yes
+   read only = no
+   public = no
+   guest ok = no
+</code></pre><p>完成以上的配置以后，重启samba。</p>
+<pre tabindex="0"><code>/etc/init.d/samba4 restart
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
