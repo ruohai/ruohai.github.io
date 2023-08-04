@@ -6,7 +6,16 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 22:35:07 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Aug 2023 23:11:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>生活</title>
+      <link>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</link>
+      <pubDate>Fri, 04 Aug 2023 23:11:59 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>OpenWrt</title>
       <link>https://ruohai.wang/tags/openwrt/</link>
@@ -58,15 +67,6 @@
       <pubDate>Wed, 02 Aug 2023 00:10:32 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/ffmpeg/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>生活</title>
-      <link>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</link>
-      <pubDate>Fri, 28 Jul 2023 17:26:33 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</guid>
       <description></description>
     </item>
     
