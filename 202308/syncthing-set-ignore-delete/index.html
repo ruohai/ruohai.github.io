@@ -21,7 +21,11 @@ A：支持。把ignoreDelete参数从false改成true即可。
 但我不一样啊！我是想实现增量备份功能，这个冲突的使用场景，然而正是我需要的！我的使用模式，就是一个服务端（server）只接收，加多个客户端（client）只发送。
 服务端安装并启用syncthing可以看我之前写的这篇文章：Linux下Syncthing的安装和配置
 现在需要在服务端开启ignoreDelete，修改syncthing的配置文件
-nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。"/>
+nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。
+update@20230808 今天发现在syncthing网页端有设置ignoreDelete的入口。
+第一步：
+第二步：
+第三步："/>
 
     <meta property="og:title" content="Syncthing实现增量备份/增量同步" />
 <meta property="og:description" content="脱水精简结论 Q：syncthing是否支持增量备份（增量同步）？
@@ -32,7 +36,11 @@ A：支持。把ignoreDelete参数从false改成true即可。
 但我不一样啊！我是想实现增量备份功能，这个冲突的使用场景，然而正是我需要的！我的使用模式，就是一个服务端（server）只接收，加多个客户端（client）只发送。
 服务端安装并启用syncthing可以看我之前写的这篇文章：Linux下Syncthing的安装和配置
 现在需要在服务端开启ignoreDelete，修改syncthing的配置文件
-nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。" />
+nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。
+update@20230808 今天发现在syncthing网页端有设置ignoreDelete的入口。
+第一步：
+第二步：
+第三步：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/syncthing-set-ignore-delete/" /><meta property="article:section" content="202308" />
 <meta property="article:published_time" content="2023-08-02T03:13:25+08:00" />
@@ -109,6 +117,15 @@ nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelet
 <pre tabindex="0"><code>nano /home/jack/.config/syncthing/config.xml
 </code></pre><p>在<code>folder</code>标签内找到<code>ignoreDelete</code>，把false改成true，然后重启syncthing服务即可。</p>
 <p><img src="https://img1.imgtp.com/2023/08/02/BewpZkEG.png" alt="1690918774670.png"></p>
+<hr>
+<p>update@20230808
+今天发现在syncthing网页端有设置ignoreDelete的入口。</p>
+<p>第一步：</p>
+<p><img src="https://img1.imgtp.com/2023/08/08/whQ09kRY.png" alt="1691504362571.png"></p>
+<p>第二步：</p>
+<p><img src="https://img1.imgtp.com/2023/08/08/GyhQfkCZ.png" alt="1691504362572.png"></p>
+<p>第三步：</p>
+<p><img src="https://img1.imgtp.com/2023/08/08/cX5jVQ2a.png" alt="1691504362571.png"></p>
 
     </div>
     <div class="post-footer">

@@ -20,7 +20,11 @@ A：支持。把ignoreDelete参数从false改成true即可。
 但我不一样啊！我是想实现增量备份功能，这个冲突的使用场景，然而正是我需要的！我的使用模式，就是一个服务端（server）只接收，加多个客户端（client）只发送。
 服务端安装并启用syncthing可以看我之前写的这篇文章：Linux下Syncthing的安装和配置
 现在需要在服务端开启ignoreDelete，修改syncthing的配置文件
-nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。</description>
+nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。
+update@20230808 今天发现在syncthing网页端有设置ignoreDelete的入口。
+第一步：
+第二步：
+第三步：</description>
     </item>
     
     <item>
