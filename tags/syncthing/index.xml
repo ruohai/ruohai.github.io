@@ -5,7 +5,20 @@
     <link>https://ruohai.wang/tags/syncthing/</link>
     <description>Recent content in Syncthing on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 02 Aug 2023 03:13:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/syncthing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Aug 2023 22:41:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/syncthing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syncthing设置只同步照片和视频文件</title>
+      <link>https://ruohai.wang/202308/syncthing-sync-media-files-only/</link>
+      <pubDate>Tue, 08 Aug 2023 22:41:34 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/syncthing-sync-media-files-only/</guid>
+      <description>syncthing这软件的设定是用来多个设备之间保持【文件夹】内容同步，默认情况下，选择了要同步的文件夹以后，就会把文件夹内的所有内容一股脑儿进行同步，这会导致很多缩略图或者某些需要忽略系统文件也同步出去。
+我的使用场景下，想要的是之同步照片和视频内容，其他的都不需要同步。这里用到的解决方法是：使用syncthing的忽略模式。
+这里对synchting忽略模式的语法不做解释，直接上最后的配置规则。
+常见的手机照片格式：png，jpg，HEIC，jpeg 常见的手机视频格式：mp4，HEVC 常见的动图格式：gif 好了，现在的需求是，只同步以上这些格式的文件，其他统统忽略
+!**.jpg !**.jpeg !**.png !**.HEIC !**.gif !**.mp4 !**.HEVC ** </description>
+    </item>
+    
     <item>
       <title>Syncthing实现增量备份/增量同步</title>
       <link>https://ruohai.wang/202308/syncthing-set-ignore-delete/</link>
