@@ -5,7 +5,30 @@
     <link>https://ruohai.wang/202308/</link>
     <description>Recent content in 202308s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 08 Aug 2023 22:41:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Aug 2023 04:01:36 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下操作分区扩容</title>
+      <link>https://ruohai.wang/202308/ws1508-use-parted-to-expand-storage/</link>
+      <pubDate>Thu, 10 Aug 2023 04:01:36 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/ws1508-use-parted-to-expand-storage/</guid>
+      <description>前言 有这个需求是因为我一开始插在ws1508上的是一张2GB容量而且io性能极差无比的老旧sd卡，用dd命令克隆的整个磁盘镜像以后，烧录到了一根16GB容量、使用先进的usb3.0接口协议的U盘棒子上。但烧录到新棒子上的系统的分区表信息也是1:1克隆的，依然是老的2GB容量，意味着剩下了14GB的闲置空间。
+现在的分区信息大概是这样
+|--256MB启动分区--|--1.5GB系统分区--|--14GB闲置空间--| 目录结构
+sda 14.4G ├─sda1 256M ## 启动分区 └─sda2 1.5G ## 系统分区 这种情况下，只需要调整系统分区/dev/sda2的结束点（end），把14GB闲置空间拼接上去就行了。
+一开始我是准备在win下用disk genius来操作的，毕竟图形化界面简单易上手。但用dg操作的时候一直有报错无法执行，算了，换到linux下，用命令行界面！
+前期准备 旧系统盘用dd命令克隆整个磁盘为img镜像文件，然后把img烧录到新的u盘棒子上，最后把新棒子插入设备，通电开机，连上ssh。
+扩容 用parted工具，先获取基础信息。
+调用parted工具
+parted 此时命令提示符会以(parted)开头，意味着进入了parted工具界面。
+先查看剩余空间
+print free 打印出来的信息如下
+Number Start End Size Type File system Flags 32.3kB 16.8MB 16.7MB Free Space 1 16.8MB 285MB 268MB primary fat16 bls_boot 2 285MB 1862MB 1577MB primary ext4 1862MB 15.5GB 13.6GB Free Space 这里可以看到分区2的结束点（end）是1862MB，从1862MB到15.5GB这13.6GB空间都是空闲空间（free space）。
+查看存储设备的分区表
+print /dev/sda 打印出来的信息如下
+Number Start End Size Type File system Flags 1 16.</description>
+    </item>
+    
     <item>
       <title>Syncthing设置只同步照片和视频文件</title>
       <link>https://ruohai.wang/202308/syncthing-sync-media-files-only/</link>

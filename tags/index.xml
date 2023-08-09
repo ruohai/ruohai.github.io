@@ -5,7 +5,16 @@
     <link>https://ruohai.wang/tags/</link>
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 08 Aug 2023 22:41:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Aug 2023 04:01:36 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux</title>
+      <link>https://ruohai.wang/tags/linux/</link>
+      <pubDate>Thu, 10 Aug 2023 04:01:36 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/linux/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Syncthing</title>
       <link>https://ruohai.wang/tags/syncthing/</link>
@@ -75,15 +84,6 @@
       <pubDate>Wed, 02 Aug 2023 00:10:32 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/ffmpeg/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>https://ruohai.wang/tags/linux/</link>
-      <pubDate>Fri, 28 Jul 2023 10:55:34 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/linux/</guid>
       <description></description>
     </item>
     
