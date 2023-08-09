@@ -38,8 +38,8 @@ smbpasswd -x jack 但我实际使用下来，这条删除用户的命令会一�
       <description>前言 前两天写过一篇用cifs挂载smb共享文件夹的文章，但那篇文章中多有疏漏，本来直接在那篇文章中update补漏修正就行，但最近懒了，直接择重点重写一篇。
 linux挂载smb共享文件夹涉及到很多权限分配的设置，比如smb服务端设置的用户和组、本地分配的用户和组、是不是指定文件和文件夹的默认权限。如果实在搞不清，那就直接root:root和0777一把梭，但千万而且一定要意识到root和0777的潜在风险。
 设定 注意下面出现的配置文件中的ip地址、用户名、组名、密码都要根据自己的情况做修改。😄
-设定本地用户都是jack，所属的组是jack-group 设定的smb共享文件夹的访问地址是//192.168.1.1/share，访问用户smb，访问密码123456 设定本地挂载smb共享文件夹的路径是/mnt/share 挂载 linux下安装cifs-utils后，挂载局域网smb共享文件夹，注意-o参数中别忘记加上iocharset=utf8以避免中文乱码的问题。
-mount -t cifs //192.168.1.1/share /mnt/share -o username=smb,password=123456,iocharset=utf8 取消挂载
+设定本地用户都是jack，所属的组是jack-group 设定的smb共享文件夹的访问地址是//192.168.1.1/share，访问用户smb，访问密码123456 设定本地挂载smb共享文件夹的路径是/mnt/share 挂载 linux下安装cifs-utils后，挂载局域网smb共享文件夹，注意-o参数中别忘记加上iocharset=utf8以避免中文乱码的问题，uid和gid用来指定挂在目录分配的用户和组。
+mount -t cifs //192.168.1.1/share /mnt/share -o username=smb,password=123456,iocharset=utf8,uid=jack,gid=jack-group 取消挂载
 umount /mnt/share 开机自动挂载 编辑/etc/fstab文件，添加一行：
 //192.168.1.1/share /mnt/share cifs credentials=/home/jack/.cifs_creds,file_mode=0755,dir_mode=0755,iocharset=utf8,uid=jack,gid=jack&amp;#39;s_group 0 0 注意：
 smb访问账户的用户名和密码，建议单独新建一个文件来保存而不是明文写在fstab。我这里新建/home/jack/.cifs_creds。认证文件的格式如下： username=smb password=123456 # 下面这一栏可以不要 domain=WORKGROUP domain一栏可选，不填的话系统会自动猜（意味着猜不中就无法挂载），一般默认都是WORKGROUP uid=jack,gid=jack&#39;s_group，这是指定挂载的smb共享文件夹的本地用户和组分配给谁、给哪个组，如果没有指定uid和gid，默认就是root:root。 file_mode=0755,dir_mode=0755，这俩很好理解，文件的权限和文件夹的权限，0755什么意思不再赘述，不懂得话0777一把梭。 iocharset=utf8用来处理中文乱码问题 编辑完/etc/fstab，执行以下命令使配置生效：
