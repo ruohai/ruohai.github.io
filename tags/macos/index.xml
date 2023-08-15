@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MacOS on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/macos/</link>
+    <description>Recent content in MacOS on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 16 Aug 2023 02:02:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacOS系统下添加SMB共享文件夹到开机自动挂载</title>
+      <link>https://ruohai.wang/202308/macos-smb-folder-auto-mount/</link>
+      <pubDate>Wed, 16 Aug 2023 02:02:01 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/macos-smb-folder-auto-mount/</guid>
+      <description>前言 最近一个月因为apple在搞教育优惠送这送那的，m2芯片乞丐版本的mac mini直接跌破3000块。这么多年来我一直都是Windows系统用户，对macos并没有什么兴趣，但看这么便宜的份上，冲动入手了一个。
+我并不是一个唯Windows系统为尊的用户，也用过不少的linux发行版，用过的桌面系统有xfce、gnome、unity和深度dde，都觉得可以接受。但不得不说，第一次上手macos，还是碰到了不少别扭和拧巴的地方，而且很多之前熟悉的操作都要从头开始查找要怎么用。
+比如开机自动挂载局域网里的smb共享文件夹。
+挂载 快捷键command + K打开连接服务器的窗口，或者用鼠标点击顶部菜单栏的【前往】然后选择【连接服务器】。
+输入smb的访问地址。smb共享协议的网址需要用smb://开头。
+输入访问网址，点击【连接】，输入smb设置的账户密码就连接成功了。打开【访达】可以看到。
+加入登录项 以上的操作只针对本次系统登陆状态下有效，系统重启以后，依然需要重新打开【连接服务器】窗口来添加smb文件夹。现在需要把smb共享文件夹设置为开机自动挂载。
+网上找了一些设置方案，发现不同的macos版本竟然调整了设置入口，所以这里做简单记录。
+打开【系统设置】，找到【通用】，然后在右侧找到【登录项】。
+点击加号。
+弹出新窗口，选择smb文件夹位置，最后确定即可。</description>
+    </item>
+    
+  </channel>
+</rss>
