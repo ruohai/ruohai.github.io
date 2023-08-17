@@ -77,7 +77,7 @@ linux上真的是好多坑啊，一个简单的网络测速都是如此。
   <title>clock</title>
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          2 min read
+          3 min read
         </div>
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
@@ -196,7 +196,30 @@ Idle Latency:     3.17 ms   (jitter: 0.08ms, low: 3.06ms, high: 3.26ms)
 </code></pre><ol start="4">
 <li>展示的信息中除了测速结果之外，还会提供一个查看网址。因为根据用户协议，测速信息都会上传到speedtest官方，浏览器中打开网址可以看到图文并茂的测速信息。</li>
 </ol>
+<h2 id="update20230817">update@20230817</h2>
+<p>除了用apt安装以外，官网也提供了预编译的二进制包的使用方式。</p>
+<p><img src="https://img1.imgtp.com/2023/08/17/sX0PC9jn.png" alt="1692241757842.png"></p>
+<p>我的硬件是ws1608，这里选择用armhf版本。</p>
+<pre tabindex="0"><code>## 新建目录
+mkdir /opt/speedest-cli
 
+## 进入目录 
+cd /opt/speedtest-cli
+
+## 下载
+wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
+
+## 解压
+tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz
+</code></pre><p>解压以后出现三个文件</p>
+<p><img src="https://img1.imgtp.com/2023/08/17/m28Yvzkn.png" alt="1692241905713.png"></p>
+<p>speedtest文件默认就有执行权限，直接运行即可</p>
+<pre tabindex="0"><code>./speedtest
+</code></pre><p>想方便使用的话可以把speedtest添加到环境变量</p>
+<pre tabindex="0"><code>nano ~/.bashrc
+</code></pre><p>在末尾添加一行</p>
+<pre tabindex="0"><code>export PATH=$PATH:/opt/speedtest-cli
+</code></pre>
     </div>
     <div class="post-footer">
       
