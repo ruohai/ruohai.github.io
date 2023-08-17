@@ -16,13 +16,13 @@
 <meta name="twitter:description" content="前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
 这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
 准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico 制作镜像 先用lsblk命令确定分区信息和设备名称，输出结果如下
-NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，另外的sda是通过usb外接的移动硬盘。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup."/>
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，通过usb外接的移动硬盘的设备名称是sda。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup."/>
 
     <meta property="og:title" content="用dd命令给玩客云自制刷机包" />
 <meta property="og:description" content="前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
 这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
 准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico 制作镜像 先用lsblk命令确定分区信息和设备名称，输出结果如下
-NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，另外的sda是通过usb外接的移动硬盘。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup." />
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，通过usb外接的移动硬盘的设备名称是sda。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/ws1608-use-dd-to-make-img/" /><meta property="article:section" content="202308" />
 <meta property="article:published_time" content="2023-08-17T14:26:23+08:00" />
@@ -111,10 +111,10 @@ mmcblk1boot1 179:32   0     4M  1 disk
 zram0        253:0    0 494.7M  0 disk [SWAP]
 zram1        253:1    0    50M  0 disk /var/log
 zram2        253:2    0     0B  0 disk
-</code></pre><p>可以看到玩客云内置emmc分区的硬件名称是<code>mmcblk1</code>，另外的<code>sda</code>是通过usb外接的移动硬盘。所以最终要实现的需求就是把整个<code>mmcblk1</code>制作成img镜像文件，保存到<code>sda</code>的某个路径下（假定/media/jack/orico/ws1608-backup.img）。</p>
-<p>在用<code>dd</code>命令开始制作镜像之前，需要先确定镜像文件需要分配的空间大小。如果不指定镜像文件的大小，就会生成7.3GB的img文件。</p>
+</code></pre><p>可以看到玩客云内置emmc分区的硬件名称是<code>mmcblk1</code>，通过usb外接的移动硬盘的设备名称是<code>sda</code>。所以最终要实现的需求就是把整个<code>mmcblk1</code>制作成img镜像文件，保存到<code>sda</code>的某个路径下（假定/media/jack/orico/ws1608-backup.img）。</p>
+<p>在用<code>dd</code>命令开始制作镜像之前，需要先指定读取多少内容（或者理解为给镜像分配多少空间）。如果不指定读取多少内容，就会读取整个emmc存储的7.3GB空间，最后生成一个7.3GB的系统镜像。</p>
 <p>上面<code>lsblk</code>命令的输出结果中可以看到<code>mmcblk1p1</code>分区挂载的是<code>boot</code>启动分区，大小256MB，<code>mmcblk1p2</code>是系统分区，大小7GB，但实际系统分区使用的只有一点点，大部分都是空白空间（free space），空白空间不需要备份。</p>
-<p>用<code>df -h</code>命令来查看系统分区的空间使用情况，输入结果如下</p>
+<p>用<code>df -h</code>命令来查看系统分区的空间使用情况，输出结果如下</p>
 <pre tabindex="0"><code>Filesystem      Size  Used Avail Use% Mounted on
 udev            460M     0  460M   0% /dev
 tmpfs            99M  4.1M   95M   5% /run
@@ -127,7 +127,7 @@ tmpfs           495M     0  495M   0% /tmp
 /dev/sda1       466G  253G  214G  55% /media/jack/orico
 tmpfs            99M     0   99M   0% /run/user/1000
 </code></pre><p>可以看到系统分区<code>mmcblk1p2</code>只使用了1.5GB。</p>
-<p>现在可以开始用<code>dd</code>命令开始备份了。启动分区256MB，系统分区使用了1.5GB，考虑一些冗余空间，这里给系统备份镜像分配2GB空间吧。命令中的<code>bs</code>和<code>count</code>参数的定义这篇文章中不再赘述。</p>
+<p>现在可以开始用<code>dd</code>命令开始备份了。启动分区256MB，系统分区使用了1.5GB，合集1.8GB，再考虑一些冗余空间，这里指定读取2GB空间吧。命令中的<code>bs</code>和<code>count</code>参数的定义这篇文章中不再赘述，而且对镜像不进行压缩。想知道参数定义、想要压缩的，可以看【<a href="https://ruohai.wang/202307/linux-use-dd-to-clone-disk/">Linux使用dd命令克隆磁盘（制作系统镜像）</a>】。</p>
 <pre tabindex="0"><code>dd bs=1M count=2000 if=/dev/mmcblk1 of=/media/jack/orico/ws1608-backup.img
 </code></pre><p>玩客云的usb2.0接口的极限速度大概35MB/s，2GB的镜像，1分钟左右就制作好了。</p>
 <hr>
