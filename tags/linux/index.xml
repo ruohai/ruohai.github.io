@@ -5,7 +5,23 @@
     <link>https://ruohai.wang/tags/linux/</link>
     <description>Recent content in Linux on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 10 Aug 2023 04:01:36 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Aug 2023 10:27:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux用crontab实现定时重启</title>
+      <link>https://ruohai.wang/202308/crontab-schedule-reboot/</link>
+      <pubDate>Thu, 17 Aug 2023 10:27:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/crontab-schedule-reboot/</guid>
+      <description>前言 有这个需求是因为我的armbian小机器ws1608，在运行5~7天左右的时间之后，会出现ipv6的网络问题，表现就是明明只有一个网卡的情况下，出现了两个全局的ipv6地址，此时ipv6下无法访问外网，导致ddns-go无法【通过接口】的方式获取ipv6地址，如果选择【通过网卡】获取ipv6地址，则因为出现两个ipv6地址，需要手动指定第一个还是第二个。这就意味着每次等我发现出现这个bug以后，都需要人为介入来纠正。
+这个问题正确的解决方案，应该是排查为什么每运行一段时间会出现俩ipv6的ip，但网上找了一圈，暂时没有合理的解释。
+那就只能重启大法了，每周重启一次！
+定时任务 linux定时任务有俩实现方案，用systemd或者crontab，这里选择用crontab。
+有俩注意点：
+系统重启需要root权限 设备需要支持软重启（比如我手上的ws1508的某个固件就不支持软重启只能拔电源） sudo crontab -e 添加一行，设定每周四的4点0分重启
+0 4 * * 4 /sbin/reboot 参考文章 1.Linux crontab 命令 https://www.runoob.com/linux/linux-comm-crontab.html
+2.Linux设置定时重启 https://cloud.tencent.com/developer/article/2227856</description>
+    </item>
+    
     <item>
       <title>Linux下操作分区扩容</title>
       <link>https://ruohai.wang/202308/ws1508-use-parted-to-expand-storage/</link>
