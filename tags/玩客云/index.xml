@@ -14,7 +14,7 @@
       <guid>https://ruohai.wang/202308/ws1608-use-dd-to-make-img/</guid>
       <description>前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
 这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
-准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico 制作镜像 先用lsblk命令确定分区信息和设备名称，输出结果如下
+准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico ssh连上玩客云机器 备份 先用lsblk命令确定分区信息和设备名称，输出结果如下
 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，通过usb外接的移动硬盘的设备名称是sda。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup.</description>
     </item>
     

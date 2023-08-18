@@ -15,13 +15,13 @@
 <meta name="twitter:title" content="用dd命令给玩客云自制刷机包"/>
 <meta name="twitter:description" content="前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
 这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
-准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico 制作镜像 先用lsblk命令确定分区信息和设备名称，输出结果如下
+准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico ssh连上玩客云机器 备份 先用lsblk命令确定分区信息和设备名称，输出结果如下
 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，通过usb外接的移动硬盘的设备名称是sda。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup."/>
 
     <meta property="og:title" content="用dd命令给玩客云自制刷机包" />
 <meta property="og:description" content="前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
 这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
-准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico 制作镜像 先用lsblk命令确定分区信息和设备名称，输出结果如下
+准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico ssh连上玩客云机器 备份 先用lsblk命令确定分区信息和设备名称，输出结果如下
 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.7M 0 disk [SWAP] zram1 253:1 0 50M 0 disk /var/log zram2 253:2 0 0B 0 disk 可以看到玩客云内置emmc分区的硬件名称是mmcblk1，通过usb外接的移动硬盘的设备名称是sda。所以最终要实现的需求就是把整个mmcblk1制作成img镜像文件，保存到sda的某个路径下（假定/media/jack/orico/ws1608-backup." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/ws1608-use-dd-to-make-img/" /><meta property="article:section" content="202308" />
@@ -95,9 +95,10 @@ NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 
 <li>一个刷了armbian的玩客云</li>
 <li>玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘</li>
 <li>armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是<code>/media/jack/orico</code></li>
+<li>ssh连上玩客云机器</li>
 </ul>
 <hr>
-<h2 id="制作镜像">制作镜像</h2>
+<h2 id="备份">备份</h2>
 <p>先用<code>lsblk</code>命令确定分区信息和设备名称，输出结果如下</p>
 <pre tabindex="0"><code>NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 sda            8:0    0 465.8G  0 disk
@@ -131,8 +132,23 @@ tmpfs            99M     0   99M   0% /run/user/1000
 <pre tabindex="0"><code>dd bs=1M count=2000 if=/dev/mmcblk1 of=/media/jack/orico/ws1608-backup.img
 </code></pre><p>玩客云的usb2.0接口的极限速度大概35MB/s，2GB的镜像，1分钟左右就制作好了。</p>
 <hr>
+<h2 id="还原">还原</h2>
+<p>有了镜像备份以后，系统玩坏了，就可以通过重新写入img镜像来还原系统。</p>
+<p>这里要注意一点，我之前的想当然导致了出现一个错误。直刷固件（emmc版）用dd生成的img镜像，无法通过usb burning tool软件的固件校验，所以无法通过线刷来重新烧录进机器。这点和卡刷固件用dd备份再用rufus还原不一样。</p>
+<p>要还原自制的img备份，需要准备的工具如下：</p>
+<ul>
+<li>一个u盘（sd卡也行）且已经刷了u盘版本的玩客云armbian系统</li>
+<li>一个u盘，里面放了自制的img备份文件</li>
+</ul>
+<p>好了，现在还是还原系统。</p>
+<p>第一步：插入系统u盘（或者sd卡），机器通电开机，进入u盘的armbian系统</p>
+<p>第二步：插入存储u盘，然后挂载u盘，假定挂载到<code>/mnt</code>。</p>
+<p>第三步：把img备份镜像重新写入emmc</p>
+<pre tabindex="0"><code>dd if=/mnt/ws1608-backup.img of=/dev/mmcblk1
+</code></pre><p>第四步：等写入完成后，关机，拔掉全部u盘，然后通电开机</p>
+<p>我实测，这样是可以成功还原系统的。emmc直刷固件要还原，其中的重点是理解 <strong>自举</strong>，也就是不能在当前系统下还原我自己，所以需要通过第三方系统（u盘系统）来操作。</p>
+<hr>
 <h2 id="扩展">扩展</h2>
-<p>有了镜像备份以后，系统玩坏了，只需要用usb burning tool导入这个备份好的img文件重新刷进机器就行了，备份时候的所有配置、软件都原模原样的保留，不需要再从0开始配置。</p>
 <p>结合<code>crontab</code>的定时任务功能，可以设置每天、每周定时生成系统备份镜像。</p>
 
     </div>
