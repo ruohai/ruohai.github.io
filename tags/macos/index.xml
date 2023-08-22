@@ -5,7 +5,22 @@
     <link>https://ruohai.wang/tags/macos/</link>
     <description>Recent content in MacOS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 16 Aug 2023 02:02:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Aug 2023 04:17:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacOS下给终端添加alias</title>
+      <link>https://ruohai.wang/202308/macos-add-alias/</link>
+      <pubDate>Wed, 23 Aug 2023 04:17:58 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/macos-add-alias/</guid>
+      <description>目前macos默认shell是zsh，简单记录下给zsh添加自定义命令。
+打开终端，进入用户目录。
+cd ~ 我的机器默认没有.zshrc的配置文件，新建一个。
+touch .zshrc 然后在.zshrc中添加alias。
+alias ll=&amp;#39;ls -l&amp;#39; alias la=&amp;#39;ls -al&amp;#39; 保存退出，然后载入配置文件
+source .zshrc 到这里就完成配置了～
+吐槽下，macos自带中午拼音输入法竟然连波浪线～都区分了中英文的不同格式，中文和英文下～的编码不一样，导致markdown格式下中文格式的～不能被正常识别。淦。</description>
+    </item>
+    
     <item>
       <title>MacOS系统下添加SMB共享文件夹到开机自动挂载</title>
       <link>https://ruohai.wang/202308/macos-smb-folder-auto-mount/</link>
