@@ -7,19 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 17 Aug 2023 14:26:23 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>用dd命令给玩客云自制刷机包</title>
+      <title>直刷版（emmc）玩客云系统的备份和还原</title>
       <link>https://ruohai.wang/202308/ws1608-use-dd-to-make-img/</link>
       <pubDate>Thu, 17 Aug 2023 14:26:23 +0800</pubDate>
       
       <guid>https://ruohai.wang/202308/ws1608-use-dd-to-make-img/</guid>
       <description>前言 其实之前已经写过一篇用dd制作系统备份镜像文件的文章，【Linux使用dd命令克隆磁盘（制作系统镜像）】。但写的有点啰嗦，直接改也不合适。索性重新写一篇简单的。
-这里假定需要把玩客云整个emmc备份成img镜像，下次刷机就可以直接用自己备份的img镜像文件了，不需要再反复配置和安装软件，类似windows下的ghost备份。
-update@20230822
-几天过去又发现有内容要更新，😄。
-dd命令备份的原理就是把整个磁盘克隆生成一个img文件，还原的时候再把img覆盖掉磁盘。所以这里要理解一个【自举】的概念，就是我不能还原我自己，可以在当前系统下生成备份文件，但不能在当前系统下还原我自己。所以最简单的办法是用u盘或者sd卡刷个armbian，然后在u盘系统下，备份emmc上的系统，同样也是在u盘系统下，还原emmc上的系统。
-这篇文章在撰写的时候，用的模式的【当前系统下生成emmc的备份，然后在u盘系统下还原到emmc】，而且用了一个单独的存储盘来存放img文件。其实还可以精简步骤，但文章已经写完了，重写太麻烦。各位看官理解其中的逻辑以后自行精简就行。😄
-准备工作 一个刷了armbian的玩客云 玩客云通过usb接口外接一个U盘或者移动硬盘，作为备份盘 armbian系统中挂载了外接的u盘/移动硬盘，我这里移动硬盘挂载路径是/media/jack/orico ssh连上玩客云机器 备份 先用lsblk命令确定分区信息和设备名称，输出结果如下
-NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /media/jack/orico mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.</description>
+先定义一下两个名词：
+当前系统：指装在玩客云emmc上的armbian 第三方系统：指装在u盘、sd卡上的玩客云armbian 用dd命令备份还原的原理和windows ghost一样，就是把整个emmc磁盘克隆，生成一个img镜像文件。要还原的时候，再用dd命令把img镜像文件写回emmc。
+整个过程分成两步：备份 + 还原。备份可以在当前系统或第三方系统下操作，还原必须要通过第三方系统。
+这篇文章中，我是在【当前系统】下备份，在【第三方系统】下还原。
+准备工作 一个已经直刷armbian的玩客云（系统装在emmc） 备份操作需要准备一个移动硬盘或者存储U盘，因为生成的备份镜像大概1~2GB左右 还原系统需要准备一个已经刷了armbian的U盘或者sd卡 ssh连上玩客云机器 备份 先用lsblk命令确定分区信息和设备名称，输出结果如下
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 465.8G 0 disk └─sda1 8:1 0 465.8G 0 part /mnt mmcblk1 179:0 0 7.3G 0 disk ├─mmcblk1p1 179:1 0 256M 0 part /boot └─mmcblk1p2 179:2 0 7G 0 part /var/log.hdd / mmcblk1boot0 179:16 0 4M 1 disk mmcblk1boot1 179:32 0 4M 1 disk zram0 253:0 0 494.</description>
     </item>
     
     <item>
