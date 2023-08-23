@@ -5,7 +5,25 @@
     <link>https://ruohai.wang/202308/</link>
     <description>Recent content in 202308s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 23 Aug 2023 04:17:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Aug 2023 21:21:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202308/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacOS下窗口管理软件分享</title>
+      <link>https://ruohai.wang/202308/macos-window-manager-app/</link>
+      <pubDate>Wed, 23 Aug 2023 21:21:55 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202308/macos-window-manager-app/</guid>
+      <description>从win10开始，系统默认窗口管理支持鼠标拖动窗口管理贴边自动最大化。我非常需要这个功能，但macos的窗口管理默认不支持，所以需要上网自己找解决方案。
+简单来讲，需求如下：
+鼠标拖动窗口贴顶边，窗口自动最大化，而且支持快捷键，比如cmd + ↑ 鼠标拖动窗口贴右边，窗口自动右半屏最大化，而且支持快捷键，比如cmd + → 鼠标拖动窗口贴左边，窗口自动左半屏最大化，而且支持快捷键，比如cmd + ← 说白了就是实现windows下的窗口管理的一些方便的模式。
+在我吐槽「macos的窗口管理一坨💩」以后，朋友给我分享了两个可以实现我需求的app。
+Tiles 软件官网地址：https://freemacsoft.net/tiles/
+我目前用的就是这个，免费，好用，支持快捷键。
+Rectangle 软件官网地址：https://rectangleapp.com/
+这软件分普通免费版和pro收费版，看了下官网列出的功能列表，普通版应该够用，而且界面更漂亮。
+但免费软件Tiles已经满足我的需求了，所以Rectangle就没尝试。
+真的忍不住吐槽，macos下为什么快捷键那么多都是三键甚至四键啊，难道每个mac用户都是八爪鱼吗。</description>
+    </item>
+    
     <item>
       <title>MacOS下给终端添加alias</title>
       <link>https://ruohai.wang/202308/macos-add-alias/</link>
