@@ -5,7 +5,34 @@
     <link>https://ruohai.wang/tags/</link>
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 03 Sep 2023 20:33:45 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Oct 2023 01:49:08 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux</title>
+      <link>https://ruohai.wang/tags/linux/</link>
+      <pubDate>Wed, 04 Oct 2023 01:49:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>捡垃圾</title>
+      <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
+      <pubDate>Wed, 04 Oct 2023 01:49:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>玩客云</title>
+      <link>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</link>
+      <pubDate>Wed, 04 Oct 2023 01:49:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>生活</title>
       <link>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</link>
@@ -52,29 +79,11 @@
     </item>
     
     <item>
-      <title>玩客云</title>
-      <link>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</link>
-      <pubDate>Thu, 17 Aug 2023 14:26:23 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>crontab</title>
       <link>https://ruohai.wang/tags/crontab/</link>
       <pubDate>Thu, 17 Aug 2023 10:27:35 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/crontab/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>https://ruohai.wang/tags/linux/</link>
-      <pubDate>Thu, 17 Aug 2023 10:27:35 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/linux/</guid>
       <description></description>
     </item>
     
@@ -111,15 +120,6 @@
       <pubDate>Wed, 02 Aug 2023 22:35:07 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/openwrt/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>捡垃圾</title>
-      <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
-      <pubDate>Wed, 02 Aug 2023 17:36:56 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</guid>
       <description></description>
     </item>
     

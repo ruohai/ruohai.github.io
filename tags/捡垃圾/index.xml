@@ -5,7 +5,55 @@
     <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
     <description>Recent content in 捡垃圾 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 02 Aug 2023 17:36:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Oct 2023 01:49:08 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux小主机（WS1608）折腾总结</title>
+      <link>https://ruohai.wang/202310/ws1608-summary/</link>
+      <pubDate>Wed, 04 Oct 2023 01:49:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/ws1608-summary/</guid>
+      <description>前言 不知不觉，从4月份入手玩客云老母鸡，到6月份开始刷机折腾armbian，然后7月、8月爆肝写了几十篇博客来记录在linux下的一些基础的配置和软件安装，最后到9月、10月归于沉寂，已经过去了差不多半年的时间。
+时间过的真快啊。
+玩客云这台小机器，刷入armbian以后，几个月用下来，优点如下：
+价格便宜，只要25rmb 功耗极低，本体大概3~5w，挂两个2.5寸hdd硬盘盒也不超过10w，完全不会有用电焦虑 armbian固件完美适配，而且固件跟着armbian官方在维护更新，运行稳定 千兆网口没拖后退，下载和者内网smb共享文件，受限于usb2.0的读写速度峰值大概30M/s，够用 usb接口供电稳定，两个usb口，每个都挂上2.5寸hdd硬盘盒，稳定不掉线 有sd卡槽，聊胜于无 在用的服务 从一开始总想着在这台小机器上安装各种服务、挖掘它的可用性，到现在它只是作为一个下载机和轻nas安安静静在躺在角落，就是一个完整的对一个事物从充满好奇到失去兴趣的过程。这里简单记录一下，当下这台机器上我依然在高频使用的服务。
+ddns-go
+毋庸置疑这个服务是肯定需要装的，用ipv6+ddns+域名实现公网的访问。
+nginx
+用来做端口转发，装ssl证书实现https访问
+file browser
+简单的web端文件管理器，配合ddns+ipv6+域名，实现公网访问
+samba
+局域网文件共享，必装
+udevil
+实现usb存储设备自动挂载
+ufw
+防火墙，只做了简单的端口管理
+qbittorrent-nox
+bt下载工具，当下载机必装，下热门资源很好用，冷门资源就算了
+ttyd
+web端的ssh工具，应急用一下
+iperf3
+用来局域网测速
+navidrome
+自建流媒体服务（类似qq音乐），很好用，pc客户端我用的sonixd，安卓客户端用substreamer和subtracks
+speedtest-cli
+用来外网测速
+lm-sensors
+查看芯片温度
+hugo
+静态博客的本地环境，没有用hexo因为hugo安装配置很简单，主题也漂亮
+git
+用来配合hugo发布到github pages
+tailscale
+内网穿透方案，安装配置都很简单，装好以后简单测试了一下，方便好用。但我一直用的ipv6+ddns方案，保留tailscale只作为备用
+准备用的服务 rclone
+用来实现文件云端备份
+rsync
+用来实现文件多端同步备份
+kopia
+用来实现文件快照</description>
+    </item>
+    
     <item>
       <title>迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机</title>
       <link>https://ruohai.wang/202308/ws1408-use-ttl-to-flash/</link>

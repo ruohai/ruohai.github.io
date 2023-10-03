@@ -2,13 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ruohai.wang/202309/</loc>
-    <lastmod>2023-09-03T20:33:45+08:00</lastmod>
+    <loc>https://ruohai.wang/202310/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202310/ws1608-summary/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-09-03T20:33:45+08:00</lastmod>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202309/</loc>
     <lastmod>2023-09-03T20:33:45+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202309/diary-hangzhou-banshan-park/</loc>
@@ -38,16 +53,10 @@
     <loc>https://ruohai.wang/tags/dd/</loc>
     <lastmod>2023-08-17T14:26:23+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
-    <lastmod>2023-08-17T14:26:23+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202308/ws1608-use-dd-to-make-img/</loc>
     <lastmod>2023-08-17T14:26:23+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/crontab/</loc>
-    <lastmod>2023-08-17T10:27:35+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
     <lastmod>2023-08-17T10:27:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202308/crontab-schedule-reboot/</loc>
@@ -85,9 +94,6 @@
   </url><url>
     <loc>https://ruohai.wang/202308/ws1408-samba-use-guide/</loc>
     <lastmod>2023-08-02T22:35:07+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
-    <lastmod>2023-08-02T17:36:56+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202308/ws1408-use-ttl-to-flash/</loc>
     <lastmod>2023-08-02T17:36:56+08:00</lastmod>
