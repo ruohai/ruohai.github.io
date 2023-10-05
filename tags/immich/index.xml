@@ -15,17 +15,13 @@
       <description>前言 十多年来我用的相册服务一直都是google photos，大厂背书，早期宣传永久免费无限空间，而且也好用，往年今日、图像识别、关键字搜索，各种功能都很好用而且方便，如果gfw对你来说不是问题，这就是最好的方案。
 不过很快它的权益就开始缩水，从原图永久免费空间，缩到高品质永久免费空间，缩到免费15GB空间。直到这两天，我发现gmail、driver、photos三者共用15GB空间，如果不续费，在空间耗尽的情况下，gmail都无法使用，因为没有空间来收发邮件了。
 虽然可以用过订阅google one扩充空间，但我不喜欢这种被比较恶心的全家桶订阅制绑架用户的方案，尤其是当邮箱服务使用gmail，根本无法短时间之内迁移，迫使你不得不在清空photos腾出空间和花钱订阅之间二选一。
-其实前几个月开始玩nas的时候就有考虑自建相册服务，很多方案，比如photo prism、piwigo|lychee、mt-photos、librephotos，但一直没有动手。因为这些方案对我来说都有几个比较致命的点：
+其实前几个月开始玩nas的时候就有考虑自建相册服务，很多方案，比如photo prism、piwigo、lychee、mt-photos、librephotos，但一直没有动手。因为这些方案对我来说都有几个比较致命的点：
 无法使用原图片目录，需要通过【导入】重新存一份 不支持heic 相比起以上两点，其它的功能确实比如人脸识别、关键字搜索我都可以忽略不计。
 但因为这几天被google one订阅之恶心到了，必须开始搞自建相册。
 这篇文章记录下immich相册的安装过程。
 安装 我的安装环境是debian 12 stable（bookworm）。权限、用户相关问题这里不多做标注，需自行解决。
 immich的安装步骤在【官网】有文档，英语阅读无障碍的话可以直接看官网。
-第一步：安装docker和docker compose。
-apt install docker.io apt install docker-compose 第二步：在本地创建immich安装目录
-mkdir immich cd immich 第三步：在immich目录下载安装所需文件
-wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑.env文件。下载的默认.env文件内容如下所示。在最简单的配置模式下，只需要修改三个地方，其它都可以用默认设置。
-UPLOAD_LOCATION，文件上传路径，根据自己的实际存储路径修改 TYPESENSE_API_KEY，搜索引擎api key，可以自行用命令生成随机字符串后填入 DB_PASSWORD，数据库密码，根据自己需求修改密码 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables # The location where your uploaded files are stored UPLOAD_LOCATION=./library # The Immich version to use.</description>
+第一步：安装docker和docker compose。 apt install docker.io apt install docker-compose 第二步：在本地创建immich安装目录 mkdir immich cd immich 第三步：在immich目录下载安装所需文件 wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑.env文件。下载的默认.env文件内容如下所示。 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables # The location where your uploaded files are stored UPLOAD_LOCATION=./library # The Immich version to use. You can pin this to a specific version like &amp;#34;v1.</description>
     </item>
     
   </channel>
