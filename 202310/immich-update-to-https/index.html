@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Immich配置SSL证书开启HTTPS访问 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Immich配置SSL证书开启HTTPS访问"/>
+<meta name="twitter:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。
+我用的反代工具是nginx，所以证书是是nginx格式。
+一共两个文件:
+domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
+apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
+如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+最终ssl证书的路径如下：
+/etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
+# 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
+用编辑器编辑default文件，录入一下内容，保存后退出。假定新端口是12345。
+server { # 监听端口 12345 listen 12345 ssl; listen [::]:12345 ssl; # 服务名 server_name domain; # 因为需要上传照片视频，这里设定最大上传文件50GB client_max_body_size 50000M; # ssl证书路径 ssl_certificate ssl/domain.pem; ssl_certificate_key ssl/domain.key; # ssl session缓存和时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl加密的相关配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!"/>
+
+    <meta property="og:title" content="Immich配置SSL证书开启HTTPS访问" />
+<meta property="og:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。
+我用的反代工具是nginx，所以证书是是nginx格式。
+一共两个文件:
+domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
+apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
+如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+最终ssl证书的路径如下：
+/etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
+# 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
+用编辑器编辑default文件，录入一下内容，保存后退出。假定新端口是12345。
+server { # 监听端口 12345 listen 12345 ssl; listen [::]:12345 ssl; # 服务名 server_name domain; # 因为需要上传照片视频，这里设定最大上传文件50GB client_max_body_size 50000M; # ssl证书路径 ssl_certificate ssl/domain.pem; ssl_certificate_key ssl/domain.key; # ssl session缓存和时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl加密的相关配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/immich-update-to-https/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-06T19:34:41+08:00" />
+<meta property="article:modified_time" content="2023-10-06T19:34:41+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Immich配置SSL证书开启HTTPS访问</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 6, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/immich/">Immich</a>
+              <a class="tag" href="https://ruohai.wang/tags/nginx/">Nginx</a>
+              <a class="tag" href="https://ruohai.wang/tags/ssl/">SSL</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="第一步申请证书">第一步：申请证书</h3>
+<p>申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。</p>
+<p>我用的反代工具是nginx，所以证书是是nginx格式。</p>
+<p>一共两个文件:</p>
+<pre tabindex="0"><code>domain.key
+domain.pem
+</code></pre><h3 id="第二步安装nginx">第二步：安装nginx</h3>
+<p>我用的系统是debian，直接apt安装</p>
+<pre tabindex="0"><code>apt install nginx
+</code></pre><p>nginx安装好以后，默认配置文件路径<code>/etc/nginx</code>。</p>
+<p>如果没有这个目录，执行以下命令，会显示nginx的配置文件路径</p>
+<pre tabindex="0"><code>nginx -t
+</code></pre><h3 id="第三步上传证书">第三步：上传证书</h3>
+<p>在<code>/etc/nginx</code>目录下新建文件下<code>ssl</code>，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到<code>ssl</code>目录下。</p>
+<p>最终ssl证书的路径如下：</p>
+<pre tabindex="0"><code>/etc/nginx/ssl/domain.key
+/etc/nginx/ssl/domain.pem
+</code></pre><h3 id="第四步配置反代">第四步：配置反代</h3>
+<p>进入目录<code>/etc/nginx/sites-available</code>，把默认的<code>default</code>配置文件备份，新建一个<code>default</code>文件。</p>
+<pre tabindex="0"><code># 进目录
+cd /etc/nginx/sites-available
+
+# 备份
+mv default default.bak
+
+# 新建
+touch default
+</code></pre><p>如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。</p>
+<p>用编辑器编辑<code>default</code>文件，录入一下内容，保存后退出。假定新端口是12345。</p>
+<pre tabindex="0"><code>server {
+    # 监听端口 12345
+    listen 12345 ssl;
+	listen [::]:12345 ssl;
+
+    # 服务名
+	server_name domain;
+
+    # 因为需要上传照片视频，这里设定最大上传文件50GB
+	client_max_body_size 50000M;
+
+    # ssl证书路径
+	ssl_certificate         ssl/domain.pem;
+	ssl_certificate_key     ssl/domain.key;
+
+    # ssl session缓存和时间
+	ssl_session_cache shared:SSL:1m;
+	ssl_session_timeout 5m;
+
+    # ssl加密的相关配置
+	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+	ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+	ssl_prefer_server_ciphers on;
+
+    # 这个是设置http访问报错后自动跳转到https
+	error_page 497 https://$host:$server_port$uri$is_args$args;
+
+	location / {
+        # 跳转到本地2283端口
+		proxy_pass  http://localhost:2283;
+
+        # 以下配置是immich官网文档的内容，因为docker-immich还有一层nginx
+		proxy_set_header Host              $http_host;
+		proxy_set_header X-Real-IP         $remote_addr;
+		proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_http_version 1.1;
+		proxy_set_header   Upgrade    $http_upgrade;
+		proxy_set_header   Connection &#34;upgrade&#34;;
+		proxy_redirect off;
+	}
+}
+</code></pre><h3 id="第五步重启服务">第五步：重启服务</h3>
+<p>完成nginx的配置以后，先测试配置文件语法是否正确。</p>
+<pre tabindex="0"><code>nginx -t
+</code></pre><p>语法测试通过，会显示<code>success</code>，否则会显示错误行数，根据报错调整即可。</p>
+<p>测试通过后，重启nginx。</p>
+<pre tabindex="0"><code>systemctl restart nginx
+</code></pre><p>重启成功后，就可以通过<code>https://domain:12345</code>来访问immich了。</p>
+<hr>
+<h3 id="参考文章">参考文章</h3>
+<ol>
+<li>Reverse Proxy <a href="https://immich.app/docs/administration/reverse-proxy">https://immich.app/docs/administration/reverse-proxy</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -5,7 +5,27 @@
     <link>https://ruohai.wang/tags/nginx/</link>
     <description>Recent content in Nginx on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 16 Jul 2023 20:14:40 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Oct 2023 19:34:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immich配置SSL证书开启HTTPS访问</title>
+      <link>https://ruohai.wang/202310/immich-update-to-https/</link>
+      <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/immich-update-to-https/</guid>
+      <description>第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&amp;rsquo;s encrypt的证书都可以。
+我用的反代工具是nginx，所以证书是是nginx格式。
+一共两个文件:
+domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
+apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
+如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+最终ssl证书的路径如下：
+/etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
+# 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
+用编辑器编辑default文件，录入一下内容，保存后退出。假定新端口是12345。
+server { # 监听端口 12345 listen 12345 ssl; listen [::]:12345 ssl; # 服务名 server_name domain; # 因为需要上传照片视频，这里设定最大上传文件50GB client_max_body_size 50000M; # ssl证书路径 ssl_certificate ssl/domain.pem; ssl_certificate_key ssl/domain.key; # ssl session缓存和时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl加密的相关配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!</description>
+    </item>
+    
     <item>
       <title>Linux下用Nginx给qBittorrent设置SSL开启HTTPS访问</title>
       <link>https://ruohai.wang/202307/qbittorrent-update-to-https/</link>

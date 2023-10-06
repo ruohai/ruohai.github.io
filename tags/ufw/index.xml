@@ -5,7 +5,23 @@
     <link>https://ruohai.wang/tags/ufw/</link>
     <description>Recent content in UFW on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 26 Jul 2023 13:25:45 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ufw/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Oct 2023 19:35:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ufw/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UFW防火墙对Docker容器不生效的问题解决</title>
+      <link>https://ruohai.wang/202310/ufw-solve-conflict-with-docker/</link>
+      <pubDate>Fri, 06 Oct 2023 19:35:41 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/ufw-solve-conflict-with-docker/</guid>
+      <description>在debian下用docker部署的方式安装了immich，默认端口2283。
+为了安全，肯定不会用默认端口。部署完immich简单调试没问题以后，就开始安装ufw管理端口。
+但实测发现ufw未开启2283端口的情况，immich的web服务依然可以访问，也就是ufw对docker服务不生效。
+找了下解决方案。
+在/etc/docker目录下新建daemon.json，添加配置项：
+{ &amp;#34;iptables&amp;#34;: false } 保存退出。
+# 重载 systemctl daemon-reload # 重启docker systemctl restart docker # 重启ufw systemctl restart ufw 因为ufw和docker都会操作iptables，这个方案选择禁掉docker，以ufw为准。
+参考文章 Docker 和 UFW 一起用可能会出现问题 https://zhuanlan.zhihu.com/p/628899663 </description>
+    </item>
+    
     <item>
       <title>Linux下UFW的简单配置和使用</title>
       <link>https://ruohai.wang/202307/linux-ufw-setup/</link>
