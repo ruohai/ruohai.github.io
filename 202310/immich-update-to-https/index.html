@@ -13,13 +13,13 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Immich配置SSL证书开启HTTPS访问"/>
-<meta name="twitter:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。
+<meta name="twitter:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云送的免费证书，或者let&rsquo;s encrypt的证书都可以。
 我用的反代工具是nginx，所以证书是是nginx格式。
 一共两个文件:
 domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
 apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
 如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
-nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件夹ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
 最终ssl证书的路径如下：
 /etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
 # 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
@@ -27,13 +27,13 @@ nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然
 server { # 监听端口 12345 listen 12345 ssl; listen [::]:12345 ssl; # 服务名 server_name domain; # 因为需要上传照片视频，这里设定最大上传文件50GB client_max_body_size 50000M; # ssl证书路径 ssl_certificate ssl/domain.pem; ssl_certificate_key ssl/domain.key; # ssl session缓存和时间 ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; # ssl加密的相关配置 ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!"/>
 
     <meta property="og:title" content="Immich配置SSL证书开启HTTPS访问" />
-<meta property="og:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。
+<meta property="og:description" content="第一步：申请证书 申请证书这里不做赘述，阿里云送的免费证书，或者let&rsquo;s encrypt的证书都可以。
 我用的反代工具是nginx，所以证书是是nginx格式。
 一共两个文件:
 domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
 apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
 如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
-nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件夹ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
 最终ssl证书的路径如下：
 /etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
 # 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
@@ -104,7 +104,7 @@ server { # 监听端口 12345 listen 12345 ssl; listen [::]:12345 ssl; # 服务�
     </header>
     <div class="post-content">
       <h3 id="第一步申请证书">第一步：申请证书</h3>
-<p>申请证书这里不做赘述，阿里云从的免费证书，或者let&rsquo;s encrypt的证书都可以。</p>
+<p>申请证书这里不做赘述，阿里云送的免费证书，或者let&rsquo;s encrypt的证书都可以。</p>
 <p>我用的反代工具是nginx，所以证书是是nginx格式。</p>
 <p>一共两个文件:</p>
 <pre tabindex="0"><code>domain.key
@@ -116,7 +116,7 @@ domain.pem
 <p>如果没有这个目录，执行以下命令，会显示nginx的配置文件路径</p>
 <pre tabindex="0"><code>nginx -t
 </code></pre><h3 id="第三步上传证书">第三步：上传证书</h3>
-<p>在<code>/etc/nginx</code>目录下新建文件下<code>ssl</code>，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到<code>ssl</code>目录下。</p>
+<p>在<code>/etc/nginx</code>目录下新建文件夹<code>ssl</code>，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到<code>ssl</code>目录下。</p>
 <p>最终ssl证书的路径如下：</p>
 <pre tabindex="0"><code>/etc/nginx/ssl/domain.key
 /etc/nginx/ssl/domain.pem
@@ -133,37 +133,37 @@ touch default
 </code></pre><p>如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。</p>
 <p>用编辑器编辑<code>default</code>文件，录入一下内容，保存后退出。假定新端口是12345。</p>
 <pre tabindex="0"><code>server {
-    # 监听端口 12345
-    listen 12345 ssl;
+	# 监听端口 12345
+	listen 12345 ssl;
 	listen [::]:12345 ssl;
 
-    # 服务名
+	# 服务名
 	server_name domain;
 
-    # 因为需要上传照片视频，这里设定最大上传文件50GB
+	# 因为需要上传照片视频，这里设定最大上传文件50GB
 	client_max_body_size 50000M;
 
-    # ssl证书路径
+	# ssl证书路径
 	ssl_certificate         ssl/domain.pem;
 	ssl_certificate_key     ssl/domain.key;
 
-    # ssl session缓存和时间
+	# ssl session缓存和时间
 	ssl_session_cache shared:SSL:1m;
 	ssl_session_timeout 5m;
 
-    # ssl加密的相关配置
+	# ssl加密的相关配置
 	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
 	ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
 	ssl_prefer_server_ciphers on;
 
-    # 这个是设置http访问报错后自动跳转到https
+	# 这个是设置http访问报错后自动跳转到https
 	error_page 497 https://$host:$server_port$uri$is_args$args;
 
 	location / {
-        # 跳转到本地2283端口
+		# 跳转到本地2283端口
 		proxy_pass  http://localhost:2283;
 
-        # 以下配置是immich官网文档的内容，因为docker-immich还有一层nginx
+		# 以下配置是immich官网文档的内容，因为docker-immich还有一层nginx
 		proxy_set_header Host              $http_host;
 		proxy_set_header X-Real-IP         $remote_addr;
 		proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;

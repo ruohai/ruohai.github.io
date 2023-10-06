@@ -5,7 +5,20 @@
     <link>https://ruohai.wang/202310/</link>
     <description>Recent content in 202310s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 06 Oct 2023 19:35:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Oct 2023 20:24:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UFW新增只开放IPV4/IPV6端口的规则</title>
+      <link>https://ruohai.wang/202310/ufw-add-ipv4-only-rule/</link>
+      <pubDate>Fri, 06 Oct 2023 20:24:56 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/ufw-add-ipv4-only-rule/</guid>
+      <description>ufw防火墙在用基础的开放端口ufw allow 12345/tcp语法的时候，默认是同时开启ipv4和ipv6。
+如果只想开启12345端口的ipv4访问
+ufw allow proto tcp to 0.0.0.0/0 port 12345 如果指定ip端的ipv4访问
+ufw allow proto tcp to 192.168.1.0/24 port 12345 同理，如果只想开启12345端口的ipv6访问
+ufw allow proto tcp to ::/0 port 12345 </description>
+    </item>
+    
     <item>
       <title>UFW防火墙对Docker容器不生效的问题解决</title>
       <link>https://ruohai.wang/202310/ufw-solve-conflict-with-docker/</link>
@@ -28,13 +41,13 @@
       <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
       
       <guid>https://ruohai.wang/202310/immich-update-to-https/</guid>
-      <description>第一步：申请证书 申请证书这里不做赘述，阿里云从的免费证书，或者let&amp;rsquo;s encrypt的证书都可以。
+      <description>第一步：申请证书 申请证书这里不做赘述，阿里云送的免费证书，或者let&amp;rsquo;s encrypt的证书都可以。
 我用的反代工具是nginx，所以证书是是nginx格式。
 一共两个文件:
 domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
 apt install nginx nginx安装好以后，默认配置文件路径/etc/nginx。
 如果没有这个目录，执行以下命令，会显示nginx的配置文件路径
-nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件下ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
+nginx -t 第三步：上传证书 在/etc/nginx目录下新建文件夹ssl，然后用工具（比如winscp/sftp等）把两个ssl证书文件放到ssl目录下。
 最终ssl证书的路径如下：
 /etc/nginx/ssl/domain.key /etc/nginx/ssl/domain.pem 第四步：配置反代 进入目录/etc/nginx/sites-available，把默认的default配置文件备份，新建一个default文件。
 # 进目录 cd /etc/nginx/sites-available # 备份 mv default default.bak # 新建 touch default 如果不懂为啥，就根据这个操作，如果懂，就根据自己的习惯操作。
