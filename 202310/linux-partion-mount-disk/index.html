@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下给新硬盘分区并挂载 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下给新硬盘分区并挂载"/>
+<meta name="twitter:description" content="前言 老是忘记，查别人文章也麻烦，索性自己记录一下
+分区 第一步：获取设备名 lsblk 也可以用
+fdisk -l 这里假定新硬盘是/dev/sdb，用fdisk开始分区
+fdisk /dev/sdb 执行以上命令后，会进入fdisk工具的命令界面，输入m可以查看使用手册。
+第二步：删除旧分区（可选） 如果是旧硬盘，或者已经有分区的硬盘，需要先删除旧分区表信息，输入d
+d 提示内容如下
+Command (m for help): d
+Partition number (1-3, default 3):
+提示内容是当前有三个分区，编号1-3，请输入需要删除的分区的编号。
+依次输入分区编号，会提示删除成功。
+Partition 1 has been deleted.
+全部删除后，进入下一步。
+第三步：创建新分区 新建分区，输入n
+n 提示内容如下：
+Command (m for help): n
+Partition type
+p primary (0 primary, 0 extended, 4 free)
+e extended (container for logical partitions)
+p主分区，e扩展分区。选择主分区p
+p 提示如下：
+Partition number (1-4, default 1):
+确定分区编号，默认1，直接回车默认即可，提示如下：
+First sector (2048-3907029167, default 2048):"/>
+
+    <meta property="og:title" content="Linux下给新硬盘分区并挂载" />
+<meta property="og:description" content="前言 老是忘记，查别人文章也麻烦，索性自己记录一下
+分区 第一步：获取设备名 lsblk 也可以用
+fdisk -l 这里假定新硬盘是/dev/sdb，用fdisk开始分区
+fdisk /dev/sdb 执行以上命令后，会进入fdisk工具的命令界面，输入m可以查看使用手册。
+第二步：删除旧分区（可选） 如果是旧硬盘，或者已经有分区的硬盘，需要先删除旧分区表信息，输入d
+d 提示内容如下
+Command (m for help): d
+Partition number (1-3, default 3):
+提示内容是当前有三个分区，编号1-3，请输入需要删除的分区的编号。
+依次输入分区编号，会提示删除成功。
+Partition 1 has been deleted.
+全部删除后，进入下一步。
+第三步：创建新分区 新建分区，输入n
+n 提示内容如下：
+Command (m for help): n
+Partition type
+p primary (0 primary, 0 extended, 4 free)
+e extended (container for logical partitions)
+p主分区，e扩展分区。选择主分区p
+p 提示如下：
+Partition number (1-4, default 1):
+确定分区编号，默认1，直接回车默认即可，提示如下：
+First sector (2048-3907029167, default 2048):" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/linux-partion-mount-disk/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-06T10:56:58+08:00" />
+<meta property="article:modified_time" content="2023-10-06T10:56:58+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下给新硬盘分区并挂载</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 6, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>老是忘记，查别人文章也麻烦，索性自己记录一下</p>
+<hr>
+<h2 id="分区">分区</h2>
+<h3 id="第一步获取设备名">第一步：获取设备名</h3>
+<pre tabindex="0"><code>lsblk
+</code></pre><p>也可以用</p>
+<pre tabindex="0"><code>fdisk -l
+</code></pre><p>这里假定新硬盘是<code>/dev/sdb</code>，用<code>fdisk</code>开始分区</p>
+<pre tabindex="0"><code>fdisk /dev/sdb
+</code></pre><p>执行以上命令后，会进入<code>fdisk</code>工具的命令界面，输入<code>m</code>可以查看使用手册。</p>
+<h3 id="第二步删除旧分区可选">第二步：删除旧分区（可选）</h3>
+<p>如果是旧硬盘，或者已经有分区的硬盘，需要先删除旧分区表信息，输入<code>d</code></p>
+<pre tabindex="0"><code>d
+</code></pre><p>提示内容如下</p>
+<blockquote>
+<p>Command (m for help): d</p>
+<p>Partition number (1-3, default 3):</p>
+</blockquote>
+<p>提示内容是当前有三个分区，编号1-3，请输入需要删除的分区的编号。</p>
+<p>依次输入分区编号，会提示删除成功。</p>
+<blockquote>
+<p>Partition 1 has been deleted.</p>
+</blockquote>
+<p>全部删除后，进入下一步。</p>
+<h3 id="第三步创建新分区">第三步：创建新分区</h3>
+<p>新建分区，输入<code>n</code></p>
+<pre tabindex="0"><code>n
+</code></pre><p>提示内容如下：</p>
+<blockquote>
+<p>Command (m for help): n</p>
+<p>Partition type</p>
+<p>p   primary (0 primary, 0 extended, 4 free)</p>
+<p>e   extended (container for logical partitions)</p>
+</blockquote>
+<p><code>p</code>主分区，<code>e</code>扩展分区。选择主分区<code>p</code></p>
+<pre tabindex="0"><code>p
+</code></pre><p>提示如下：</p>
+<blockquote>
+<p>Partition number (1-4, default 1):</p>
+</blockquote>
+<p>确定分区编号，默认1，直接回车默认即可，提示如下：</p>
+<blockquote>
+<p>First sector (2048-3907029167, default 2048):</p>
+</blockquote>
+<p>确定起始扇区大小，默认即可，直接回车，提示如下：</p>
+<blockquote>
+<p>Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-3907029167, default 3907029167):</p>
+</blockquote>
+<p>确定结束扇区大小，默认即可，直接回车，提示如下：</p>
+<blockquote>
+<p>Created a new partition 1 of type &lsquo;Linux&rsquo; and of size 1.8 TiB.</p>
+</blockquote>
+<p>到这里分区表新建完成，需要把分区信息写入磁盘</p>
+<pre tabindex="0"><code>w
+</code></pre><p>写入成功后的提示信息：</p>
+<blockquote>
+<p>Command (m for help): w</p>
+<p>The partition table has been altered.</p>
+<p>Calling ioctl() to re-read partition table.</p>
+<p>Syncing disks.</p>
+</blockquote>
+<hr>
+<h2 id="格式化">格式化</h2>
+<p>硬盘新建分区以后，需要进行格式化。</p>
+<pre tabindex="0"><code>mkfs.ext4 -L &#39;hitachi&#39; /dev/sdb1
+</code></pre><p>其中<code>-L</code>是给硬盘添加卷标，方便辨别。</p>
+<p>以上命令执行过程中会提示选择block大小和journal数量，敲回车默认即可。</p>
+<hr>
+<h2 id="挂载">挂载</h2>
+<p>用<code>blkid</code>获取硬盘信息</p>
+<pre tabindex="0"><code>blkid
+</code></pre><p>提示信息如下:</p>
+<blockquote>
+<p>/dev/sdb1: LABEL=&ldquo;hitachi&rdquo; UUID=&ldquo;3e03d3a6-6a06-4358-aa04-691c09ecc87a&rdquo; BLOCK_SIZE=&ldquo;4096&rdquo; TYPE=&ldquo;ext4&rdquo; PARTUUID=&ldquo;db71bfcc-01&rdquo;</p>
+</blockquote>
+<p>复制<code>UUID</code>信息，编辑fstab文件</p>
+<pre tabindex="0"><code>nano /etc/fstab
+</code></pre><p>根据格式，录入以下信息以后保存退出</p>
+<pre tabindex="0"><code># /dev/sdb1 hitachi hdd
+UUID=3e03d3a6-6a06-4358-aa04-691c09ecc87a /mnt/hitachi    ext4    defaults          0       2
+</code></pre><p>最后，重新挂载</p>
+<pre tabindex="0"><code>mount -a
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
