@@ -41,7 +41,10 @@ ufw allow proto tcp to ::/0 port 12345 </description>
       <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
       
       <guid>https://ruohai.wang/202310/immich-update-to-https/</guid>
-      <description>第一步：申请证书 申请证书这里不做赘述，阿里云送的免费证书，或者let&amp;rsquo;s encrypt的证书都可以。
+      <description>注意事项 配置ssl证书开启https公网访问，请务必注意数据安全。
+immich服务目前没有密码错误多次登录时触发登录保护的功能，所以存在暴力破解的可能性。
+建议用tailscale、ngrok、frp、cloudflare tunnel之类内网穿透工具。
+第一步：申请证书 申请证书这里不做赘述，阿里云送的免费证书，或者let&amp;rsquo;s encrypt的证书都可以。
 我用的反代工具是nginx，所以证书是是nginx格式。
 一共两个文件:
 domain.key domain.pem 第二步：安装nginx 我用的系统是debian，直接apt安装
