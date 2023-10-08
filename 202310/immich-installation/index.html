@@ -13,28 +13,26 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="开源自托管相册服务Immich的安装"/>
-<meta name="twitter:description" content="前言 十多年来我用的相册服务一直都是google photos，大厂背书，早期宣传永久免费无限空间，而且也好用，往年今日、图像识别、关键字搜索，各种功能都很好用而且方便，如果gfw对你来说不是问题，这就是最好的方案。
-不过很快它的权益就开始缩水，从原图永久免费空间，缩到高品质永久免费空间，缩到免费15GB空间。直到这两天，我发现gmail、driver、photos三者共用15GB空间，如果不续费，在空间耗尽的情况下，gmail都无法使用，因为没有空间来收发邮件了。
-虽然可以用过订阅google one扩充空间，但我不喜欢这种被比较恶心的全家桶订阅制绑架用户的方案，尤其是当邮箱服务使用gmail，根本无法短时间之内迁移，迫使你不得不在清空photos腾出空间和花钱订阅之间二选一。
-其实前几个月开始玩nas的时候就有考虑自建相册服务，很多方案，比如photo prism、piwigo、lychee、mt-photos、librephotos，但一直没有动手。因为这些方案对我来说都有几个比较致命的点：
-无法使用原图片目录，需要通过【导入】重新存一份 不支持heic 相比起以上两点，其它的功能确实比如人脸识别、关键字搜索我都可以忽略不计。
-但因为这几天被google one订阅之恶心到了，必须开始搞自建相册。
-这篇文章记录下immich相册的安装过程。
-安装 我的安装环境是debian 12 stable（bookworm）。权限、用户相关问题这里不多做标注，需自行解决。
+<meta name="twitter:description" content="前言 停用了google photos，虽然很早很早就开始用这个服务，但最近碰到了几件事，让我选择停用它。
+权益缩水。从最初原图免费无限空间，缩水到高品质压缩图片免费无限空间，再缩水到免费15GB空间。不要相信云存储空间厂商的任何免费和永久的承诺，哪怕是google这样的大厂背书。 祸及gmail。存储空间缩水到15GB以后，这个15GB由gmail、photos、driver三个服务共享使用，意味着，如果因为photos上传图片过多，或者driver上传文件过多，耗尽了这15GB空间，会导致gmail无法使用，因为没有多余空间来收发邮件了。这种情况只有两个方案可选，清理photos和driver腾出空间给gmail使用，或者订阅google one扩充空间。如果选择订阅google one，一定要留意，如果哪个月订阅费用扣款失败，gmail会因为没有剩余空间而无法使用。 以上两点原因，尤其是第二点，导致我必须、立刻开始寻找替代方案。
+其实几个月前开始折腾nas的时候我就有考虑自建相册服务，几个方案：群晖自带的photo station、moments、synology photo，或者第三方的lychee、piwigo、photo prism、librephoto、photoview。但了解和体验下来，有几个核心问题一直无解：
+不支持h265/hevc的图片和视频。因为h265复杂的版权关系，h265的图片和视频（heic、heif)基本不支持查看和生成缩略图。群晖有解决方案，但需要登录群晖账号才能在套件商店下载解码包。黑群可以自己安装ffmpeg来实现对h265媒体的支持，但网上看到很多人反馈时灵时不灵，很让人头疼。 不支持自定义图库位置。我有一个庞大的、积累多年的照片文件夹，有自己的目录结构，如果想要导入到这些相册服务中去，只有一个办法：通过相册的导入入口。而且这些相册一般都会把媒体文件按照日期进行归档，破坏掉原有的目录结构。 目前我从google photos切换到了immich，不仅解决了我的所有痛点，而且它的web和app界面都几乎1:1的模仿google photos，上手使用毫无难度。
+安装 我的安装环境是debian 12 stable（bookworm）。因为跑docker服务需要root权限（可以通过一些设置用非root跑），关于权限、用户的问题这里不再赘述，需要自行解决。
 immich的安装步骤在【官网】有文档，英语阅读无障碍的话可以直接看官网。
-注意事项： 安装会占用5GB存储空间 immich自带的机器学习、图像识别算法、转码非常占用资源，内存至少4GB cpu性能无要求，但更强的cpu，上传、转码、图像识别、机器学习就会更快 immich支持intel qsv、nvidia nvenc、intel vaapi视频转码硬件加速 因为docker-hub被封，部署的时候拉镜像根本没速度，请改用国内镜像站，或者用VPN 写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，edit user界面有个external path设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会动图库的目录结构和原图。 批量导入图片的方法请查看官网，入口：Bulk Upload (Using the CLI) 第一步：安装docker和docker compose。 apt install docker.io apt install docker-compose 第二步：在本地创建immich安装目录 mkdir immich cd immich 第三步：在immich目录下载安装所需文件 wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑.env文件。下载的默认.env文件内容如下所示。 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables # The location where your uploaded files are stored UPLOAD_LOCATION=."/>
+注意事项： 安装需要占用5GB存储空间 immich自带的机器学习（图像主体识别、人脸识别）、视频转码非常占用资源，内存至少4GB cpu性能无要求，但更强的cpu，上传、转码、机器学习就会更快更效率，使用体验会更好 immich的视频转码支持qsv、nvenc、vaapi硬件加速 因为docker-hub被封，部署的时候拉镜像根本没速度，请改用国内镜像站，或者用VPN 写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，edit user界面有个external path设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会变动原图库的目录结构和原图。 批量导入图片的方法请查看官网，入口：Bulk Upload (Using the CLI) 第一步：安装docker和docker compose。 apt install docker.io apt install docker-compose 第二步：在本地创建immich目录 这个目录只是用来下载immich的docker-compse配置文件和env配置文件，随便建在那边都行。
+mkdir immich cd immich 第三步：下载两个配置文件 wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑参数。 用文本编辑器打开.env文件，1.81.1版本的默认内容如下
+# You can find documentation for all the supported env variables at https://immich."/>
 
     <meta property="og:title" content="开源自托管相册服务Immich的安装" />
-<meta property="og:description" content="前言 十多年来我用的相册服务一直都是google photos，大厂背书，早期宣传永久免费无限空间，而且也好用，往年今日、图像识别、关键字搜索，各种功能都很好用而且方便，如果gfw对你来说不是问题，这就是最好的方案。
-不过很快它的权益就开始缩水，从原图永久免费空间，缩到高品质永久免费空间，缩到免费15GB空间。直到这两天，我发现gmail、driver、photos三者共用15GB空间，如果不续费，在空间耗尽的情况下，gmail都无法使用，因为没有空间来收发邮件了。
-虽然可以用过订阅google one扩充空间，但我不喜欢这种被比较恶心的全家桶订阅制绑架用户的方案，尤其是当邮箱服务使用gmail，根本无法短时间之内迁移，迫使你不得不在清空photos腾出空间和花钱订阅之间二选一。
-其实前几个月开始玩nas的时候就有考虑自建相册服务，很多方案，比如photo prism、piwigo、lychee、mt-photos、librephotos，但一直没有动手。因为这些方案对我来说都有几个比较致命的点：
-无法使用原图片目录，需要通过【导入】重新存一份 不支持heic 相比起以上两点，其它的功能确实比如人脸识别、关键字搜索我都可以忽略不计。
-但因为这几天被google one订阅之恶心到了，必须开始搞自建相册。
-这篇文章记录下immich相册的安装过程。
-安装 我的安装环境是debian 12 stable（bookworm）。权限、用户相关问题这里不多做标注，需自行解决。
+<meta property="og:description" content="前言 停用了google photos，虽然很早很早就开始用这个服务，但最近碰到了几件事，让我选择停用它。
+权益缩水。从最初原图免费无限空间，缩水到高品质压缩图片免费无限空间，再缩水到免费15GB空间。不要相信云存储空间厂商的任何免费和永久的承诺，哪怕是google这样的大厂背书。 祸及gmail。存储空间缩水到15GB以后，这个15GB由gmail、photos、driver三个服务共享使用，意味着，如果因为photos上传图片过多，或者driver上传文件过多，耗尽了这15GB空间，会导致gmail无法使用，因为没有多余空间来收发邮件了。这种情况只有两个方案可选，清理photos和driver腾出空间给gmail使用，或者订阅google one扩充空间。如果选择订阅google one，一定要留意，如果哪个月订阅费用扣款失败，gmail会因为没有剩余空间而无法使用。 以上两点原因，尤其是第二点，导致我必须、立刻开始寻找替代方案。
+其实几个月前开始折腾nas的时候我就有考虑自建相册服务，几个方案：群晖自带的photo station、moments、synology photo，或者第三方的lychee、piwigo、photo prism、librephoto、photoview。但了解和体验下来，有几个核心问题一直无解：
+不支持h265/hevc的图片和视频。因为h265复杂的版权关系，h265的图片和视频（heic、heif)基本不支持查看和生成缩略图。群晖有解决方案，但需要登录群晖账号才能在套件商店下载解码包。黑群可以自己安装ffmpeg来实现对h265媒体的支持，但网上看到很多人反馈时灵时不灵，很让人头疼。 不支持自定义图库位置。我有一个庞大的、积累多年的照片文件夹，有自己的目录结构，如果想要导入到这些相册服务中去，只有一个办法：通过相册的导入入口。而且这些相册一般都会把媒体文件按照日期进行归档，破坏掉原有的目录结构。 目前我从google photos切换到了immich，不仅解决了我的所有痛点，而且它的web和app界面都几乎1:1的模仿google photos，上手使用毫无难度。
+安装 我的安装环境是debian 12 stable（bookworm）。因为跑docker服务需要root权限（可以通过一些设置用非root跑），关于权限、用户的问题这里不再赘述，需要自行解决。
 immich的安装步骤在【官网】有文档，英语阅读无障碍的话可以直接看官网。
-注意事项： 安装会占用5GB存储空间 immich自带的机器学习、图像识别算法、转码非常占用资源，内存至少4GB cpu性能无要求，但更强的cpu，上传、转码、图像识别、机器学习就会更快 immich支持intel qsv、nvidia nvenc、intel vaapi视频转码硬件加速 因为docker-hub被封，部署的时候拉镜像根本没速度，请改用国内镜像站，或者用VPN 写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，edit user界面有个external path设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会动图库的目录结构和原图。 批量导入图片的方法请查看官网，入口：Bulk Upload (Using the CLI) 第一步：安装docker和docker compose。 apt install docker.io apt install docker-compose 第二步：在本地创建immich安装目录 mkdir immich cd immich 第三步：在immich目录下载安装所需文件 wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑.env文件。下载的默认.env文件内容如下所示。 # You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables # The location where your uploaded files are stored UPLOAD_LOCATION=." />
+注意事项： 安装需要占用5GB存储空间 immich自带的机器学习（图像主体识别、人脸识别）、视频转码非常占用资源，内存至少4GB cpu性能无要求，但更强的cpu，上传、转码、机器学习就会更快更效率，使用体验会更好 immich的视频转码支持qsv、nvenc、vaapi硬件加速 因为docker-hub被封，部署的时候拉镜像根本没速度，请改用国内镜像站，或者用VPN 写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，edit user界面有个external path设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会变动原图库的目录结构和原图。 批量导入图片的方法请查看官网，入口：Bulk Upload (Using the CLI) 第一步：安装docker和docker compose。 apt install docker.io apt install docker-compose 第二步：在本地创建immich目录 这个目录只是用来下载immich的docker-compse配置文件和env配置文件，随便建在那边都行。
+mkdir immich cd immich 第三步：下载两个配置文件 wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env 第四步：编辑参数。 用文本编辑器打开.env文件，1.81.1版本的默认内容如下
+# You can find documentation for all the supported env variables at https://immich." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202310/immich-installation/" /><meta property="article:section" content="202310" />
 <meta property="article:published_time" content="2023-10-05T16:35:47+08:00" />
@@ -99,44 +97,47 @@ immich的安装步骤在【官网】有文档，英语阅读无障碍的话可�
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>十多年来我用的相册服务一直都是google photos，大厂背书，早期宣传永久免费无限空间，而且也好用，往年今日、图像识别、关键字搜索，各种功能都很好用而且方便，如果gfw对你来说不是问题，这就是最好的方案。</p>
-<p>不过很快它的权益就开始缩水，从原图永久免费空间，缩到高品质永久免费空间，缩到免费15GB空间。直到这两天，我发现gmail、driver、photos三者共用15GB空间，如果不续费，在空间耗尽的情况下，gmail都无法使用，因为没有空间来收发邮件了。</p>
-<p>虽然可以用过订阅google one扩充空间，但我不喜欢这种被比较恶心的全家桶订阅制绑架用户的方案，尤其是当邮箱服务使用gmail，根本无法短时间之内迁移，迫使你不得不在清空photos腾出空间和花钱订阅之间二选一。</p>
-<p>其实前几个月开始玩nas的时候就有考虑自建相册服务，很多方案，比如photo prism、piwigo、lychee、mt-photos、librephotos，但一直没有动手。因为这些方案对我来说都有几个比较致命的点：</p>
-<ul>
-<li>无法使用原图片目录，需要通过【导入】重新存一份</li>
-<li>不支持heic</li>
-</ul>
-<p>相比起以上两点，其它的功能确实比如人脸识别、关键字搜索我都可以忽略不计。</p>
-<p>但因为这几天被google one订阅之恶心到了，必须开始搞自建相册。</p>
-<p>这篇文章记录下immich相册的安装过程。</p>
+<p>停用了google photos，虽然很早很早就开始用这个服务，但最近碰到了几件事，让我选择停用它。</p>
+<ol>
+<li>权益缩水。从最初原图免费无限空间，缩水到高品质压缩图片免费无限空间，再缩水到免费15GB空间。不要相信云存储空间厂商的任何<strong>免费</strong>和<strong>永久</strong>的承诺，哪怕是google这样的大厂背书。</li>
+<li>祸及gmail。存储空间缩水到15GB以后，这个15GB由gmail、photos、driver三个服务共享使用，意味着，如果因为photos上传图片过多，或者driver上传文件过多，耗尽了这15GB空间，会导致gmail无法使用，因为没有多余空间来收发邮件了。这种情况只有两个方案可选，清理photos和driver腾出空间给gmail使用，或者订阅google one扩充空间。如果选择订阅google one，一定要留意，如果哪个月订阅费用扣款失败，gmail会因为没有剩余空间而无法使用。</li>
+</ol>
+<p>以上两点原因，尤其是第二点，导致我必须、立刻开始寻找替代方案。</p>
+<p>其实几个月前开始折腾nas的时候我就有考虑自建相册服务，几个方案：群晖自带的photo station、moments、synology photo，或者第三方的lychee、piwigo、photo prism、librephoto、photoview。但了解和体验下来，有几个核心问题一直无解：</p>
+<ol>
+<li>不支持h265/hevc的图片和视频。因为h265复杂的版权关系，h265的图片和视频（heic、heif)基本不支持查看和生成缩略图。群晖有解决方案，但需要登录群晖账号才能在套件商店下载解码包。黑群可以自己安装ffmpeg来实现对h265媒体的支持，但网上看到很多人反馈时灵时不灵，很让人头疼。</li>
+<li>不支持自定义图库位置。我有一个庞大的、积累多年的照片文件夹，有自己的目录结构，如果想要导入到这些相册服务中去，只有一个办法：通过相册的导入入口。而且这些相册一般都会把媒体文件按照日期进行归档，破坏掉原有的目录结构。</li>
+</ol>
+<p>目前我从google photos切换到了immich，不仅解决了我的所有痛点，而且它的web和app界面都几乎1:1的模仿google photos，上手使用毫无难度。</p>
 <hr>
 <h2 id="安装">安装</h2>
-<p>我的安装环境是debian 12 stable（bookworm）。权限、用户相关问题这里不多做标注，需自行解决。</p>
+<p>我的安装环境是debian 12 stable（bookworm）。因为跑docker服务需要root权限（可以通过一些设置用非root跑），关于权限、用户的问题这里不再赘述，需要自行解决。</p>
 <p>immich的安装步骤在【<a href="https://immich.app/docs/install/docker-compose">官网</a>】有文档，英语阅读无障碍的话可以直接看官网。</p>
 <h3 id="注意事项">注意事项：</h3>
 <ul>
-<li>安装会占用5GB存储空间</li>
-<li>immich自带的机器学习、图像识别算法、转码非常占用资源，内存至少4GB</li>
-<li>cpu性能无要求，但更强的cpu，上传、转码、图像识别、机器学习就会更快</li>
-<li>immich支持intel qsv、nvidia nvenc、intel vaapi视频转码硬件加速</li>
+<li>安装需要占用5GB存储空间</li>
+<li>immich自带的机器学习（图像主体识别、人脸识别）、视频转码非常占用资源，内存至少4GB</li>
+<li>cpu性能无要求，但更强的cpu，上传、转码、机器学习就会更快更效率，使用体验会更好</li>
+<li>immich的视频转码支持qsv、nvenc、vaapi硬件加速</li>
 <li>因为docker-hub被封，部署的时候拉镜像根本没速度，请改用国内镜像站，或者用VPN</li>
-<li>写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，<code>edit user</code>界面有个<code>external path</code>设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会动图库的目录结构和原图。</li>
+<li>写这篇文章的当下（2023/10/05），immich版本1.81，实测支持自定义图库位置，<code>edit user</code>界面有个<code>external path</code>设置项，可以填入自定义图库的位置。填写以后，immich从图库读取图片的metadata、生成缩略图、图像识别，不会变动原图库的目录结构和原图。</li>
 <li>批量导入图片的方法请查看官网，入口：<a href="https://immich.app/docs/features/bulk-upload">Bulk Upload (Using the CLI)</a></li>
 </ul>
 <h4 id="第一步安装docker和docker-compose">第一步：安装docker和docker compose。</h4>
 <pre tabindex="0"><code>apt install docker.io
 
 apt install docker-compose
-</code></pre><h4 id="第二步在本地创建immich安装目录">第二步：在本地创建immich安装目录</h4>
+</code></pre><h4 id="第二步在本地创建immich目录">第二步：在本地创建immich目录</h4>
+<p>这个目录只是用来下载immich的docker-compse配置文件和env配置文件，随便建在那边都行。</p>
 <pre tabindex="0"><code>mkdir immich
 
 cd immich
-</code></pre><h4 id="第三步在immich目录下载安装所需文件">第三步：在immich目录下载安装所需文件</h4>
+</code></pre><h4 id="第三步下载两个配置文件">第三步：下载两个配置文件</h4>
 <pre tabindex="0"><code>wget https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
 
 wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env
-</code></pre><h4 id="第四步编辑env文件下载的默认env文件内容如下所示">第四步：编辑<code>.env</code>文件。下载的默认<code>.env</code>文件内容如下所示。</h4>
+</code></pre><h4 id="第四步编辑参数">第四步：编辑参数。</h4>
+<p>用文本编辑器打开<code>.env</code>文件，1.81.1版本的默认内容如下</p>
 <pre tabindex="0"><code># You can find documentation for all the supported env variables at https://immich.app/docs/install/environment-variables
 
 # The location where your uploaded files are stored
@@ -158,7 +159,7 @@ DB_DATABASE_NAME=immich
 REDIS_HOSTNAME=immich_redis
 </code></pre><p>在最简单的配置模式下，只需要修改三个地方，其它都可以用默认设置。</p>
 <ul>
-<li>UPLOAD_LOCATION，上传/导入的文件保存路径，根据自己的实际存储路径修改</li>
+<li>UPLOAD_LOCATION，上传的文件的保存路径，根据自己的实际存储路径修改</li>
 <li>TYPESENSE_API_KEY，搜索引擎的api key，可以自行用命令生成随机字符串后填入</li>
 <li>DB_PASSWORD，数据库密码，可以自行用命令生成随机字符串后填入</li>
 <li>生成32位随机字符串的命令：<code>openssl rand -base64 32</code></li>
@@ -181,6 +182,7 @@ typesense/typesense                          799MB
 <h2 id="参考文章">参考文章</h2>
 <ol>
 <li>【实用的开源项目】使用服务器部署Immich，高颜值高性能的自托管照片和视频备份方案 <a href="https://zhuanlan.zhihu.com/p/645242381">https://zhuanlan.zhihu.com/p/645242381</a></li>
+<li>Docker Compose [Recommended] <a href="https://immich.app/docs/install/docker-compose">https://immich.app/docs/install/docker-compose</a></li>
 </ol>
 
     </div>
