@@ -5,7 +5,30 @@
     <link>https://ruohai.wang/tags/immich/</link>
     <description>Recent content in Immich on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 06 Oct 2023 19:34:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/immich/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Oct 2023 19:06:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/immich/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immich相册服务照片视频文件的批量上传</title>
+      <link>https://ruohai.wang/202310/immich-bulk-upload/</link>
+      <pubDate>Tue, 10 Oct 2023 19:06:29 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/immich-bulk-upload/</guid>
+      <description>前言 immich的网页端只支持选中多个文件晋商上传，不支持选择文件夹。
+官网有文档，批量导入需要用到npm。
+啧，行吧，记录下怎么弄。
+官网文档很细致，英文阅读无障碍的话直接看官网就行，我就是英翻中。
+安装 我用来跑immich服务的机器装的是debian系统。
+先装npm，大概600MB。
+apt install npm 再装immich CLI模块
+npm i -g immich 到此，安装完成。
+批量导入 第一步：生成api key。
+很抱歉我之前用的免费图床跑路了，所以不再传图，用文字记录下路径：
+点击网页端的账户头像 —— account setting —— API Keys —— new api keys，name一栏随便填，然后点击create，然后把字符串复制保存。
+第二步：文件夹批量上传。
+immich upload --key API_KEY_STRING --server http://immich_host_ip:2283/api --recursive directory/ 有三个地方需要根据自己情况修改：
+API_KEY_STRING，替换成第一步中生成的api key immich_host_ip，immich服务的ip地址，如果是同一台机器，写localhost就行。如果改过默认端口，那2283也要一并修改 directory/，需要上传的文件夹 执行以上命令后，会有提示：
+Checking connectivity with Immich instance... Server status: OK Checking credentials... Login status: OK Successful authentication for user nibabawo@123.com Indexing local assets... Indexing complete, found 74868 local assets Comparing local assets with those on the Immich instance.</description>
+    </item>
+    
     <item>
       <title>Immich配置SSL证书开启HTTPS访问</title>
       <link>https://ruohai.wang/202310/immich-update-to-https/</link>

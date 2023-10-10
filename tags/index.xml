@@ -5,7 +5,25 @@
     <link>https://ruohai.wang/tags/</link>
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 06 Oct 2023 20:24:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Oct 2023 19:06:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immich</title>
+      <link>https://ruohai.wang/tags/immich/</link>
+      <pubDate>Tue, 10 Oct 2023 19:06:29 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/immich/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://ruohai.wang/tags/linux/</link>
+      <pubDate>Tue, 10 Oct 2023 19:06:29 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/linux/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>UFW</title>
       <link>https://ruohai.wang/tags/ufw/</link>
@@ -25,15 +43,6 @@
     </item>
     
     <item>
-      <title>Immich</title>
-      <link>https://ruohai.wang/tags/immich/</link>
-      <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/immich/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Nginx</title>
       <link>https://ruohai.wang/tags/nginx/</link>
       <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
@@ -48,15 +57,6 @@
       <pubDate>Fri, 06 Oct 2023 19:34:41 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/ssl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>https://ruohai.wang/tags/linux/</link>
-      <pubDate>Fri, 06 Oct 2023 10:56:58 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/linux/</guid>
       <description></description>
     </item>
     
