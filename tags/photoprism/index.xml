@@ -31,10 +31,11 @@ immich只能指定一个目录，也就是上传目录、缩略图目录、原�
 第一步：安装docker和docker-compose。
 apt install docker apt install docker-compose 第二步：下载docker-compose.yml文件。
 mkdir ~/.photoprism cd ~/.photoprism wget https://dl.photoprism.app/docker/docker-compose.yml 第三步：配置参数。
+**注意：**自建相册服务一般很少会反复折腾，都是部署好了以后就是24H运行除非硬盘满了。所以下面的10个参数一定要好好理解后进行配置，避免返工。
 下载好docker-compose.yml以后，用文本编辑器打开，有以下几个参数需要修改：
-PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改 PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改 PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改 &amp;ldquo;~/Pictures:/photoprism/originals&amp;rdquo;：这项指定原图的归档目录，默认是用户目录下的Pictures文件夹。注意如果是用root权限运行photoprism服务，默认用户目录是/root。建议指向大容量hdd以保障数据安全 &amp;ldquo;~/Import:/photoprism/import&amp;rdquo; ：这项配置默认是注释的（不启用），可选，有老图库需要导入的可以这里指定 &amp;ldquo;./storage:/photoprism/storage&amp;rdquo;：这里指定存储目录，用来存放配置文件、缩略图、转码的视频等等，建议指向ssd以提高浏览速度。默认路径指定当前目录 MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和第3点中的PHOTOPRISM_DATABASE_PASSWORD的密码保持一致 MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改 user: &amp;ldquo;1000:1000&amp;rdquo;： 这项默认是注释的（不启用），可选。也就是默认是root用户跑服务，如果不想用root账号跑，需要改这个配置。 好像，调整完以上8个参数之后，就可以开始拉镜像创建容器跑服务了。
-因为docker-hub国内被封，这里建议提前用国内镜像，或者vpn，要不然拉取镜像很慢。
-docker-compose up -d 两个镜像，合计占用2GB存储空间。</description>
+账户密码类配置项：
+1. PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改 2. PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改 3. PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改 4. MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和上一条中的PHOTOPRISM_DATABASE_PASSWORD的密码保持一致 5. MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改 文件路径类配置项：
+1. &amp;#34;~/Pictures:/photoprism/originals&amp;#34;：这项指定原图的归档目录，建议指向一个大容量hdd，一个硬盘专门用来放原图，方便后期维护。 2. &amp;#34;~/Import:/photoprism/import&amp;#34; ：这项指定需要导入的目录，默认是注释的（不启用），可选，有图库需要批量导入的可以这里指定路径，然后系统会把图片转移到originals目录进行归档。 3.</description>
     </item>
     
   </channel>
