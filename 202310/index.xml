@@ -5,14 +5,45 @@
     <link>https://ruohai.wang/202310/</link>
     <description>Recent content in 202310s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 10 Oct 2023 19:06:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Oct 2023 18:48:49 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PhotoPrism的安装以及和Immich的优缺点对比</title>
+      <link>https://ruohai.wang/202310/photoprism-install-guide/</link>
+      <pubDate>Thu, 12 Oct 2023 18:48:49 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/photoprism-install-guide/</guid>
+      <description>前言 10月初因为google one订阅计划到期没续，导致google one存储空间耗尽，接着连锁反应导致我的gmail因为没有空间而无法使用，所以终于下定决心：
+要自建相册服务，不能在关键时候被google卡脖子！
+（开玩笑的
+immich的优缺点 上周弄了个机器部署immich，实际使用一段时间后，几个最突出的优点：
+全终端覆盖，除了web服务之外，官方就提供了ios和android的app web和app的ui/ux都模仿的google photos，所以上手使用没难度 但是，但是啊，immich用起来确实各方面都还可以，但也有不少槽点，列举一二：
+immich只能指定一个目录，也就是上传目录、缩略图目录、原图目录、转码视频目录，统统都一个目录下（aka一个硬盘）。导致会有原始媒体文件体积的20%左右的空间，是被缩略图、缓存之类消耗掉的，这导致硬盘空间更容易耗尽，意味着会需要更频繁的更换大容量硬盘和迁移/恢复。
+上传了7万多张照片+视频以后，web端浏览非常、非常的卡，首页时间线的瀑布流展示出来需要等5~10秒钟左右。
+上传照片的流程：新照片被重命名并放到upload目录 → immich读取新照片的exif → immich把新照片归档到指定根目录并还原文件名。这个流程如果顺利的话就很完美，没有问题。但我在短短几天的时候过程中，出现了好几次上传的照片被积压在upload目录，无论怎么在管理员的Job管理页面重启读取照片metadata的任务，积压在upload目录的文件都毫无变化，无法正确归档。最后的解决方案，第一次碰到这问题时，我简单排查以后感觉是immich-microserver出了问题，也不知道咋bugfix，索性备份了400G的内容以后重新部署。第二次在重新部署的immich服务上又碰到了这个问题，还好这次积压的不多只有17个文件，我下载到本地，根据日期核对图库以后，确认原图已经存在于图库，所以直接清空了upload目录。
+物色其它方案 因为使用中种种的槽点，尤其是照片积压在upload目录这个严重的bug，所以我又开始物色其它自建相册方案：lychee、piwigo、photoprism、etc&amp;hellip;
+古人有云：少年不知愁滋味，乱花渐欲迷人眼。看着这么多的方案，一时不知道该先试哪个。
+看了一圈官方文档以后，挑中了photoprism。
+优点如下：
+自定义图库目录、缩略图目录、原图目录、转码视频目录，可以分别指定路径。这就可以实现原图放一个硬盘（方便维护），缩略图和缓存放ssd（加速图片浏览）。这简直就是对着immich的弱点痛打啊。 多语言支持，自带中文。虽然相册服务那点简单的英文对我来说没有使用障碍，但有中文可选总是加分的。 web端使用起来体验比immich响应速度快，可配置的内容更多更细致。 看完photoprism的文档以后，十分心动，立刻就弄个虚拟机，开始部署。
+部署photoprism 我的机器用的系统时debian 12 bookworm stable，使用官网推荐的docker compose方案进行部署。
+使用的photoprism版本是Build 231011-63f708417，docker-compose.yml文件中指定的version是3.5。注意不同的版本可能部署方式会有出入，最终以官网的文档为准。
+官网文档：https://docs.photoprism.app/getting-started/docker-compose/
+第一步：安装docker和docker-compose。
+apt install docker apt install docker-compose 第二步：下载docker-compose.yml文件。
+mkdir ~/.photoprism cd ~/.photoprism wget https://dl.photoprism.app/docker/docker-compose.yml 第三步：配置参数。
+下载好docker-compose.yml以后，用文本编辑器打开，有以下几个参数需要修改：
+PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改 PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改 PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改 &amp;ldquo;~/Pictures:/photoprism/originals&amp;rdquo;：这项指定原图的归档目录，默认是用户目录下的Pictures文件夹。注意如果是用root权限运行photoprism服务，默认用户目录是/root。建议指向大容量hdd以保障数据安全 &amp;ldquo;~/Import:/photoprism/import&amp;rdquo; ：这项配置默认是注释的（不启用），可选，有老图库需要导入的可以这里指定 &amp;ldquo;./storage:/photoprism/storage&amp;rdquo;：这里指定存储目录，用来存放配置文件、缩略图、转码的视频等等，建议指向ssd以提高浏览速度。默认路径指定当前目录 MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和第3点中的PHOTOPRISM_DATABASE_PASSWORD的密码保持一致 MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改 user: &amp;ldquo;1000:1000&amp;rdquo;： 这项默认是注释的（不启用），可选。也就是默认是root用户跑服务，如果不想用root账号跑，需要改这个配置。 好像，调整完以上8个参数之后，就可以开始拉镜像创建容器跑服务了。
+因为docker-hub国内被封，这里建议提前用国内镜像，或者vpn，要不然拉取镜像很慢。
+docker-compose up -d 两个镜像，合计占用2GB存储空间。</description>
+    </item>
+    
     <item>
       <title>Immich相册服务照片视频文件的批量上传</title>
       <link>https://ruohai.wang/202310/immich-bulk-upload/</link>
       <pubDate>Tue, 10 Oct 2023 19:06:29 +0800</pubDate>
       
       <guid>https://ruohai.wang/202310/immich-bulk-upload/</guid>
-      <description>前言 immich的网页端只支持选中多个文件晋商上传，不支持选择文件夹。
+      <description>前言 immich的网页端只支持选中多个文件上传，不支持选择文件夹。
 官网有文档，批量导入需要用到npm。
 啧，行吧，记录下怎么弄。
 官网文档很细致，英文阅读无障碍的话直接看官网就行，我就是英翻中。

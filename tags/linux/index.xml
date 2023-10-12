@@ -12,7 +12,7 @@
       <pubDate>Tue, 10 Oct 2023 19:06:29 +0800</pubDate>
       
       <guid>https://ruohai.wang/202310/immich-bulk-upload/</guid>
-      <description>前言 immich的网页端只支持选中多个文件晋商上传，不支持选择文件夹。
+      <description>前言 immich的网页端只支持选中多个文件上传，不支持选择文件夹。
 官网有文档，批量导入需要用到npm。
 啧，行吧，记录下怎么弄。
 官网文档很细致，英文阅读无障碍的话直接看官网就行，我就是英翻中。

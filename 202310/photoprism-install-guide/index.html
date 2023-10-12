@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>PhotoPrism的安装以及和Immich的优缺点对比 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PhotoPrism的安装以及和Immich的优缺点对比"/>
+<meta name="twitter:description" content="前言 10月初因为google one订阅计划到期没续，导致google one存储空间耗尽，接着连锁反应导致我的gmail因为没有空间而无法使用，所以终于下定决心：
+要自建相册服务，不能在关键时候被google卡脖子！
+（开玩笑的
+immich的优缺点 上周弄了个机器部署immich，实际使用一段时间后，几个最突出的优点：
+全终端覆盖，除了web服务之外，官方就提供了ios和android的app web和app的ui/ux都模仿的google photos，所以上手使用没难度 但是，但是啊，immich用起来确实各方面都还可以，但也有不少槽点，列举一二：
+immich只能指定一个目录，也就是上传目录、缩略图目录、原图目录、转码视频目录，统统都一个目录下（aka一个硬盘）。导致会有原始媒体文件体积的20%左右的空间，是被缩略图、缓存之类消耗掉的，这导致硬盘空间更容易耗尽，意味着会需要更频繁的更换大容量硬盘和迁移/恢复。
+上传了7万多张照片&#43;视频以后，web端浏览非常、非常的卡，首页时间线的瀑布流展示出来需要等5~10秒钟左右。
+上传照片的流程：新照片被重命名并放到upload目录 → immich读取新照片的exif → immich把新照片归档到指定根目录并还原文件名。这个流程如果顺利的话就很完美，没有问题。但我在短短几天的时候过程中，出现了好几次上传的照片被积压在upload目录，无论怎么在管理员的Job管理页面重启读取照片metadata的任务，积压在upload目录的文件都毫无变化，无法正确归档。最后的解决方案，第一次碰到这问题时，我简单排查以后感觉是immich-microserver出了问题，也不知道咋bugfix，索性备份了400G的内容以后重新部署。第二次在重新部署的immich服务上又碰到了这个问题，还好这次积压的不多只有17个文件，我下载到本地，根据日期核对图库以后，确认原图已经存在于图库，所以直接清空了upload目录。
+物色其它方案 因为使用中种种的槽点，尤其是照片积压在upload目录这个严重的bug，所以我又开始物色其它自建相册方案：lychee、piwigo、photoprism、etc&hellip;
+古人有云：少年不知愁滋味，乱花渐欲迷人眼。看着这么多的方案，一时不知道该先试哪个。
+看了一圈官方文档以后，挑中了photoprism。
+优点如下：
+自定义图库目录、缩略图目录、原图目录、转码视频目录，可以分别指定路径。这就可以实现原图放一个硬盘（方便维护），缩略图和缓存放ssd（加速图片浏览）。这简直就是对着immich的弱点痛打啊。 多语言支持，自带中文。虽然相册服务那点简单的英文对我来说没有使用障碍，但有中文可选总是加分的。 web端使用起来体验比immich响应速度快，可配置的内容更多更细致。 看完photoprism的文档以后，十分心动，立刻就弄个虚拟机，开始部署。
+部署photoprism 我的机器用的系统时debian 12 bookworm stable，使用官网推荐的docker compose方案进行部署。
+使用的photoprism版本是Build 231011-63f708417，docker-compose.yml文件中指定的version是3.5。注意不同的版本可能部署方式会有出入，最终以官网的文档为准。
+官网文档：https://docs.photoprism.app/getting-started/docker-compose/
+第一步：安装docker和docker-compose。
+apt install docker apt install docker-compose 第二步：下载docker-compose.yml文件。
+mkdir ~/.photoprism cd ~/.photoprism wget https://dl.photoprism.app/docker/docker-compose.yml 第三步：配置参数。
+下载好docker-compose.yml以后，用文本编辑器打开，有以下几个参数需要修改：
+PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改 PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改 PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改 &ldquo;~/Pictures:/photoprism/originals&rdquo;：这项指定原图的归档目录，默认是用户目录下的Pictures文件夹。注意如果是用root权限运行photoprism服务，默认用户目录是/root。建议指向大容量hdd以保障数据安全 &ldquo;~/Import:/photoprism/import&rdquo; ：这项配置默认是注释的（不启用），可选，有老图库需要导入的可以这里指定 &ldquo;./storage:/photoprism/storage&rdquo;：这里指定存储目录，用来存放配置文件、缩略图、转码的视频等等，建议指向ssd以提高浏览速度。默认路径指定当前目录 MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和第3点中的PHOTOPRISM_DATABASE_PASSWORD的密码保持一致 MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改 user: &ldquo;1000:1000&rdquo;： 这项默认是注释的（不启用），可选。也就是默认是root用户跑服务，如果不想用root账号跑，需要改这个配置。 好像，调整完以上8个参数之后，就可以开始拉镜像创建容器跑服务了。
+因为docker-hub国内被封，这里建议提前用国内镜像，或者vpn，要不然拉取镜像很慢。
+docker-compose up -d 两个镜像，合计占用2GB存储空间。"/>
+
+    <meta property="og:title" content="PhotoPrism的安装以及和Immich的优缺点对比" />
+<meta property="og:description" content="前言 10月初因为google one订阅计划到期没续，导致google one存储空间耗尽，接着连锁反应导致我的gmail因为没有空间而无法使用，所以终于下定决心：
+要自建相册服务，不能在关键时候被google卡脖子！
+（开玩笑的
+immich的优缺点 上周弄了个机器部署immich，实际使用一段时间后，几个最突出的优点：
+全终端覆盖，除了web服务之外，官方就提供了ios和android的app web和app的ui/ux都模仿的google photos，所以上手使用没难度 但是，但是啊，immich用起来确实各方面都还可以，但也有不少槽点，列举一二：
+immich只能指定一个目录，也就是上传目录、缩略图目录、原图目录、转码视频目录，统统都一个目录下（aka一个硬盘）。导致会有原始媒体文件体积的20%左右的空间，是被缩略图、缓存之类消耗掉的，这导致硬盘空间更容易耗尽，意味着会需要更频繁的更换大容量硬盘和迁移/恢复。
+上传了7万多张照片&#43;视频以后，web端浏览非常、非常的卡，首页时间线的瀑布流展示出来需要等5~10秒钟左右。
+上传照片的流程：新照片被重命名并放到upload目录 → immich读取新照片的exif → immich把新照片归档到指定根目录并还原文件名。这个流程如果顺利的话就很完美，没有问题。但我在短短几天的时候过程中，出现了好几次上传的照片被积压在upload目录，无论怎么在管理员的Job管理页面重启读取照片metadata的任务，积压在upload目录的文件都毫无变化，无法正确归档。最后的解决方案，第一次碰到这问题时，我简单排查以后感觉是immich-microserver出了问题，也不知道咋bugfix，索性备份了400G的内容以后重新部署。第二次在重新部署的immich服务上又碰到了这个问题，还好这次积压的不多只有17个文件，我下载到本地，根据日期核对图库以后，确认原图已经存在于图库，所以直接清空了upload目录。
+物色其它方案 因为使用中种种的槽点，尤其是照片积压在upload目录这个严重的bug，所以我又开始物色其它自建相册方案：lychee、piwigo、photoprism、etc&hellip;
+古人有云：少年不知愁滋味，乱花渐欲迷人眼。看着这么多的方案，一时不知道该先试哪个。
+看了一圈官方文档以后，挑中了photoprism。
+优点如下：
+自定义图库目录、缩略图目录、原图目录、转码视频目录，可以分别指定路径。这就可以实现原图放一个硬盘（方便维护），缩略图和缓存放ssd（加速图片浏览）。这简直就是对着immich的弱点痛打啊。 多语言支持，自带中文。虽然相册服务那点简单的英文对我来说没有使用障碍，但有中文可选总是加分的。 web端使用起来体验比immich响应速度快，可配置的内容更多更细致。 看完photoprism的文档以后，十分心动，立刻就弄个虚拟机，开始部署。
+部署photoprism 我的机器用的系统时debian 12 bookworm stable，使用官网推荐的docker compose方案进行部署。
+使用的photoprism版本是Build 231011-63f708417，docker-compose.yml文件中指定的version是3.5。注意不同的版本可能部署方式会有出入，最终以官网的文档为准。
+官网文档：https://docs.photoprism.app/getting-started/docker-compose/
+第一步：安装docker和docker-compose。
+apt install docker apt install docker-compose 第二步：下载docker-compose.yml文件。
+mkdir ~/.photoprism cd ~/.photoprism wget https://dl.photoprism.app/docker/docker-compose.yml 第三步：配置参数。
+下载好docker-compose.yml以后，用文本编辑器打开，有以下几个参数需要修改：
+PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改 PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改 PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改 &ldquo;~/Pictures:/photoprism/originals&rdquo;：这项指定原图的归档目录，默认是用户目录下的Pictures文件夹。注意如果是用root权限运行photoprism服务，默认用户目录是/root。建议指向大容量hdd以保障数据安全 &ldquo;~/Import:/photoprism/import&rdquo; ：这项配置默认是注释的（不启用），可选，有老图库需要导入的可以这里指定 &ldquo;./storage:/photoprism/storage&rdquo;：这里指定存储目录，用来存放配置文件、缩略图、转码的视频等等，建议指向ssd以提高浏览速度。默认路径指定当前目录 MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和第3点中的PHOTOPRISM_DATABASE_PASSWORD的密码保持一致 MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改 user: &ldquo;1000:1000&rdquo;： 这项默认是注释的（不启用），可选。也就是默认是root用户跑服务，如果不想用root账号跑，需要改这个配置。 好像，调整完以上8个参数之后，就可以开始拉镜像创建容器跑服务了。
+因为docker-hub国内被封，这里建议提前用国内镜像，或者vpn，要不然拉取镜像很慢。
+docker-compose up -d 两个镜像，合计占用2GB存储空间。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/photoprism-install-guide/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-12T18:48:49+08:00" />
+<meta property="article:modified_time" content="2023-10-12T18:48:49+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PhotoPrism的安装以及和Immich的优缺点对比</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 12, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/photoprism/">PhotoPrism</a>
+              <a class="tag" href="https://ruohai.wang/tags/immich/">Immich</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>10月初因为google one订阅计划到期没续，导致google one存储空间耗尽，接着连锁反应导致我的gmail因为没有空间而无法使用，所以终于下定决心：</p>
+<p><strong>要自建相册服务，不能在关键时候被google卡脖子！</strong></p>
+<p>（开玩笑的</p>
+<hr>
+<h2 id="immich的优缺点">immich的优缺点</h2>
+<p>上周弄了个机器部署immich，实际使用一段时间后，几个最突出的优点：</p>
+<ul>
+<li>全终端覆盖，除了web服务之外，官方就提供了ios和android的app</li>
+<li>web和app的ui/ux都模仿的google photos，所以上手使用没难度</li>
+</ul>
+<p>但是，但是啊，immich用起来确实各方面都还可以，但也有不少槽点，列举一二：</p>
+<ul>
+<li>
+<p>immich只能指定一个目录，也就是上传目录、缩略图目录、原图目录、转码视频目录，统统都一个目录下（aka一个硬盘）。导致会有原始媒体文件体积的20%左右的空间，是被缩略图、缓存之类消耗掉的，这导致硬盘空间更容易耗尽，意味着会需要更频繁的更换大容量硬盘和迁移/恢复。</p>
+</li>
+<li>
+<p>上传了7万多张照片+视频以后，web端浏览非常、非常的卡，首页时间线的瀑布流展示出来需要等5~10秒钟左右。</p>
+</li>
+<li>
+<p>上传照片的流程：新照片被重命名并放到upload目录 → immich读取新照片的exif → immich把新照片归档到指定根目录并还原文件名。这个流程如果顺利的话就很完美，没有问题。但我在短短几天的时候过程中，出现了好几次上传的照片被积压在upload目录，无论怎么在管理员的<code>Job管理页面</code>重启读取照片metadata的任务，积压在upload目录的文件都毫无变化，无法正确归档。最后的解决方案，第一次碰到这问题时，我简单排查以后感觉是immich-microserver出了问题，也不知道咋bugfix，索性备份了400G的内容以后重新部署。第二次在重新部署的immich服务上又碰到了这个问题，还好这次积压的不多只有17个文件，我下载到本地，根据日期核对图库以后，确认原图已经存在于图库，所以直接清空了upload目录。</p>
+</li>
+</ul>
+<hr>
+<h2 id="物色其它方案">物色其它方案</h2>
+<p>因为使用中种种的槽点，尤其是<code>照片积压在upload目录</code>这个严重的bug，所以我又开始物色其它自建相册方案：lychee、piwigo、photoprism、etc&hellip;</p>
+<p>古人有云：少年不知愁滋味，乱花渐欲迷人眼。看着这么多的方案，一时不知道该先试哪个。</p>
+<p>看了一圈官方文档以后，挑中了photoprism。</p>
+<p>优点如下：</p>
+<ul>
+<li>自定义图库目录、缩略图目录、原图目录、转码视频目录，可以分别指定路径。这就可以实现原图放一个硬盘（方便维护），缩略图和缓存放ssd（加速图片浏览）。这简直就是对着immich的弱点痛打啊。</li>
+<li>多语言支持，自带中文。虽然相册服务那点简单的英文对我来说没有使用障碍，但有中文可选总是加分的。</li>
+<li>web端使用起来体验比immich响应速度快，可配置的内容更多更细致。</li>
+</ul>
+<p>看完photoprism的文档以后，十分心动，立刻就弄个虚拟机，开始部署。</p>
+<hr>
+<h2 id="部署photoprism">部署photoprism</h2>
+<p>我的机器用的系统时debian 12 bookworm stable，使用官网推荐的docker compose方案进行部署。</p>
+<p>使用的photoprism版本是<code>Build 231011-63f708417</code>，docker-compose.yml文件中指定的version是3.5。注意不同的版本可能部署方式会有出入，最终以官网的文档为准。</p>
+<p>官网文档：<a href="https://docs.photoprism.app/getting-started/docker-compose/">https://docs.photoprism.app/getting-started/docker-compose/</a></p>
+<p>第一步：安装docker和docker-compose。</p>
+<pre tabindex="0"><code>apt install docker
+
+apt install docker-compose
+</code></pre><p>第二步：下载docker-compose.yml文件。</p>
+<pre tabindex="0"><code>mkdir ~/.photoprism
+
+cd ~/.photoprism
+
+wget https://dl.photoprism.app/docker/docker-compose.yml
+</code></pre><p>第三步：配置参数。</p>
+<p>下载好<code>docker-compose.yml</code>以后，用文本编辑器打开，有以下几个参数需要修改：</p>
+<ol>
+<li>PHOTOPRISM_ADMIN_USER：网页端管理员登录的用户名，默认是admin，建议修改</li>
+<li>PHOTOPRISM_ADMIN_PASSWORD：网页端管理员登录的密码，建议修改</li>
+<li>PHOTOPRISM_DATABASE_PASSWORD：数据库的密码，建议修改</li>
+<li>&ldquo;~/Pictures:/photoprism/originals&rdquo;：这项指定原图的归档目录，默认是用户目录下的<code>Pictures</code>文件夹。注意如果是用root权限运行photoprism服务，默认用户目录是<code>/root</code>。建议指向大容量hdd以保障数据安全</li>
+<li>&ldquo;~/Import:/photoprism/import&rdquo; ：这项配置默认是注释的（不启用），可选，有老图库需要导入的可以这里指定</li>
+<li>&ldquo;./storage:/photoprism/storage&rdquo;：这里指定存储目录，用来存放配置文件、缩略图、转码的视频等等，建议指向ssd以提高浏览速度。默认路径指定<code>当前</code>目录</li>
+<li>MARIADB_PASSWORD：服务默认用的数据库是mariadb，这里配置photoprism数据库的密码。注意这个密码要和<code>第3点</code>中的<code>PHOTOPRISM_DATABASE_PASSWORD</code>的密码保持一致</li>
+<li>MARIADB_ROOT_PASSWORD：数据库的root账户密码，建议修改</li>
+<li>user: &ldquo;1000:1000&rdquo;： 这项默认是注释的（不启用），可选。也就是默认是root用户跑服务，如果不想用root账号跑，需要改这个配置。</li>
+</ol>
+<p>好像，调整完以上8个参数之后，就可以开始拉镜像创建容器跑服务了。</p>
+<p>因为docker-hub国内被封，这里建议提前用国内镜像，或者vpn，要不然拉取镜像很慢。</p>
+<pre tabindex="0"><code>docker-compose up -d
+</code></pre><p>两个镜像，合计占用2GB存储空间。</p>
+<pre tabindex="0"><code>REPOSITORY              TAG       IMAGE ID       SIZE
+photoprism/photoprism   latest    9ef132aa0f45   1.86GB
+mariadb                 10.11     32c5888d2fa9   403MB
+</code></pre><hr>
+<h2 id="访问photoprism">访问photoprism</h2>
+<p>web端访问地址：<a href="http://photoprism-host-ip:2342">http://photoprism-host-ip:2342</a></p>
+<p>没有移动端的app，官方建议使用<code>phtososync</code>这个app，免费版有广告，同步服务免费使用7天。</p>
+<hr>
+<h2 id="photoprism的槽点">photoprism的槽点</h2>
+<p>前面说了很多photoprism的优点，现在说说它的槽点：</p>
+<ul>
+<li>
+<p>没有移动端，官网推荐的方案是第三方的photosync，这app免费版是个鸡肋，要同步服务就得付费，虽然定价不高，但immich全终端覆盖啊</p>
+</li>
+<li>
+<p>使用逻辑不同。immich上手使用没难度，虽然可以设置的参数很少，但胜在精简易用。photoprism有一套自己的交互逻辑，比如：大图显示页面没有exif查看入口，需要点编辑才能看到；删除图片需要先把图片archive然后再去archive目录里操作删除；上传照片和视频的时候必须等索引完了才能关闭上传页面；源文件归档文件夹的时间粒度是月，而且没地方改存储模板，也就是没办法改成以日为单位归档；相册的权重比较高，在上传的时候就有一个显眼的入口用来选择相册（虽然可以留空）。</p>
+</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>最终一番体验下来，虽然immich有不少槽点，但在immich和photoprism两者中间让我选的话。。。</p>
+<p><strong>我选择immich！</strong></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
