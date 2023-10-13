@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>PhotoPrism的优缺点 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PhotoPrism的优缺点"/>
+<meta name="twitter:description" content="前言 优缺点内容会随着日常使用不断更新。
+下文中photoprism会简写成pp。
+优点 稳定。优点等级：⭐⭐⭐⭐⭐ pp除了个人自建免费之外，还提供了多个档次的付费版本。作为一个收费的自建相册商业方案，稳定是一个重要的前提。虽然我用的是白嫖免费版，但也只是在商业版的基础上阉割掉了一个可有可无的功能而已，稳定性有保证。
+支持多硬盘。优点等级：⭐⭐⭐⭐⭐ pp服务跑起来以后，常用的会有三个目录：originals（存放归档的原图），storage（存放缓存、缩略图、转码视频、配置文件），import（存放需要导入到pp的照片和视频），这三个目录，在docker-compose.yml中都可以分别指定路径。比如originnals目录指向大容量的机械硬盘来保存原图，为了数据安全，也方便后期维护。比如storage目录指向告诉ssd，用来加速浏览性能，避免网页卡顿。比如import目录可以指向存了大量图片的老图库的硬盘，然后在网页端直接一键导入完成数据迁移。
+支持多硬盘还有一个好处，这点对比immich只能指定一个目录的时候非常明显。immich因为只能指定一个目录，所以所有数据，无论原图还是缓存、缩略图、转码视频等等，都只能保存在一个目录下，意味着只支持单盘。这导致硬盘空间消耗的特别快，比如2TB的硬盘，原图占了1.5TB，那缓存&#43;缩略图&#43;转码视频可能得占掉500GB，那这时候就不得不考虑买一个更大的硬盘，然后迁移数据。而pp因为支持多盘，缓存盘不会去占用原图盘的空间，硬盘空间会更耐用一些。
+支持多语言。优点等级：⭐ 我不觉得这是什么优点，但对比immich不支持多语言（没有中文），这就是pp的一个优点。
+缺点 导入照片耗时漫长。缺点等级：⭐⭐⭐⭐⭐ 导入照片 &#43; 算法处理照片 &#43; 照片归档，整个流程是同步线性进行的，也即是先上传照片，然后开始算法处理照片，最后照片归档，这个流程跑完了，再开始处理下一张照片。这意味着什么，如果用来跑photoprism的电脑性能很差（很多人都会拿性能很差的旧电脑用来跑nas然后装很多服务），那算法处理照片这一步会卡很久，因为这一步包含了照片元数据读取、人脸识别、照片主体识别、给照片加上各种标签、gps信息处理等等一长串的任务。如果电脑的cpu性能孱弱，那一张照片就要处理4~5秒钟，如果照片的内容包含了大量的元素，甚至可能要处理10秒钟。这就会导致【导入照片】这个过程变得非常非常非常的漫长，可以算一下如果要导入10000张照片，每张照片耗时5秒钟，cpu是双核无超线程的古董，整个过程需要耗时多久，是13个小时！天哪，是13个小时！！！！如果照片数量翻翻，50000张照片，完成导入又需要多久。这个缺点简直是令人难以置信。
+查看大图界面没有exif侧栏。缺点等级：⭐⭐ 大抵现在所有的照片查看软件都支持侧栏显示exif信息，高级一点的甚至还能在侧栏显示gps地图定位信息，比如immich。但很不幸pp不支持，它没有侧栏。
+想要在pp里看到exif信息，有两个方法，第一种就是照片墙界面选择卡片布局或者列表布局，会展示一些简略的exif信息，第二种就是在查看大图界面，点击一下【编辑】就会进入照片信息编辑界面，会出现5个标签可以查看照片的各种信息，但很不幸依然没有gps地图定位。
+没有官方app。缺点等级：⭐⭐⭐⭐ 官方只提供了网页端服务，移动端想要访问相册的话，依然是用浏览器访问相册网页，不过网页支持pwa，也就是可以把网页“安装”到桌面当成一个app用，使用体验嘛就那样。
+如果想在手机上直接把照片同步到photoprism，有两个方法，第一种就还是用网页，浏览器访问网页然后点击上传选择照片，第二种就是用第三方支持同步的app，官方推荐用photosync，免费使用7天，买断$5.99。
+视频不支持鼠标悬停自动播放。缺点等级：⭐ 我不觉得这算一个缺点，但immich支持照片墙浏览时鼠标悬停视频自动播放，那这就是pp的一个缺点。
+不支持照片旋转。缺点等级：⭐⭐⭐ 很多照片拍摄的时候有的横向有的竖向，我也不要求pp用算法自动纠正，但至少给我一个编辑的入口吧。很不幸，没有旋转照片的功能。"/>
+
+    <meta property="og:title" content="PhotoPrism的优缺点" />
+<meta property="og:description" content="前言 优缺点内容会随着日常使用不断更新。
+下文中photoprism会简写成pp。
+优点 稳定。优点等级：⭐⭐⭐⭐⭐ pp除了个人自建免费之外，还提供了多个档次的付费版本。作为一个收费的自建相册商业方案，稳定是一个重要的前提。虽然我用的是白嫖免费版，但也只是在商业版的基础上阉割掉了一个可有可无的功能而已，稳定性有保证。
+支持多硬盘。优点等级：⭐⭐⭐⭐⭐ pp服务跑起来以后，常用的会有三个目录：originals（存放归档的原图），storage（存放缓存、缩略图、转码视频、配置文件），import（存放需要导入到pp的照片和视频），这三个目录，在docker-compose.yml中都可以分别指定路径。比如originnals目录指向大容量的机械硬盘来保存原图，为了数据安全，也方便后期维护。比如storage目录指向告诉ssd，用来加速浏览性能，避免网页卡顿。比如import目录可以指向存了大量图片的老图库的硬盘，然后在网页端直接一键导入完成数据迁移。
+支持多硬盘还有一个好处，这点对比immich只能指定一个目录的时候非常明显。immich因为只能指定一个目录，所以所有数据，无论原图还是缓存、缩略图、转码视频等等，都只能保存在一个目录下，意味着只支持单盘。这导致硬盘空间消耗的特别快，比如2TB的硬盘，原图占了1.5TB，那缓存&#43;缩略图&#43;转码视频可能得占掉500GB，那这时候就不得不考虑买一个更大的硬盘，然后迁移数据。而pp因为支持多盘，缓存盘不会去占用原图盘的空间，硬盘空间会更耐用一些。
+支持多语言。优点等级：⭐ 我不觉得这是什么优点，但对比immich不支持多语言（没有中文），这就是pp的一个优点。
+缺点 导入照片耗时漫长。缺点等级：⭐⭐⭐⭐⭐ 导入照片 &#43; 算法处理照片 &#43; 照片归档，整个流程是同步线性进行的，也即是先上传照片，然后开始算法处理照片，最后照片归档，这个流程跑完了，再开始处理下一张照片。这意味着什么，如果用来跑photoprism的电脑性能很差（很多人都会拿性能很差的旧电脑用来跑nas然后装很多服务），那算法处理照片这一步会卡很久，因为这一步包含了照片元数据读取、人脸识别、照片主体识别、给照片加上各种标签、gps信息处理等等一长串的任务。如果电脑的cpu性能孱弱，那一张照片就要处理4~5秒钟，如果照片的内容包含了大量的元素，甚至可能要处理10秒钟。这就会导致【导入照片】这个过程变得非常非常非常的漫长，可以算一下如果要导入10000张照片，每张照片耗时5秒钟，cpu是双核无超线程的古董，整个过程需要耗时多久，是13个小时！天哪，是13个小时！！！！如果照片数量翻翻，50000张照片，完成导入又需要多久。这个缺点简直是令人难以置信。
+查看大图界面没有exif侧栏。缺点等级：⭐⭐ 大抵现在所有的照片查看软件都支持侧栏显示exif信息，高级一点的甚至还能在侧栏显示gps地图定位信息，比如immich。但很不幸pp不支持，它没有侧栏。
+想要在pp里看到exif信息，有两个方法，第一种就是照片墙界面选择卡片布局或者列表布局，会展示一些简略的exif信息，第二种就是在查看大图界面，点击一下【编辑】就会进入照片信息编辑界面，会出现5个标签可以查看照片的各种信息，但很不幸依然没有gps地图定位。
+没有官方app。缺点等级：⭐⭐⭐⭐ 官方只提供了网页端服务，移动端想要访问相册的话，依然是用浏览器访问相册网页，不过网页支持pwa，也就是可以把网页“安装”到桌面当成一个app用，使用体验嘛就那样。
+如果想在手机上直接把照片同步到photoprism，有两个方法，第一种就还是用网页，浏览器访问网页然后点击上传选择照片，第二种就是用第三方支持同步的app，官方推荐用photosync，免费使用7天，买断$5.99。
+视频不支持鼠标悬停自动播放。缺点等级：⭐ 我不觉得这算一个缺点，但immich支持照片墙浏览时鼠标悬停视频自动播放，那这就是pp的一个缺点。
+不支持照片旋转。缺点等级：⭐⭐⭐ 很多照片拍摄的时候有的横向有的竖向，我也不要求pp用算法自动纠正，但至少给我一个编辑的入口吧。很不幸，没有旋转照片的功能。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/photoprism-pros-and-cons/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-14T04:45:30+08:00" />
+<meta property="article:modified_time" content="2023-10-14T04:45:30+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PhotoPrism的优缺点</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/photoprism/">PhotoPrism</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>优缺点内容会随着日常使用不断更新。</p>
+<p>下文中photoprism会简写成pp。</p>
+<hr>
+<h2 id="优点">优点</h2>
+<ol>
+<li>稳定。优点等级：⭐⭐⭐⭐⭐</li>
+</ol>
+<p>pp除了个人自建免费之外，还提供了多个档次的付费版本。作为一个收费的自建相册商业方案，稳定是一个重要的前提。虽然我用的是白嫖免费版，但也只是在商业版的基础上阉割掉了一个可有可无的功能而已，稳定性有保证。</p>
+<ol start="2">
+<li>支持多硬盘。优点等级：⭐⭐⭐⭐⭐</li>
+</ol>
+<p>pp服务跑起来以后，常用的会有三个目录：originals（存放归档的原图），storage（存放缓存、缩略图、转码视频、配置文件），import（存放需要导入到pp的照片和视频），这三个目录，在docker-compose.yml中都可以分别指定路径。比如originnals目录指向大容量的机械硬盘来保存原图，为了数据安全，也方便后期维护。比如storage目录指向告诉ssd，用来加速浏览性能，避免网页卡顿。比如import目录可以指向存了大量图片的老图库的硬盘，然后在网页端直接一键导入完成数据迁移。</p>
+<p>支持多硬盘还有一个好处，这点对比immich只能指定一个目录的时候非常明显。immich因为只能指定一个目录，所以所有数据，无论原图还是缓存、缩略图、转码视频等等，都只能保存在一个目录下，意味着只支持单盘。这导致硬盘空间消耗的特别快，比如2TB的硬盘，原图占了1.5TB，那缓存+缩略图+转码视频可能得占掉500GB，那这时候就不得不考虑买一个更大的硬盘，然后迁移数据。而pp因为支持多盘，缓存盘不会去占用原图盘的空间，硬盘空间会更耐用一些。</p>
+<ol start="3">
+<li>支持多语言。优点等级：⭐</li>
+</ol>
+<p>我不觉得这是什么优点，但对比immich不支持多语言（没有中文），这就是pp的一个优点。</p>
+<hr>
+<h2 id="缺点">缺点</h2>
+<ol>
+<li>导入照片耗时漫长。缺点等级：⭐⭐⭐⭐⭐</li>
+</ol>
+<p>导入照片 + 算法处理照片 + 照片归档，整个流程是同步线性进行的，也即是先上传照片，然后开始算法处理照片，最后照片归档，这个流程跑完了，再开始处理下一张照片。这意味着什么，如果用来跑photoprism的电脑性能很差（很多人都会拿性能很差的旧电脑用来跑nas然后装很多服务），那算法处理照片这一步会卡很久，因为这一步包含了照片元数据读取、人脸识别、照片主体识别、给照片加上各种标签、gps信息处理等等一长串的任务。如果电脑的cpu性能孱弱，那一张照片就要处理4~5秒钟，如果照片的内容包含了大量的元素，甚至可能要处理10秒钟。这就会导致【导入照片】这个过程变得非常非常非常的漫长，可以算一下如果要导入10000张照片，每张照片耗时5秒钟，cpu是双核无超线程的古董，整个过程需要耗时多久，是13个小时！天哪，是13个小时！！！！如果照片数量翻翻，50000张照片，完成导入又需要多久。这个缺点简直是令人难以置信。</p>
+<ol start="2">
+<li>查看大图界面没有exif侧栏。缺点等级：⭐⭐</li>
+</ol>
+<p>大抵现在所有的照片查看软件都支持侧栏显示exif信息，高级一点的甚至还能在侧栏显示gps地图定位信息，比如immich。但很不幸pp不支持，它没有侧栏。</p>
+<p>想要在pp里看到exif信息，有两个方法，第一种就是照片墙界面选择卡片布局或者列表布局，会展示一些简略的exif信息，第二种就是在查看大图界面，点击一下【编辑】就会进入照片信息编辑界面，会出现5个标签可以查看照片的各种信息，但很不幸依然没有gps地图定位。</p>
+<ol start="3">
+<li>没有官方app。缺点等级：⭐⭐⭐⭐</li>
+</ol>
+<p>官方只提供了网页端服务，移动端想要访问相册的话，依然是用浏览器访问相册网页，不过网页支持pwa，也就是可以把网页“安装”到桌面当成一个app用，使用体验嘛就那样。</p>
+<p>如果想在手机上直接把照片同步到photoprism，有两个方法，第一种就还是用网页，浏览器访问网页然后点击上传选择照片，第二种就是用第三方支持同步的app，官方推荐用photosync，免费使用7天，买断$5.99。</p>
+<ol start="4">
+<li>视频不支持鼠标悬停自动播放。缺点等级：⭐</li>
+</ol>
+<p>我不觉得这算一个缺点，但immich支持照片墙浏览时鼠标悬停视频自动播放，那这就是pp的一个缺点。</p>
+<ol start="5">
+<li>不支持照片旋转。缺点等级：⭐⭐⭐</li>
+</ol>
+<p>很多照片拍摄的时候有的横向有的竖向，我也不要求pp用算法自动纠正，但至少给我一个编辑的入口吧。很不幸，没有旋转照片的功能。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
