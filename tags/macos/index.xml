@@ -5,7 +5,46 @@
     <link>https://ruohai.wang/tags/macos/</link>
     <description>Recent content in MacOS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 23 Aug 2023 21:21:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Oct 2023 21:58:30 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>macOS装机必备软件（个人向）</title>
+      <link>https://ruohai.wang/202310/macos-selected-apps/</link>
+      <pubDate>Thu, 19 Oct 2023 21:58:30 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/macos-selected-apps/</guid>
+      <description>前言 个人向的macos必备的简单优化app。
+作为一个windows忠实用户，选择app的方向偏向windows style、免费。
+app清单会慢慢更新。
+App清单 Mos
+官网：https://mos.caldis.me/
+功能：平滑鼠标混动，翻转鼠标滚轮方向
+费用：免费
+Tiles
+官网：https://freemacsoft.net/tiles/
+功能：一个窗口管理器，用来实现类似Windows系统的窗口贴边自动分屏，支持快捷键。
+费用：免费
+V2rayU
+官网：https://github.hscsec.cn/yanue/V2rayU
+功能：v2ray的macos客户端
+费用：免费
+Keka
+官网：https://www.keka.io/
+功能：压缩和解压缩软件
+费用：免费
+IINA
+官网：https://iina.io/
+功能：视频播放器
+费用：免费
+VSCode
+官网：https://code.visualstudio.com/
+功能：文本编辑器
+费用：免费
+Edge
+官网：https://www.microsoft.com/zh-cn/edge/download
+功能：浏览器
+费用：免费</description>
+    </item>
+    
     <item>
       <title>MacOS下窗口管理软件分享</title>
       <link>https://ruohai.wang/202308/macos-window-manager-app/</link>
