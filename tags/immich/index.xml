@@ -5,7 +5,27 @@
     <link>https://ruohai.wang/tags/immich/</link>
     <description>Recent content in Immich on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 14 Oct 2023 04:45:42 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/immich/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 20 Oct 2023 18:07:57 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/immich/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immich用非root账号运行的设置方法</title>
+      <link>https://ruohai.wang/202310/immich-run-as-a-non-root-user/</link>
+      <pubDate>Fri, 20 Oct 2023 18:07:57 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/immich-run-as-a-non-root-user/</guid>
+      <description>前言 immich服务用docker部署，有一个非常刺挠不舒服的问题，就是文件权限。
+docker需要root账户跑（虽然可以通过一些设置实现non-root账户跑），用docker部署的immich默认也就是root权限，导致通过immich上传和归档的照片、视频文件都是root权限。
+这说不上什么大的问题，但我觉得很不舒服，就看了官方文档，要怎么设置才能用non-root账户跑。但官网含糊其辞，最后在虚拟机里反复部署、删除、调试，终于搞定了我的三个需求：
+上传和归档的照片、视频，不能是root权限
+immich图像算法处理以后生成的内容，不能是root权限
+整体服务和功能要正常可用
+这里不得不夸一下photoprism，在docker-compose配置文件里就定义好了用non-root账号运行的参数，取消注释就行了。
+步骤 先看下官网给出的用非root账号运行immich的办法
+How can I run Immich as a non-root user? 1. Set the PUID/PGID environment variables (in .env). 2. Set the corresponding user argument in docker-compose for each service. 3. Add an additional volume to immich-microservices that mounts internally to /usr/src/app/.reverse-geocoding-dump. The non-root user/group needs read/write access to the volume mounts, including UPLOAD_LOCATION. 简单英翻中一下：
+在.env文件中设置PUID/PGID 在docker-compose配置文件中给每一个服务（service）配置对应的user参数 给immich-microservices服务添加一个额外的卷（volume）用来挂载容器内部的/usr/src/app/.reverse-geocoding-dump目录 注意各个文件夹的读写权限分配 但实际看完这个官网的步骤也是一头雾水的，说的很模糊，也没有给出示例。
+最后在immich项目的github主页的issues列表里，找到了别人贴出的non-root场景的配置信息，反复调试以后，确定了一下方案。
+第一步：在.env中配置PUID/PGID</description>
+    </item>
+    
     <item>
       <title>Immich的优缺点</title>
       <link>https://ruohai.wang/202310/immich-pros-and-cons/</link>

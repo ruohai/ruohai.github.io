@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Immich用非root账号运行的设置方法 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Immich用非root账号运行的设置方法"/>
+<meta name="twitter:description" content="前言 immich服务用docker部署，有一个非常刺挠不舒服的问题，就是文件权限。
+docker需要root账户跑（虽然可以通过一些设置实现non-root账户跑），用docker部署的immich默认也就是root权限，导致通过immich上传和归档的照片、视频文件都是root权限。
+这说不上什么大的问题，但我觉得很不舒服，就看了官方文档，要怎么设置才能用non-root账户跑。但官网含糊其辞，最后在虚拟机里反复部署、删除、调试，终于搞定了我的三个需求：
+上传和归档的照片、视频，不能是root权限
+immich图像算法处理以后生成的内容，不能是root权限
+整体服务和功能要正常可用
+这里不得不夸一下photoprism，在docker-compose配置文件里就定义好了用non-root账号运行的参数，取消注释就行了。
+步骤 先看下官网给出的用非root账号运行immich的办法
+How can I run Immich as a non-root user? 1. Set the PUID/PGID environment variables (in .env). 2. Set the corresponding user argument in docker-compose for each service. 3. Add an additional volume to immich-microservices that mounts internally to /usr/src/app/.reverse-geocoding-dump. The non-root user/group needs read/write access to the volume mounts, including UPLOAD_LOCATION. 简单英翻中一下：
+在.env文件中设置PUID/PGID 在docker-compose配置文件中给每一个服务（service）配置对应的user参数 给immich-microservices服务添加一个额外的卷（volume）用来挂载容器内部的/usr/src/app/.reverse-geocoding-dump目录 注意各个文件夹的读写权限分配 但实际看完这个官网的步骤也是一头雾水的，说的很模糊，也没有给出示例。
+最后在immich项目的github主页的issues列表里，找到了别人贴出的non-root场景的配置信息，反复调试以后，确定了一下方案。
+第一步：在.env中配置PUID/PGID"/>
+
+    <meta property="og:title" content="Immich用非root账号运行的设置方法" />
+<meta property="og:description" content="前言 immich服务用docker部署，有一个非常刺挠不舒服的问题，就是文件权限。
+docker需要root账户跑（虽然可以通过一些设置实现non-root账户跑），用docker部署的immich默认也就是root权限，导致通过immich上传和归档的照片、视频文件都是root权限。
+这说不上什么大的问题，但我觉得很不舒服，就看了官方文档，要怎么设置才能用non-root账户跑。但官网含糊其辞，最后在虚拟机里反复部署、删除、调试，终于搞定了我的三个需求：
+上传和归档的照片、视频，不能是root权限
+immich图像算法处理以后生成的内容，不能是root权限
+整体服务和功能要正常可用
+这里不得不夸一下photoprism，在docker-compose配置文件里就定义好了用non-root账号运行的参数，取消注释就行了。
+步骤 先看下官网给出的用非root账号运行immich的办法
+How can I run Immich as a non-root user? 1. Set the PUID/PGID environment variables (in .env). 2. Set the corresponding user argument in docker-compose for each service. 3. Add an additional volume to immich-microservices that mounts internally to /usr/src/app/.reverse-geocoding-dump. The non-root user/group needs read/write access to the volume mounts, including UPLOAD_LOCATION. 简单英翻中一下：
+在.env文件中设置PUID/PGID 在docker-compose配置文件中给每一个服务（service）配置对应的user参数 给immich-microservices服务添加一个额外的卷（volume）用来挂载容器内部的/usr/src/app/.reverse-geocoding-dump目录 注意各个文件夹的读写权限分配 但实际看完这个官网的步骤也是一头雾水的，说的很模糊，也没有给出示例。
+最后在immich项目的github主页的issues列表里，找到了别人贴出的non-root场景的配置信息，反复调试以后，确定了一下方案。
+第一步：在.env中配置PUID/PGID" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/immich-run-as-a-non-root-user/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-20T18:07:57+08:00" />
+<meta property="article:modified_time" content="2023-10-20T18:07:57+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Immich用非root账号运行的设置方法</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 20, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/immich/">Immich</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>immich服务用docker部署，有一个非常刺挠不舒服的问题，就是文件权限。</p>
+<p>docker需要root账户跑（虽然可以通过一些设置实现non-root账户跑），用docker部署的immich默认也就是root权限，导致通过immich上传和归档的照片、视频文件都是root权限。</p>
+<p>这说不上什么大的问题，但我觉得很不舒服，就看了官方文档，要怎么设置才能用non-root账户跑。但官网含糊其辞，最后在虚拟机里反复部署、删除、调试，终于搞定了我的三个需求：</p>
+<ol>
+<li>
+<p>上传和归档的照片、视频，不能是root权限</p>
+</li>
+<li>
+<p>immich图像算法处理以后生成的内容，不能是root权限</p>
+</li>
+<li>
+<p>整体服务和功能要正常可用</p>
+</li>
+</ol>
+<p>这里不得不夸一下photoprism，在docker-compose配置文件里就定义好了用non-root账号运行的参数，取消注释就行了。</p>
+<hr>
+<h2 id="步骤">步骤</h2>
+<p>先看下官网给出的用非root账号运行immich的办法</p>
+<pre tabindex="0"><code>How can I run Immich as a non-root user?
+    1. Set the PUID/PGID environment variables (in .env).
+    2. Set the corresponding user argument in docker-compose for each service.
+    3. Add an additional volume to immich-microservices that mounts internally to /usr/src/app/.reverse-geocoding-dump.
+The non-root user/group needs read/write access to the volume mounts, including UPLOAD_LOCATION.
+</code></pre><p>简单英翻中一下：</p>
+<ol>
+<li>在<code>.env</code>文件中设置<code>PUID/PGID</code></li>
+<li>在<code>docker-compose</code>配置文件中给每一个服务（service）配置对应的<code>user</code>参数</li>
+<li>给<code>immich-microservices</code>服务添加一个额外的卷（volume）用来挂载容器内部的<code>/usr/src/app/.reverse-geocoding-dump</code>目录</li>
+<li>注意各个文件夹的读写权限分配</li>
+</ol>
+<p>但实际看完这个官网的步骤也是一头雾水的，说的很模糊，也没有给出示例。</p>
+<p>最后在immich项目的github主页的issues列表里，找到了别人贴出的non-root场景的配置信息，反复调试以后，确定了一下方案。</p>
+<blockquote>
+<p>第一步：在<code>.env</code>中配置<code>PUID/PGID</code></p>
+</blockquote>
+<p>这里假定linux普通账户<code>jack</code>的uid/gid是1000:1000。在<code>.env</code>文件中添加以下内容。</p>
+<pre tabindex="0"><code>## non-root user
+PUID=1000
+PGID=1000
+
+## non-root user reverse-geocoding-dump directory
+REVERSE_GEOCODING_DUMP=./geocoding
+</code></pre><blockquote>
+<p>第二步：在<code>docker-compose.yml</code>中添加<code>user</code>参数。</p>
+</blockquote>
+<p>先看我们的两个需求。第一点：上传和归档的照片、视频，不能是root权限。</p>
+<p>这需要改的是<code>immich_server</code>，添加<code>user</code>参数。</p>
+<pre tabindex="0"><code>immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    user: ${PUID}:${PGID}
+</code></pre><p>第二点需求：mmich图像算法处理以后生成的内容，不能是root权限。</p>
+<p>这需要改的是<code>immich_microservices</code>，添加<code>user</code>和<code>volumes</code>参数。</p>
+<pre tabindex="0"><code>immich-microservices:
+    container_name: immich_microservices
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    user: ${PUID}:${PGID}
+    # extends:
+    #   file: hwaccel.yml
+    #   service: hwaccel
+    command: [&#34;start.sh&#34;, &#34;microservices&#34;]
+    volumes:
+        - ${UPLOAD_LOCATION}:/usr/src/app/upload
+        - /etc/localtime:/etc/localtime:ro
+        - ${REVERSE_GEOCODING_DUMP}:/usr/src/app/.reverse-geocoding-dump
+</code></pre><blockquote>
+<p>第三步：手动创建<code>${UPLOAD_LOCATION}</code>和<code>${REVERSE_GEOCODING_DUMP}</code>两个目录并分配权限。</p>
+</blockquote>
+<p>手动创建这俩目录，是因为用root跑docker，部署immich时自动创建的目录也是root权限，会导致immich的俩non-root services运行出现权限错误。</p>
+<p>好了，到这里就配置完了。不需要按照官网的要求，给<strong>每一个service</strong>都加上user参数。</p>
+<hr>
+<h2 id="常用命令">常用命令</h2>
+<p>部署运行</p>
+<pre tabindex="0"><code>docker-compose up -d
+</code></pre><p>停止全部服务</p>
+<pre tabindex="0"><code>docker-compose stop
+</code></pre><p>清空全部服务（删掉容器&amp;清空数据）</p>
+<pre tabindex="0"><code>docker-compose down -v
+</code></pre><p>查看指定服务的日志</p>
+<pre tabindex="0"><code>docker logs [service]
+</code></pre><p>更新版本</p>
+<pre tabindex="0"><code>docker-compose pull &amp;&amp; docker-compose up -d 
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
