@@ -153,7 +153,7 @@ REVERSE_GEOCODING_DUMP=./geocoding
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     user: ${PUID}:${PGID}
-</code></pre><p>第二点需求：mmich图像算法处理以后生成的内容，不能是root权限。</p>
+</code></pre><p>第二点需求：immich图像算法处理以后生成的内容，不能是root权限。</p>
 <p>这需要改的是<code>immich_microservices</code>，添加<code>user</code>和<code>volumes</code>参数。</p>
 <pre tabindex="0"><code>immich-microservices:
     container_name: immich_microservices
