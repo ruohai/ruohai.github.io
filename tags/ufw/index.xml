@@ -8,16 +8,19 @@
     <language>en</language>
     <lastBuildDate>Fri, 06 Oct 2023 20:24:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ufw/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>UFW新增只开放IPV4/IPV6端口的规则</title>
+      <title>UFW限定IPV4/IPV6/来源IP规则的简单记录</title>
       <link>https://ruohai.wang/202310/ufw-add-ipv4-only-rule/</link>
       <pubDate>Fri, 06 Oct 2023 20:24:56 +0800</pubDate>
       
       <guid>https://ruohai.wang/202310/ufw-add-ipv4-only-rule/</guid>
       <description>ufw防火墙在用基础的开放端口ufw allow 12345/tcp语法的时候，默认是同时开启ipv4和ipv6。
 如果只想开启12345端口的ipv4访问
-ufw allow proto tcp to 0.0.0.0/0 port 12345 如果指定ip端的ipv4访问
-ufw allow proto tcp to 192.168.1.0/24 port 12345 同理，如果只想开启12345端口的ipv6访问
-ufw allow proto tcp to ::/0 port 12345 </description>
+ufw allow proto tcp to 0.0.0.0/0 port 12345 同理，如果只想开启12345端口的ipv6访问
+ufw allow proto tcp to ::/0 port 12345 如果想限定12345端口的来访ip范围
+ufw allow from 192.168.1.0/24 to any port 12345 如果想限定12345端口tcp协议的来访ip范围
+ufw allow proto tcp from 192.168.1.0/24 to any port 12345 查看ufw当前开放的所有端口、规则
+ufw status verbose samba服务使用的端口和协议
+To Action From -- ------ ---- 137,138/udp (Samba) ALLOW IN Anywhere 139,445/tcp (Samba) ALLOW IN Anywhere </description>
     </item>
     
     <item>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>UFW新增只开放IPV4/IPV6端口的规则 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>UFW限定IPV4/IPV6/来源IP规则的简单记录 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.119.0">
@@ -12,19 +12,25 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="UFW新增只开放IPV4/IPV6端口的规则"/>
+<meta name="twitter:title" content="UFW限定IPV4/IPV6/来源IP规则的简单记录"/>
 <meta name="twitter:description" content="ufw防火墙在用基础的开放端口ufw allow 12345/tcp语法的时候，默认是同时开启ipv4和ipv6。
 如果只想开启12345端口的ipv4访问
-ufw allow proto tcp to 0.0.0.0/0 port 12345 如果指定ip端的ipv4访问
-ufw allow proto tcp to 192.168.1.0/24 port 12345 同理，如果只想开启12345端口的ipv6访问
-ufw allow proto tcp to ::/0 port 12345 "/>
+ufw allow proto tcp to 0.0.0.0/0 port 12345 同理，如果只想开启12345端口的ipv6访问
+ufw allow proto tcp to ::/0 port 12345 如果想限定12345端口的来访ip范围
+ufw allow from 192.168.1.0/24 to any port 12345 如果想限定12345端口tcp协议的来访ip范围
+ufw allow proto tcp from 192.168.1.0/24 to any port 12345 查看ufw当前开放的所有端口、规则
+ufw status verbose samba服务使用的端口和协议
+To Action From -- ------ ---- 137,138/udp (Samba) ALLOW IN Anywhere 139,445/tcp (Samba) ALLOW IN Anywhere "/>
 
-    <meta property="og:title" content="UFW新增只开放IPV4/IPV6端口的规则" />
+    <meta property="og:title" content="UFW限定IPV4/IPV6/来源IP规则的简单记录" />
 <meta property="og:description" content="ufw防火墙在用基础的开放端口ufw allow 12345/tcp语法的时候，默认是同时开启ipv4和ipv6。
 如果只想开启12345端口的ipv4访问
-ufw allow proto tcp to 0.0.0.0/0 port 12345 如果指定ip端的ipv4访问
-ufw allow proto tcp to 192.168.1.0/24 port 12345 同理，如果只想开启12345端口的ipv6访问
-ufw allow proto tcp to ::/0 port 12345 " />
+ufw allow proto tcp to 0.0.0.0/0 port 12345 同理，如果只想开启12345端口的ipv6访问
+ufw allow proto tcp to ::/0 port 12345 如果想限定12345端口的来访ip范围
+ufw allow from 192.168.1.0/24 to any port 12345 如果想限定12345端口tcp协议的来访ip范围
+ufw allow proto tcp from 192.168.1.0/24 to any port 12345 查看ufw当前开放的所有端口、规则
+ufw status verbose samba服务使用的端口和协议
+To Action From -- ------ ---- 137,138/udp (Samba) ALLOW IN Anywhere 139,445/tcp (Samba) ALLOW IN Anywhere " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202310/ufw-add-ipv4-only-rule/" /><meta property="article:section" content="202310" />
 <meta property="article:published_time" content="2023-10-06T20:24:56+08:00" />
@@ -61,7 +67,7 @@ ufw allow proto tcp to ::/0 port 12345 " />
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">UFW新增只开放IPV4/IPV6端口的规则</h1>
+      <h1 class ="post-title">UFW限定IPV4/IPV6/来源IP规则的简单记录</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -90,10 +96,20 @@ ufw allow proto tcp to ::/0 port 12345 " />
       <p>ufw防火墙在用基础的开放端口<code>ufw allow 12345/tcp</code>语法的时候，默认是同时开启ipv4和ipv6。</p>
 <p>如果只想开启12345端口的ipv4访问</p>
 <pre tabindex="0"><code>ufw allow proto tcp to 0.0.0.0/0 port 12345
-</code></pre><p>如果指定ip端的ipv4访问</p>
-<pre tabindex="0"><code>ufw allow proto tcp to 192.168.1.0/24 port 12345
 </code></pre><p>同理，如果只想开启12345端口的ipv6访问</p>
 <pre tabindex="0"><code>ufw allow proto tcp to ::/0 port 12345
+</code></pre><p>如果想限定12345端口的来访ip范围</p>
+<pre tabindex="0"><code>ufw allow from 192.168.1.0/24 to any port 12345
+</code></pre><p>如果想限定12345端口tcp协议的来访ip范围</p>
+<pre tabindex="0"><code>ufw allow proto tcp from 192.168.1.0/24 to any port 12345
+</code></pre><hr>
+<p>查看ufw当前开放的所有端口、规则</p>
+<pre tabindex="0"><code>ufw status verbose
+</code></pre><p>samba服务使用的端口和协议</p>
+<pre tabindex="0"><code>To                         Action      From
+--                         ------      ----
+137,138/udp (Samba)        ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
 </code></pre>
     </div>
     <div class="post-footer">
