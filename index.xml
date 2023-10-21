@@ -5,8 +5,33 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Fri, 20 Oct 2023 18:07:57 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Oct 2023 02:03:14 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PhotoPrism视频功能的不足</title>
+      <link>https://ruohai.wang/202310/photoprism-use-guide-about-video/</link>
+      <pubDate>Sun, 22 Oct 2023 02:03:14 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/photoprism-use-guide-about-video/</guid>
+      <description>前言 photoprism以下简写pp。
+文中pp使用docker-compose方式部署。
+两个星期pp的使用体验下来，对比起immich，就像是守旧老派对标先锋新锐的感觉。使用的时间越久，这种体验越强烈。
+当然这篇文章重点讲pp对于视频文件的使用体验。
+pp对于视频文件的支持这一块值得单独拎出来写一篇文章，因为能看出来pp在这么多年的迭代过程中，对于视频功能似乎一直不怎么上心，导致视频文件的交互体验非常差。也许是因为对产品的定位，也许是觉得视频太吃硬件性能、太消耗存储空间
+视频功能的不足 默认不开启视频转码。 在默认情况下，pp是不开启视频转码的。这种情况下，查看视频就是直接播放原素材。如果原视频的拍摄规格比较高的话，非常考验硬盘读写速度、网络带宽和播放设备的解码能力。
+开启视频转码需要改配置文件 immich的视频转码功能直接在网页端就可以配置，分辨率、码率、硬件加速，网页端都提供了配置入口。pp的设置页面虽然有一大堆设置项，但那些都是针对照片的，包括让我误解了很久的【动态渲染】，我一直以为这个是指实时转码，其实它也是针对照片。
+pp开启视频转码，需要编辑docker-compose.yml文件，解开注释以下代码。
+PHOTOPRISM_FFMPEG_ENCODER: &amp;#34;software&amp;#34; ## 解码方式，默认软解 PHOTOPRISM_FFMPEG_SIZE: &amp;#34;1920&amp;#34; ## 转码分辨率，默认1080p PHOTOPRISM_FFMPEG_BITRATE: &amp;#34;32&amp;#34; ## 转码码率，默认32Mbps 然后重新部署pp即可。
+docker-compose up -d 如果想配置集显或者显卡硬解，请参考官网，还需要改更多地方。
+开启视频转码后不会提前转码 启用了视频转码以后，并不会把图库里的所有视频全部都转码一遍，不会。
+pp的视频转码，是用户在点击视频播放的那一刻，才立刻开始转码，等转码好了，再给你播放转码处理过的【小】视频。这中间会有一个等待时间，至于这个等待时间有多长，取决于你用来跑pp的电脑性能有多差，可能等5秒，也可能等50秒，如果视频很大规格很高的话，等5分钟也不是没可能。至于看个视频需要等这么久才开始播放，这使用体验有多糟糕，pp官方不在乎。
+那有没有办法把图库里的视频全部都转码一遍呢，有，有办法。官网给了一条命令，执行以后，会把图库里的全部视频都提前转码，下次点击播放视频就不需要再等了。
+docker-compose exec photoprism photoprism convert 如果图库又上传了新的视频，我估计，应该还需要再手动执行这条命令。
+视频播放界面很简陋 播放视频的时候，是一个全屏遮罩的播放界面，不仅和查看照片一样没有信息侧栏，连编辑的入口都没有。而且播放界面点出菜单选择下载，下载下来的竟然是转码后的【小】视频，下载的竟然不是原视频！
+那想要查看视频文件的exif信息要怎么操作？想要下载原视频要怎么操作？在照片墙页面，点击小圈圈选中文件，然后点击页面右小角的大圆圈，弹出功能菜单，里面有一个圈是【编辑】功能可以查看exif，一个圈是【下载】可以下载原视频。
+视频不支持鼠标悬停自动播放 这个功能immich是支持的，非常方便查看视频内容。而且转码以后的小视频，全屏播放的时候清晰度会比较差，十分影响观看体验，在照片墙界面小窗口播放是最合适的。很不幸，pp不支持这个功能，视频文件默认只抽取一张图片当封面，想查看视频内容，得点击播放，然后弹出那个简陋的全屏播放遮罩。如果这个视频文件没有转码的话，你可能还需要耐心的等上几十秒甚至几分钟才能看。
+视频播放不支持旋转 网页端播放视频时，没有旋转方向的功能，不管视频是竖的还是横的，将就着看吧。不过，如果在手机上用pwa小应用（网页）看视频的话，它会无视手机是否关闭了自动转向，根据重力感应计自动旋转，倒是实现了视频旋转方向的功能。</description>
+    </item>
+    
     <item>
       <title>Immich用非root账号运行的设置方法</title>
       <link>https://ruohai.wang/202310/immich-run-as-a-non-root-user/</link>

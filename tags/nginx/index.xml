@@ -5,7 +5,6 @@
     <link>https://ruohai.wang/tags/nginx/</link>
     <description>Recent content in Nginx on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
     <lastBuildDate>Fri, 06 Oct 2023 19:34:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Immich配置SSL证书开启HTTPS访问</title>
