@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Linux下用mdadm创建软RAID以及避坑 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux下用mdadm创建软RAID以及避坑"/>
+<meta name="twitter:description" content="前言 linux下组软raid用mdadm命令，multiple devices admin，多设备管理。
+本文内容有二：
+用mdadm创建raid 用mdadm创建raid时的一个大坑 大坑 先把大坑写前面。
+用来创建raid的硬盘，不管是新盘还是旧盘，在linux中挂载以后，请先用wipefs命令清理硬盘上的分区表信息。
+硬盘分区有两种，mbr和gpt，mbr可以直接裸盘不分区就创建raid，gpt必须要有分区才能创建raid。如果组raid的几块硬盘分区表信息不统一，虽然能成功创建raid，但是系统一重启就会掉raid，也就是raid消失了。没错，系统一重启raid就没了。如果你已经在这个raid上导入数据，这个坑肯定能惊出你一头汗。
+所以拿到硬盘以后，最好是用wipefs直接清空分区表。也有人说用fdisk，但实际fdisk只能处理mbr分区表，需要用升级版gdisk才能处理gpt分区表。
+假定磁盘是/dev/sdb
+# 查看分区表 wipefs /dev/sdb 删除分区表所有信息
+wipefs -a -f /dev/sdb 分区注意事项 创建raid之前，要简单了解一下mbr和gpt分区，避免后续再踩雷。
+mbr：
+不支持2TB以上容量的硬盘 可以不分区，以裸盘为单位创建raid 用fdisk处理分区 gpt：
+支持2TB以上容量的硬盘 必须先分区，以分区为单位创建raid 用gdisk处理分区 创建磁盘阵列 我没有那么大容量的硬盘，而且系统也是legacy bios引导，所以这里选择mbr裸盘创建阵列。
+第一步：查看分区表
+先确认前面已经用wipefs清空了旧硬盘上的分区表信息。
+# 查看分区表 wipefs /dev/sdb # 删除分区表 wipefs -a -f /dev/sdb 注意：如果是gpt分区，注意要用gdisk先分区，/dev/sdb1和/dev/sdc1，下面创建raid的时候也是用/dev/sdb1和/dev/sdc1。
+第二步：创建raid0
+mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc /dev/md0 ： 指创建的磁盘阵列的名称，如果有多个raid，可以按顺序往下编，比如/dev/md1 level=0 ：指raid0，还有1、5、10等等，对应raid1、raid5、raid10 raid-devices=2 ：指阵列的磁盘数量，2块盘就是2 创建完成后，可以用下面的命令查看raid信息。
+mdadm --detail /dev/md0 第三步：创建文件系统（格式化）
+raid创建成功以后，需要格式化
+mkfs.ext4 /dev/md0 注意ext4文件格式下，系统会预留5%的冗余空间，简单换算就是1TB就会保留50GB空间。"/>
+
+    <meta property="og:title" content="Linux下用mdadm创建软RAID以及避坑" />
+<meta property="og:description" content="前言 linux下组软raid用mdadm命令，multiple devices admin，多设备管理。
+本文内容有二：
+用mdadm创建raid 用mdadm创建raid时的一个大坑 大坑 先把大坑写前面。
+用来创建raid的硬盘，不管是新盘还是旧盘，在linux中挂载以后，请先用wipefs命令清理硬盘上的分区表信息。
+硬盘分区有两种，mbr和gpt，mbr可以直接裸盘不分区就创建raid，gpt必须要有分区才能创建raid。如果组raid的几块硬盘分区表信息不统一，虽然能成功创建raid，但是系统一重启就会掉raid，也就是raid消失了。没错，系统一重启raid就没了。如果你已经在这个raid上导入数据，这个坑肯定能惊出你一头汗。
+所以拿到硬盘以后，最好是用wipefs直接清空分区表。也有人说用fdisk，但实际fdisk只能处理mbr分区表，需要用升级版gdisk才能处理gpt分区表。
+假定磁盘是/dev/sdb
+# 查看分区表 wipefs /dev/sdb 删除分区表所有信息
+wipefs -a -f /dev/sdb 分区注意事项 创建raid之前，要简单了解一下mbr和gpt分区，避免后续再踩雷。
+mbr：
+不支持2TB以上容量的硬盘 可以不分区，以裸盘为单位创建raid 用fdisk处理分区 gpt：
+支持2TB以上容量的硬盘 必须先分区，以分区为单位创建raid 用gdisk处理分区 创建磁盘阵列 我没有那么大容量的硬盘，而且系统也是legacy bios引导，所以这里选择mbr裸盘创建阵列。
+第一步：查看分区表
+先确认前面已经用wipefs清空了旧硬盘上的分区表信息。
+# 查看分区表 wipefs /dev/sdb # 删除分区表 wipefs -a -f /dev/sdb 注意：如果是gpt分区，注意要用gdisk先分区，/dev/sdb1和/dev/sdc1，下面创建raid的时候也是用/dev/sdb1和/dev/sdc1。
+第二步：创建raid0
+mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc /dev/md0 ： 指创建的磁盘阵列的名称，如果有多个raid，可以按顺序往下编，比如/dev/md1 level=0 ：指raid0，还有1、5、10等等，对应raid1、raid5、raid10 raid-devices=2 ：指阵列的磁盘数量，2块盘就是2 创建完成后，可以用下面的命令查看raid信息。
+mdadm --detail /dev/md0 第三步：创建文件系统（格式化）
+raid创建成功以后，需要格式化
+mkfs.ext4 /dev/md0 注意ext4文件格式下，系统会预留5%的冗余空间，简单换算就是1TB就会保留50GB空间。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202310/mdadm-create-soft-raid-guide/" /><meta property="article:section" content="202310" />
+<meta property="article:published_time" content="2023-10-31T00:54:38+08:00" />
+<meta property="article:modified_time" content="2023-10-31T00:54:38+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Linux下用mdadm创建软RAID以及避坑</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 31, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/mdadm/">mdadm</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>linux下组软raid用mdadm命令，multiple devices admin，多设备管理。</p>
+<p>本文内容有二：</p>
+<ol>
+<li>用mdadm创建raid</li>
+<li>用mdadm创建raid时的一个大坑</li>
+</ol>
+<hr>
+<h2 id="大坑">大坑</h2>
+<p>先把大坑写前面。</p>
+<p>用来创建raid的硬盘，不管是新盘还是旧盘，在linux中挂载以后，请先用<code>wipefs</code>命令清理硬盘上的分区表信息。</p>
+<p>硬盘分区有两种，mbr和gpt，mbr可以直接裸盘不分区就创建raid，gpt必须要有分区才能创建raid。如果组raid的几块硬盘分区表信息不统一，虽然能成功创建raid，但是系统一重启就会掉raid，也就是raid消失了。没错，系统一重启raid就没了。如果你已经在这个raid上导入数据，这个坑肯定能惊出你一头汗。</p>
+<p>所以拿到硬盘以后，最好是用<code>wipefs</code>直接清空分区表。也有人说用<code>fdisk</code>，但实际fdisk只能处理mbr分区表，需要用升级版<code>gdisk</code>才能处理gpt分区表。</p>
+<p>假定磁盘是<code>/dev/sdb</code></p>
+<pre tabindex="0"><code># 查看分区表
+wipefs /dev/sdb
+</code></pre><p>删除分区表所有信息</p>
+<pre tabindex="0"><code>wipefs -a -f /dev/sdb
+</code></pre><hr>
+<h2 id="分区注意事项">分区注意事项</h2>
+<p>创建raid之前，要简单了解一下mbr和gpt分区，避免后续再踩雷。</p>
+<p>mbr：</p>
+<ul>
+<li>不支持2TB以上容量的硬盘</li>
+<li>可以不分区，以裸盘为单位创建raid</li>
+<li>用<code>fdisk</code>处理分区</li>
+</ul>
+<p>gpt：</p>
+<ul>
+<li>支持2TB以上容量的硬盘</li>
+<li>必须先分区，以分区为单位创建raid</li>
+<li>用<code>gdisk</code>处理分区</li>
+</ul>
+<hr>
+<h2 id="创建磁盘阵列">创建磁盘阵列</h2>
+<p>我没有那么大容量的硬盘，而且系统也是legacy bios引导，所以这里选择mbr裸盘创建阵列。</p>
+<blockquote>
+<p>第一步：查看分区表</p>
+</blockquote>
+<p>先确认前面已经用<code>wipefs</code>清空了旧硬盘上的分区表信息。</p>
+<pre tabindex="0"><code># 查看分区表
+wipefs /dev/sdb
+
+# 删除分区表
+wipefs -a -f /dev/sdb
+</code></pre><p>注意：如果是gpt分区，注意要用<code>gdisk</code>先分区，/dev/sdb1和/dev/sdc1，下面创建raid的时候也是用/dev/sdb1和/dev/sdc1。</p>
+<blockquote>
+<p>第二步：创建raid0</p>
+</blockquote>
+<pre tabindex="0"><code>mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc
+</code></pre><ul>
+<li>/dev/md0 ： 指创建的磁盘阵列的名称，如果有多个raid，可以按顺序往下编，比如/dev/md1</li>
+<li>level=0 ：指raid0，还有1、5、10等等，对应raid1、raid5、raid10</li>
+<li>raid-devices=2 ：指阵列的磁盘数量，2块盘就是2</li>
+</ul>
+<p>创建完成后，可以用下面的命令查看raid信息。</p>
+<pre tabindex="0"><code>mdadm --detail /dev/md0
+</code></pre><blockquote>
+<p>第三步：创建文件系统（格式化）</p>
+</blockquote>
+<p>raid创建成功以后，需要格式化</p>
+<pre tabindex="0"><code>mkfs.ext4 /dev/md0
+</code></pre><p>注意ext4文件格式下，系统会预留5%的冗余空间，简单换算就是1TB就会保留50GB空间。</p>
+<blockquote>
+<p>第四步：保存raid信息</p>
+</blockquote>
+<p>注意不同linux版本mdadm的配置文件路径可能不同，debian是<code>/etc/mdadm/mdadm.conf</code>。</p>
+<pre tabindex="0"><code>mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+</code></pre><blockquote>
+<p>第五步：挂载raid</p>
+</blockquote>
+<p>创建挂载点</p>
+<pre tabindex="0"><code>mkdir /mnt/raid0
+</code></pre><p>挂载</p>
+<pre tabindex="0"><code>mount /dev/md0 /mnt/raid0
+</code></pre><blockquote>
+<p>第六步：开机自动挂载</p>
+</blockquote>
+<p>用<code>blkid</code>查看/dev/md0的uuid编号，然后添加到<code>/etc/fstab</code>中即可。</p>
+<p>或者用命令自动添加</p>
+<pre tabindex="0"><code>echo `blkid /dev/md0 | awk &#39;{print $2}&#39; | sed &#39;s/\&#34;//g&#39;` /media/raid0 ext4 defaults 0 0 &gt;&gt; /etc/fstab
+</code></pre><hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li>创建RAID阵列（Linux）<a href="https://help.aliyun.com/zh/ecs/use-cases/create-a-raid-array-for-a-linux-instance">https://help.aliyun.com/zh/ecs/use-cases/create-a-raid-array-for-a-linux-instance</a></li>
+<li>如何在 Linux 中清除/删除磁盘或者分区中的所有分区表 <a href="https://www.onitroad.com/jc/linux/faq/how-to-delete-all-the-partition-table-from-a-disk-in-linux.html">https://www.onitroad.com/jc/linux/faq/how-to-delete-all-the-partition-table-from-a-disk-in-linux.html</a></li>
+<li>记一次采坑经历， mdadm 创建 raid0，重启后自动消失 <a href="https://www.idczone.net/news/5766.html/">https://www.idczone.net/news/5766.html/</a></li>
+<li>linux中Raid0磁盘阵列的搭建 <a href="https://www.cnblogs.com/liuhui-xzz/p/9653123.html">https://www.cnblogs.com/liuhui-xzz/p/9653123.html</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -5,7 +5,35 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 22 Oct 2023 02:03:14 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 31 Oct 2023 00:54:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下用mdadm创建软RAID以及避坑</title>
+      <link>https://ruohai.wang/202310/mdadm-create-soft-raid-guide/</link>
+      <pubDate>Tue, 31 Oct 2023 00:54:38 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/mdadm-create-soft-raid-guide/</guid>
+      <description>前言 linux下组软raid用mdadm命令，multiple devices admin，多设备管理。
+本文内容有二：
+用mdadm创建raid 用mdadm创建raid时的一个大坑 大坑 先把大坑写前面。
+用来创建raid的硬盘，不管是新盘还是旧盘，在linux中挂载以后，请先用wipefs命令清理硬盘上的分区表信息。
+硬盘分区有两种，mbr和gpt，mbr可以直接裸盘不分区就创建raid，gpt必须要有分区才能创建raid。如果组raid的几块硬盘分区表信息不统一，虽然能成功创建raid，但是系统一重启就会掉raid，也就是raid消失了。没错，系统一重启raid就没了。如果你已经在这个raid上导入数据，这个坑肯定能惊出你一头汗。
+所以拿到硬盘以后，最好是用wipefs直接清空分区表。也有人说用fdisk，但实际fdisk只能处理mbr分区表，需要用升级版gdisk才能处理gpt分区表。
+假定磁盘是/dev/sdb
+# 查看分区表 wipefs /dev/sdb 删除分区表所有信息
+wipefs -a -f /dev/sdb 分区注意事项 创建raid之前，要简单了解一下mbr和gpt分区，避免后续再踩雷。
+mbr：
+不支持2TB以上容量的硬盘 可以不分区，以裸盘为单位创建raid 用fdisk处理分区 gpt：
+支持2TB以上容量的硬盘 必须先分区，以分区为单位创建raid 用gdisk处理分区 创建磁盘阵列 我没有那么大容量的硬盘，而且系统也是legacy bios引导，所以这里选择mbr裸盘创建阵列。
+第一步：查看分区表
+先确认前面已经用wipefs清空了旧硬盘上的分区表信息。
+# 查看分区表 wipefs /dev/sdb # 删除分区表 wipefs -a -f /dev/sdb 注意：如果是gpt分区，注意要用gdisk先分区，/dev/sdb1和/dev/sdc1，下面创建raid的时候也是用/dev/sdb1和/dev/sdc1。
+第二步：创建raid0
+mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc /dev/md0 ： 指创建的磁盘阵列的名称，如果有多个raid，可以按顺序往下编，比如/dev/md1 level=0 ：指raid0，还有1、5、10等等，对应raid1、raid5、raid10 raid-devices=2 ：指阵列的磁盘数量，2块盘就是2 创建完成后，可以用下面的命令查看raid信息。
+mdadm --detail /dev/md0 第三步：创建文件系统（格式化）
+raid创建成功以后，需要格式化
+mkfs.ext4 /dev/md0 注意ext4文件格式下，系统会预留5%的冗余空间，简单换算就是1TB就会保留50GB空间。</description>
+    </item>
+    
     <item>
       <title>PhotoPrism视频功能的不足</title>
       <link>https://ruohai.wang/202310/photoprism-use-guide-about-video/</link>
@@ -18,7 +46,7 @@
 当然这篇文章重点讲pp对于视频文件的使用体验。
 pp对于视频文件的支持这一块值得单独拎出来写一篇文章，因为能看出来pp在这么多年的迭代过程中，对于视频功能似乎一直不怎么上心，导致视频文件的交互体验非常差。也许是因为对产品的定位，也许是觉得视频太吃硬件性能、太消耗存储空间
 视频功能的不足 默认不开启视频转码。 在默认情况下，pp是不开启视频转码的。这种情况下，查看视频就是直接播放原素材。如果原视频的拍摄规格比较高的话，非常考验硬盘读写速度、网络带宽和播放设备的解码能力。
-开启视频转码需要改配置文件 immich的视频转码功能直接在网页端就可以配置，分辨率、码率、硬件加速，网页端都提供了配置入口。pp的设置页面虽然有一大堆设置项，但那些都是针对照片的，包括让我误解了很久的【动态渲染】，我一直以为这个是指实时转码，其实它也是针对照片。
+开启视频转码需要改配置文件 immich的视频转码功能直接在网页端就可以配置，分辨率、码率、硬件加速，网页端都提供了配置入口。pp的设置页面虽然有一大堆设置项，但那些都是针对照片的，包括让我误解了很久的【动态预览】，我一直以为这个是指实时转码，其实它也是针对照片。
 pp开启视频转码，需要编辑docker-compose.yml文件，解开注释以下代码。
 PHOTOPRISM_FFMPEG_ENCODER: &amp;#34;software&amp;#34; ## 解码方式，默认软解 PHOTOPRISM_FFMPEG_SIZE: &amp;#34;1920&amp;#34; ## 转码分辨率，默认1080p PHOTOPRISM_FFMPEG_BITRATE: &amp;#34;32&amp;#34; ## 转码码率，默认32Mbps 然后重新部署pp即可。
 docker-compose up -d 如果想配置集显或者显卡硬解，请参考官网，还需要改更多地方。
