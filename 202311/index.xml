@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>202311s on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/202311/</link>
+    <description>Recent content in 202311s on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 01 Nov 2023 00:32:27 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202311/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo博客的安装</title>
+      <link>https://ruohai.wang/202311/hugo-install-guide/</link>
+      <pubDate>Wed, 01 Nov 2023 00:32:27 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/hugo-install-guide/</guid>
+      <description>前言 这两天重新部署了nas，而且博客用的主题m10c也已经停止维护快一年，新版本的hugo已经不支持这个主题。两个原因叠加，正好重新部署hugo。
+离上一次部署已经过去快四个月，需要重新看官方文档才能回忆起步骤。看之前自己写的教程也觉得啰里啰唆，旧文懒得改，索性重新记录一篇。
+安装 第一步：下载安装包
+之前是直接apt install用的debian仓库版本，但太老了，还一直停在0.111.3版本，而且apt安装还会附带一大堆其它包，提示需要几百MB的存储空间，所以这次放弃apt，直接到github仓库下载二进制安装包。
+github指路：https://github.com/gohugoio/hugo/releases
+下载对应系统、对应硬件架构的版本，然后添加环境变量。
+windows：把压缩包解压到D:\hugo并把路径添加到环境变量，高级系统设置——环境变量——系统变量——path，保存退出。 linux：把压缩包解压到/opt/hugo并把路径添加到.bashrc，在末尾加一行export PATH=$PATH:/opt/hugo，然后source ~/.bashrc让变更生效。 配置完以后，敲命令hugo -h看是否正常输出。
+第二步：创建博客目录
+hugo new site myblog 第三步：获取主题
+hugo官网主题商店指路：https://themes.gohugo.io/
+# 进入博客目录 cd myblog # 初始化git仓库 git init # 克隆paper主题到themes/paper目录 git clone https://github.com/nanxiaobei/hugo-paper themes/paper 然后在hugo.toml配置文件中指定主题即可
+theme = &amp;#34;paper&amp;#34; 第四步：本地运行
+安装了主题以后，本地运行查看效果
+hugo server 如果非本机访问，而是局域网内其他机器访问，需要加bind参数
+hugo server --bind=&amp;#34;0.0.0.0&amp;#34; 第五步：写文章
+写文章需要先根据模板新建markdown文件
+hugo new post/my-first-blog.md 其中post是归档目录，也是发布博客以后的url地址，可以根据自己喜好调整，比如我喜欢根据月份归档，那就是
+hugo new 202311/my-first-blog.md 第六步：编译博客
+博客写好以后，在发布之前，需要编译成html静态页面。
+# 进入目录 cd myblog # 编译 hugo 注意编译的时候，默认会忽略草稿，也就是markdown文件中的draft: false标签，如果是true，默认在执行hugo编译的时候会忽略掉这篇草稿。
+第七步：发布博客
+在编译完成后，在myblog目录下会出现一个public目录，要发布博客，就只需要把public目录下的内容推送到目标服务器就行了，比如自己的服务器、github pages、cloudflare pages等等。</description>
+    </item>
+    
+  </channel>
+</rss>

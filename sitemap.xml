@@ -2,16 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202311/</loc>
+    <lastmod>2023-11-01T00:32:27+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/hugo/</loc>
+    <lastmod>2023-11-01T00:32:27+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202311/hugo-install-guide/</loc>
+    <lastmod>2023-11-01T00:32:27+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-11-01T00:32:27+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-11-01T00:32:27+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202310/</loc>
     <lastmod>2023-10-31T17:10:42+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-10-31T17:10:42+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/tune2fs/</loc>
-    <lastmod>2023-10-31T17:10:42+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-10-31T17:10:42+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202310/tune2fs-reduce-reserved-blocks-percentage/</loc>
@@ -225,9 +234,6 @@
     <lastmod>2023-07-28T00:48:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/bilibili/</loc>
-    <lastmod>2023-07-27T21:28:20+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/hugo/</loc>
     <lastmod>2023-07-27T21:28:20+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/hugo-add-bilibili-video-support/</loc>
