@@ -5,7 +5,24 @@
     <link>https://ruohai.wang/202310/</link>
     <description>Recent content in 202310s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 31 Oct 2023 00:54:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 31 Oct 2023 17:10:42 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用tune2fs释放ext4文件系统的预留空间</title>
+      <link>https://ruohai.wang/202310/tune2fs-reduce-reserved-blocks-percentage/</link>
+      <pubDate>Tue, 31 Oct 2023 17:10:42 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202310/tune2fs-reduce-reserved-blocks-percentage/</guid>
+      <description>linux的ext4文件系统，默认会预留5%的存储空间作为特权进程使用。
+这在小容量硬盘上表现并不明显，500G的硬盘，扣掉1000/1024的损耗，再扣掉5%的损耗也就20GB左右。
+但是我现在使用linux系统和ext4文件系统作为NAS，硬盘容量都是TB为单位，每一个TB的5%就是50GB。
+如果你也玩nas，就知道在nas上，sata接口和存储空间都是稀有物资，能抠出来一点是一点。
+但硬盘已经完成格式化的情况下，需要用tune2fs来调整这个预留空间的比例。
+tune2fs -m 1 /dev/sdb1 m ：用来调整预留空间的比例，后面的1指调整为1% 注意事项 网上搜索到的内容，没有明确的定论，这个预留空间减少以后对系统正常运行是否会有影响，但大致都认同1%是一个安全的比例。
+强烈不建议设置为0%。
+实测生产环境可以直接用tune2fs调整，无需重启，实时生效。
+参考文章 Linux基础命令&amp;mdash;tune2fs https://www.cnblogs.com/wj78080458/p/9920449.html </description>
+    </item>
+    
     <item>
       <title>Linux下用mdadm创建软RAID以及避坑</title>
       <link>https://ruohai.wang/202310/mdadm-create-soft-raid-guide/</link>
