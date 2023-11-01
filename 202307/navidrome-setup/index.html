@@ -14,31 +14,39 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux下安装Navidrome自建流媒体服务"/>
 <meta name="twitter:description" content="前言 navidrome，开源的流媒体服务器，全平台客户端都有。功能和群晖的audio station一样，但首先不是人人都有群晖，其次有群晖的人也不一定都喜欢群晖那个沙雕的audio station。
-这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【官方安装教程】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。
+这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【[官方安装教程][1]】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。
 好了，让我们开始安装navidrome吧！
-安装 第一步：安装ffmpeg（大概200~500MB）
-apt install ffmpeg -y 第二步：创建navidrome的安装文件夹和运行文件夹并分配用户和组。安装文件夹用来放navidrome的安装包，运行文件夹用来存放软件运行生成的缓存。其中运行文件夹因为要不断写入缓存，所以需要考虑好权限。
-如果实在搞不清用户、权限之类，还是那句老话：统统用root，root/777一把梭。
-这个安装例子种，用户和组我们都用jack。两个文件夹路径都可以自定义，只是后面的配置文件中记得同步修改。
-install -d -o jack -g jack /opt/navidrome install -d -o jack -g jack /var/lib/navidrome 第三步：进入/opt/navidrome，到官方github下载对应自己硬件平台版本的安装包，我这里以amd64版本为例，解压并分配权限。
-cd /opt/navidrome wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_arm64.tar.gz tar -zxvf navidrome_0.49.3_Linux_arm64.tar.gz chown -R jack:jack /opt/navidrome 第四步：在/var/lib/navidrome目录下创建配置文件navidrome.toml，配置参数。默认只有一句，用来指定音乐的源文件路径。更多自定义参数看【官方页面】。
-MusicFolder = &#34;/media/music&#34; Port = 4533 注意配置这个媒体源文件夹的用户权限，如果弄不清就照样分配给jack。
-chown -R jack:jack /media/music 第五步：到这一步其实已经算大功告成了，接下去只是把navidrome添加到系统服务并设置开机自启。在/etc/systemd/system目录下新建navidrome.service文件，然后添加配置信息。注意参数中的User和Group两个参数对应的值要改成你自己的值。其它参数默认即可，如果你能看懂参数也可以自行修改。
-[Unit] Description=Navidrome Music Server and Streamer compatible with Subsonic/Airsonic After=remote-fs.target network.target AssertPathExists=/var/lib/navidrome [Install] WantedBy=multi-user.target [Service] User=jack Group=jack Type=simple ExecStart=/opt/navidrome/navidrome --configfile &#34;/var/lib/navidrome/navidrome."/>
+安装 第一步：安装ffmpeg
+解码音频文件用的，ffmpeg的包大概200~500MB，请保证有足够的存储空间。
+apt install ffmpeg -y 第二步：创建文件夹
+navidrome需要两个文件夹：
+一个安装文件夹，存放navidrome的二进制包，默认是/opt/navidrome 一个运行文件夹，用来存放配置文件和运行缓存，默认是/var/lib/navidrome 我准备用非root用户jack来运行navidrome服务，所以要提前考虑好两个文件夹的用户权限。
+执行以下命令创建文件夹
+install -d -o jack -g jack /opt/navidrome install -d -o jack -g jack /var/lib/navidrome 第三步：下载安装包
+到navidrome官方github发布页面下载对应系统、对应硬件架构的二进制包（安装包），指路👉【navidrome/releases】
+我这里以amd64（x64）版本为例。如果用wget下载很慢的话，可以先在其它电脑上下载好了然后用sftp工具上传，或者直接路由器挂代理。
+# 进入安装目录 cd /opt/navidrome # 下载安装包 wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_x86_64.tar.gz # 解压 tar -zxvf navidrome_0.49.3_Linux_x86_64.tar.gz # 解压后删除压缩包 rm navidrome_0.49.3_Linux_x86_64.tar.gz # 解压出来的文件分配用户和组，避免权限问题 chown -R jack:jack * 第四步：创建配置文件
+在/var/lib/navidrome目录下创建navidrome.toml文件，用来指定音乐源文件的目录等其它参数。
+默认只需要指定音乐源文件路径。更多自定义参数看【官方页面】，比如自定义端口。
+# 进入目录 cd /var/lib/navidrome # 新建配置文件 # touch navidrome."/>
 
     <meta property="og:title" content="Linux下安装Navidrome自建流媒体服务" />
 <meta property="og:description" content="前言 navidrome，开源的流媒体服务器，全平台客户端都有。功能和群晖的audio station一样，但首先不是人人都有群晖，其次有群晖的人也不一定都喜欢群晖那个沙雕的audio station。
-这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【官方安装教程】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。
+这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【[官方安装教程][1]】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。
 好了，让我们开始安装navidrome吧！
-安装 第一步：安装ffmpeg（大概200~500MB）
-apt install ffmpeg -y 第二步：创建navidrome的安装文件夹和运行文件夹并分配用户和组。安装文件夹用来放navidrome的安装包，运行文件夹用来存放软件运行生成的缓存。其中运行文件夹因为要不断写入缓存，所以需要考虑好权限。
-如果实在搞不清用户、权限之类，还是那句老话：统统用root，root/777一把梭。
-这个安装例子种，用户和组我们都用jack。两个文件夹路径都可以自定义，只是后面的配置文件中记得同步修改。
-install -d -o jack -g jack /opt/navidrome install -d -o jack -g jack /var/lib/navidrome 第三步：进入/opt/navidrome，到官方github下载对应自己硬件平台版本的安装包，我这里以amd64版本为例，解压并分配权限。
-cd /opt/navidrome wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_arm64.tar.gz tar -zxvf navidrome_0.49.3_Linux_arm64.tar.gz chown -R jack:jack /opt/navidrome 第四步：在/var/lib/navidrome目录下创建配置文件navidrome.toml，配置参数。默认只有一句，用来指定音乐的源文件路径。更多自定义参数看【官方页面】。
-MusicFolder = &#34;/media/music&#34; Port = 4533 注意配置这个媒体源文件夹的用户权限，如果弄不清就照样分配给jack。
-chown -R jack:jack /media/music 第五步：到这一步其实已经算大功告成了，接下去只是把navidrome添加到系统服务并设置开机自启。在/etc/systemd/system目录下新建navidrome.service文件，然后添加配置信息。注意参数中的User和Group两个参数对应的值要改成你自己的值。其它参数默认即可，如果你能看懂参数也可以自行修改。
-[Unit] Description=Navidrome Music Server and Streamer compatible with Subsonic/Airsonic After=remote-fs.target network.target AssertPathExists=/var/lib/navidrome [Install] WantedBy=multi-user.target [Service] User=jack Group=jack Type=simple ExecStart=/opt/navidrome/navidrome --configfile &#34;/var/lib/navidrome/navidrome." />
+安装 第一步：安装ffmpeg
+解码音频文件用的，ffmpeg的包大概200~500MB，请保证有足够的存储空间。
+apt install ffmpeg -y 第二步：创建文件夹
+navidrome需要两个文件夹：
+一个安装文件夹，存放navidrome的二进制包，默认是/opt/navidrome 一个运行文件夹，用来存放配置文件和运行缓存，默认是/var/lib/navidrome 我准备用非root用户jack来运行navidrome服务，所以要提前考虑好两个文件夹的用户权限。
+执行以下命令创建文件夹
+install -d -o jack -g jack /opt/navidrome install -d -o jack -g jack /var/lib/navidrome 第三步：下载安装包
+到navidrome官方github发布页面下载对应系统、对应硬件架构的二进制包（安装包），指路👉【navidrome/releases】
+我这里以amd64（x64）版本为例。如果用wget下载很慢的话，可以先在其它电脑上下载好了然后用sftp工具上传，或者直接路由器挂代理。
+# 进入安装目录 cd /opt/navidrome # 下载安装包 wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_x86_64.tar.gz # 解压 tar -zxvf navidrome_0.49.3_Linux_x86_64.tar.gz # 解压后删除压缩包 rm navidrome_0.49.3_Linux_x86_64.tar.gz # 解压出来的文件分配用户和组，避免权限问题 chown -R jack:jack * 第四步：创建配置文件
+在/var/lib/navidrome目录下创建navidrome.toml文件，用来指定音乐源文件的目录等其它参数。
+默认只需要指定音乐源文件路径。更多自定义参数看【官方页面】，比如自定义端口。
+# 进入目录 cd /var/lib/navidrome # 新建配置文件 # touch navidrome." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/navidrome-setup/" /><meta property="article:section" content="202307" />
 <meta property="article:published_time" content="2023-07-15T00:28:12+08:00" />
@@ -96,7 +104,6 @@ chown -R jack:jack /media/music 第五步：到这一步其实已经算大功告
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
               <a class="tag" href="https://ruohai.wang/tags/navidrome/">Navidrome</a>
         </div>
       </div>
@@ -104,28 +111,68 @@ chown -R jack:jack /media/music 第五步：到这一步其实已经算大功告
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>navidrome，开源的流媒体服务器，全平台客户端都有。功能和群晖的audio station一样，但首先不是人人都有群晖，其次有群晖的人也不一定都喜欢群晖那个沙雕的audio station。</p>
-<p>这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【<a href="https://www.navidrome.org/docs/installation/linux/">官方安装教程</a>】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。</p>
+<p>这里记录下安装步骤。其实官网的安装教程已经非常完整且详细，只是没有中文版而已。英文阅读没问题的可以直接看【[官方安装教程][1]】。这里仅做一个自己安装过程的记录和英译中。有人会问navidrome不是支持docker安装吗而且docker安装很简单，STOP！我不喜欢docker，所以选择自己手搓。</p>
 <p>好了，让我们开始安装navidrome吧！</p>
 <hr>
 <h2 id="安装">安装</h2>
-<p>第一步：安装ffmpeg（大概200~500MB）</p>
+<blockquote>
+<p>第一步：安装ffmpeg</p>
+</blockquote>
+<p>解码音频文件用的，ffmpeg的包大概200~500MB，请保证有足够的存储空间。</p>
 <pre tabindex="0"><code>apt install ffmpeg -y
-</code></pre><p>第二步：创建navidrome的安装文件夹和运行文件夹并分配用户和组。安装文件夹用来放navidrome的安装包，运行文件夹用来存放软件运行生成的缓存。其中运行文件夹因为要不断写入缓存，所以需要考虑好权限。</p>
-<p>如果实在搞不清用户、权限之类，还是那句老话：统统用root，root/777一把梭。</p>
-<p>这个安装例子种，用户和组我们都用jack。两个文件夹路径都可以自定义，只是后面的配置文件中记得同步修改。</p>
+</code></pre><blockquote>
+<p>第二步：创建文件夹</p>
+</blockquote>
+<p>navidrome需要两个文件夹：</p>
+<ul>
+<li>一个安装文件夹，存放navidrome的二进制包，默认是<code>/opt/navidrome</code></li>
+<li>一个运行文件夹，用来存放配置文件和运行缓存，默认是<code>/var/lib/navidrome</code></li>
+</ul>
+<p>我准备用非root用户<code>jack</code>来运行navidrome服务，所以要提前考虑好两个文件夹的用户权限。</p>
+<p>执行以下命令创建文件夹</p>
 <pre tabindex="0"><code>install -d -o jack -g jack /opt/navidrome
 install -d -o jack -g jack /var/lib/navidrome
-</code></pre><p>第三步：进入/opt/navidrome，到官方github下载对应自己硬件平台版本的安装包，我这里以amd64版本为例，解压并分配权限。</p>
-<pre tabindex="0"><code>cd /opt/navidrome
-wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_arm64.tar.gz
-tar -zxvf navidrome_0.49.3_Linux_arm64.tar.gz
-chown -R jack:jack /opt/navidrome
-</code></pre><p>第四步：在/var/lib/navidrome目录下创建配置文件navidrome.toml，配置参数。默认只有一句，用来指定音乐的源文件路径。更多自定义参数看【<a href="https://www.navidrome.org/docs/usage/configuration-options/">官方页面</a>】。</p>
-<pre tabindex="0"><code>MusicFolder = &#34;/media/music&#34;
+</code></pre><blockquote>
+<p>第三步：下载安装包</p>
+</blockquote>
+<p>到navidrome官方github发布页面下载对应系统、对应硬件架构的二进制包（安装包），指路👉【<a href="https://github.com/navidrome/navidrome/releases">navidrome/releases</a>】</p>
+<p>我这里以amd64（x64）版本为例。如果用wget下载很慢的话，可以先在其它电脑上下载好了然后用sftp工具上传，或者直接路由器挂代理。</p>
+<pre tabindex="0"><code># 进入安装目录
+cd /opt/navidrome
+
+# 下载安装包
+wget https://github.com/navidrome/navidrome/releases/download/v0.49.3/navidrome_0.49.3_Linux_x86_64.tar.gz
+
+# 解压
+tar -zxvf navidrome_0.49.3_Linux_x86_64.tar.gz
+
+# 解压后删除压缩包
+rm navidrome_0.49.3_Linux_x86_64.tar.gz
+
+# 解压出来的文件分配用户和组，避免权限问题
+chown -R jack:jack *
+</code></pre><blockquote>
+<p>第四步：创建配置文件</p>
+</blockquote>
+<p>在<code>/var/lib/navidrome</code>目录下创建<code>navidrome.toml</code>文件，用来指定音乐源文件的目录等其它参数。</p>
+<p>默认只需要指定音乐源文件路径。更多自定义参数看【<a href="https://www.navidrome.org/docs/installation/linux/">官方页面</a>】，比如自定义端口。</p>
+<pre tabindex="0"><code># 进入目录
+cd /var/lib/navidrome
+
+# 新建配置文件
+# touch navidrome.toml
+</code></pre><p>然后在配置文件中添加以下内容</p>
+<pre tabindex="0"><code># 音乐源文件路径
+MusicFolder = &#34;/media/music&#34;
+
+# 自定义端口
 Port = 4533
-</code></pre><p>注意配置这个媒体源文件夹的用户权限，如果弄不清就照样分配给jack。</p>
-<pre tabindex="0"><code>chown -R jack:jack /media/music
-</code></pre><p>第五步：到这一步其实已经算大功告成了，接下去只是把navidrome添加到系统服务并设置开机自启。在<code>/etc/systemd/system</code>目录下新建<code>navidrome.service</code>文件，然后添加配置信息。注意参数中的<code>User</code>和<code>Group</code>两个参数对应的值要改成你自己的值。其它参数默认即可，如果你能看懂参数也可以自行修改。</p>
+</code></pre><p>注意音乐源文件夹目录的用户权限，<code>jack</code>需要有读写权限。</p>
+<blockquote>
+<p>第五步：添加到系统服务</p>
+</blockquote>
+<p>进入<code>/etc/systemd/system</code>目录，新建<code>navidrome.service</code>文件，然后添加以下配置信息。</p>
+<p>注意参数中的<code>User</code>和<code>Group</code>两个参数对应的值要改成自己设定的值。其它参数默认即可，如果你能看懂参数也可以自行修改。</p>
 <pre tabindex="0"><code>[Unit]
 Description=Navidrome Music Server and Streamer compatible with Subsonic/Airsonic
 After=remote-fs.target network.target
@@ -135,8 +182,8 @@ AssertPathExists=/var/lib/navidrome
 WantedBy=multi-user.target
 
 [Service]
-User=jack
-Group=jack
+User=&lt;user&gt;
+Group=&lt;group&gt;
 Type=simple
 ExecStart=/opt/navidrome/navidrome --configfile &#34;/var/lib/navidrome/navidrome.toml&#34;
 WorkingDirectory=/var/lib/navidrome
@@ -173,17 +220,27 @@ ProtectSystem=full
 
 # You can customize some Navidrome config options by setting environment variables here. Ex:
 #Environment=ND_BASEURL=&#34;/navidrome&#34;
-</code></pre><p>第六步：三条命令。</p>
+</code></pre><blockquote>
+<p>第六步：启用navidrome</p>
+</blockquote>
 <pre tabindex="0"><code># 重新载入服务配置信息
 systemctl daemon-reload
+
 # 启动navidrome
 systemctl start navidrome.service
+
 # 查看navidrome运行状态
 systemctl status navidrome.service
-</code></pre><p>成功启动的话，就可以在浏览器中访问http://localhost:4533开始使用navidrome了。</p>
-<p>第七步：最后一步，把navidrome添加到开机启动服务</p>
+</code></pre><p>成功启动的话，就可以在浏览器中访问 <a href="http://localhost:4533">http://localhost:4533</a> 开始使用navidrome了。</p>
+<blockquote>
+<p>第七步：设置开机自启</p>
+</blockquote>
 <pre tabindex="0"><code>systemctl enable navidrome.service
-</code></pre>
+</code></pre><h2 id="参考文章">参考文章</h2>
+<ol>
+<li>Linux Install <a href="https://www.navidrome.org/docs/installation/linux/">https://www.navidrome.org/docs/installation/linux/</a></li>
+</ol>
+
     </div>
     <div class="post-footer">
       
