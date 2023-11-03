@@ -28,17 +28,12 @@ location / { proxy_pass http://localhost:8089; proxy_http_version 1.1; proxy_set
       <pubDate>Fri, 14 Jul 2023 23:35:17 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-qbit/</guid>
-      <description>安装 debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
-apt install qbittorrent-nox 安装完成后，直接用守护线程模式启动。
-qbittorrent-nox -d 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，就可以开始使用了。
-配置 也可以把qbit添加到systemd服务并设置开机自启，这样就不需要再每次敲命令启动。
-第一步：添加配置文件
-nano /etc/systemd/system/qbittorrent.service 把下面内容复制进去，保存退出。注意User一栏的值是指定运行qbit任务的用户，涉及到一切文件权限之类。如果实在搞不清就填root，或者直接删掉User一栏。全局用root可以帮你省去很多关于权限、用户、组之类的烦恼，但也要意识到它潜在的风险。
-[Unit] Description=qBittorrent Daemon Service After=network.target [Service] User=Jack ExecStart=/usr/bin/qbittorrent-nox ExecStop=/usr/bin/killall -w qbittorrent-nox [Install] WantedBy=multi-user.target 第二步：添加systemd服务的三条命令。
-# 服务重载 systemctl daemon-reload # 启动服务(如果已经启动qbit，这一步可以跳过） systemctl start qbittorrent.service # 添加为开机自启 systemctl enable qbittorrent.service update@20230810 在配置中的第一步，当时写的是需要自己手动写一份systemd的服务配置文件，其实不需要自己手动写，用apt命令一键安装qbit以后，在/lib/systemd/system目录下已经有一份systemd配置文件，文件名qbittorrent-nox@.service。
-呐，看到这个文件名肯定也知道该怎么启动qbit服务了。
-systemctl start qbittorrent-nox@jack.service 设置为开机启动
-systemctl enable qbittorrent-nox@jack.service 这样就直接使用软件包自带的systemd服务配置文件，不用再自己去手动配置。</description>
+      <description>debian仓库里qbit有俩版本，一个qbittorrent，另一个qbittorrent-nox。前者带qt5编写的gui，后者没有gui只有webui。我是在玩客云的小机器上装，不需要gui，所以这里选qbittorrent-nox。
+apt install qbittorrent-nox 安装完成后，qbit默认的系统服务配置文件路径是/lib/systemd/system/qbittorrent-nox@.service
+看到这个配置文件的名字就知道该怎么启动qbit了。
+# 服务重载 systemctl daemon-reload # 启动qbit，注意需要指定运行qbit服务的用户 systemctl start qbittorrent-nox@jack.service # 设置开机自启 systemctl enable qbittorrent-nox@jack.service 默认端口8080，打开浏览器，访问http://host_ip:8080，默认用户admin，默认密码adminadmin，登录后就可以开始使用了。
+分享 bt下载，tracklist很重要，这里分享一个网友整理的好用的tracklist。
+指路👉：【XIU2/TrackersListCollection】</description>
     </item>
     
   </channel>
