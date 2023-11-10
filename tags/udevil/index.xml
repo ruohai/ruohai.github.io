@@ -34,7 +34,7 @@ systemctl restart devmon@jack.service </description>
 安装与使用 debian的软件仓库里就有udevil，一条命令就搞定安装
 apt install udevil udevil的配置文件路径是/etc/udevil/udevil.conf，默认会把usb设备挂载到/media/user目录下（这里的user在后面的命令中体现）。如果要调整自动挂载路径，需要在udevil.conf中修改。
 接下去要启动udevil服务惹，假定用非root账户jack来运行udevil服务。
-systemctl start devmon@jack.service 注意命令中的jack，这里对应的是linux系统的用户账户，设备的挂载点就是/media/jark。如果你的系统使用的账户是tom，那对应的命令就是devmon@tom，usb设备的挂载点就是/media/tom。
+systemctl start devmon@jack.service 注意命令中的jack，这里对应的是linux系统的用户账户，设备的挂载点就是/media/jack。如果你的系统使用的账户是tom，那对应的命令就是devmon@tom.service，usb设备的挂载点就是/media/tom。
 启动成功以后，就可以插拔u盘、移动硬盘查看挂载情况了，确认下是否工作正常。
 最后就是把udevil设置成开机启动。
 systemctl enable devmon@jack.service 问题 exfat格式的存储设备默认无法自动挂载，因为有个bug，需要手动修改配置文件，修改方法：【Linux下udevil无法自动挂载exfat格式U盘的问题解决】
