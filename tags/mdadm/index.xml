@@ -5,7 +5,24 @@
     <link>https://ruohai.wang/tags/mdadm/</link>
     <description>Recent content in mdadm on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 31 Oct 2023 00:54:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/mdadm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Nov 2023 18:03:30 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/mdadm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux下迁移mdadm软raid</title>
+      <link>https://ruohai.wang/202311/mdadm-auto-mount-raid/</link>
+      <pubDate>Fri, 10 Nov 2023 18:03:30 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/mdadm-auto-mount-raid/</guid>
+      <description>当在A系统下用mdadm组装的软raid阵列，如果全盘迁移到B系统时，如何正确的重新组装并识别。
+有两种解决方案：
+方案一：B系统重启 B系统先安装mdadm，然后关机，接着插上raid阵列的所有硬盘，最后B系统重启即可。B系统启动后会自动识别软raid阵列并正确组装，之后只需要动手完成挂载。
+方案二：B系统不重启 现在A系统中卸载（umount）软raid阵列，然后把阵列的所有硬盘插到B系统主机。
+这里又分两种情况。
+先安装mdadm，然后raid硬盘都插入后，系统会自动识别raid并正确组装
+先插入raid阵列所有硬盘，然后安装mdadm，此时系统无法自动识别raid，需要手动组装
+设定raid阵列名为md0，4个阵列盘分为sdb、sdc、sdd、sde。执行以下命令，即可完成raid组装与识别，之后再手动完成挂载。
+# 组装阵列，mdadm会自动识别raid类型 mdadm -A /dev/md0 /dev/sd[b-e] # 手动挂载 mount /dev/md0 /mnt/raid </description>
+    </item>
+    
     <item>
       <title>Linux下用mdadm创建软RAID以及避坑</title>
       <link>https://ruohai.wang/202310/mdadm-create-soft-raid-guide/</link>
