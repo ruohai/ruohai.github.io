@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>在玩客云（armv7）上安装memos // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在玩客云（armv7）上安装memos"/>
+<meta name="twitter:description" content="前言 memos官网文档对于部署memos服务用的方法是docker，没什么意外的话，就是一条命令的事，很简单。
+但不出意外肯定就是要出意外了，我准备在玩客云上部署memos，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
+那就简单记录下怎么弄吧。
+docker 我是在debian系统上跑docker，所以直接用debian软件仓库里的docker.io
+apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
+apt install docker-compose docker环境到此安装完毕
+memos memos目前最新版是v0.17.0，但新版本已经不支持armv7，所以没法安装。
+这时候有两个解决方案：
+如果你动手能力比较强，可以从memos的github repo下载源码自己编译 如果和和我一样比较懒，那就找一下支持armv7的版本 memos官方用的github的容器站ghcr.io，各个版本看不到支持的硬件架构。没办法，去hub.docker.com看看。
+在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+我用的docker-compose方式部署，先新建一个配置文件
+# 新建目录 mkdir ~/.memos # 新建配置文件 mkdir ~/.memos/docker-compose.yml 然后用nano编辑docker-compose.yml文件，录入以下内容。
+version: &#34;3.0&#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
+版本号，从latest改为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
+docker-compose up -d 其它几个常用命令
+# 停止服务 docker-compose stop # 卸载（删除）服务 docker-compose down -v 如果要升级或者重新部署memos，记得备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。"/>
+
+    <meta property="og:title" content="在玩客云（armv7）上安装memos" />
+<meta property="og:description" content="前言 memos官网文档对于部署memos服务用的方法是docker，没什么意外的话，就是一条命令的事，很简单。
+但不出意外肯定就是要出意外了，我准备在玩客云上部署memos，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
+那就简单记录下怎么弄吧。
+docker 我是在debian系统上跑docker，所以直接用debian软件仓库里的docker.io
+apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
+apt install docker-compose docker环境到此安装完毕
+memos memos目前最新版是v0.17.0，但新版本已经不支持armv7，所以没法安装。
+这时候有两个解决方案：
+如果你动手能力比较强，可以从memos的github repo下载源码自己编译 如果和和我一样比较懒，那就找一下支持armv7的版本 memos官方用的github的容器站ghcr.io，各个版本看不到支持的硬件架构。没办法，去hub.docker.com看看。
+在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+我用的docker-compose方式部署，先新建一个配置文件
+# 新建目录 mkdir ~/.memos # 新建配置文件 mkdir ~/.memos/docker-compose.yml 然后用nano编辑docker-compose.yml文件，录入以下内容。
+version: &#34;3.0&#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
+版本号，从latest改为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
+docker-compose up -d 其它几个常用命令
+# 停止服务 docker-compose stop # 卸载（删除）服务 docker-compose down -v 如果要升级或者重新部署memos，记得备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202311/memos-install-on-onecloud/" /><meta property="article:section" content="202311" />
+<meta property="article:published_time" content="2023-11-14T13:03:24+08:00" />
+<meta property="article:modified_time" content="2023-11-14T13:03:24+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在玩客云（armv7）上安装memos</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/memos/">memos</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="前言">前言</h1>
+<p>memos官网文档对于部署memos服务用的方法是docker，没什么意外的话，就是一条命令的事，很简单。</p>
+<p>但不出意外肯定就是要出意外了，我准备在玩客云上部署memos，玩客云是armv7的硬件，memos的最新版已经不支持armv7。</p>
+<p>那就简单记录下怎么弄吧。</p>
+<hr>
+<h2 id="docker">docker</h2>
+<p>我是在debian系统上跑docker，所以直接用debian软件仓库里的docker.io</p>
+<pre tabindex="0"><code>apt install docker.io
+</code></pre><p>我更喜欢用docker-compose，配置文件方便管理</p>
+<pre tabindex="0"><code>apt install docker-compose
+</code></pre><p>docker环境到此安装完毕</p>
+<hr>
+<h2 id="memos">memos</h2>
+<p>memos目前最新版是<code>v0.17.0</code>，但新版本已经不支持armv7，所以没法安装。</p>
+<p>这时候有两个解决方案：</p>
+<ul>
+<li>如果你动手能力比较强，可以从memos的github repo下载源码自己编译</li>
+<li>如果和和我一样比较懒，那就找一下支持armv7的版本</li>
+</ul>
+<p>memos官方用的github的容器站<code>ghcr.io</code>，各个版本看不到支持的硬件架构。没办法，去<code>hub.docker.com</code>看看。</p>
+<p>在memos的【<a href="https://hub.docker.com/r/neosmemo/memos/tags">docker-hub发布页面的tag标签</a>】里，可以看到2个月前发布的<code>0.15.0</code>版本支持armv7。这就好办了，docker pull的时候指定版本即可。</p>
+<p>我用的docker-compose方式部署，先新建一个配置文件</p>
+<pre tabindex="0"><code># 新建目录
+mkdir ~/.memos
+
+# 新建配置文件
+mkdir ~/.memos/docker-compose.yml
+</code></pre><p>然后用nano编辑docker-compose.yml文件，录入以下内容。</p>
+<pre tabindex="0"><code>version: &#34;3.0&#34;
+services:
+  memos:
+    image: ghcr.io/usememos/memos:0.15.0
+    container_name: memos
+    user: 1000:1000
+    restart: always
+    volumes:
+      - ~/.memos/:/var/opt/memos
+    ports:
+      - 5230:5230
+</code></pre><p>注意，针对官方提供的配置文件，我调整了几个参数：</p>
+<ul>
+<li>版本号，从<code>latest</code>改为<code>0.15.0</code></li>
+<li>用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户</li>
+<li>重启方式，默认没有restart配置参数，调整为总是重启（always）</li>
+</ul>
+<p>编辑好配置文件以后，开始部署即可</p>
+<pre tabindex="0"><code>docker-compose up -d
+</code></pre><p>其它几个常用命令</p>
+<pre tabindex="0"><code># 停止服务
+docker-compose stop
+
+# 卸载（删除）服务
+docker-compose down -v
+</code></pre><p>如果要升级或者重新部署memos，记得备份<code>~/.memos/</code>目录下的数据库文件<code>memos_prod.db</code>和附件目录<code>assets</code>。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

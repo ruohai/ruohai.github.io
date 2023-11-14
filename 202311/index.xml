@@ -5,7 +5,31 @@
     <link>https://ruohai.wang/202311/</link>
     <description>Recent content in 202311s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 14 Nov 2023 12:44:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202311/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 Nov 2023 13:03:24 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202311/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在玩客云（armv7）上安装memos</title>
+      <link>https://ruohai.wang/202311/memos-install-on-onecloud/</link>
+      <pubDate>Tue, 14 Nov 2023 13:03:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/memos-install-on-onecloud/</guid>
+      <description>前言 memos官网文档对于部署memos服务用的方法是docker，没什么意外的话，就是一条命令的事，很简单。
+但不出意外肯定就是要出意外了，我准备在玩客云上部署memos，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
+那就简单记录下怎么弄吧。
+docker 我是在debian系统上跑docker，所以直接用debian软件仓库里的docker.io
+apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
+apt install docker-compose docker环境到此安装完毕
+memos memos目前最新版是v0.17.0，但新版本已经不支持armv7，所以没法安装。
+这时候有两个解决方案：
+如果你动手能力比较强，可以从memos的github repo下载源码自己编译 如果和和我一样比较懒，那就找一下支持armv7的版本 memos官方用的github的容器站ghcr.io，各个版本看不到支持的硬件架构。没办法，去hub.docker.com看看。
+在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+我用的docker-compose方式部署，先新建一个配置文件
+# 新建目录 mkdir ~/.memos # 新建配置文件 mkdir ~/.memos/docker-compose.yml 然后用nano编辑docker-compose.yml文件，录入以下内容。
+version: &amp;#34;3.0&amp;#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
+版本号，从latest改为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
+docker-compose up -d 其它几个常用命令
+# 停止服务 docker-compose stop # 卸载（删除）服务 docker-compose down -v 如果要升级或者重新部署memos，记得备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。</description>
+    </item>
+    
     <item>
       <title>往mdadm创建的raid5阵列中添加新硬盘以扩容</title>
       <link>https://ruohai.wang/202311/mdadm-add-new-hdd-to-raid5-arrary/</link>
