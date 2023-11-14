@@ -5,7 +5,46 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 14 Nov 2023 12:40:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 Nov 2023 12:44:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>往mdadm创建的raid5阵列中添加新硬盘以扩容</title>
+      <link>https://ruohai.wang/202311/mdadm-add-new-hdd-to-raid5-arrary/</link>
+      <pubDate>Tue, 14 Nov 2023 12:44:00 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/mdadm-add-new-hdd-to-raid5-arrary/</guid>
+      <description>前言 之前手上只有4块hdd，虽然硬盘柜有5个盘位，但只是用4盘组了raid5。
+raid5用了一阵以后，觉得还行，就想着把剩下的一个空盘位利用起来，所以又从pdd入手了好几片500GB的拆机硬盘。
+硬盘到手了，照例又是查smart信息、全盘扫坏道。几块西数的是清零盘，但没有扫出坏道；几块希捷的通电时间惊人，一块3万小时，一块6万小时，但没有扫出坏道。
+也就20rmb一片，既然没坏道，那就凑合着用吧。
+raid5扩容 先描述下本次我想要实现的需求：有一个正在运行的四盘位raid5阵列，添加一个块同容量的硬盘，从四盘位扩展为五盘位。
+有需求了就找解决方案，搜关键字mdadm、raid5、添加硬盘，但没有搜到什么靠谱可用的方案，那就自己摸索吧。
+已有raid5阵列要添加硬盘，有两个方案：
+方案一： 新建raid5
+这个方案很傻瓜，但是非常的安全而且非常的效率，可行度100%。前提是你手上有很多备用硬盘，或者有一个大容量硬盘做数据中转。
+如果手上硬盘数量足够多，那就保持旧四盘位raid不动，新组装一个五盘位raid5，然后直接从旧raid拷数据到新raid。整个任务所耗费的时间由两个raid的硬盘读写速度和局域网带宽决定。
+如果手上硬盘不够用来组新raid，那先从旧raid把数据导出一份备份，然后停用四盘位旧raid + 加硬盘 + 创建五盘位新raid，最后把备份的数据再导入回去。
+方案二：旧raid5扩容
+这个方案有一定的风险性，操作前最好把数据备份一下。
+旧四盘位的raid5，添加一块硬盘。假定新添加的硬盘是/dev/sdf。
+第一步：清除分区数据。
+因为我的旧raid是清除了分区直接裸盘组raid，所以新硬盘也先清除分区信息。如果你的raid是先分区然后以分区为单位组装的raid，那新硬盘也记得同样先分区。
+# 查看分区信息 wipefs /dev/sdf # 清除分区信息 wipefs -a -f /dev/sdf 第二步：添加硬盘
+新盘添加进阵列。假定阵列名为/dev/md0。
+mdadm --manage /dev/md0 --add /dev/sdf 添加完成后，查看一下阵列信息。
+mdadm -D /dev/md0 此时可以看到阵列的硬盘数量从4变成了5。但是新加入的硬盘并没有真正的融入进去，它的角色是hot spare热备盘，也就是当四盘raid中出现一块坏盘时，这块新盘会自动替上去重建raid修复数据。
+第三步：重塑（reshape）
+我的目的并不是给四盘位raid5添加一块热备盘（hot spare），我是想把新盘加进存储池扩充容量。
+指定raid5的硬盘数量为5
+mdadm --grow /dev/md0 --raid-devices=5 命令执行完成后，查看一下阵列信息
+mdadm -D /dev/md0 此时就可以看到，存储池的硬盘从4块变成了5块，新的raid开始重塑（reshaping）。
+整个重塑过程会非常非常非常的漫长，这个时间单位以小时甚至以天计算，请耐心等待mdadm完成任务。
+第四步：调整阵列容量
+在经历了漫长的重塑（reshape）以后，进度条终于到了100%，可以进行下一步操作了。
+把raid容量调整为最大！
+mdadm --grow /dev/md0 --size=max 查看阵列当前状态，会看到当前是resyncing(同步)。
+mdadm --detail /dev/md0 然后耐心等待mdadm对阵列进行同步（resyncing），这个过程比重塑（reshape）快很多。</description>
+    </item>
+    
     <item>
       <title>我的推特账号被冻结了</title>
       <link>https://ruohai.wang/202311/twitter-account-was-suspended/</link>

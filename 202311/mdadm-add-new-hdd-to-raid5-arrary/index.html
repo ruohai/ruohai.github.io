@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>往mdadm创建的raid5阵列中添加新硬盘以扩容 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="往mdadm创建的raid5阵列中添加新硬盘以扩容"/>
+<meta name="twitter:description" content="前言 之前手上只有4块hdd，虽然硬盘柜有5个盘位，但只是用4盘组了raid5。
+raid5用了一阵以后，觉得还行，就想着把剩下的一个空盘位利用起来，所以又从pdd入手了好几片500GB的拆机硬盘。
+硬盘到手了，照例又是查smart信息、全盘扫坏道。几块西数的是清零盘，但没有扫出坏道；几块希捷的通电时间惊人，一块3万小时，一块6万小时，但没有扫出坏道。
+也就20rmb一片，既然没坏道，那就凑合着用吧。
+raid5扩容 先描述下本次我想要实现的需求：有一个正在运行的四盘位raid5阵列，添加一个块同容量的硬盘，从四盘位扩展为五盘位。
+有需求了就找解决方案，搜关键字mdadm、raid5、添加硬盘，但没有搜到什么靠谱可用的方案，那就自己摸索吧。
+已有raid5阵列要添加硬盘，有两个方案：
+方案一： 新建raid5
+这个方案很傻瓜，但是非常的安全而且非常的效率，可行度100%。前提是你手上有很多备用硬盘，或者有一个大容量硬盘做数据中转。
+如果手上硬盘数量足够多，那就保持旧四盘位raid不动，新组装一个五盘位raid5，然后直接从旧raid拷数据到新raid。整个任务所耗费的时间由两个raid的硬盘读写速度和局域网带宽决定。
+如果手上硬盘不够用来组新raid，那先从旧raid把数据导出一份备份，然后停用四盘位旧raid &#43; 加硬盘 &#43; 创建五盘位新raid，最后把备份的数据再导入回去。
+方案二：旧raid5扩容
+这个方案有一定的风险性，操作前最好把数据备份一下。
+旧四盘位的raid5，添加一块硬盘。假定新添加的硬盘是/dev/sdf。
+第一步：清除分区数据。
+因为我的旧raid是清除了分区直接裸盘组raid，所以新硬盘也先清除分区信息。如果你的raid是先分区然后以分区为单位组装的raid，那新硬盘也记得同样先分区。
+# 查看分区信息 wipefs /dev/sdf # 清除分区信息 wipefs -a -f /dev/sdf 第二步：添加硬盘
+新盘添加进阵列。假定阵列名为/dev/md0。
+mdadm --manage /dev/md0 --add /dev/sdf 添加完成后，查看一下阵列信息。
+mdadm -D /dev/md0 此时可以看到阵列的硬盘数量从4变成了5。但是新加入的硬盘并没有真正的融入进去，它的角色是hot spare热备盘，也就是当四盘raid中出现一块坏盘时，这块新盘会自动替上去重建raid修复数据。
+第三步：重塑（reshape）
+我的目的并不是给四盘位raid5添加一块热备盘（hot spare），我是想把新盘加进存储池扩充容量。
+指定raid5的硬盘数量为5
+mdadm --grow /dev/md0 --raid-devices=5 命令执行完成后，查看一下阵列信息
+mdadm -D /dev/md0 此时就可以看到，存储池的硬盘从4块变成了5块，新的raid开始重塑（reshaping）。
+整个重塑过程会非常非常非常的漫长，这个时间单位以小时甚至以天计算，请耐心等待mdadm完成任务。
+第四步：调整阵列容量
+在经历了漫长的重塑（reshape）以后，进度条终于到了100%，可以进行下一步操作了。
+把raid容量调整为最大！
+mdadm --grow /dev/md0 --size=max 查看阵列当前状态，会看到当前是resyncing(同步)。
+mdadm --detail /dev/md0 然后耐心等待mdadm对阵列进行同步（resyncing），这个过程比重塑（reshape）快很多。"/>
+
+    <meta property="og:title" content="往mdadm创建的raid5阵列中添加新硬盘以扩容" />
+<meta property="og:description" content="前言 之前手上只有4块hdd，虽然硬盘柜有5个盘位，但只是用4盘组了raid5。
+raid5用了一阵以后，觉得还行，就想着把剩下的一个空盘位利用起来，所以又从pdd入手了好几片500GB的拆机硬盘。
+硬盘到手了，照例又是查smart信息、全盘扫坏道。几块西数的是清零盘，但没有扫出坏道；几块希捷的通电时间惊人，一块3万小时，一块6万小时，但没有扫出坏道。
+也就20rmb一片，既然没坏道，那就凑合着用吧。
+raid5扩容 先描述下本次我想要实现的需求：有一个正在运行的四盘位raid5阵列，添加一个块同容量的硬盘，从四盘位扩展为五盘位。
+有需求了就找解决方案，搜关键字mdadm、raid5、添加硬盘，但没有搜到什么靠谱可用的方案，那就自己摸索吧。
+已有raid5阵列要添加硬盘，有两个方案：
+方案一： 新建raid5
+这个方案很傻瓜，但是非常的安全而且非常的效率，可行度100%。前提是你手上有很多备用硬盘，或者有一个大容量硬盘做数据中转。
+如果手上硬盘数量足够多，那就保持旧四盘位raid不动，新组装一个五盘位raid5，然后直接从旧raid拷数据到新raid。整个任务所耗费的时间由两个raid的硬盘读写速度和局域网带宽决定。
+如果手上硬盘不够用来组新raid，那先从旧raid把数据导出一份备份，然后停用四盘位旧raid &#43; 加硬盘 &#43; 创建五盘位新raid，最后把备份的数据再导入回去。
+方案二：旧raid5扩容
+这个方案有一定的风险性，操作前最好把数据备份一下。
+旧四盘位的raid5，添加一块硬盘。假定新添加的硬盘是/dev/sdf。
+第一步：清除分区数据。
+因为我的旧raid是清除了分区直接裸盘组raid，所以新硬盘也先清除分区信息。如果你的raid是先分区然后以分区为单位组装的raid，那新硬盘也记得同样先分区。
+# 查看分区信息 wipefs /dev/sdf # 清除分区信息 wipefs -a -f /dev/sdf 第二步：添加硬盘
+新盘添加进阵列。假定阵列名为/dev/md0。
+mdadm --manage /dev/md0 --add /dev/sdf 添加完成后，查看一下阵列信息。
+mdadm -D /dev/md0 此时可以看到阵列的硬盘数量从4变成了5。但是新加入的硬盘并没有真正的融入进去，它的角色是hot spare热备盘，也就是当四盘raid中出现一块坏盘时，这块新盘会自动替上去重建raid修复数据。
+第三步：重塑（reshape）
+我的目的并不是给四盘位raid5添加一块热备盘（hot spare），我是想把新盘加进存储池扩充容量。
+指定raid5的硬盘数量为5
+mdadm --grow /dev/md0 --raid-devices=5 命令执行完成后，查看一下阵列信息
+mdadm -D /dev/md0 此时就可以看到，存储池的硬盘从4块变成了5块，新的raid开始重塑（reshaping）。
+整个重塑过程会非常非常非常的漫长，这个时间单位以小时甚至以天计算，请耐心等待mdadm完成任务。
+第四步：调整阵列容量
+在经历了漫长的重塑（reshape）以后，进度条终于到了100%，可以进行下一步操作了。
+把raid容量调整为最大！
+mdadm --grow /dev/md0 --size=max 查看阵列当前状态，会看到当前是resyncing(同步)。
+mdadm --detail /dev/md0 然后耐心等待mdadm对阵列进行同步（resyncing），这个过程比重塑（reshape）快很多。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202311/mdadm-add-new-hdd-to-raid5-arrary/" /><meta property="article:section" content="202311" />
+<meta property="article:published_time" content="2023-11-14T12:44:00+08:00" />
+<meta property="article:modified_time" content="2023-11-14T12:44:00+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">往mdadm创建的raid5阵列中添加新硬盘以扩容</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 14, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/mdadm/">mdadm</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>之前手上只有4块hdd，虽然硬盘柜有5个盘位，但只是用4盘组了raid5。</p>
+<p>raid5用了一阵以后，觉得还行，就想着把剩下的一个空盘位利用起来，所以又从pdd入手了好几片500GB的拆机硬盘。</p>
+<p>硬盘到手了，照例又是查smart信息、全盘扫坏道。几块西数的是清零盘，但没有扫出坏道；几块希捷的通电时间惊人，一块3万小时，一块6万小时，但没有扫出坏道。</p>
+<p>也就20rmb一片，既然没坏道，那就凑合着用吧。</p>
+<hr>
+<h2 id="raid5扩容">raid5扩容</h2>
+<p>先描述下本次我想要实现的需求：有一个正在运行的四盘位raid5阵列，添加一个块同容量的硬盘，从四盘位扩展为五盘位。</p>
+<p>有需求了就找解决方案，搜关键字<code>mdadm</code>、<code>raid5</code>、<code>添加硬盘</code>，但没有搜到什么靠谱可用的方案，那就自己摸索吧。</p>
+<p>已有raid5阵列要添加硬盘，有两个方案：</p>
+<blockquote>
+<p>方案一： 新建raid5</p>
+</blockquote>
+<p>这个方案很傻瓜，但是非常的安全而且非常的效率，可行度100%。前提是你手上有很多备用硬盘，或者有一个大容量硬盘做数据中转。</p>
+<p>如果手上硬盘数量足够多，那就保持旧四盘位raid不动，新组装一个五盘位raid5，然后直接从旧raid拷数据到新raid。整个任务所耗费的时间由两个raid的硬盘读写速度和局域网带宽决定。</p>
+<p>如果手上硬盘不够用来组新raid，那先从旧raid把数据导出一份备份，然后停用四盘位旧raid + 加硬盘 + 创建五盘位新raid，最后把备份的数据再导入回去。</p>
+<blockquote>
+<p>方案二：旧raid5扩容</p>
+</blockquote>
+<p>这个方案有一定的风险性，操作前最好把数据备份一下。</p>
+<p>旧四盘位的raid5，添加一块硬盘。假定新添加的硬盘是<code>/dev/sdf</code>。</p>
+<p>第一步：清除分区数据。</p>
+<p>因为我的旧raid是清除了分区直接裸盘组raid，所以新硬盘也先清除分区信息。如果你的raid是先分区然后以分区为单位组装的raid，那新硬盘也记得同样先分区。</p>
+<pre tabindex="0"><code># 查看分区信息
+wipefs /dev/sdf
+
+# 清除分区信息
+wipefs -a -f /dev/sdf
+</code></pre><p>第二步：添加硬盘</p>
+<p>新盘添加进阵列。假定阵列名为<code>/dev/md0</code>。</p>
+<pre tabindex="0"><code>mdadm --manage /dev/md0 --add /dev/sdf
+</code></pre><p>添加完成后，查看一下阵列信息。</p>
+<pre tabindex="0"><code>mdadm -D /dev/md0
+</code></pre><p>此时可以看到阵列的硬盘数量从4变成了5。但是新加入的硬盘并没有<code>真正</code>的融入进去，它的角色是<code>hot spare</code>热备盘，也就是当四盘raid中出现一块坏盘时，这块新盘会自动替上去重建raid修复数据。</p>
+<p>第三步：重塑（reshape）</p>
+<p>我的目的并不是给四盘位raid5添加一块热备盘（hot spare），我是想把新盘加进存储池扩充容量。</p>
+<p>指定raid5的硬盘数量为5</p>
+<pre tabindex="0"><code>mdadm --grow /dev/md0 --raid-devices=5
+</code></pre><p>命令执行完成后，查看一下阵列信息</p>
+<pre tabindex="0"><code>mdadm -D /dev/md0
+</code></pre><p>此时就可以看到，存储池的硬盘从4块变成了5块，新的raid开始重塑（reshaping）。</p>
+<p>整个重塑过程会非常非常非常的漫长，这个时间单位以小时甚至以天计算，请耐心等待mdadm完成任务。</p>
+<p>第四步：调整阵列容量</p>
+<p>在经历了漫长的重塑（reshape）以后，进度条终于到了100%，可以进行下一步操作了。</p>
+<p>把raid容量调整为最大！</p>
+<pre tabindex="0"><code>mdadm --grow /dev/md0 --size=max
+</code></pre><p>查看阵列当前状态，会看到当前是resyncing(同步)。</p>
+<pre tabindex="0"><code>mdadm --detail /dev/md0
+</code></pre><p>然后耐心等待mdadm对阵列进行同步（resyncing），这个过程比重塑（reshape）快很多。</p>
+<p>第五步：调整文件系统大小</p>
+<p>raid扩容以后，文件系统无法自动识别新的容量，需要手动执行resize。</p>
+<pre tabindex="0"><code>resize2fs /dev/md0
+</code></pre><p>好了，到此raid5阵列扩容结束。🎉</p>
+<hr>
+<h2 id="注意事项">注意事项</h2>
+<p>请注意备份数据。无论哪个方案，数据安全最重要，开始操作之前，请务必备份数据。</p>
+<p>针对方案二，有以下几个注意点需要务必、千万留意：</p>
+<ul>
+<li>raid在重塑（reshape）过程中，强烈建议不要对raid存储池有任何的读写操作，请耐心等它重塑完了再操作。这时候raid阵列的io性能会暴跌，毫无使用体验可言。而且这时候操作存储池，容易和raid重塑（reshape）任务冲突，导致数据丢失。</li>
+<li>raid在重塑（reshape）过程中，千万不要断电。这个重塑过程短则10多个小时，长则几天几夜，请务必保证供电，中途断电可能导致整个阵列损坏、数据丢失。</li>
+<li>raid在重塑（reshape）过程中，不要去重启宿主机（host）。重塑操作依赖宿主机（也就是nas系统、linux系统）跑mdadm任务，重启系统会导致任务中断，可能引起阵列损坏、数据丢失。</li>
+<li>raid在重塑（reshape）过程中，阵列中的所有硬盘都长时间、高负荷运转，这种情况下，如果用旧硬盘组的raid，很容易出现硬盘扛不住挂掉一块，类似raid5坏掉一块盘以后进入重建（rebuilding）流程，硬盘长时间、高负荷运转，又坏了一块盘，最终引起雪崩效应整个阵列gg、数据全丢。所以，请提前备份数据。</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>请选择方案一，方案二的风险太高了。</p>
+<p>如果你像我一样头铁选择了方案二，而且已经在重塑（reshaping），那就祈求好运吧。</p>
+<p>😄</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
