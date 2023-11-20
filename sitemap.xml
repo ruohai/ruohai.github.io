@@ -434,9 +434,6 @@
     <loc>https://ruohai.wang/202307/install-docker-engine/</loc>
     <lastmod>2023-07-14T23:20:11+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/bash/</loc>
-    <lastmod>2023-07-14T23:14:36+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202307/add-alias/</loc>
     <lastmod>2023-07-14T23:14:36+08:00</lastmod>
   </url><url>
@@ -445,6 +442,9 @@
   </url><url>
     <loc>https://ruohai.wang/202307/filebrowser-installation-guide/</loc>
     <lastmod>2023-07-14T23:00:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/bash/</loc>
+    <lastmod>2023-07-14T22:51:22+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/bash-completion-setup/</loc>
     <lastmod>2023-07-14T22:51:22+08:00</lastmod>

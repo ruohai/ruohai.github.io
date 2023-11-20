@@ -13,10 +13,12 @@
       
       <guid>https://ruohai.wang/202311/twitter-why-got-suspended/</guid>
       <description>这几天复盘了一下我的账号为什么会被冻结，我违反了twitter的哪条rule。思来想去，夜不能寐。
-突然灵光一闪，我猜到原因了：滥用api。
-马斯克接手twitter以后，很快就调整了twitter api的使用限制，那会还闹出了各种搞笑的限制措施，比如一天刷推数量限定200条。在这些莫名其妙的限制中，有一些在测试几天以后就在一片骂声中撤回了，还有一些是在严格执行的。
-之前朋友给我分享过一个chrome应用商店里的插件，可以用来下载twitter上的视频文件，我觉得很好用，就一直装着这个插件。马斯克接手twitter以后，这个插件就被投诉下架了，投诉理由是滥用api。但已经装在浏览器上的插件并不会自己消失，我依然在用这个插件。大概率是这个插件的原因，导致我的账号被当作违反规则的行为而被冻结了。
-想明白了原因，又用gpt写了一份申诉信。回信内容一如预料：这个账号被冻结（this account is suspended）。
+突然灵光一闪，我大概猜到原因了：滥用api。
+马斯克接手twitter以后，调整了twitter api的使用限制，那会还闹出了不少搞笑的限制策略，比如一天刷推数量限定200条。这些新策略，有一些撤回了，还有一些落实执行了。
+之前朋友给我分享过一个chrome应用商店里的插件，可以用来下载twitter上的视频文件，我觉得很好用，就一直装着这个插件。前阵子这个插件被twitter官方投诉下架了，投诉理由是滥用api。但已经装在浏览器上的插件并不会自己消失，我依然在用这个插件。大概率是这个插件的原因，导致我的账号被认定存在滥用api的行为而被冻结了。
+想明白了原因，又用gpt写了一份申诉信。
+回信内容一如预料：这个账号被冻结（this account is suspended）。
+没戏，凉凉。
 😄</description>
     </item>
     
@@ -26,22 +28,19 @@
       <pubDate>Tue, 14 Nov 2023 13:03:24 +0800</pubDate>
       
       <guid>https://ruohai.wang/202311/memos-install-on-onecloud/</guid>
-      <description>前言 memos官网文档对于部署memos服务用的方法是docker，没什么意外的话，就是一条命令的事，很简单。
-但不出意外肯定就是要出意外了，我准备在玩客云上部署memos，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
+      <description>前言 memos官网文档写的部署方法是docker或者docker-compose，顺利的话就一条命令的事。
+但不出意外肯定就是要出意外了，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
 那就简单记录下怎么弄吧。
 docker 我是在debian系统上跑docker，所以直接用debian软件仓库里的docker.io
 apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
 apt install docker-compose docker环境到此安装完毕
-memos memos目前最新版是v0.17.0，但新版本已经不支持armv7，所以没法安装。
-这时候有两个解决方案：
-如果你动手能力比较强，可以从memos的github repo下载源码自己编译 如果和和我一样比较懒，那就找一下支持armv7的版本 memos官方用的github的容器站ghcr.io，各个版本看不到支持的硬件架构。没办法，去hub.docker.com看看。
-在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+memos memos的新版本已经不支持armv7，有两个解决方案：
+如果你动手能力比较强，那就下载源码自己编译一个支持armv7的版本 如果和我一样比较懒，那就找一下支持armv7的版本 在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
 我用的docker-compose方式部署，先新建一个配置文件
-# 新建目录 mkdir ~/.memos # 新建配置文件 mkdir ~/.memos/docker-compose.yml 然后用nano编辑docker-compose.yml文件，录入以下内容。
+# 新建目录 mkdir ~/.memos # 新建配置文件 touch ~/.memos/docker-compose.yml 然后用nano编辑docker-compose.yml文件，录入以下内容。
 version: &amp;#34;3.0&amp;#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
-版本号，从latest改为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
-docker-compose up -d 其它几个常用命令
-# 停止服务 docker-compose stop # 卸载（删除）服务 docker-compose down -v 如果要升级或者重新部署memos，记得备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。</description>
+版本号，从latest指定为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
+docker-compose up -d 注意事项 如果要升级或者重新部署memos，备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。 目前0.15.0和新版本在功能上已经出现了脱节，新版本支持用户评论功能，调整了表结构，0.15.0的数据库和新版不兼容 </description>
     </item>
     
     <item>
@@ -91,13 +90,14 @@ mdadm --detail /dev/md0 然后耐心等待mdadm对阵列进行同步（resyncing
       <guid>https://ruohai.wang/202311/twitter-account-was-suspended/</guid>
       <description>是的，我的twitter账号被冻结了。
 冻结的时间点大概是2023年11月12日凌晨2点，首页提示账户被冻结如有疑问请发申诉信。
-发了三次申诉信，前两份是用自己高中残留的英语水平表述这可能是一个错判请重新review这次操作，很快就收到邮件，简短一句话：这个账号被冻结（this account is suspended）。
+发了三次申诉信，前两份自己写的，英语磕磕绊绊，但表述清楚了这可能是一个错判请review这次操作。很快就收到邮件，简短一句话：这个账号被冻结（this account is suspended）。
 12号白天的时候用gpt4生成了一份完美的申诉信，很快又收到了邮件，依然是简短的一句话：这个账号被冻结（this account is suspended）。
 行吧，不纠结了。
 如果要说这个账号对我是否重要，我能写出千字它对我的重要性。从2008年8月注册，到2013年11月被冻结，使用了近16年的账号，记录了我从上学到工作、从年轻人变中年人、从单身到处对象最后又恢复单身，这一切的点点滴滴。
 账号就此被冻结，连导出个人数据存档的选择都没有，至此，我的一十六年的记录消失在互联网。
 这两年也确实进入了人生低谷期，半生役役未见成功，茕茕孑立不知所向，已无力、无心继续在网络上记录个人生活日常。此事就当是和过往做个了结。
-希望接下去的日子，朋友，你和我，每天都开心。</description>
+希望接下去的日子，朋友，你和我，每天都开心。
+😄</description>
     </item>
     
     <item>
