@@ -5,7 +5,52 @@
     <link>https://ruohai.wang/202311/</link>
     <description>Recent content in 202311s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 21 Nov 2023 12:19:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202311/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Nov 2023 14:41:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202311/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用PicGo配合Lsky Pro图床进行图片上传</title>
+      <link>https://ruohai.wang/202311/lsky-pro-use-picgo-to-upload/</link>
+      <pubDate>Tue, 21 Nov 2023 14:41:58 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/lsky-pro-use-picgo-to-upload/</guid>
+      <description>前言 在玩客云上部署lsky pro，虽然能用，但网页响应有点慢，而且上传图片都需要打开web页面更是有点麻烦，所以需要一个工具来配合lsky pro使用。
+它就是picgo。
+picgo的配置已经做到了尽量傻瓜化，lsky pro的api设置也非常的简单，但两件简单的事情组合到一起，就是出了不少的状况。
+所以简单记录下配置过程。
+配置 第一步：安装picgo
+【picgo下载页面】，根据自己的网络情况和硬件平台，到对应的下载源下载安装即可。
+第二部：安装lsky插件
+picgo安装完成后，启动！
+默认不支持lsky图床，需要安装插件，安装插件需要node.js。🤔
+所以先装node.js，可以自己去官网下，也可以直接点安装插件，它会带你跳转到nojde.js下载页面。
+装好node.js以后，再次启动picgo！在插件页面搜索lsky
+我装的是第二个插件lsky-uploader 1.1.0，你可以根据自己喜好选择。
+不着急配置插件，要先第三步。
+第三步：安装浏览器插件
+在lsky后台的接口页面，查看获取token的方法。如果没有接口，需要先在设置中开启。
+根据文档，就是要自己发起一个http post请求来获取token，行吧。
+有俩方法，第一自己手写一个简单的html表单来提交post请求，第二通过第三方工具。
+这里选择用浏览器插件，打开chrome或者edge的应用商店，搜postman。个人建议安装data~more，界面简洁，方便好用。
+安装插件以后，终于可以开始获取token惹。😭
+第四步：获取token
+在浏览器中打开插件，根据lsky文档，配置参数。
+首先在复制一下lsky的api
+然后插件中把api复制进去，请求方式选择post，在headers页面，填写Accept:application/json
+在params页面，填写自己lsky的账户和密码（email和password）
+以上内容都填写完以后，在顶部可以看到拼接出来的完整url
+最后点击右侧的submit，顺利的话就可以看到返回token惹，把双引号里的内容都复制，下一步要用。前面的数字正常应该是1，截图里是5因为我测试了好几次。😭
+第五步：配置插件
+终于来到最后一步了，第一次写这么多配图的文章。
+需要先处理上一步获取的token，它还不是完全体，需要加一个前缀Bearer，完整格式示意如下
+Bearer 1|uc4xxxxT9Okxxxxxxxwp6ykixxxxxxx6V8k 然后打开picgo，在图床设置中选择lsky，填写内容。
+域名就是lsky的域名，不需要带api后缀。token就是处理后的Bearer开头的那串字符。点击确定即可。
+到这里，picgo和lsky插件终于配置完了，可以正常使用了。
+🤦‍
+后记 不得不说，这个获取token和需要加Bearer前缀的方式让我掉进坑里好多次。
+心累。
+不过配置好以后再贴图就很方便了，要不然我也不会写这篇这么多配图的文章。
+🎉</description>
+    </item>
+    
     <item>
       <title>在玩客云上用Docker部署兰空图床（Lsky Pro）</title>
       <link>https://ruohai.wang/202311/lsky-pro-install-on-onecloud/</link>

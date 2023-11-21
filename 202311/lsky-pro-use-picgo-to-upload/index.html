@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>使用PicGo配合Lsky Pro图床进行图片上传 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用PicGo配合Lsky Pro图床进行图片上传"/>
+<meta name="twitter:description" content="前言 在玩客云上部署lsky pro，虽然能用，但网页响应有点慢，而且上传图片都需要打开web页面更是有点麻烦，所以需要一个工具来配合lsky pro使用。
+它就是picgo。
+picgo的配置已经做到了尽量傻瓜化，lsky pro的api设置也非常的简单，但两件简单的事情组合到一起，就是出了不少的状况。
+所以简单记录下配置过程。
+配置 第一步：安装picgo
+【picgo下载页面】，根据自己的网络情况和硬件平台，到对应的下载源下载安装即可。
+第二部：安装lsky插件
+picgo安装完成后，启动！
+默认不支持lsky图床，需要安装插件，安装插件需要node.js。🤔
+所以先装node.js，可以自己去官网下，也可以直接点安装插件，它会带你跳转到nojde.js下载页面。
+装好node.js以后，再次启动picgo！在插件页面搜索lsky
+我装的是第二个插件lsky-uploader 1.1.0，你可以根据自己喜好选择。
+不着急配置插件，要先第三步。
+第三步：安装浏览器插件
+在lsky后台的接口页面，查看获取token的方法。如果没有接口，需要先在设置中开启。
+根据文档，就是要自己发起一个http post请求来获取token，行吧。
+有俩方法，第一自己手写一个简单的html表单来提交post请求，第二通过第三方工具。
+这里选择用浏览器插件，打开chrome或者edge的应用商店，搜postman。个人建议安装data~more，界面简洁，方便好用。
+安装插件以后，终于可以开始获取token惹。😭
+第四步：获取token
+在浏览器中打开插件，根据lsky文档，配置参数。
+首先在复制一下lsky的api
+然后插件中把api复制进去，请求方式选择post，在headers页面，填写Accept:application/json
+在params页面，填写自己lsky的账户和密码（email和password）
+以上内容都填写完以后，在顶部可以看到拼接出来的完整url
+最后点击右侧的submit，顺利的话就可以看到返回token惹，把双引号里的内容都复制，下一步要用。前面的数字正常应该是1，截图里是5因为我测试了好几次。😭
+第五步：配置插件
+终于来到最后一步了，第一次写这么多配图的文章。
+需要先处理上一步获取的token，它还不是完全体，需要加一个前缀Bearer，完整格式示意如下
+Bearer 1|uc4xxxxT9Okxxxxxxxwp6ykixxxxxxx6V8k 然后打开picgo，在图床设置中选择lsky，填写内容。
+域名就是lsky的域名，不需要带api后缀。token就是处理后的Bearer开头的那串字符。点击确定即可。
+到这里，picgo和lsky插件终于配置完了，可以正常使用了。
+🤦‍
+后记 不得不说，这个获取token和需要加Bearer前缀的方式让我掉进坑里好多次。
+心累。
+不过配置好以后再贴图就很方便了，要不然我也不会写这篇这么多配图的文章。
+🎉"/>
+
+    <meta property="og:title" content="使用PicGo配合Lsky Pro图床进行图片上传" />
+<meta property="og:description" content="前言 在玩客云上部署lsky pro，虽然能用，但网页响应有点慢，而且上传图片都需要打开web页面更是有点麻烦，所以需要一个工具来配合lsky pro使用。
+它就是picgo。
+picgo的配置已经做到了尽量傻瓜化，lsky pro的api设置也非常的简单，但两件简单的事情组合到一起，就是出了不少的状况。
+所以简单记录下配置过程。
+配置 第一步：安装picgo
+【picgo下载页面】，根据自己的网络情况和硬件平台，到对应的下载源下载安装即可。
+第二部：安装lsky插件
+picgo安装完成后，启动！
+默认不支持lsky图床，需要安装插件，安装插件需要node.js。🤔
+所以先装node.js，可以自己去官网下，也可以直接点安装插件，它会带你跳转到nojde.js下载页面。
+装好node.js以后，再次启动picgo！在插件页面搜索lsky
+我装的是第二个插件lsky-uploader 1.1.0，你可以根据自己喜好选择。
+不着急配置插件，要先第三步。
+第三步：安装浏览器插件
+在lsky后台的接口页面，查看获取token的方法。如果没有接口，需要先在设置中开启。
+根据文档，就是要自己发起一个http post请求来获取token，行吧。
+有俩方法，第一自己手写一个简单的html表单来提交post请求，第二通过第三方工具。
+这里选择用浏览器插件，打开chrome或者edge的应用商店，搜postman。个人建议安装data~more，界面简洁，方便好用。
+安装插件以后，终于可以开始获取token惹。😭
+第四步：获取token
+在浏览器中打开插件，根据lsky文档，配置参数。
+首先在复制一下lsky的api
+然后插件中把api复制进去，请求方式选择post，在headers页面，填写Accept:application/json
+在params页面，填写自己lsky的账户和密码（email和password）
+以上内容都填写完以后，在顶部可以看到拼接出来的完整url
+最后点击右侧的submit，顺利的话就可以看到返回token惹，把双引号里的内容都复制，下一步要用。前面的数字正常应该是1，截图里是5因为我测试了好几次。😭
+第五步：配置插件
+终于来到最后一步了，第一次写这么多配图的文章。
+需要先处理上一步获取的token，它还不是完全体，需要加一个前缀Bearer，完整格式示意如下
+Bearer 1|uc4xxxxT9Okxxxxxxxwp6ykixxxxxxx6V8k 然后打开picgo，在图床设置中选择lsky，填写内容。
+域名就是lsky的域名，不需要带api后缀。token就是处理后的Bearer开头的那串字符。点击确定即可。
+到这里，picgo和lsky插件终于配置完了，可以正常使用了。
+🤦‍
+后记 不得不说，这个获取token和需要加Bearer前缀的方式让我掉进坑里好多次。
+心累。
+不过配置好以后再贴图就很方便了，要不然我也不会写这篇这么多配图的文章。
+🎉" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202311/lsky-pro-use-picgo-to-upload/" /><meta property="article:section" content="202311" />
+<meta property="article:published_time" content="2023-11-21T14:41:58+08:00" />
+<meta property="article:modified_time" content="2023-11-21T14:41:58+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用PicGo配合Lsky Pro图床进行图片上传</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 21, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/picgo/">PicGo</a>
+              <a class="tag" href="https://ruohai.wang/tags/lskypro/">LskyPro</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>在玩客云上部署lsky pro，虽然能用，但网页响应有点慢，而且上传图片都需要打开web页面更是有点麻烦，所以需要一个工具来配合lsky pro使用。</p>
+<p>它就是picgo。</p>
+<p>picgo的配置已经做到了尽量傻瓜化，lsky pro的api设置也非常的简单，但两件简单的事情组合到一起，就是出了不少的状况。</p>
+<p>所以简单记录下配置过程。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<blockquote>
+<p>第一步：安装picgo</p>
+</blockquote>
+<p>【<a href="https://picgo.github.io/PicGo-Doc/zh/guide/#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85">picgo下载页面</a>】，根据自己的网络情况和硬件平台，到对应的下载源下载安装即可。</p>
+<blockquote>
+<p>第二部：安装lsky插件</p>
+</blockquote>
+<p>picgo安装完成后，启动！</p>
+<p>默认不支持lsky图床，需要安装插件，安装插件需要node.js。🤔</p>
+<p>所以先装node.js，可以自己去官网下，也可以直接点安装插件，它会带你跳转到nojde.js下载页面。</p>
+<p>装好node.js以后，再次启动picgo！在插件页面搜索<code>lsky</code></p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c53721a407.jpg" alt="1"></p>
+<p>我装的是第二个插件<code>lsky-uploader 1.1.0</code>，你可以根据自己喜好选择。</p>
+<p>不着急配置插件，要先第三步。</p>
+<blockquote>
+<p>第三步：安装浏览器插件</p>
+</blockquote>
+<p>在lsky后台的<code>接口</code>页面，查看获取token的方法。如果没有<code>接口</code>，需要先在<code>设置</code>中开启。</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c5443d2388.jpg" alt=""></p>
+<p>根据文档，就是要自己发起一个http post请求来获取token，行吧。</p>
+<p>有俩方法，第一自己手写一个简单的html表单来提交post请求，第二通过第三方工具。</p>
+<p>这里选择用浏览器插件，打开chrome或者edge的应用商店，搜<code>postman</code>。个人建议安装<code>data~more</code>，界面简洁，方便好用。</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c555039877.jpg" alt=""></p>
+<p>安装插件以后，终于可以开始获取token惹。😭</p>
+<blockquote>
+<p>第四步：获取token</p>
+</blockquote>
+<p>在浏览器中打开插件，根据lsky文档，配置参数。</p>
+<p>首先在复制一下lsky的api</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c57df4abd8.jpg" alt=""></p>
+<p>然后插件中把api复制进去，请求方式选择<code>post</code>，在headers页面，填写<code>Accept:application/json</code></p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c587f5bbc8.jpg" alt=""></p>
+<p>在params页面，填写自己lsky的账户和密码（email和password）</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c56c21739e.jpg" alt=""></p>
+<p>以上内容都填写完以后，在顶部可以看到拼接出来的完整url</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c57315b2b0.jpg" alt=""></p>
+<p>最后点击右侧的<code>submit</code>，顺利的话就可以看到返回token惹，把双引号里的内容都复制，下一步要用。前面的数字正常应该是1，截图里是5因为我测试了好几次。😭</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c5a76e0c33.jpg" alt=""></p>
+<blockquote>
+<p>第五步：配置插件</p>
+</blockquote>
+<p>终于来到最后一步了，第一次写这么多配图的文章。</p>
+<p>需要先处理上一步获取的token，它还不是完全体，需要加一个前缀<code>Bearer</code>，完整格式示意如下</p>
+<pre tabindex="0"><code>Bearer 1|uc4xxxxT9Okxxxxxxxwp6ykixxxxxxx6V8k
+</code></pre><p>然后打开picgo，在图床设置中选择lsky，填写内容。</p>
+<p><img src="https://meow.ruohai.wang:59877/uploads/2023/11/21/655c5bafeefe6.jpg" alt=""></p>
+<p>域名就是lsky的域名，不需要带api后缀。token就是处理后的<code>Bearer</code>开头的那串字符。点击确定即可。</p>
+<p>到这里，picgo和lsky插件终于配置完了，可以正常使用了。</p>
+<p>🤦‍</p>
+<hr>
+<h2 id="后记">后记</h2>
+<p>不得不说，这个获取token和需要加<code>Bearer</code>前缀的方式让我掉进坑里好多次。</p>
+<p>心累。</p>
+<p>不过配置好以后再贴图就很方便了，要不然我也不会写这篇这么多配图的文章。</p>
+<p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>LskyPro on 喵ฅ^•ﻌ•^ฅ</title>
-    <link>https://ruohai.wang/tags/lskypro/</link>
-    <description>Recent content in LskyPro on 喵ฅ^•ﻌ•^ฅ</description>
+    <title>PicGo on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/picgo/</link>
+    <description>Recent content in PicGo on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 21 Nov 2023 14:41:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/lskypro/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Nov 2023 14:41:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/picgo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用PicGo配合Lsky Pro图床进行图片上传</title>
       <link>https://ruohai.wang/202311/lsky-pro-use-picgo-to-upload/</link>
@@ -49,29 +49,6 @@ Bearer 1|uc4xxxxT9Okxxxxxxxwp6ykixxxxxxx6V8k 然后打开picgo，在图床设置
 心累。
 不过配置好以后再贴图就很方便了，要不然我也不会写这篇这么多配图的文章。
 🎉</description>
-    </item>
-    
-    <item>
-      <title>在玩客云上用Docker部署兰空图床（Lsky Pro）</title>
-      <link>https://ruohai.wang/202311/lsky-pro-install-on-onecloud/</link>
-      <pubDate>Tue, 21 Nov 2023 12:19:32 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/202311/lsky-pro-install-on-onecloud/</guid>
-      <description>前言 硬件性能：
-能跑，但反应会稍微有点慢 存储空间：
-用docker-compose部署，docker.io + docker-compose大概需要300MB空间 lsksy-pro需要434MB存储，mysql需要230MB存储 合计大概需要1GB的存储空间。玩客云内置emmc可用存储大概6GB，请提前规划存储占用 注意事项：
-文章里的图片都ipv6 only，如果你的网络只支持ipv4，会看不到图片 部署 第一步：安装docker环境
-这一步没啥好说的，两条命令。
-apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
-因为docker hub被封，记得配置docker国内镜像
-nano /etc/docker/daemon.json 录入以下内容：
-{ &amp;#34;registry-mirrors&amp;#34;: [ &amp;#34;https://registry.hub.docker.com&amp;#34;, &amp;#34;http://hub-mirror.c.163.com&amp;#34;, &amp;#34;https://mirror.baidubce.com&amp;#34;, &amp;#34;https://docker.mirrors.sjtug.sjtu.edu.cn&amp;#34;, &amp;#34;https://docker.nju.edu.cn&amp;#34; ], &amp;#34;iptables&amp;#34;: false } 保存后退出，然后重启docker。
-systemctl restart docker.service 其中的&amp;quot;iptables&amp;quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
-第二步：编辑docker配置文件 &amp;amp; 部署
-注意：lsky pro官方没有发布docker镜像，所以docker安装只能找第三方。因为玩客云过时的硬件（armv7），这里选用【tyroyal/lsky-pro-x】发布的版本。
-首先新建目录，创建配置文件。玩客云内置emmc存储空间非常金贵，所以请把lsky pro的目录指向外部存储空间。
-# 创建目录 mkdir lsky-pro # 进目录 cd lsky-pro # 编辑配置文件 # nano docker-compose.yml 在配置文件中录入以下内容。
-version: &amp;#39;3&amp;#39; services: lsky-pro: image: tyroyal/lsky-pro-x:latest restart: unless-stopped hostname: lsky-pro container_name: lsky-pro volumes: - /path/to/lsky:/var/www/html/ ports: - &amp;#34;8008:80&amp;#34; networks: - lsky-net mysql-lsky: # arm 架构请自行更换 mysql 镜像使用 image: mysql:5.</description>
     </item>
     
   </channel>
