@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>在玩客云上安装PhotoPrism // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在玩客云上部署PhotoPrism // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,10 +12,10 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在玩客云上安装PhotoPrism"/>
+<meta name="twitter:title" content="在玩客云上部署PhotoPrism"/>
 <meta name="twitter:description" content="前言 硬件性能：
 photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 存储空间：
-docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 安装photoprism大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
+docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
 这一步没啥好说的，两条命令。
 apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
 因为docker hub被封，记得配置docker国内镜像
@@ -24,13 +24,13 @@ nano /etc/docker/daemon.json 录入以下内容：
 systemctl restart docker.service 其中的&quot;iptables&quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
 第二步：配置文件调整
 先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。
-# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，出了常规的密码、运行目录之类，还有以下几个项目要修改
+# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
 PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10."/>
 
-    <meta property="og:title" content="在玩客云上安装PhotoPrism" />
+    <meta property="og:title" content="在玩客云上部署PhotoPrism" />
 <meta property="og:description" content="前言 硬件性能：
 photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 存储空间：
-docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 安装photoprism大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
+docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
 这一步没啥好说的，两条命令。
 apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
 因为docker hub被封，记得配置docker国内镜像
@@ -39,7 +39,7 @@ nano /etc/docker/daemon.json 录入以下内容：
 systemctl restart docker.service 其中的&quot;iptables&quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
 第二步：配置文件调整
 先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。
-# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，出了常规的密码、运行目录之类，还有以下几个项目要修改
+# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
 PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202311/photoprism-install-on-onecloud/" /><meta property="article:section" content="202311" />
@@ -77,7 +77,7 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">在玩客云上安装PhotoPrism</h1>
+      <h1 class ="post-title">在玩客云上部署PhotoPrism</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -116,7 +116,7 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
 <ul>
 <li>docker.io + docker-compose大概占用300MB存储</li>
 <li>photoprism + mariadb镜像大概占用1.6GB存储</li>
-<li>安装photoprism大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用</li>
+<li>合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用</li>
 </ul>
 <hr>
 <h2 id="部署--优化">部署 &amp; 优化</h2>
@@ -156,7 +156,7 @@ cd photoprism
 
 # 下载官方的配置文件
 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml
-</code></pre><p>官方提供的配置文件，出了常规的密码、运行目录之类，还有以下几个项目要修改</p>
+</code></pre><p>官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改</p>
 <ul>
 <li><code>PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;</code>，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用</li>
 <li><code>PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;</code>，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。</li>
@@ -174,7 +174,8 @@ wget https://dl.photoprism.app/docker/armv7/docker-compose.yml
 <p>有些功能可以在webui中进行优化（禁用），可以酌情调整。</p>
 <ul>
 <li><code>一般：人物</code>：建议关闭，需要tensorflow进行人脸识别</li>
-<li><code>一般：瞬间</code>：建议关闭，根据地点、标签、人脸之类标签来汇总整理的相册功能，禁用掉地点和tensorfow以后这功能就是个残废，没必要保留</li>
+<li><code>一般：标签</code>：建议关闭，需要tensorflow进行照片主题识别添加标签，禁用tensorflow以后没有标签了，没必要保留入口</li>
+<li><code>一般：瞬间</code>：建议关闭，根据地点、标签、人脸之类标签来汇总整理的相册功能，禁用掉地点和tensorfow以后这功能就是个残废，没必要保留入口</li>
 <li><code>资料库：估算</code>：建议关闭，地理坐标的功能</li>
 <li><code>高级：禁用webdav</code>：建议关闭</li>
 <li><code>高级：禁用地点</code>：建议关闭，除了吃硬件性能之外，这服务还会需要去网上下载地图数据，碰到网络差或者网站被屏蔽时会导致照片索引服务卡在网络请求这一步很久</li>
