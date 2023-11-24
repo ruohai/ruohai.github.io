@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在玩客云上部署PhotoPrism"/>
 <meta name="twitter:description" content="前言 硬件性能：
-photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 存储空间：
+photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
 这一步没啥好说的，两条命令。
 apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
@@ -29,7 +29,7 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
 
     <meta property="og:title" content="在玩客云上部署PhotoPrism" />
 <meta property="og:description" content="前言 硬件性能：
-photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 存储空间：
+photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
 这一步没啥好说的，两条命令。
 apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
@@ -111,6 +111,7 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
 <li>能跑起来的前提是禁用很多图像算法识别功能</li>
 <li>如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云</li>
 <li>实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用</li>
+<li>实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试</li>
 </ul>
 <p>存储空间：</p>
 <ul>
