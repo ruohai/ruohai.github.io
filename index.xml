@@ -5,7 +5,32 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 21 Nov 2023 14:41:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Nov 2023 11:41:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在玩客云上安装File Browser</title>
+      <link>https://ruohai.wang/202311/filebrowser-install-guide/</link>
+      <pubDate>Sun, 26 Nov 2023 11:41:26 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/filebrowser-install-guide/</guid>
+      <description>前言 file browser是一个非常轻量的web端文件管理服务，适合只需要简单文件访问和管理需求的用户。
+在玩客云（或者说debian linux）上安装file browser，几个月之前【已经写过一篇]】。但最近重新开始折腾玩客云的时候，发现filebrowser官方不断的更新版本，文档中的安装指导也更新了，只保留一键脚本安装、docker安装，但就是没保留手动编辑配置文件的安装指导。
+虽然一键脚本安装或者docker安装确实方便了很多，但我还是喜欢之前的手动编辑配置文件的安装方式，这里做简单记录。旧的【那篇文章】依然可用，但修修补补的也麻烦，索性重新写一篇。
+注意：文中图床是ipv6 only，不支持ipv6的网络会看不到图片。
+安装 第一步：下载软件包
+先在本地创建目录
+sudo mkdir -p /opt/filebrowser ; cd $_ 然后根据自己的硬件架构到【github release页面】下载对应的软件包，这里还是以玩客云为例，下载armv7版本
+sudo wget https://github.com/filebrowser/filebrowser/releases/download/v2.26.0/linux-armv7-filebrowser.tar.gz 解压
+sudo tar -zxvf linux-armv7-filebrowser.tar.gz 第二步：创建配置文件
+在file browser的目录下，开始创建软件需要的配置文件，一共有4个文件。
+首先是filebrowser.db，这个文件是file browser的数据库，保存运行过程中配置信息。
+sudo touch filebrowser.db 其次是filebrowser.log，这个文件是file browser的日志文件。
+sudo touch filebrowser.log 然后是config.json，file browser的基础配置文件，用来指定运行的端口、访问目录、数据库文件、log文件。
+sudo nano config.json 录入以下内容
+{ &amp;#34;port&amp;#34;: 8600, &amp;#34;address&amp;#34;: &amp;#34;0.0.0.0&amp;#34;, &amp;#34;root&amp;#34;: &amp;#34;/&amp;#34;, &amp;#34;database&amp;#34;: &amp;#34;/opt/filebrowser/filebrowser.db&amp;#34;, &amp;#34;log&amp;#34;: &amp;#34;/opt/filebrowser.log&amp;#34;, &amp;#34;username&amp;#34;: &amp;#34;admin&amp;#34; } 最后是filebrowser.service，是systemd的配置文件，用来把filebrowser添加到系统服务。注意User=[User]一栏，如果file browser是以root账户运行，这一栏可以删除。如果以non-root用户运行，需要同步调整filebrowser.db和filebrowser.log的用户权限。
+sudo touch filebrowser.service 录入以下内容
+[Unit] Description=The filebrowser Process Manager After=network.</description>
+    </item>
+    
     <item>
       <title>使用PicGo配合兰空图床（Lsky Pro）进行图片上传</title>
       <link>https://ruohai.wang/202311/lsky-pro-use-picgo-to-upload/</link>
@@ -76,7 +101,7 @@ version: &amp;#39;3&amp;#39; services: lsky-pro: image: tyroyal/lsky-pro-x:lates
     </item>
     
     <item>
-      <title>在玩客云上部署PhotoPrism</title>
+      <title>在玩客云上用Docker部署PhotoPrism</title>
       <link>https://ruohai.wang/202311/photoprism-install-on-onecloud/</link>
       <pubDate>Tue, 21 Nov 2023 08:49:04 +0800</pubDate>
       
@@ -141,7 +166,7 @@ A：也不全是。有个瑟推小号，上面都是18+内容，偶尔可能会�
     </item>
     
     <item>
-      <title>在玩客云（armv7）上安装memos</title>
+      <title>在玩客云上用Docker部署memos</title>
       <link>https://ruohai.wang/202311/memos-install-on-onecloud/</link>
       <pubDate>Tue, 14 Nov 2023 13:03:24 +0800</pubDate>
       

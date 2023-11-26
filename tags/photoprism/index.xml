@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 21 Nov 2023 08:49:04 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/photoprism/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>在玩客云上部署PhotoPrism</title>
+      <title>在玩客云上用Docker部署PhotoPrism</title>
       <link>https://ruohai.wang/202311/photoprism-install-on-onecloud/</link>
       <pubDate>Tue, 21 Nov 2023 08:49:04 +0800</pubDate>
       

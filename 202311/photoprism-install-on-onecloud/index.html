@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>在玩客云上部署PhotoPrism // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在玩客云上用Docker部署PhotoPrism // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在玩客云上部署PhotoPrism"/>
+<meta name="twitter:title" content="在玩客云上用Docker部署PhotoPrism"/>
 <meta name="twitter:description" content="前言 硬件性能：
 photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
@@ -27,7 +27,7 @@ systemctl restart docker.service 其中的&quot;iptables&quot;: false是禁止do
 # 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
 PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10."/>
 
-    <meta property="og:title" content="在玩客云上部署PhotoPrism" />
+    <meta property="og:title" content="在玩客云上用Docker部署PhotoPrism" />
 <meta property="og:description" content="前言 硬件性能：
 photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
@@ -77,7 +77,7 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">在玩客云上部署PhotoPrism</h1>
+      <h1 class ="post-title">在玩客云上用Docker部署PhotoPrism</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">

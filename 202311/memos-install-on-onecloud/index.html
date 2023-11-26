@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>在玩客云（armv7）上安装memos // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在玩客云上用Docker部署memos // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在玩客云（armv7）上安装memos"/>
+<meta name="twitter:title" content="在玩客云上用Docker部署memos"/>
 <meta name="twitter:description" content="前言 memos官网文档写的部署方法是docker或者docker-compose，顺利的话就一条命令的事。
 但不出意外肯定就是要出意外了，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
 那就简单记录下怎么弄吧。
@@ -27,7 +27,7 @@ version: &#34;3.0&#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 con
 版本号，从latest指定为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
 docker-compose up -d 注意事项 如果要升级或者重新部署memos，备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets。 目前0.15.0和新版本在功能上已经出现了脱节，新版本支持用户评论功能，调整了表结构，0.15.0的数据库和新版不兼容 "/>
 
-    <meta property="og:title" content="在玩客云（armv7）上安装memos" />
+    <meta property="og:title" content="在玩客云上用Docker部署memos" />
 <meta property="og:description" content="前言 memos官网文档写的部署方法是docker或者docker-compose，顺利的话就一条命令的事。
 但不出意外肯定就是要出意外了，玩客云是armv7的硬件，memos的最新版已经不支持armv7。
 那就简单记录下怎么弄吧。
@@ -77,7 +77,7 @@ docker-compose up -d 注意事项 如果要升级或者重新部署memos，备�
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">在玩客云（armv7）上安装memos</h1>
+      <h1 class ="post-title">在玩客云上用Docker部署memos</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
