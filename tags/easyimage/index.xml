@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>EasyImage on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/easyimage/</link>
+    <description>Recent content in EasyImage on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 27 Nov 2023 23:34:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/easyimage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>玩客云上安装简单图床（EasyImage）</title>
+      <link>https://ruohai.wang/202311/easyimage-install-guide/</link>
+      <pubDate>Mon, 27 Nov 2023 23:34:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/easyimage-install-guide/</guid>
+      <description>前言 前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的（虽然也折腾了很久）。
+这次又折腾easyimage，有几个原因：
+玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的 lsky pro太重了，我只需要最基础的图床服务 安全。图床服务会暴露域名，虽然做了简单的安全措施，但服务分离还是更保险一些 正好这两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。
+准备 部署easyimage有两种方式，【官方github仓库】只提供了php源码，第三方提供了【docker镜像】。
+图方便可以用docker部署。
+本来在玩客云上我也是docker部署的，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。不过实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后启动一直会报错，所以不得不回头来研究怎么跑这个php项目。
+部署成功以后，回过看过程，其实非常非常简单。但我没弄过php，过程中踩坑无数，心累。
+那跑php项目，这次准备的内容如下：
+一个已经刷了armbian系统的小盒子（本文用的是赚钱宝二代ws1508） 一些基础的debian的操作知识 部署 这次教程内容从简，不再罗里吧嗦事无巨细的什么都写了，只写核心内容。
+第一步：安装软件
+准备跑php项目的环境
+apt install nginx php php-fpm php-gd 第二步：下载代码
+创建网站目录、下载代码、解压，都是基本操作，此处略过不表。
+两点有关权限的要注意，官方也指明了：
+网站根目录755权限 网站根目录分配用户，官方要求www:www，完全胡扯！debian下nginx的用户是www-data:www-data 第三步：配置nginx
+话不多说，直接编辑nginx配置文件
+nano /etc/nginx/sites-available/default 录入以下内容
+server { listen 80; listen [::]:80; server_name easyimage; root /mnt/data/easyimage; location ~ \.php$ { fastcgi_pass unix:/run/php/php8.2-fpm.sock; include fastcgi.conf; } location / { index index.php; } } 有几个注意事项：
+server_name，随便填，有域名填域名，没域名填ip，随便填都行 root，指定网站根目录，很明显我的网站目录是/mnt/data/easyimage，请根据自己实际情况调整 fastcgi_pass，这里要注意，网上很多乱七八糟的教程都填的127.0.0.1:9000也不讲清楚为什么，都他妈傻x。fastcgi_pass有四种配置，详细配置项可以查看配置文件/etc/php/8.2/fpm/pool.d/www.conf中的listen一项，指的是fastcgi以哪种方式监听，默认的是listen = /run/php/php8.2-fpm.sock，也就是监听unix socket。要注意nginx配置文件中的监听方式要和这里保持同步，不同步的话fastcgi是无法监听到nginx转发的请求的。 fastcgi的/etc/php/8.</description>
+    </item>
+    
+  </channel>
+</rss>
