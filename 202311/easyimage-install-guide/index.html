@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>玩客云上安装简单图床（EasyImage） // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在玩客云上安装简单图床（EasyImage） // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,18 +12,18 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="玩客云上安装简单图床（EasyImage）"/>
-<meta name="twitter:description" content="前言 前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的（虽然也折腾了很久）。
-这次又折腾easyimage，有几个原因：
-玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的 lsky pro太重了，我只需要最基础的图床服务 安全。图床服务会暴露域名，虽然做了简单的安全措施，但服务分离还是更保险一些 正好这两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。
-准备 部署easyimage有两种方式，【官方github仓库】只提供了php源码，第三方提供了【docker镜像】。
-图方便可以用docker部署。
-本来在玩客云上我也是docker部署的，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。不过实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后启动一直会报错，所以不得不回头来研究怎么跑这个php项目。
-部署成功以后，回过看过程，其实非常非常简单。但我没弄过php，过程中踩坑无数，心累。
-那跑php项目，这次准备的内容如下：
-一个已经刷了armbian系统的小盒子（本文用的是赚钱宝二代ws1508） 一些基础的debian的操作知识 部署 这次教程内容从简，不再罗里吧嗦事无巨细的什么都写了，只写核心内容。
+<meta name="twitter:title" content="在玩客云上安装简单图床（EasyImage）"/>
+<meta name="twitter:description" content="前言 前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的，虽然也折腾了很久。
+这没隔几天又折腾easyimage，并不是我闲的蛋疼，有几个原因：
+玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的 lsky pro太重了，我只需要最基础的图床服务 安全，图床服务会暴露域名，虽然已经做了简单的安防，但服务分离还是更保险一些 正好前两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。
+准备 部署easyimage有两种方式，【官方github仓库】提供了php源码，第三方提供了【docker镜像】。
+想方便简单可以用docker部署，一条命令/一个配置文件就搞定，快速上手。
+原本我也是用docker把easyimage部署在玩客云上，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。但实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后docker一直会报错，所以不得不更换策略，研究怎么跑php项目。
+部署成功以后，回头看过程，其实非常非常简单。但我php零经验，过程中踩坑无数，心累。
+这次需要提前准备的内容如下：
+一个debian/armbian设备 一些基础的debian的操作知识 部署 这次教程内容从简，不再事无巨细的什么都写了，只写核心内容。
 第一步：安装软件
-准备跑php项目的环境
+跑php项目的环境准备
 apt install nginx php php-fpm php-gd 第二步：下载代码
 创建网站目录、下载代码、解压，都是基本操作，此处略过不表。
 两点有关权限的要注意，官方也指明了：
@@ -31,20 +31,21 @@ apt install nginx php php-fpm php-gd 第二步：下载代码
 话不多说，直接编辑nginx配置文件
 nano /etc/nginx/sites-available/default 录入以下内容
 server { listen 80; listen [::]:80; server_name easyimage; root /mnt/data/easyimage; location ~ \.php$ { fastcgi_pass unix:/run/php/php8.2-fpm.sock; include fastcgi.conf; } location / { index index.php; } } 有几个注意事项：
-server_name，随便填，有域名填域名，没域名填ip，随便填都行 root，指定网站根目录，很明显我的网站目录是/mnt/data/easyimage，请根据自己实际情况调整 fastcgi_pass，这里要注意，网上很多乱七八糟的教程都填的127.0.0.1:9000也不讲清楚为什么，都他妈傻x。fastcgi_pass有四种配置，详细配置项可以查看配置文件/etc/php/8.2/fpm/pool.d/www.conf中的listen一项，指的是fastcgi以哪种方式监听，默认的是listen = /run/php/php8.2-fpm.sock，也就是监听unix socket。要注意nginx配置文件中的监听方式要和这里保持同步，不同步的话fastcgi是无法监听到nginx转发的请求的。 fastcgi的/etc/php/8."/>
+server_name，随便填，有域名填域名，没域名填ip，随便填都行 root，指定网站根目录，很明显我的网站目录是/mnt/data/easyimage，请根据自己实际情况调整 fastcgi_pass，这里要注意，网上很多乱七八糟的教程都填的127.0.0.1:9000也不讲清楚为什么，都他妈傻x。fastcgi_pass有四种配置，详细配置项可以查看配置文件/etc/php/8.2/fpm/pool.d/www.conf中的listen一项。要注意nginx配置文件中和这里保持同步，不同步的话fastcgi无法监听到nginx转发的请求。 fastcgi的/etc/php/8.2/fpm/pool.d/www.conf的说明如下：
+; The address on which to accept FastCGI requests."/>
 
-    <meta property="og:title" content="玩客云上安装简单图床（EasyImage）" />
-<meta property="og:description" content="前言 前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的（虽然也折腾了很久）。
-这次又折腾easyimage，有几个原因：
-玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的 lsky pro太重了，我只需要最基础的图床服务 安全。图床服务会暴露域名，虽然做了简单的安全措施，但服务分离还是更保险一些 正好这两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。
-准备 部署easyimage有两种方式，【官方github仓库】只提供了php源码，第三方提供了【docker镜像】。
-图方便可以用docker部署。
-本来在玩客云上我也是docker部署的，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。不过实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后启动一直会报错，所以不得不回头来研究怎么跑这个php项目。
-部署成功以后，回过看过程，其实非常非常简单。但我没弄过php，过程中踩坑无数，心累。
-那跑php项目，这次准备的内容如下：
-一个已经刷了armbian系统的小盒子（本文用的是赚钱宝二代ws1508） 一些基础的debian的操作知识 部署 这次教程内容从简，不再罗里吧嗦事无巨细的什么都写了，只写核心内容。
+    <meta property="og:title" content="在玩客云上安装简单图床（EasyImage）" />
+<meta property="og:description" content="前言 前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的，虽然也折腾了很久。
+这没隔几天又折腾easyimage，并不是我闲的蛋疼，有几个原因：
+玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的 lsky pro太重了，我只需要最基础的图床服务 安全，图床服务会暴露域名，虽然已经做了简单的安防，但服务分离还是更保险一些 正好前两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。
+准备 部署easyimage有两种方式，【官方github仓库】提供了php源码，第三方提供了【docker镜像】。
+想方便简单可以用docker部署，一条命令/一个配置文件就搞定，快速上手。
+原本我也是用docker把easyimage部署在玩客云上，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。但实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后docker一直会报错，所以不得不更换策略，研究怎么跑php项目。
+部署成功以后，回头看过程，其实非常非常简单。但我php零经验，过程中踩坑无数，心累。
+这次需要提前准备的内容如下：
+一个debian/armbian设备 一些基础的debian的操作知识 部署 这次教程内容从简，不再事无巨细的什么都写了，只写核心内容。
 第一步：安装软件
-准备跑php项目的环境
+跑php项目的环境准备
 apt install nginx php php-fpm php-gd 第二步：下载代码
 创建网站目录、下载代码、解压，都是基本操作，此处略过不表。
 两点有关权限的要注意，官方也指明了：
@@ -52,7 +53,8 @@ apt install nginx php php-fpm php-gd 第二步：下载代码
 话不多说，直接编辑nginx配置文件
 nano /etc/nginx/sites-available/default 录入以下内容
 server { listen 80; listen [::]:80; server_name easyimage; root /mnt/data/easyimage; location ~ \.php$ { fastcgi_pass unix:/run/php/php8.2-fpm.sock; include fastcgi.conf; } location / { index index.php; } } 有几个注意事项：
-server_name，随便填，有域名填域名，没域名填ip，随便填都行 root，指定网站根目录，很明显我的网站目录是/mnt/data/easyimage，请根据自己实际情况调整 fastcgi_pass，这里要注意，网上很多乱七八糟的教程都填的127.0.0.1:9000也不讲清楚为什么，都他妈傻x。fastcgi_pass有四种配置，详细配置项可以查看配置文件/etc/php/8.2/fpm/pool.d/www.conf中的listen一项，指的是fastcgi以哪种方式监听，默认的是listen = /run/php/php8.2-fpm.sock，也就是监听unix socket。要注意nginx配置文件中的监听方式要和这里保持同步，不同步的话fastcgi是无法监听到nginx转发的请求的。 fastcgi的/etc/php/8." />
+server_name，随便填，有域名填域名，没域名填ip，随便填都行 root，指定网站根目录，很明显我的网站目录是/mnt/data/easyimage，请根据自己实际情况调整 fastcgi_pass，这里要注意，网上很多乱七八糟的教程都填的127.0.0.1:9000也不讲清楚为什么，都他妈傻x。fastcgi_pass有四种配置，详细配置项可以查看配置文件/etc/php/8.2/fpm/pool.d/www.conf中的listen一项。要注意nginx配置文件中和这里保持同步，不同步的话fastcgi无法监听到nginx转发的请求。 fastcgi的/etc/php/8.2/fpm/pool.d/www.conf的说明如下：
+; The address on which to accept FastCGI requests." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202311/easyimage-install-guide/" /><meta property="article:section" content="202311" />
 <meta property="article:published_time" content="2023-11-27T23:34:11+08:00" />
@@ -89,7 +91,7 @@ server_name，随便填，有域名填域名，没域名填ip，随便填都行 
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">玩客云上安装简单图床（EasyImage）</h1>
+      <h1 class ="post-title">在玩客云上安装简单图床（EasyImage）</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -117,32 +119,32 @@ server_name，随便填，有域名填域名，没域名填ip，随便填都行 
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的（虽然也折腾了很久）。</p>
-<p>这次又折腾easyimage，有几个原因：</p>
+<p>前几天在玩客云上用docker方式部署了兰空图床（lsky pro），挺好用的，虽然也折腾了很久。</p>
+<p>这没隔几天又折腾easyimage，并不是我闲的蛋疼，有几个原因：</p>
 <ul>
 <li>玩客云硬件孱弱，能跑lsky pro，但跑起来以后web端响应有点慢吞吞的</li>
 <li>lsky pro太重了，我只需要最基础的图床服务</li>
-<li>安全。图床服务会暴露域名，虽然做了简单的安全措施，但服务分离还是更保险一些</li>
+<li>安全，图床服务会暴露域名，虽然已经做了简单的安防，但服务分离还是更保险一些</li>
 </ul>
-<p>正好这两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。</p>
+<p>正好前两天看到有人分享一个简单的图床服务，easyimage，看了下项目页面和demo，我觉得🉑，研究了2天，这里做个简单记录。</p>
 <hr>
 <h2 id="准备">准备</h2>
-<p>部署easyimage有两种方式，【<a href="https://github.com/icret/EasyImages2.0">官方github仓库</a>】只提供了php源码，第三方提供了【<a href="https://hub.docker.com/r/ddsderek/easyimage">docker镜像</a>】。</p>
-<p>图方便可以用docker部署。</p>
-<p>本来在玩客云上我也是docker部署的，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。不过实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后启动一直会报错，所以不得不回头来研究怎么跑这个php项目。</p>
-<p>部署成功以后，回过看过程，其实非常非常简单。但我没弄过php，过程中踩坑无数，心累。</p>
-<p>那跑php项目，这次准备的内容如下：</p>
+<p>部署easyimage有两种方式，【<a href="https://github.com/icret/EasyImages2.0">官方github仓库</a>】提供了php源码，第三方提供了【<a href="https://hub.docker.com/r/ddsderek/easyimage">docker镜像</a>】。</p>
+<p>想方便简单可以用docker部署，一条命令/一个配置文件就搞定，快速上手。</p>
+<p>原本我也是用docker把easyimage部署在玩客云上，但后来想把图床服务分离出来，部署到赚钱宝二代（ws1508）上，用tf卡当存储。但实际部署过程中碰到了bug，赚钱宝二代这个设备，安装docker以后docker一直会报错，所以不得不更换策略，研究怎么跑php项目。</p>
+<p>部署成功以后，回头看过程，其实非常非常简单。但我php零经验，过程中踩坑无数，心累。</p>
+<p>这次需要提前准备的内容如下：</p>
 <ul>
-<li>一个已经刷了armbian系统的小盒子（本文用的是赚钱宝二代ws1508）</li>
+<li>一个debian/armbian设备</li>
 <li>一些基础的debian的操作知识</li>
 </ul>
 <hr>
 <h2 id="部署">部署</h2>
-<p>这次教程内容从简，不再罗里吧嗦事无巨细的什么都写了，只写核心内容。</p>
+<p>这次教程内容从简，不再事无巨细的什么都写了，只写核心内容。</p>
 <blockquote>
 <p>第一步：安装软件</p>
 </blockquote>
-<p>准备跑php项目的环境</p>
+<p>跑php项目的环境准备</p>
 <pre tabindex="0"><code>apt install nginx php php-fpm php-gd
 </code></pre><blockquote>
 <p>第二步：下载代码</p>
@@ -180,7 +182,7 @@ server_name，随便填，有域名填域名，没域名填ip，随便填都行 
 <ul>
 <li><code>server_name</code>，随便填，有域名填域名，没域名填ip，随便填都行</li>
 <li><code>root</code>，指定网站根目录，很明显我的网站目录是<code>/mnt/data/easyimage</code>，请根据自己实际情况调整</li>
-<li><code>fastcgi_pass</code>，这里要注意，网上很多乱七八糟的教程都填的<code>127.0.0.1:9000</code>也不讲清楚为什么，都他妈傻x。<code>fastcgi_pass</code>有四种配置，详细配置项可以查看配置文件<code>/etc/php/8.2/fpm/pool.d/www.conf</code>中的<code>listen</code>一项，指的是fastcgi以哪种方式监听，默认的是<code>listen = /run/php/php8.2-fpm.sock</code>，也就是监听<code>unix socket</code>。要注意nginx配置文件中的监听方式要和这里保持同步，不同步的话fastcgi是无法监听到nginx转发的请求的。</li>
+<li><code>fastcgi_pass</code>，这里要注意，网上很多乱七八糟的教程都填的<code>127.0.0.1:9000</code>也不讲清楚为什么，都他妈傻x。<code>fastcgi_pass</code>有四种配置，详细配置项可以查看配置文件<code>/etc/php/8.2/fpm/pool.d/www.conf</code>中的<code>listen</code>一项。要注意nginx配置文件中和这里保持同步，不同步的话fastcgi无法监听到nginx转发的请求。</li>
 </ul>
 <p>fastcgi的<code>/etc/php/8.2/fpm/pool.d/www.conf</code>的说明如下：</p>
 <pre tabindex="0"><code>; The address on which to accept FastCGI requests.
