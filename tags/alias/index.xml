@@ -23,14 +23,16 @@ source .zshrc 到这里就完成配置了～
     
     <item>
       <title>Linux下添加自定义alias</title>
-      <link>https://ruohai.wang/202307/add-alias/</link>
+      <link>https://ruohai.wang/202307/alias-add-and-use/</link>
       <pubDate>Fri, 14 Jul 2023 23:14:36 +0800</pubDate>
       
-      <guid>https://ruohai.wang/202307/add-alias/</guid>
-      <description>针对当前用户添加alias，编辑用户目录下的.bashrc文件
+      <guid>https://ruohai.wang/202307/alias-add-and-use/</guid>
+      <description>针对当前用户
+编辑用户目录下的.bashrc文件
 nano ~/.bashrc 添加一行
 alias ll=&amp;#39;ls -lah&amp;#39; 重载生效
-source ~/.bashrc 全局生效，编辑/etc/bash.bashrc</description>
+source ~/.bashrc 全局生效
+编辑/etc/bash.bashrc</description>
     </item>
     
   </channel>

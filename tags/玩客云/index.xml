@@ -418,5 +418,28 @@ openwrt固件地址：https://cloud.189.cn/t/rAv6v2ENnmAn （访问码：6hhb）
 这个是恩山论坛里id:2224758988的用户分享的版本，我短暂体验了几天，也很稳定。如果上面这个链接失效，可以去【原帖地址】这里找。我对旁路由这种使用模式并不是很满意，所以用了几天以后就撤掉了。</description>
     </item>
     
+    <item>
+      <title>在玩客云上用Speedtest CLI进行网络测速</title>
+      <link>https://ruohai.wang/202307/speedtest-cli-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 14:57:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/speedtest-cli-setup/</guid>
+      <description>前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
+注意：
+debian仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
+安装 一键安装脚本
+ubunt/debian系linux的一键脚本
+# 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 二进制包安装
+创建目录、下载、解压。根据自己的硬件和系统下载对应版本。
+mkdir /opt/speedtest-cli ; cd $_ wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
+./speedtest 或者添加环境变量
+nano ~/.bashrc 在末尾添加一行
+export PATH=$PATH:/opt/speedtest-cli 然后重载生效，就可以直接使用speectest命令
+source ~/.bashrc 使用 第一步：查看附近可用的测速服务器
+使用命令查看附近可用过的测速服务器
+speedtest -L 可用服务器列表
+Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjiang China 26352 China Telecom JiangSu 5G Nanjing China 5317 江苏电信5G Yangzhou China 17145 China Telecom AnHui 5G Hefei China 也可以限定自己所在的城市，比如杭州</description>
+    </item>
+    
   </channel>
 </rss>
