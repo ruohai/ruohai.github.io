@@ -14,33 +14,33 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在玩客云上用Docker部署PhotoPrism"/>
 <meta name="twitter:description" content="前言 硬件性能：
-photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
+photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张mi10s拍摄的2400万像素的heif/heic格式的照片到jpg需要7s钟 转码视频，mi10s拍摄的1080p@60fps h265视频30秒，转码成720p avc视频，大概需要2分半 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
-这一步没啥好说的，两条命令。
-apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
-因为docker hub被封，记得配置docker国内镜像
-nano /etc/docker/daemon.json 录入以下内容：
-{ &#34;registry-mirrors&#34;: [ &#34;https://registry.hub.docker.com&#34;, &#34;http://hub-mirror.c.163.com&#34;, &#34;https://mirror.baidubce.com&#34;, &#34;https://docker.mirrors.sjtug.sjtu.edu.cn&#34;, &#34;https://docker.nju.edu.cn&#34; ], &#34;iptables&#34;: false } 保存后退出，然后重启docker。
+直接用debian仓库里的docker.io
+apt install docker.io 使用docker-compose方式部署
+apt install dockere-compose 因为docker hub被封，记得配置docker国内镜像
+nano /etc/docker/daemon.json 录入以下内容，需要注意没必要填太多镜像站，一两个就够了：
+{ &#34;registry-mirrors&#34;: [&#34;http://hub-mirror.c.163.com&#34;], &#34;iptables&#34;: false } 保存后退出，然后重启docker。
 systemctl restart docker.service 其中的&quot;iptables&quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
 第二步：配置文件调整
 先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。
-# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
-PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10."/>
+# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism ; cd $_ # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
+PHOTOPRISM_DEFAULT_TLS: &quot;false&quot;，这个选项是pp程序初次部署时生成一个自签名的https/tls证书，没卵用，而且在玩客云上部署时会耗费大量时间以生成证书，建议禁用 PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10."/>
 
     <meta property="og:title" content="在玩客云上用Docker部署PhotoPrism" />
 <meta property="og:description" content="前言 硬件性能：
-photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试 存储空间：
+photoprism官方明确要求部署pp服务的最低硬件要求是4核 &#43; 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张mi10s拍摄的2400万像素的heif/heic格式的照片到jpg需要7s钟 转码视频，mi10s拍摄的1080p@60fps h265视频30秒，转码成720p avc视频，大概需要2分半 存储空间：
 docker.io &#43; docker-compose大概占用300MB存储 photoprism &#43; mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp; 优化 第一步：安装docker环境
-这一步没啥好说的，两条命令。
-apt install docker.io apt install dockere-compose 我倾向于使用debian软件仓库里的docker，所以apt一把梭。
-因为docker hub被封，记得配置docker国内镜像
-nano /etc/docker/daemon.json 录入以下内容：
-{ &#34;registry-mirrors&#34;: [ &#34;https://registry.hub.docker.com&#34;, &#34;http://hub-mirror.c.163.com&#34;, &#34;https://mirror.baidubce.com&#34;, &#34;https://docker.mirrors.sjtug.sjtu.edu.cn&#34;, &#34;https://docker.nju.edu.cn&#34; ], &#34;iptables&#34;: false } 保存后退出，然后重启docker。
+直接用debian仓库里的docker.io
+apt install docker.io 使用docker-compose方式部署
+apt install dockere-compose 因为docker hub被封，记得配置docker国内镜像
+nano /etc/docker/daemon.json 录入以下内容，需要注意没必要填太多镜像站，一两个就够了：
+{ &#34;registry-mirrors&#34;: [&#34;http://hub-mirror.c.163.com&#34;], &#34;iptables&#34;: false } 保存后退出，然后重启docker。
 systemctl restart docker.service 其中的&quot;iptables&quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
 第二步：配置文件调整
 先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。
-# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism # 进目录 cd photoprism # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
-PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10." />
+# 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism ; cd $_ # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
+PHOTOPRISM_DEFAULT_TLS: &quot;false&quot;，这个选项是pp程序初次部署时生成一个自签名的https/tls证书，没卵用，而且在玩客云上部署时会耗费大量时间以生成证书，建议禁用 PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &quot;1000:1000&quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202311/photoprism-install-on-onecloud/" /><meta property="article:section" content="202311" />
 <meta property="article:published_time" content="2023-11-21T08:49:04+08:00" />
@@ -111,7 +111,8 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
 <li>能跑起来的前提是禁用很多图像算法识别功能</li>
 <li>如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云</li>
 <li>实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用</li>
-<li>实测转码一张heif/heic格式的照片到jpg需要7s钟，视频未作测试</li>
+<li>实测转码一张mi10s拍摄的2400万像素的heif/heic格式的照片到jpg需要7s钟</li>
+<li>转码视频，mi10s拍摄的1080p@60fps h265视频30秒，转码成720p avc视频，大概需要2分半</li>
 </ul>
 <p>存储空间：</p>
 <ul>
@@ -124,23 +125,16 @@ PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;，这个选项是pp每次启动的时
 <blockquote>
 <p>第一步：安装docker环境</p>
 </blockquote>
-<p>这一步没啥好说的，两条命令。</p>
+<p>直接用debian仓库里的docker.io</p>
 <pre tabindex="0"><code>apt install docker.io
-
-apt install dockere-compose
-</code></pre><p>我倾向于使用debian软件仓库里的docker，所以apt一把梭。</p>
-<p>因为docker hub被封，记得配置docker国内镜像</p>
+</code></pre><p>使用docker-compose方式部署</p>
+<pre tabindex="0"><code>apt install dockere-compose
+</code></pre><p>因为docker hub被封，记得配置docker国内镜像</p>
 <pre tabindex="0"><code>nano /etc/docker/daemon.json
-</code></pre><p>录入以下内容：</p>
+</code></pre><p>录入以下内容，需要注意没必要填太多镜像站，一两个就够了：</p>
 <pre tabindex="0"><code>{
-    &#34;registry-mirrors&#34;: [
-        &#34;https://registry.hub.docker.com&#34;,
-        &#34;http://hub-mirror.c.163.com&#34;,
-        &#34;https://mirror.baidubce.com&#34;,
-        &#34;https://docker.mirrors.sjtug.sjtu.edu.cn&#34;,
-        &#34;https://docker.nju.edu.cn&#34;
-    ],
-	&#34;iptables&#34;: false
+    &#34;registry-mirrors&#34;: [&#34;http://hub-mirror.c.163.com&#34;],
+    &#34;iptables&#34;: false
 }
 </code></pre><p>保存后退出，然后重启docker。</p>
 <pre tabindex="0"><code>systemctl restart docker.service
@@ -150,15 +144,13 @@ apt install dockere-compose
 </blockquote>
 <p>先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。</p>
 <pre tabindex="0"><code># 创建目录，记得把pp运行目录指向外置硬盘
-mkdir photoprism
-
-# 进目录
-cd photoprism
+mkdir photoprism ; cd $_
 
 # 下载官方的配置文件
 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml
 </code></pre><p>官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改</p>
 <ul>
+<li><code>PHOTOPRISM_DEFAULT_TLS: &quot;false&quot;</code>，这个选项是pp程序初次部署时生成一个自签名的https/tls证书，没卵用，而且在玩客云上部署时会耗费大量时间以生成证书，建议禁用</li>
 <li><code>PHOTOPRISM_DISABLE_CHOWN: &quot;true&quot;</code>，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用</li>
 <li><code>PHOTOPRISM_DISABLE_WEBDAV: &quot;true&quot;</code>，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。</li>
 <li><code>PHOTOPRISM_DISABLE_TENSORFLOW: &quot;true&quot;</code>，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。</li>
