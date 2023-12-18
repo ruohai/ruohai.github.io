@@ -528,20 +528,6 @@ git config --system user.</description>
     </item>
     
     <item>
-      <title>Linux下安装ttyd</title>
-      <link>https://ruohai.wang/202307/install-ttyd/</link>
-      <pubDate>Sat, 15 Jul 2023 16:38:06 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/202307/install-ttyd/</guid>
-      <description>前言 ttyd，webui版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
-第一步：在系统上创建安装目录
-mkdir -p /usr/local/ttyd 第二步：访问ttyd的【github repo】，根据自己的硬件平台，下载对应的的安装包。我是装在ws1508上，选择armhf版本。
-# 进安装目录 cd /usr/local/ttyd # 下载安装包 wget https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.armhf 第三步：授权
-# 增加可执行权限。这里`ttyd.armhf`，以及下文中出现的`ttyd.armhf`，记得都改成自己的安装包的名字。 chmod +x ttyd.armhf 第四步：先学习一下ttyd的手册。有两个参数后面需要用到，-p指定端口，-c设定认证信息，也就是webui的登录账户和密码，格式是username:password。
-USAGE: ttyd [options] &amp;lt;command&amp;gt; [&amp;lt;arguments...&amp;gt;] OPTIONS: -p, --port Port to listen (default: 7681, use `0` for random port) -i, --interface Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/run/ttyd.sock) -U, --socket-owner User owner of the UNIX domain socket file, when enabled (eg: user:group) -c, --credential Credential for basic authentication (format: username:password) -H, --auth-header HTTP Header name for auth proxy, this will configure ttyd to let a HTTP reverse proxy handle authentication -u, --uid User id to run with -g, --gid Group id to run with -s, --signal Signal to send to the command when exit it (default: 1, SIGHUP) -w, --cwd Working directory to be set for the child program -a, --url-arg Allow client to send command line arguments in URL (eg: http://localhost:7681?</description>
-    </item>
-    
-    <item>
       <title>Linux下用SFTP命令操作文件上传下载</title>
       <link>https://ruohai.wang/202307/use-sftp-to-handle-file/</link>
       <pubDate>Sat, 15 Jul 2023 14:48:48 +0800</pubDate>

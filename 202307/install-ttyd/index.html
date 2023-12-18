@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Linux下安装ttyd // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在玩客云上安装ttyd // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,21 +12,41 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Linux下安装ttyd"/>
+<meta name="twitter:title" content="在玩客云上安装ttyd"/>
 <meta name="twitter:description" content="前言 ttyd，webui版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
-第一步：在系统上创建安装目录
-mkdir -p /usr/local/ttyd 第二步：访问ttyd的【github repo】，根据自己的硬件平台，下载对应的的安装包。我是装在ws1508上，选择armhf版本。
-# 进安装目录 cd /usr/local/ttyd # 下载安装包 wget https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.armhf 第三步：授权
-# 增加可执行权限。这里`ttyd.armhf`，以及下文中出现的`ttyd.armhf`，记得都改成自己的安装包的名字。 chmod &#43;x ttyd.armhf 第四步：先学习一下ttyd的手册。有两个参数后面需要用到，-p指定端口，-c设定认证信息，也就是webui的登录账户和密码，格式是username:password。
-USAGE: ttyd [options] &lt;command&gt; [&lt;arguments...&gt;] OPTIONS: -p, --port Port to listen (default: 7681, use `0` for random port) -i, --interface Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/run/ttyd.sock) -U, --socket-owner User owner of the UNIX domain socket file, when enabled (eg: user:group) -c, --credential Credential for basic authentication (format: username:password) -H, --auth-header HTTP Header name for auth proxy, this will configure ttyd to let a HTTP reverse proxy handle authentication -u, --uid User id to run with -g, --gid Group id to run with -s, --signal Signal to send to the command when exit it (default: 1, SIGHUP) -w, --cwd Working directory to be set for the child program -a, --url-arg Allow client to send command line arguments in URL (eg: http://localhost:7681?"/>
+github项目指路：(https://github.com/tsl0922/ttyd)
+安装 第一步：下载安装包
+第一步就是创建安装目录、下载安装包、解压的基础操作，不赘述。玩客云的硬件是arm32v7，注意选择正确的版本。
+mkdir -p /op/ttyd ; cd &amp;_ wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf 第二步：授权
+下载的二进制包默认没有执行权限，需要授权
+chmod &#43;x ttyd.armhf 第三步：查看学习手册
+先学习一下ttyd的手册，有几个参数后面需要用到
+-p，指定端口 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6 第四步：新建服务文件
+要把ttyd添加到系统服务，设置开机自启。
+先创建systemd配置文件
+nano ttyd.service 添加以下内容。如果不是用root用户运行，记得修改User参数。
+[Unit] Description=ttyd After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash [Install] WantedBy=multi-user.target 然后进/system/目录创建软链接
+cd /etc/systemd/system ln -s /opt/ttyd/ttyd.service ttyd.service 第六步：启动ttyd
+systemd重载三件套，ttyd，启动！
+# 重载 systemctl daemon-reload # 启动 systemctl start ttyd.service # 开机自启 systemctl enable ttyd.service 现在就可以打开浏览器，访问http://host-ip:port使用ttyd惹。"/>
 
-    <meta property="og:title" content="Linux下安装ttyd" />
+    <meta property="og:title" content="在玩客云上安装ttyd" />
 <meta property="og:description" content="前言 ttyd，webui版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
-第一步：在系统上创建安装目录
-mkdir -p /usr/local/ttyd 第二步：访问ttyd的【github repo】，根据自己的硬件平台，下载对应的的安装包。我是装在ws1508上，选择armhf版本。
-# 进安装目录 cd /usr/local/ttyd # 下载安装包 wget https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.armhf 第三步：授权
-# 增加可执行权限。这里`ttyd.armhf`，以及下文中出现的`ttyd.armhf`，记得都改成自己的安装包的名字。 chmod &#43;x ttyd.armhf 第四步：先学习一下ttyd的手册。有两个参数后面需要用到，-p指定端口，-c设定认证信息，也就是webui的登录账户和密码，格式是username:password。
-USAGE: ttyd [options] &lt;command&gt; [&lt;arguments...&gt;] OPTIONS: -p, --port Port to listen (default: 7681, use `0` for random port) -i, --interface Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/run/ttyd.sock) -U, --socket-owner User owner of the UNIX domain socket file, when enabled (eg: user:group) -c, --credential Credential for basic authentication (format: username:password) -H, --auth-header HTTP Header name for auth proxy, this will configure ttyd to let a HTTP reverse proxy handle authentication -u, --uid User id to run with -g, --gid Group id to run with -s, --signal Signal to send to the command when exit it (default: 1, SIGHUP) -w, --cwd Working directory to be set for the child program -a, --url-arg Allow client to send command line arguments in URL (eg: http://localhost:7681?" />
+github项目指路：(https://github.com/tsl0922/ttyd)
+安装 第一步：下载安装包
+第一步就是创建安装目录、下载安装包、解压的基础操作，不赘述。玩客云的硬件是arm32v7，注意选择正确的版本。
+mkdir -p /op/ttyd ; cd &amp;_ wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf 第二步：授权
+下载的二进制包默认没有执行权限，需要授权
+chmod &#43;x ttyd.armhf 第三步：查看学习手册
+先学习一下ttyd的手册，有几个参数后面需要用到
+-p，指定端口 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6 第四步：新建服务文件
+要把ttyd添加到系统服务，设置开机自启。
+先创建systemd配置文件
+nano ttyd.service 添加以下内容。如果不是用root用户运行，记得修改User参数。
+[Unit] Description=ttyd After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash [Install] WantedBy=multi-user.target 然后进/system/目录创建软链接
+cd /etc/systemd/system ln -s /opt/ttyd/ttyd.service ttyd.service 第六步：启动ttyd
+systemd重载三件套，ttyd，启动！
+# 重载 systemctl daemon-reload # 启动 systemctl start ttyd.service # 开机自启 systemctl enable ttyd.service 现在就可以打开浏览器，访问http://host-ip:port使用ttyd惹。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/install-ttyd/" /><meta property="article:section" content="202307" />
 <meta property="article:published_time" content="2023-07-15T16:38:06+08:00" />
@@ -63,7 +83,7 @@ USAGE: ttyd [options] &lt;command&gt; [&lt;arguments...&gt;] OPTIONS: -p, --port
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Linux下安装ttyd</h1>
+      <h1 class ="post-title">在玩客云上安装ttyd</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -77,14 +97,13 @@ USAGE: ttyd [options] &lt;command&gt; [&lt;arguments...&gt;] OPTIONS: -p, --port
   <title>clock</title>
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          2 min read
+          1 min read
         </div>
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://ruohai.wang/tags/linux/">Linux</a>
               <a class="tag" href="https://ruohai.wang/tags/ttyd/">ttyd</a>
         </div>
       </div>
@@ -92,75 +111,64 @@ USAGE: ttyd [options] &lt;command&gt; [&lt;arguments...&gt;] OPTIONS: -p, --port
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>ttyd，webui版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。</p>
+<p>github项目指路：(<a href="https://github.com/tsl0922/ttyd">https://github.com/tsl0922/ttyd</a>)</p>
 <hr>
-<p>第一步：在系统上创建安装目录</p>
-<pre tabindex="0"><code>mkdir -p /usr/local/ttyd
-</code></pre><hr>
-<p>第二步：访问ttyd的【<a href="https://github.com/tsl0922/ttyd">github repo</a>】，根据自己的硬件平台，下载对应的的安装包。我是装在ws1508上，选择armhf版本。</p>
-<pre tabindex="0"><code># 进安装目录
-cd /usr/local/ttyd
-# 下载安装包
-wget https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.armhf
-</code></pre><hr>
-<p>第三步：授权</p>
-<pre tabindex="0"><code># 增加可执行权限。这里`ttyd.armhf`，以及下文中出现的`ttyd.armhf`，记得都改成自己的安装包的名字。
-chmod +x ttyd.armhf
-</code></pre><hr>
-<p>第四步：先学习一下ttyd的手册。有两个参数后面需要用到，<code>-p</code>指定端口，<code>-c</code>设定认证信息，也就是webui的登录账户和密码，格式是<code>username:password</code>。</p>
-<pre tabindex="0"><code>USAGE:
-    ttyd [options] &lt;command&gt; [&lt;arguments...&gt;]
+<h2 id="安装">安装</h2>
+<blockquote>
+<p>第一步：下载安装包</p>
+</blockquote>
+<p>第一步就是创建安装目录、下载安装包、解压的基础操作，不赘述。玩客云的硬件是arm32v7，注意选择正确的版本。</p>
+<pre tabindex="0"><code>mkdir -p /op/ttyd ; cd &amp;_
 
-OPTIONS:
-    -p, --port              Port to listen (default: 7681, use `0` for random port)
-    -i, --interface         Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/run/ttyd.sock)
-    -U, --socket-owner      User owner of the UNIX domain socket file, when enabled (eg: user:group)
-    -c, --credential        Credential for basic authentication (format: username:password)
-    -H, --auth-header       HTTP Header name for auth proxy, this will configure ttyd to let a HTTP reverse proxy handle authentication
-    -u, --uid               User id to run with
-    -g, --gid               Group id to run with
-    -s, --signal            Signal to send to the command when exit it (default: 1, SIGHUP)
-    -w, --cwd               Working directory to be set for the child program
-    -a, --url-arg           Allow client to send command line arguments in URL (eg: http://localhost:7681?arg=foo&amp;arg=bar)
-    -W, --writable          Allow clients to write to the TTY (readonly by default)
-    -t, --client-option     Send option to client (format: key=value), repeat to add more options
-    -T, --terminal-type     Terminal type to report, default: xterm-256color
-    -O, --check-origin      Do not allow websocket connection from different origin
-    -m, --max-clients       Maximum clients to support (default: 0, no limit)
-    -o, --once              Accept only one client and exit on disconnection
-    -B, --browser           Open terminal with the default system browser
-    -I, --index             Custom index.html path
-    -b, --base-path         Expected base path for requests coming from a reverse proxy (eg: /mounted/here, max length: 128)
-    -P, --ping-interval     Websocket ping interval(sec) (default: 5)
-    -6, --ipv6              Enable IPv6 support
-    -S, --ssl               Enable SSL
-    -C, --ssl-cert          SSL certificate file path
-    -K, --ssl-key           SSL key file path
-    -A, --ssl-ca            SSL CA file path for client certificate verification
-    -d, --debug             Set log level (default: 7)
-    -v, --version           Print the version and exit
-    -h, --help              Print this text and exit
-</code></pre><hr>
-<p>第五步：创建ttyd.service文件。注意<code>-p</code>后的端口号和<code>-c</code>后面的用户名密码改成自己的。</p>
-<pre tabindex="0"><code>nano /etc/systemd/system/ttyd.service
-</code></pre><p>添加以下内容</p>
+wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf
+</code></pre><blockquote>
+<p>第二步：授权</p>
+</blockquote>
+<p>下载的二进制包默认没有执行权限，需要授权</p>
+<pre tabindex="0"><code>chmod +x ttyd.armhf
+</code></pre><blockquote>
+<p>第三步：查看学习手册</p>
+</blockquote>
+<p>先学习一下ttyd的手册，有几个参数后面需要用到</p>
+<ul>
+<li><code>-p</code>，指定端口</li>
+<li><code>-c</code>，设定认证信息，也就是账户和密码，格式是<code>username:password</code></li>
+<li><code>-W</code>，设定写权限。默认只读，如果要写权限需要加上这个参数</li>
+<li><code>-6</code>，开启支持ipv6</li>
+</ul>
+<blockquote>
+<p>第四步：新建服务文件</p>
+</blockquote>
+<p>要把ttyd添加到系统服务，设置开机自启。</p>
+<p>先创建systemd配置文件</p>
+<pre tabindex="0"><code>nano ttyd.service
+</code></pre><p>添加以下内容。如果不是用root用户运行，记得修改<code>User</code>参数。</p>
 <pre tabindex="0"><code>[Unit]
 Description=ttyd
 After=network.target
 
 [Service]
-ExecStart=/usr/local/ttyd/ttyd.armhf -p 123456 -c jack:123456 bash
+User=[user]
+ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash
 
 [Install]
 WantedBy=multi-user.target
-</code></pre><hr>
-<p>第六步：把ttyd添加到systemd服务并设置开机自启。</p>
+</code></pre><p>然后进/system/目录创建软链接</p>
+<pre tabindex="0"><code>cd /etc/systemd/system
+
+ln -s /opt/ttyd/ttyd.service ttyd.service
+</code></pre><blockquote>
+<p>第六步：启动ttyd</p>
+</blockquote>
+<p>systemd重载三件套，ttyd，启动！</p>
 <pre tabindex="0"><code># 重载
 systemctl daemon-reload
 # 启动
 systemctl start ttyd.service
 # 开机自启
 systemctl enable ttyd.service
-</code></pre><p>现在就可以打开浏览器，访问<code>http://host-ip:port</code>使用ttyd惹。😄</p>
+</code></pre><p>现在就可以打开浏览器，访问<code>http://host-ip:port</code>使用ttyd惹。</p>
+<p>😄</p>
 
     </div>
     <div class="post-footer">
