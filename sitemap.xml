@@ -2,22 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202312/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202312/ws1408-find-a-new-openwrt-firmware/</loc>
+    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202311/</loc>
     <lastmod>2023-11-27T23:34:11+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/easyimage/</loc>
     <lastmod>2023-11-27T23:34:11+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-11-27T23:34:11+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2023-11-27T23:34:11+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202311/easyimage-install-guide/</loc>
-    <lastmod>2023-11-27T23:34:11+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
     <lastmod>2023-11-27T23:34:11+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/filebrowser/</loc>
@@ -156,9 +165,6 @@
     <lastmod>2023-10-05T16:35:47+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202310/ws1608-summary/</loc>
-    <lastmod>2023-10-04T01:49:08+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
     <lastmod>2023-10-04T01:49:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202309/</loc>

@@ -5,7 +5,19 @@
     <link>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</link>
     <description>Recent content in 玩客云 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 27 Nov 2023 23:34:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Dec 2023 23:08:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>迅雷赚钱宝一代（WS1408）可用OpenWrt固件分享</title>
+      <link>https://ruohai.wang/202312/ws1408-find-a-new-openwrt-firmware/</link>
+      <pubDate>Mon, 18 Dec 2023 23:08:25 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202312/ws1408-find-a-new-openwrt-firmware/</guid>
+      <description>今天在bing搜索里随便敲了俩关键字，本意是看下有啥linux小盒子上还能装的好用、可用的服务。当然，我知道有个热门的github仓库叫做Awesome-Selfhosted都是优秀的自建服务，但它里面我几乎都用不上啊，还是要根据自己的实际情况要选择需要的服务。
+谁知bing搜索还真有了一个小惊喜，搜到了迅雷赚钱宝一代（ws1408）可用的纯净版本的openwrt18/19两版固件，还是来自恩山论坛，帖子指路：
+2021年了, 大家还记得迅雷赚钱宝吗? 记一次OpenWrt软件安装 赚钱宝1代2代3代openwrt官网固件线刷包 一共两个可用的版本，分别是openwrt18和openwrt19，俩都是openwrt官网版本，原滋原味，没有装任何插件，没有装任何主题，又openwrt官方源可以直接更新 &amp;amp; 安装软件。
+之前在论坛里已经有一版openwrt，版本比较新，帖子指路：【更新直刷包2023.03.27 赚钱宝1代WS1408 旁路由openwrt 22.03.3 内存卡或者U盘启动】。我最初用的也是这版，因为那会只搜到了这版。这般的好处是版本比较新，内核也新，缺点是70MB的存储空间可用只有10MB多一点，而且软件源需要自己改，当时我折腾了一阵以后就没再弄，只当作samba服务器用。</description>
+    </item>
+    
     <item>
       <title>在玩客云上安装简单图床（EasyImage）</title>
       <link>https://ruohai.wang/202311/easyimage-install-guide/</link>
