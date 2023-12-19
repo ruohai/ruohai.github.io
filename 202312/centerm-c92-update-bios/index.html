@@ -231,6 +231,7 @@ c92开机，按f2进入bios，在boot标签页，在boot option priorities中调
 </ol>
 <p>好了，这一步完成后，原硬盘格式化完成，选择关机即可。</p>
 <p>到此，c92已经变成一个支持u盘引导的普通x86_64小盒子，可以随意刷入第三方系统。插入引导u盘以后，记得在bios的boot标签中调整启动项。</p>
+<hr>
 <h2 id="勘误">勘误</h2>
 <p>刷新bios参考的这个视频：<a href="https://www.bilibili.com/video/BV1PN4y1P7uW">刷BIOS，装第三方系统，升腾C92瘦客户机折腾记</a>，其中提到在更新bios以后，需要调整<code>advanced —— csm configuration</code>中的一些参数。实测不需要，而且改了以后容易出bug，比如legacy引导但用了uefi固件之类导致系统无法引导之类。所以个人建议不要动这里的参数。</p>
 
