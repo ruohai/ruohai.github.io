@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>升腾C92破解(刷写)BIOS // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="升腾C92破解(刷写)BIOS"/>
+<meta name="twitter:description" content="前言 最近又从海鲜市场入手了一个小盒子，升腾c92，cpu是j1900，2&#43;8的内存/硬盘，不带电源130rmb。
+现在闲鱼上130这个价格一般是j1800的版本，j1900的价格已经上探到180左右。没办法，j1900太热门了，虽然早已经有接班的j4125、n100，但目前还是溢价严重。
+我收到的这个c92还是原版bios，默认不支持u盘启动，所以要改造一下。
+注意：本文图片只支持ipv6，如果你的网络不支持ipv6的话图片会无法显示。
+简单列一下升腾c92的硬件配置：
+供电是dc口，5521规格，12v/3a 只有一个msata硬盘接口 只有一个内存插槽，支持笔记本ddr3内存条 usb2.0接口5个 usb3.0接口1个 千兆rj45网口1个 dp口1个，dvi口1个 音频输入口1个，音频输出口1个 cpu有两个版本，2c2t的j1800，还有4c4t的j1900，注意区分，这俩cpu性能差了50% 吐槽 首先不得不吐槽国内玩电子垃圾的氛围，都喜欢搞论坛、qq群把资源私有化，动辄就是邀请制、收费下载、加密提取码。这种模式下，资源很容易失效，非常不利于资源的累积和分享，对新人小白也非常的不友好。一个电子垃圾一旦过了热度期，想再折腾想找资源就变得很难。
+刷BIOS c92的bios刷机主要参考这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记。
+但视频这种形式我不喜欢，需要反复拖动进度条来查看有用的那点儿信息，所以做了简单整理。
+第一步：下载bios升级文件
+up提供了c92的bios升级文件，指路：升腾C92Bios升级文件
+他把文件托管在迅雷云盘，需要装迅雷以后才能下载，或者用油猴脚本提取下载链接，自己想办法吧。
+下载以后解压，里面3个压缩包
+解压c92和fpt这俩压缩包，得到3个文件，这仨文件就是最终需要用到的。
+第二步：准备u盘
+需要一个u盘，格式化成fat32格式。将上一步解压得到的三个文件，复制到u盘根目录。
+目录结构如下：
+----- |-- c92_txe1.1_lastucodevbios.bin |-- fparts.txt |-- fpt.efi 第三步：刷新bios
+u盘插上c92，开机，按f2进入bios界面。
+选择save &amp; exit标签，选择launch efi shell from filesystem device。然后会进入shell界面。
+在shell界面敲map，会列出所有存储设备，查看u盘的设备号，一般是fs0。
+敲fs0:后回车，进入u盘目录。
+进入u盘目录后，可以敲ls查看文件列表，确认当前是在正确的目录。
+先备份原始bios，敲命令fpt -d backup.bin，等进度条跑完就完成了原始bios备份。
+刷新bios，敲命令fpt -f c92然后按tab自动补全文件名，回车，等进度条跑完即完成bios刷新。
+输入命令exit退出shell
+到这里就完成了bios刷新。此时可以看下是否回到bios界面，如果不是，可以直接断电重启，或者按开机键重启。
+第四步：格式化硬盘
+这一步需要一个刷了pe系统的u盘，pe系统u盘的制作这里不赘述，pe用wepe即可，指路：微PE工具箱。
+c92开机，按f2进入bios，在boot标签页，在boot option priorities中调整开机启动项，把option #1改成pe系统u盘，然后按f10保存退出。
+开机进入wepe，启动disk genius，选择c92的硬盘，右键选择删除所有分区，然后保存更改。
+好了，这一步完成后，原硬盘格式化完成，选择关机即可。
+到此，c92已经变成一个支持u盘引导的普通x86_64小盒子，可以随意刷入第三方系统。插入引导u盘以后，记得在bios的boot标签中调整启动项。
+勘误 刷新bios参考的这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记，其中提到在更新bios以后，需要调整advanced —— csm configuration中的一些参数。实测不需要，而且改了以后容易出bug，比如legacy引导但用了uefi固件之类导致系统无法引导之类。所以个人建议不要动这里的参数。"/>
+
+    <meta property="og:title" content="升腾C92破解(刷写)BIOS" />
+<meta property="og:description" content="前言 最近又从海鲜市场入手了一个小盒子，升腾c92，cpu是j1900，2&#43;8的内存/硬盘，不带电源130rmb。
+现在闲鱼上130这个价格一般是j1800的版本，j1900的价格已经上探到180左右。没办法，j1900太热门了，虽然早已经有接班的j4125、n100，但目前还是溢价严重。
+我收到的这个c92还是原版bios，默认不支持u盘启动，所以要改造一下。
+注意：本文图片只支持ipv6，如果你的网络不支持ipv6的话图片会无法显示。
+简单列一下升腾c92的硬件配置：
+供电是dc口，5521规格，12v/3a 只有一个msata硬盘接口 只有一个内存插槽，支持笔记本ddr3内存条 usb2.0接口5个 usb3.0接口1个 千兆rj45网口1个 dp口1个，dvi口1个 音频输入口1个，音频输出口1个 cpu有两个版本，2c2t的j1800，还有4c4t的j1900，注意区分，这俩cpu性能差了50% 吐槽 首先不得不吐槽国内玩电子垃圾的氛围，都喜欢搞论坛、qq群把资源私有化，动辄就是邀请制、收费下载、加密提取码。这种模式下，资源很容易失效，非常不利于资源的累积和分享，对新人小白也非常的不友好。一个电子垃圾一旦过了热度期，想再折腾想找资源就变得很难。
+刷BIOS c92的bios刷机主要参考这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记。
+但视频这种形式我不喜欢，需要反复拖动进度条来查看有用的那点儿信息，所以做了简单整理。
+第一步：下载bios升级文件
+up提供了c92的bios升级文件，指路：升腾C92Bios升级文件
+他把文件托管在迅雷云盘，需要装迅雷以后才能下载，或者用油猴脚本提取下载链接，自己想办法吧。
+下载以后解压，里面3个压缩包
+解压c92和fpt这俩压缩包，得到3个文件，这仨文件就是最终需要用到的。
+第二步：准备u盘
+需要一个u盘，格式化成fat32格式。将上一步解压得到的三个文件，复制到u盘根目录。
+目录结构如下：
+----- |-- c92_txe1.1_lastucodevbios.bin |-- fparts.txt |-- fpt.efi 第三步：刷新bios
+u盘插上c92，开机，按f2进入bios界面。
+选择save &amp; exit标签，选择launch efi shell from filesystem device。然后会进入shell界面。
+在shell界面敲map，会列出所有存储设备，查看u盘的设备号，一般是fs0。
+敲fs0:后回车，进入u盘目录。
+进入u盘目录后，可以敲ls查看文件列表，确认当前是在正确的目录。
+先备份原始bios，敲命令fpt -d backup.bin，等进度条跑完就完成了原始bios备份。
+刷新bios，敲命令fpt -f c92然后按tab自动补全文件名，回车，等进度条跑完即完成bios刷新。
+输入命令exit退出shell
+到这里就完成了bios刷新。此时可以看下是否回到bios界面，如果不是，可以直接断电重启，或者按开机键重启。
+第四步：格式化硬盘
+这一步需要一个刷了pe系统的u盘，pe系统u盘的制作这里不赘述，pe用wepe即可，指路：微PE工具箱。
+c92开机，按f2进入bios，在boot标签页，在boot option priorities中调整开机启动项，把option #1改成pe系统u盘，然后按f10保存退出。
+开机进入wepe，启动disk genius，选择c92的硬盘，右键选择删除所有分区，然后保存更改。
+好了，这一步完成后，原硬盘格式化完成，选择关机即可。
+到此，c92已经变成一个支持u盘引导的普通x86_64小盒子，可以随意刷入第三方系统。插入引导u盘以后，记得在bios的boot标签中调整启动项。
+勘误 刷新bios参考的这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记，其中提到在更新bios以后，需要调整advanced —— csm configuration中的一些参数。实测不需要，而且改了以后容易出bug，比如legacy引导但用了uefi固件之类导致系统无法引导之类。所以个人建议不要动这里的参数。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202312/centerm-c92-update-bios/" /><meta property="article:section" content="202312" />
+<meta property="article:published_time" content="2023-12-19T16:24:16+08:00" />
+<meta property="article:modified_time" content="2023-12-19T16:24:16+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">升腾C92破解(刷写)BIOS</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 19, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E5%8D%87%E8%85%BE/">升腾</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近又从海鲜市场入手了一个小盒子，升腾c92，cpu是j1900，2+8的内存/硬盘，不带电源130rmb。</p>
+<p>现在闲鱼上130这个价格一般是j1800的版本，j1900的价格已经上探到180左右。没办法，j1900太热门了，虽然早已经有接班的j4125、n100，但目前还是溢价严重。</p>
+<p>我收到的这个c92还是原版bios，默认不支持u盘启动，所以要改造一下。</p>
+<p>注意：本文图片只支持ipv6，如果你的网络不支持ipv6的话图片会无法显示。</p>
+<p><img src="https://img.ruohai.wang:21314/i/2023/12/19/r0h3wy-0.jpeg" alt=""></p>
+<p>简单列一下升腾c92的硬件配置：</p>
+<ul>
+<li>供电是dc口，5521规格，12v/3a</li>
+<li>只有一个msata硬盘接口</li>
+<li>只有一个内存插槽，支持笔记本ddr3内存条</li>
+<li>usb2.0接口5个</li>
+<li>usb3.0接口1个</li>
+<li>千兆rj45网口1个</li>
+<li>dp口1个，dvi口1个</li>
+<li>音频输入口1个，音频输出口1个</li>
+<li>cpu有两个版本，2c2t的j1800，还有4c4t的j1900，注意区分，这俩cpu性能差了50%</li>
+</ul>
+<hr>
+<h2 id="吐槽">吐槽</h2>
+<p>首先不得不吐槽国内玩电子垃圾的氛围，都喜欢搞论坛、qq群把资源私有化，动辄就是邀请制、收费下载、加密提取码。这种模式下，资源很容易失效，非常不利于资源的累积和分享，对新人小白也非常的不友好。一个电子垃圾一旦过了热度期，想再折腾想找资源就变得很难。</p>
+<hr>
+<h2 id="刷bios">刷BIOS</h2>
+<p>c92的bios刷机主要参考这个视频：<a href="https://www.bilibili.com/video/BV1PN4y1P7uW">刷BIOS，装第三方系统，升腾C92瘦客户机折腾记</a>。</p>
+<p>但视频这种形式我不喜欢，需要反复拖动进度条来查看有用的那点儿信息，所以做了简单整理。</p>
+<blockquote>
+<p>第一步：下载bios升级文件</p>
+</blockquote>
+<p>up提供了c92的bios升级文件，指路：<a href="https://zxmls520.github.io/zxmls/#/?id=ep55-%e5%88%b7bios%ef%bc%8c%e8%a3%85%e7%ac%ac%e4%b8%89%e6%96%b9%e7%b3%bb%e7%bb%9f%ef%bc%8c%e5%8d%87%e8%85%bec92%e7%98%a6%e5%ae%a2%e6%88%b7%e6%9c%ba%e6%8a%98%e8%85%be%e8%ae%b0">升腾C92Bios升级文件</a></p>
+<p>他把文件托管在迅雷云盘，需要装迅雷以后才能下载，或者用油猴脚本提取下载链接，自己想办法吧。</p>
+<p>下载以后解压，里面3个压缩包</p>
+<p><img src="https://img.ruohai.wang:21314/i/2023/12/19/r86e1u-0.png" alt=""></p>
+<p>解压<code>c92</code>和<code>fpt</code>这俩压缩包，得到3个文件，这仨文件就是最终需要用到的。</p>
+<p><img src="https://img.ruohai.wang:21314/i/2023/12/19/r9f908-0.png" alt=""></p>
+<blockquote>
+<p>第二步：准备u盘</p>
+</blockquote>
+<p>需要一个u盘，格式化成fat32格式。将上一步解压得到的三个文件，复制到u盘根目录。</p>
+<p>目录结构如下：</p>
+<pre tabindex="0"><code>-----
+|-- c92_txe1.1_lastucodevbios.bin
+|-- fparts.txt
+|-- fpt.efi
+</code></pre><blockquote>
+<p>第三步：刷新bios</p>
+</blockquote>
+<ol>
+<li>
+<p>u盘插上c92，开机，按f2进入bios界面。</p>
+</li>
+<li>
+<p>选择<code>save &amp; exit</code>标签，选择<code>launch efi shell from filesystem device</code>。然后会进入shell界面。</p>
+</li>
+<li>
+<p>在shell界面敲<code>map</code>，会列出所有存储设备，查看u盘的设备号，一般是<code>fs0</code>。</p>
+</li>
+<li>
+<p>敲<code>fs0:</code>后回车，进入u盘目录。</p>
+</li>
+<li>
+<p>进入u盘目录后，可以敲<code>ls</code>查看文件列表，确认当前是在正确的目录。</p>
+</li>
+<li>
+<p>先备份原始bios，敲命令<code>fpt -d backup.bin</code>，等进度条跑完就完成了原始bios备份。</p>
+</li>
+<li>
+<p>刷新bios，敲命令<code>fpt -f c92</code>然后按tab自动补全文件名，回车，等进度条跑完即完成bios刷新。</p>
+</li>
+<li>
+<p>输入命令<code>exit</code>退出shell</p>
+</li>
+</ol>
+<p>到这里就完成了bios刷新。此时可以看下是否回到bios界面，如果不是，可以直接断电重启，或者按开机键重启。</p>
+<blockquote>
+<p>第四步：格式化硬盘</p>
+</blockquote>
+<p>这一步需要一个刷了pe系统的u盘，pe系统u盘的制作这里不赘述，pe用wepe即可，指路：<a href="https://www.wepe.com.cn/">微PE工具箱</a>。</p>
+<ol>
+<li>
+<p>c92开机，按f2进入bios，在<code>boot</code>标签页，在<code>boot option priorities</code>中调整开机启动项，把<code>option #1</code>改成pe系统u盘，然后按f10保存退出。</p>
+</li>
+<li>
+<p>开机进入wepe，启动disk genius，选择c92的硬盘，右键选择<code>删除所有分区</code>，然后<code>保存更改</code>。</p>
+</li>
+</ol>
+<p>好了，这一步完成后，原硬盘格式化完成，选择关机即可。</p>
+<p>到此，c92已经变成一个支持u盘引导的普通x86_64小盒子，可以随意刷入第三方系统。插入引导u盘以后，记得在bios的boot标签中调整启动项。</p>
+<h2 id="勘误">勘误</h2>
+<p>刷新bios参考的这个视频：<a href="https://www.bilibili.com/video/BV1PN4y1P7uW">刷BIOS，装第三方系统，升腾C92瘦客户机折腾记</a>，其中提到在更新bios以后，需要调整<code>advanced —— csm configuration</code>中的一些参数。实测不需要，而且改了以后容易出bug，比如legacy引导但用了uefi固件之类导致系统无法引导之类。所以个人建议不要动这里的参数。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

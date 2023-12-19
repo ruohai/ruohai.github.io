@@ -5,7 +5,48 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 18 Dec 2023 23:08:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Dec 2023 16:24:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>升腾C92破解(刷写)BIOS</title>
+      <link>https://ruohai.wang/202312/centerm-c92-update-bios/</link>
+      <pubDate>Tue, 19 Dec 2023 16:24:16 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202312/centerm-c92-update-bios/</guid>
+      <description>前言 最近又从海鲜市场入手了一个小盒子，升腾c92，cpu是j1900，2+8的内存/硬盘，不带电源130rmb。
+现在闲鱼上130这个价格一般是j1800的版本，j1900的价格已经上探到180左右。没办法，j1900太热门了，虽然早已经有接班的j4125、n100，但目前还是溢价严重。
+我收到的这个c92还是原版bios，默认不支持u盘启动，所以要改造一下。
+注意：本文图片只支持ipv6，如果你的网络不支持ipv6的话图片会无法显示。
+简单列一下升腾c92的硬件配置：
+供电是dc口，5521规格，12v/3a 只有一个msata硬盘接口 只有一个内存插槽，支持笔记本ddr3内存条 usb2.0接口5个 usb3.0接口1个 千兆rj45网口1个 dp口1个，dvi口1个 音频输入口1个，音频输出口1个 cpu有两个版本，2c2t的j1800，还有4c4t的j1900，注意区分，这俩cpu性能差了50% 吐槽 首先不得不吐槽国内玩电子垃圾的氛围，都喜欢搞论坛、qq群把资源私有化，动辄就是邀请制、收费下载、加密提取码。这种模式下，资源很容易失效，非常不利于资源的累积和分享，对新人小白也非常的不友好。一个电子垃圾一旦过了热度期，想再折腾想找资源就变得很难。
+刷BIOS c92的bios刷机主要参考这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记。
+但视频这种形式我不喜欢，需要反复拖动进度条来查看有用的那点儿信息，所以做了简单整理。
+第一步：下载bios升级文件
+up提供了c92的bios升级文件，指路：升腾C92Bios升级文件
+他把文件托管在迅雷云盘，需要装迅雷以后才能下载，或者用油猴脚本提取下载链接，自己想办法吧。
+下载以后解压，里面3个压缩包
+解压c92和fpt这俩压缩包，得到3个文件，这仨文件就是最终需要用到的。
+第二步：准备u盘
+需要一个u盘，格式化成fat32格式。将上一步解压得到的三个文件，复制到u盘根目录。
+目录结构如下：
+----- |-- c92_txe1.1_lastucodevbios.bin |-- fparts.txt |-- fpt.efi 第三步：刷新bios
+u盘插上c92，开机，按f2进入bios界面。
+选择save &amp;amp; exit标签，选择launch efi shell from filesystem device。然后会进入shell界面。
+在shell界面敲map，会列出所有存储设备，查看u盘的设备号，一般是fs0。
+敲fs0:后回车，进入u盘目录。
+进入u盘目录后，可以敲ls查看文件列表，确认当前是在正确的目录。
+先备份原始bios，敲命令fpt -d backup.bin，等进度条跑完就完成了原始bios备份。
+刷新bios，敲命令fpt -f c92然后按tab自动补全文件名，回车，等进度条跑完即完成bios刷新。
+输入命令exit退出shell
+到这里就完成了bios刷新。此时可以看下是否回到bios界面，如果不是，可以直接断电重启，或者按开机键重启。
+第四步：格式化硬盘
+这一步需要一个刷了pe系统的u盘，pe系统u盘的制作这里不赘述，pe用wepe即可，指路：微PE工具箱。
+c92开机，按f2进入bios，在boot标签页，在boot option priorities中调整开机启动项，把option #1改成pe系统u盘，然后按f10保存退出。
+开机进入wepe，启动disk genius，选择c92的硬盘，右键选择删除所有分区，然后保存更改。
+好了，这一步完成后，原硬盘格式化完成，选择关机即可。
+到此，c92已经变成一个支持u盘引导的普通x86_64小盒子，可以随意刷入第三方系统。插入引导u盘以后，记得在bios的boot标签中调整启动项。
+勘误 刷新bios参考的这个视频：刷BIOS，装第三方系统，升腾C92瘦客户机折腾记，其中提到在更新bios以后，需要调整advanced —— csm configuration中的一些参数。实测不需要，而且改了以后容易出bug，比如legacy引导但用了uefi固件之类导致系统无法引导之类。所以个人建议不要动这里的参数。</description>
+    </item>
+    
     <item>
       <title>迅雷赚钱宝一代（WS1408）可用OpenWrt固件分享</title>
       <link>https://ruohai.wang/202312/ws1408-find-a-new-openwrt-firmware/</link>
