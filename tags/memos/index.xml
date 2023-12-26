@@ -5,7 +5,28 @@
     <link>https://ruohai.wang/tags/memos/</link>
     <description>Recent content in memos on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 14 Nov 2023 13:03:24 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/memos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Dec 2023 00:31:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/memos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>土法解决Memos的SQLite3 WAL模式下丢失数据问题</title>
+      <link>https://ruohai.wang/202312/memos-turn-off-wal-log/</link>
+      <pubDate>Mon, 25 Dec 2023 00:31:59 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202312/memos-turn-off-wal-log/</guid>
+      <description>前言 自从我的twitter账号被冻结以后，就自建了memos用来发一些日常琐碎的记录。
+不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个月发发牢骚很好用。
+但在使用的过程中也碰到过一两次bug，小bug自己解决一下就算了，没当回事。
+但这次碰到一个大bug，直接导致丢失了半天的数据。
+痛定思痛，找了一个土法解决方案，这里做简单记录。
+问题 memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为缓存数据库，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，出发check-point，再写入db。
+我碰到的问题：
+存储介质（一根2gb的u盘）出现了disk i/o error db-wal中有一部分数据还没有写入db memos出现报错无法使用，直接重启memos服务后db-wal缓存的记录全部丢失 因为过了几个小时才到家开始处理这个bug，设定的每小时rsync备份的那版db-wal数据也没了 解决方案 最佳的解决方案，那肯定是换掉那根出现disk i/o error的u盘，把memos部署到一个安全的存储介质上。
+或者禁用wal
+PRAGMA journal_mode = OFF; 或者调小wal_checkpoint的记录数
+PRAGMA wal_autocheckpoint = 100; 以上两个方法我都试过，但实测重启memos以后，sqlite配置会被重置。
+最后直接上粗暴土法：
+重启memos会把db-wal数据写入db，设定一个crontab定时任务，每隔4小时重启memos，实现每隔4小时把缓存数据写入db的auto-check-point。 0 */4 * * * docker restart memos </description>
+    </item>
+    
     <item>
       <title>在玩客云上用Docker部署memos</title>
       <link>https://ruohai.wang/202311/memos-install-on-onecloud/</link>
