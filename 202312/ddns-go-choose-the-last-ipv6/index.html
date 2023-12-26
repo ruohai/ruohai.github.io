@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>DDNS-GO使用命令获取最后一个IPv6公网地址 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>DDNS-GO使用命令获取最新IPv6公网地址 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -12,7 +12,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="DDNS-GO使用命令获取最后一个IPv6公网地址"/>
+<meta name="twitter:title" content="DDNS-GO使用命令获取最新IPv6公网地址"/>
 <meta name="twitter:description" content="前言 我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。
 用的公网访问方案是ipv6 &#43; ddns-go。
 这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。
@@ -30,7 +30,7 @@ ddns-go获取ipv6地址有三种方式：
 ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -nr &#39;:a;N;s#^ &#43;inet6 ([a-f0-9:]&#43;)/.&#43;? scope global .*? valid_lft ([0-9]&#43;sec) .*#\2 \1#p;Ta&#39;|sort -nr|head -n1|cut -d&#39; &#39; -f2 感谢这位网友提供的命令，实测有效。
 参考文章 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择 #872 通过命令获取IP参考 #531 通过网卡获得ipv6怎么编写正则表达式获得不是第一个的ipv6 #341 通过命令获取IP参考 "/>
 
-    <meta property="og:title" content="DDNS-GO使用命令获取最后一个IPv6公网地址" />
+    <meta property="og:title" content="DDNS-GO使用命令获取最新IPv6公网地址" />
 <meta property="og:description" content="前言 我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。
 用的公网访问方案是ipv6 &#43; ddns-go。
 这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。
@@ -83,7 +83,7 @@ ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">DDNS-GO使用命令获取最后一个IPv6公网地址</h1>
+      <h1 class ="post-title">DDNS-GO使用命令获取最新IPv6公网地址</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
