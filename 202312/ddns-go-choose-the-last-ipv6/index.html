@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>DDNS-GO使用命令获取最后一个IPv6公网地址 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DDNS-GO使用命令获取最后一个IPv6公网地址"/>
+<meta name="twitter:description" content="前言 我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。
+用的公网访问方案是ipv6 &#43; ddns-go。
+这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。
+因为这个小问题出现的概率很低，所以之前也一直每当回事，大不了这小概率时间真的发生的时候，手动调整一下，也花不了几分钟。
+但是今天，我还是想找找解决方案。
+问题 在ddns-go的issue搜到一个帖子，和我碰到的情况一模一样，指路：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择
+具体表现就是：
+出现了2~3个公网ipv6地址 只有最新的那个ipv6地址才是有效的 旧的ipv6地址会一直保留直到它的valid_lft有效生命周期结束 参考图例：
+原因分析 移动宽带定期（maybe不定期）pppoe重播，导致不断分配新的公网ipv6地址，但旧的公网ipv6地址并没有被主动弃用/注销，所以出现了多个公网ipv6地址共存、但只有最新的那个公网ipv6地址有效的情况。
+解决方案 知道原因以后，找解决方案就很简单，只需要动态获取最新的那个公网ipv6地址即可。
+ddns-go获取ipv6地址有三种方式：
+根据接口 根据网卡 根据命令 第一个方式在出现多个公网ipv6地址的时候会gg，表现就是访问不到接口，导致无法获取ipv6地址。第二个方式只支持最简单的用@1@2@3来指定使用第1、2、3个ipv6地址，如果最多只出现2个ipv6地址的话可以用@2，但如果出现3个ipv6地址，就搞不定了。
+所以只有第三个方式了，用命令在动态选择最新的那个ip6v地址。
+查看了多个issue以后，还是刚刚提到的这个帖子：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择，有人提供了自己写的命令。
+ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -nr &#39;:a;N;s#^ &#43;inet6 ([a-f0-9:]&#43;)/.&#43;? scope global .*? valid_lft ([0-9]&#43;sec) .*#\2 \1#p;Ta&#39;|sort -nr|head -n1|cut -d&#39; &#39; -f2 感谢这位网友提供的命令，实测有效。
+参考文章 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择 #872 通过命令获取IP参考 #531 通过网卡获得ipv6怎么编写正则表达式获得不是第一个的ipv6 #341 通过命令获取IP参考 "/>
+
+    <meta property="og:title" content="DDNS-GO使用命令获取最后一个IPv6公网地址" />
+<meta property="og:description" content="前言 我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。
+用的公网访问方案是ipv6 &#43; ddns-go。
+这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。
+因为这个小问题出现的概率很低，所以之前也一直每当回事，大不了这小概率时间真的发生的时候，手动调整一下，也花不了几分钟。
+但是今天，我还是想找找解决方案。
+问题 在ddns-go的issue搜到一个帖子，和我碰到的情况一模一样，指路：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择
+具体表现就是：
+出现了2~3个公网ipv6地址 只有最新的那个ipv6地址才是有效的 旧的ipv6地址会一直保留直到它的valid_lft有效生命周期结束 参考图例：
+原因分析 移动宽带定期（maybe不定期）pppoe重播，导致不断分配新的公网ipv6地址，但旧的公网ipv6地址并没有被主动弃用/注销，所以出现了多个公网ipv6地址共存、但只有最新的那个公网ipv6地址有效的情况。
+解决方案 知道原因以后，找解决方案就很简单，只需要动态获取最新的那个公网ipv6地址即可。
+ddns-go获取ipv6地址有三种方式：
+根据接口 根据网卡 根据命令 第一个方式在出现多个公网ipv6地址的时候会gg，表现就是访问不到接口，导致无法获取ipv6地址。第二个方式只支持最简单的用@1@2@3来指定使用第1、2、3个ipv6地址，如果最多只出现2个ipv6地址的话可以用@2，但如果出现3个ipv6地址，就搞不定了。
+所以只有第三个方式了，用命令在动态选择最新的那个ip6v地址。
+查看了多个issue以后，还是刚刚提到的这个帖子：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择，有人提供了自己写的命令。
+ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -nr &#39;:a;N;s#^ &#43;inet6 ([a-f0-9:]&#43;)/.&#43;? scope global .*? valid_lft ([0-9]&#43;sec) .*#\2 \1#p;Ta&#39;|sort -nr|head -n1|cut -d&#39; &#39; -f2 感谢这位网友提供的命令，实测有效。
+参考文章 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择 #872 通过命令获取IP参考 #531 通过网卡获得ipv6怎么编写正则表达式获得不是第一个的ipv6 #341 通过命令获取IP参考 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/" /><meta property="article:section" content="202312" />
+<meta property="article:published_time" content="2023-12-26T20:20:10+08:00" />
+<meta property="article:modified_time" content="2023-12-26T20:20:10+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">DDNS-GO使用命令获取最后一个IPv6公网地址</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 26, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/ddns-go/">DDNS-GO</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。</p>
+<p>用的公网访问方案是ipv6 + ddns-go。</p>
+<p>这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。</p>
+<p>因为这个<code>小问题</code>出现的概率很低，所以之前也一直每当回事，大不了这小概率时间真的发生的时候，手动调整一下，也花不了几分钟。</p>
+<p>但是今天，我还是想找找解决方案。</p>
+<hr>
+<h2 id="问题">问题</h2>
+<p>在ddns-go的issue搜到一个帖子，和我碰到的情况一模一样，指路：<a href="https://github.com/jeessy2/ddns-go/issues/872">#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择</a></p>
+<p>具体表现就是：</p>
+<ul>
+<li>出现了2~3个公网ipv6地址</li>
+<li>只有最新的那个ipv6地址才是有效的</li>
+<li>旧的ipv6地址会一直保留直到它的valid_lft有效生命周期结束</li>
+</ul>
+<p>参考图例：</p>
+<p><img src="https://img.ruohai.wang:21314/i/2023/12/26/xmq0ss-0.png" alt=""></p>
+<hr>
+<h2 id="原因分析">原因分析</h2>
+<p>移动宽带定期（maybe不定期）pppoe重播，导致不断分配新的公网ipv6地址，但旧的公网ipv6地址并没有被主动弃用/注销，所以出现了多个公网ipv6地址共存、但只有最新的那个公网ipv6地址有效的情况。</p>
+<hr>
+<h2 id="解决方案">解决方案</h2>
+<p>知道原因以后，找解决方案就很简单，只需要动态获取<code>最新的那个公网ipv6地址</code>即可。</p>
+<p>ddns-go获取ipv6地址有三种方式：</p>
+<ol>
+<li>根据接口</li>
+<li>根据网卡</li>
+<li>根据命令</li>
+</ol>
+<p>第一个方式在出现多个公网ipv6地址的时候会gg，表现就是访问不到接口，导致无法获取ipv6地址。第二个方式只支持最简单的用<code>@1@2@3</code>来指定使用第1、2、3个ipv6地址，如果最多只出现2个ipv6地址的话可以用<code>@2</code>，但如果出现3个ipv6地址，就搞不定了。</p>
+<p>所以只有第三个方式了，用命令在动态选择最新的那个ip6v地址。</p>
+<p>查看了多个issue以后，还是刚刚提到的这个帖子：<a href="https://github.com/jeessy2/ddns-go/issues/872">#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择</a>，有人提供了自己写的命令。</p>
+<pre tabindex="0"><code>ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -nr &#39;:a;N;s#^ +inet6 ([a-f0-9:]+)/.+? scope global .*? valid_lft ([0-9]+sec) .*#\2 \1#p;Ta&#39;|sort -nr|head -n1|cut -d&#39; &#39; -f2
+</code></pre><p>感谢<a href="https://github.com/bingood">这位网友</a>提供的命令，实测有效。</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://github.com/jeessy2/ddns-go/issues/872">希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择 #872</a></li>
+<li><a href="https://github.com/jeessy2/ddns-go/issues/531">通过命令获取IP参考 #531</a></li>
+<li><a href="https://github.com/jeessy2/ddns-go/issues/341">通过网卡获得ipv6怎么编写正则表达式获得不是第一个的ipv6 #341</a></li>
+<li><a href="https://github.com/jeessy2/ddns-go/wiki/%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%8E%B7%E5%8F%96IP%E5%8F%82%E8%80%83">通过命令获取IP参考</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

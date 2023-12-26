@@ -5,7 +5,31 @@
     <link>https://ruohai.wang/tags/ddns-go/</link>
     <description>Recent content in DDNS-GO on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 17 Jul 2023 00:24:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ddns-go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Dec 2023 20:20:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ddns-go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DDNS-GO使用命令获取最后一个IPv6公网地址</title>
+      <link>https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/</link>
+      <pubDate>Tue, 26 Dec 2023 20:20:10 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/</guid>
+      <description>前言 我使用的linux小盒子是迅雷的赚钱宝系列，第一代（ws1408）、第二代（ws1508）、第三代（ws1608）都入手了好几个。
+用的公网访问方案是ipv6 + ddns-go。
+这个方案免费、好用、方便，而且非常稳定，只是有那么一点点小问题，每次碰到这个bug都需要人工介入处理。
+因为这个小问题出现的概率很低，所以之前也一直每当回事，大不了这小概率时间真的发生的时候，手动调整一下，也花不了几分钟。
+但是今天，我还是想找找解决方案。
+问题 在ddns-go的issue搜到一个帖子，和我碰到的情况一模一样，指路：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择
+具体表现就是：
+出现了2~3个公网ipv6地址 只有最新的那个ipv6地址才是有效的 旧的ipv6地址会一直保留直到它的valid_lft有效生命周期结束 参考图例：
+原因分析 移动宽带定期（maybe不定期）pppoe重播，导致不断分配新的公网ipv6地址，但旧的公网ipv6地址并没有被主动弃用/注销，所以出现了多个公网ipv6地址共存、但只有最新的那个公网ipv6地址有效的情况。
+解决方案 知道原因以后，找解决方案就很简单，只需要动态获取最新的那个公网ipv6地址即可。
+ddns-go获取ipv6地址有三种方式：
+根据接口 根据网卡 根据命令 第一个方式在出现多个公网ipv6地址的时候会gg，表现就是访问不到接口，导致无法获取ipv6地址。第二个方式只支持最简单的用@1@2@3来指定使用第1、2、3个ipv6地址，如果最多只出现2个ipv6地址的话可以用@2，但如果出现3个ipv6地址，就搞不定了。
+所以只有第三个方式了，用命令在动态选择最新的那个ip6v地址。
+查看了多个issue以后，还是刚刚提到的这个帖子：#872 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择，有人提供了自己写的命令。
+ip addr show|grep -v deprecated|grep -A1 &amp;#39;inet6 [^f:]&amp;#39;|grep -v ^--|sed -nr &amp;#39;:a;N;s#^ +inet6 ([a-f0-9:]+)/.+? scope global .*? valid_lft ([0-9]+sec) .*#\2 \1#p;Ta&amp;#39;|sort -nr|head -n1|cut -d&amp;#39; &amp;#39; -f2 感谢这位网友提供的命令，实测有效。
+参考文章 希望ipv6地址获取可以根据valid_lft或preferred_lft排序选择 #872 通过命令获取IP参考 #531 通过网卡获得ipv6怎么编写正则表达式获得不是第一个的ipv6 #341 通过命令获取IP参考 </description>
+    </item>
+    
     <item>
       <title>Linux下安装DDNS-GO</title>
       <link>https://ruohai.wang/202307/ddns-go-install/</link>
