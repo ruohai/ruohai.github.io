@@ -8,17 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Ruohai Wang" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="/css/main.min.bbae4e4a160fe6ef61e422c4df808f31e024fd335c6703e79b07c797022fe282.css" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
 
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="土法解决Memos的SQLite3 WAL模式下丢失数据问题"/>
 <meta name="twitter:description" content="前言 自从我的twitter账号被冻结以后，就自建了memos用来发一些日常琐碎的记录。
-不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个月发发牢骚很好用。
+不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个人发发牢骚很好用。
 但在使用的过程中也碰到过一两次bug，小bug自己解决一下就算了，没当回事。
 但这次碰到一个大bug，直接导致丢失了半天的数据。
 痛定思痛，找了一个土法解决方案，这里做简单记录。
-问题 memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为缓存数据库，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，出发check-point，再写入db。
+问题 memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为缓存数据库，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，触发check-point，再写入db。
 我碰到的问题：
 存储介质（一根2gb的u盘）出现了disk i/o error db-wal中有一部分数据还没有写入db memos出现报错无法使用，直接重启memos服务后db-wal缓存的记录全部丢失 因为过了几个小时才到家开始处理这个bug，设定的每小时rsync备份的那版db-wal数据也没了 解决方案 最佳的解决方案，那肯定是换掉那根出现disk i/o error的u盘，把memos部署到一个安全的存储介质上。
 或者禁用wal
@@ -29,11 +30,11 @@ PRAGMA wal_autocheckpoint = 100; 以上两个方法我都试过，但实测重�
 
     <meta property="og:title" content="土法解决Memos的SQLite3 WAL模式下丢失数据问题" />
 <meta property="og:description" content="前言 自从我的twitter账号被冻结以后，就自建了memos用来发一些日常琐碎的记录。
-不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个月发发牢骚很好用。
+不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个人发发牢骚很好用。
 但在使用的过程中也碰到过一两次bug，小bug自己解决一下就算了，没当回事。
 但这次碰到一个大bug，直接导致丢失了半天的数据。
 痛定思痛，找了一个土法解决方案，这里做简单记录。
-问题 memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为缓存数据库，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，出发check-point，再写入db。
+问题 memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为缓存数据库，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，触发check-point，再写入db。
 我碰到的问题：
 存储介质（一根2gb的u盘）出现了disk i/o error db-wal中有一部分数据还没有写入db memos出现报错无法使用，直接重启memos服务后db-wal缓存的记录全部丢失 因为过了几个小时才到家开始处理这个bug，设定的每小时rsync备份的那版db-wal数据也没了 解决方案 最佳的解决方案，那肯定是换掉那根出现disk i/o error的u盘，把memos部署到一个安全的存储介质上。
 或者禁用wal
@@ -106,13 +107,13 @@ PRAGMA wal_autocheckpoint = 100; 以上两个方法我都试过，但实测重�
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>自从我的twitter账号被冻结以后，就自建了memos用来发一些日常琐碎的记录。</p>
-<p>不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个月发发牢骚很好用。</p>
+<p>不得不说memos还挺好用的，轻量级，docker一键部署，全终端覆盖，多平台适配，自己一个人发发牢骚很好用。</p>
 <p>但在使用的过程中也碰到过一两次bug，小bug自己解决一下就算了，没当回事。</p>
 <p>但这次碰到一个大bug，直接导致丢失了半天的数据。</p>
 <p>痛定思痛，找了一个土法解决方案，这里做简单记录。</p>
 <hr>
 <h2 id="问题">问题</h2>
-<p>memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为<code>缓存数据库</code>，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，出发check-point，再写入db。</p>
+<p>memos默认使用sqlite3数据库，默认开启wal模式。wal模式，write-ahead logging，可以简单理解为<code>缓存数据库</code>，就是写入、编辑的数据并不是实时写入db，而是缓存在db-wal文件中。当db-wal中缓存的数据记录条数达到指定数量时，触发check-point，再写入db。</p>
 <p>我碰到的问题：</p>
 <ul>
 <li>存储介质（一根2gb的u盘）出现了disk i/o error</li>
@@ -120,6 +121,7 @@ PRAGMA wal_autocheckpoint = 100; 以上两个方法我都试过，但实测重�
 <li>memos出现报错无法使用，直接重启memos服务后db-wal缓存的记录全部丢失</li>
 <li>因为过了几个小时才到家开始处理这个bug，设定的每小时rsync备份的那版db-wal数据也没了</li>
 </ul>
+<hr>
 <h2 id="解决方案">解决方案</h2>
 <p>最佳的解决方案，那肯定是换掉那根出现disk i/o error的u盘，把memos部署到一个安全的存储介质上。</p>
 <p>或者禁用wal</p>
