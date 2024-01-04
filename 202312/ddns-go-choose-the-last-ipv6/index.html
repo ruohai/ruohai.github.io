@@ -126,7 +126,7 @@ ip addr show|grep -v deprecated|grep -A1 &#39;inet6 [^f:]&#39;|grep -v ^--|sed -
 <li>旧的ipv6地址会一直保留直到它的valid_lft有效生命周期结束</li>
 </ul>
 <p>参考图例：</p>
-<p><img src="https://img.ruohai.wang:21314/i/2023/12/26/xmq0ss-0.png" alt=""></p>
+<p><img src="https://img.ruohai.xyz/i/2023/12/26/xmq0ss-0.png" alt=""></p>
 <hr>
 <h2 id="原因分析">原因分析</h2>
 <p>移动宽带定期（maybe不定期）pppoe重播，导致不断分配新的公网ipv6地址，但旧的公网ipv6地址并没有被主动弃用/注销，所以出现了多个公网ipv6地址共存、但只有最新的那个公网ipv6地址有效的情况。</p>
