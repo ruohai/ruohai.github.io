@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202401/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/cloudflare/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
+    <lastmod>2024-01-07T21:31:55+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202312/</loc>
     <lastmod>2023-12-26T20:20:10+08:00</lastmod>
   </url><url>
@@ -9,12 +30,6 @@
     <lastmod>2023-12-26T20:20:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/</loc>
-    <lastmod>2023-12-26T20:20:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2023-12-26T20:20:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2023-12-26T20:20:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/memos/</loc>
@@ -31,12 +46,6 @@
   </url><url>
     <loc>https://ruohai.wang/202312/centerm-c92-update-bios/</loc>
     <lastmod>2023-12-19T16:24:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
-    <lastmod>2023-12-19T16:24:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
-    <lastmod>2023-12-18T23:08:25+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202312/ws1408-find-a-new-openwrt-firmware/</loc>
     <lastmod>2023-12-18T23:08:25+08:00</lastmod>

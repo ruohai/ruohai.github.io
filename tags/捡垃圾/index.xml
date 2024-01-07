@@ -5,7 +5,24 @@
     <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
     <description>Recent content in 捡垃圾 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 19 Dec 2023 16:24:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Jan 2024 21:31:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在玩客云上用Docker部署Cloudflare Tunnels（一）</title>
+      <link>https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/</link>
+      <pubDate>Sun, 07 Jan 2024 21:31:55 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/</guid>
+      <description>前言 朋友们，2024年新年快乐~ 🎉
+之前我在迅雷赚钱宝、玩客云这些armv7l系统架构、即将被放弃支持的电子垃圾上部署网络服务，公网访问的解决方案是【廉价域名 + ddns + ipv6】，因为我当前使用的中国移动宽带支持ipv6 + 提供了公网ipv6地址。这个方案很好用也很方便，公网访问服务也能达到宽带的上行带宽上限，但这方案也不是没有遗憾的地方：
+国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务 国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问 国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号 动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候终端 我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真是有效的那个ipv6地址。 后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推优告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。
+自己成功部署了cloudflare tunnels以后，发现整个过程非常简单，官方的安装引导已经非常直白易懂。但实际操作过程中，对于一些不熟的步骤，我还是卡了好久，也趟了几个坑。所以做个简单记录。
+准备 想要实现cloudflare tunnels（以下简称tunnels）做内网穿透，需要提前准备：
+一个域名 一个cloudflare账号 一张信用卡 步骤 整个部署过程，大致分成几个步骤：
+注册一个cf账号 新建tunnels服务 信用卡验证 选择免费方案 在自己的机器上安装cf客户端 将域名的dns解析托管给cf 在tunnels中配置公网域名转发 耐心等待配置生效 部署 这两天又中流感了，咳嗽流鼻涕发热，先写到这里。下次来补充细节。
+等不及的可以看最后参考文章中的链接。
+参考文章 少数派：CloudFlare Tunnel 免费内网穿透的简明教程 </description>
+    </item>
+    
     <item>
       <title>升腾C92破解(刷写)BIOS</title>
       <link>https://ruohai.wang/202312/centerm-c92-update-bios/</link>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>在玩客云上用Docker部署Cloudflare Tunnels（一） // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在玩客云上用Docker部署Cloudflare Tunnels（一）"/>
+<meta name="twitter:description" content="前言 朋友们，2024年新年快乐~ 🎉
+之前我在迅雷赚钱宝、玩客云这些armv7l系统架构、即将被放弃支持的电子垃圾上部署网络服务，公网访问的解决方案是【廉价域名 &#43; ddns &#43; ipv6】，因为我当前使用的中国移动宽带支持ipv6 &#43; 提供了公网ipv6地址。这个方案很好用也很方便，公网访问服务也能达到宽带的上行带宽上限，但这方案也不是没有遗憾的地方：
+国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务 国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问 国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号 动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候终端 我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真是有效的那个ipv6地址。 后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推优告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。
+自己成功部署了cloudflare tunnels以后，发现整个过程非常简单，官方的安装引导已经非常直白易懂。但实际操作过程中，对于一些不熟的步骤，我还是卡了好久，也趟了几个坑。所以做个简单记录。
+准备 想要实现cloudflare tunnels（以下简称tunnels）做内网穿透，需要提前准备：
+一个域名 一个cloudflare账号 一张信用卡 步骤 整个部署过程，大致分成几个步骤：
+注册一个cf账号 新建tunnels服务 信用卡验证 选择免费方案 在自己的机器上安装cf客户端 将域名的dns解析托管给cf 在tunnels中配置公网域名转发 耐心等待配置生效 部署 这两天又中流感了，咳嗽流鼻涕发热，先写到这里。下次来补充细节。
+等不及的可以看最后参考文章中的链接。
+参考文章 少数派：CloudFlare Tunnel 免费内网穿透的简明教程 "/>
+
+    <meta property="og:title" content="在玩客云上用Docker部署Cloudflare Tunnels（一）" />
+<meta property="og:description" content="前言 朋友们，2024年新年快乐~ 🎉
+之前我在迅雷赚钱宝、玩客云这些armv7l系统架构、即将被放弃支持的电子垃圾上部署网络服务，公网访问的解决方案是【廉价域名 &#43; ddns &#43; ipv6】，因为我当前使用的中国移动宽带支持ipv6 &#43; 提供了公网ipv6地址。这个方案很好用也很方便，公网访问服务也能达到宽带的上行带宽上限，但这方案也不是没有遗憾的地方：
+国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务 国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问 国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号 动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候终端 我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真是有效的那个ipv6地址。 后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推优告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。
+自己成功部署了cloudflare tunnels以后，发现整个过程非常简单，官方的安装引导已经非常直白易懂。但实际操作过程中，对于一些不熟的步骤，我还是卡了好久，也趟了几个坑。所以做个简单记录。
+准备 想要实现cloudflare tunnels（以下简称tunnels）做内网穿透，需要提前准备：
+一个域名 一个cloudflare账号 一张信用卡 步骤 整个部署过程，大致分成几个步骤：
+注册一个cf账号 新建tunnels服务 信用卡验证 选择免费方案 在自己的机器上安装cf客户端 将域名的dns解析托管给cf 在tunnels中配置公网域名转发 耐心等待配置生效 部署 这两天又中流感了，咳嗽流鼻涕发热，先写到这里。下次来补充细节。
+等不及的可以看最后参考文章中的链接。
+参考文章 少数派：CloudFlare Tunnel 免费内网穿透的简明教程 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/" /><meta property="article:section" content="202401" />
+<meta property="article:published_time" content="2024-01-07T21:31:55+08:00" />
+<meta property="article:modified_time" content="2024-01-07T21:31:55+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在玩客云上用Docker部署Cloudflare Tunnels（一）</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 7, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+              <a class="tag" href="https://ruohai.wang/tags/cloudflare/">Cloudflare</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>朋友们，2024年新年快乐~ 🎉</p>
+<p>之前我在迅雷赚钱宝、玩客云这些armv7l系统架构、即将被放弃支持的电子垃圾上部署网络服务，公网访问的解决方案是<code>【廉价域名 + ddns + ipv6】</code>，因为我当前使用的中国移动宽带支持ipv6 + 提供了公网ipv6地址。这个方案很好用也很方便，公网访问服务也能达到宽带的上行带宽上限，但这方案也不是没有遗憾的地方：</p>
+<ol>
+<li>国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务</li>
+<li>国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问</li>
+<li>国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号</li>
+<li>动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候终端</li>
+<li>我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真是有效的那个ipv6地址。</li>
+</ol>
+<p>后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推优告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。</p>
+<p>自己成功部署了cloudflare tunnels以后，发现整个过程非常简单，官方的安装引导已经非常直白易懂。但实际操作过程中，对于一些不熟的步骤，我还是卡了好久，也趟了几个坑。所以做个简单记录。</p>
+<hr>
+<h2 id="准备">准备</h2>
+<p>想要实现cloudflare tunnels（以下简称tunnels）做内网穿透，需要提前准备：</p>
+<ul>
+<li>一个域名</li>
+<li>一个cloudflare账号</li>
+<li>一张信用卡</li>
+</ul>
+<hr>
+<h2 id="步骤">步骤</h2>
+<p>整个部署过程，大致分成几个步骤：</p>
+<ol>
+<li>注册一个cf账号</li>
+<li>新建tunnels服务</li>
+<li>信用卡验证</li>
+<li>选择免费方案</li>
+<li>在自己的机器上安装cf客户端</li>
+<li>将域名的dns解析托管给cf</li>
+<li>在tunnels中配置公网域名转发</li>
+<li>耐心等待配置生效</li>
+</ol>
+<hr>
+<h2 id="部署">部署</h2>
+<p>这两天又中流感了，咳嗽流鼻涕发热，先写到这里。下次来补充细节。</p>
+<p>等不及的可以看最后<code>参考文章</code>中的链接。</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://sspai.com/post/79278">少数派：CloudFlare Tunnel 免费内网穿透的简明教程</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
