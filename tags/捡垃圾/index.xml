@@ -5,16 +5,37 @@
     <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
     <description>Recent content in 捡垃圾 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 07 Jan 2024 21:31:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Jan 2024 16:12:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>在玩客云上用Docker部署Cloudflare Tunnels（一）</title>
+      <title>在玩客云上用systemd实现sd卡的开机自动挂载</title>
+      <link>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</link>
+      <pubDate>Tue, 09 Jan 2024 16:12:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</guid>
+      <description>前言 想要在linux系统上实现开机自动挂载磁盘，有好几种实现方案。手动的方法可以通过编辑fstab，自动的方法可以用过安装udevil。
+但用fstab的方法，容易让系统无法启动。用udevil的方法，实测在玩客云上开机后无法自动挂载sd卡，需要手动插拔以后才能正常运行。
+在网上找了一些解决方案，最后决定用systemd来实现开机以后自动挂载sd卡。
+实现 首先要确定sd卡的硬件挂载点，比如我准备把sd卡设备挂载到/mnt/sdcard目录下。
+第一步：创建systemd的mount配置文件
+systemd配置文件存放目录/etc/systemd/system，在次目录下新建配置文件。
+sudo touch mnt-sdcard.mount 注意点：
+文件名mnt-sdcard和挂载路径要同名，但斜杠‘/’要转换成短杠‘-’，否则无法启动 文件后缀名是.mount而不是.service 第二步：编辑配置信息
+这里直接抄一下参考文章中提供的用例：
+[Unit] Description=sdcard auto mount After=network.target [Mount] What=/dev/mmcblk0p1 Where=/mnt/sdcard Type=ext4 Options=defaults [Install] WantedBy=multi-user.target 参数释疑：
+What: 被挂载设备文件全路径 Where: 挂载点全路径 Type: 文件系统类型 Options: 挂载选项 第三步：启用
+完成以上配置后，重新加载systemd配置然后启动即可。
+systemctl daemon-reload systemctl start mnt-sdcard.mount systemctl enable mnt-sdcard.mount 参考文章 systemd 之 开机自动挂载 Systemd 开机自动挂载硬盘 </description>
+    </item>
+    
+    <item>
+      <title>在玩客云上用Docker部署Cloudflare Tunnels实现内网穿透（一）</title>
       <link>https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/</link>
       <pubDate>Sun, 07 Jan 2024 21:31:55 +0800</pubDate>
       
       <guid>https://ruohai.wang/202401/cloudflared-deploy-on-onecloud-1/</guid>
       <description>前言 朋友们，2024年新年快乐~ 🎉
 之前我在迅雷赚钱宝、玩客云这些armv7l系统架构、即将被放弃支持的电子垃圾上部署网络服务，公网访问的解决方案是【廉价域名 + ddns + ipv6】，因为我当前使用的中国移动宽带支持ipv6 + 提供了公网ipv6地址。这个方案很好用也很方便，公网访问服务也能达到宽带的上行带宽上限，但这方案也不是没有遗憾的地方：
-国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务 国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问 国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号 动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候终端 我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真是有效的那个ipv6地址。 后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推优告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。
+国内很多老旧路由器，甚至新出厂的路由器，都默认关闭了ipv6功能，导致无妨访问我的自建网络服务 国外很多运营商不支持ipv6，导致我的自建服务内容项分享给国外好友的时候无法访问 国内宽带运营商屏蔽80/443端口，导致想要访问我的自建网络服务必须在域名后面加端口号 动态ipv6公网地址在dns解析生效上有滞后，导致服务有时候中断 我的赚钱宝系列和玩客云系列，经常会出现多个未过期、未注销的ipv6公网地址，但只有最新分配的那个才是有效的，这种情况ddns-go默认无法处理，需要自己写脚本选择真实有效的那个ipv6地址。 后来接触到了tailscales、frp、ngrok、zerotier，意识到如果自己拥有一台vps，就可以实现不需要端口号直接访问内网的自建网络服务（当然国内特情下需要完成备案）。当时我的twitter账号还没有被炸，推友告诉我，有免费的cloudflare tunnels方案实现同样的功能。但我这人又懒又拖延症，直到这周，才打起精神开始学习部署。
 自己成功部署了cloudflare tunnels以后，发现整个过程非常简单，官方的安装引导已经非常直白易懂。但实际操作过程中，对于一些不熟的步骤，我还是卡了好久，也趟了几个坑。所以做个简单记录。
 准备 想要实现cloudflare tunnels（以下简称tunnels）做内网穿透，需要提前准备：
 一个域名 一个cloudflare账号 一张信用卡 步骤 整个部署过程，大致分成几个步骤：

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>systemd on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/systemd/</link>
+    <description>Recent content in systemd on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 09 Jan 2024 16:12:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/systemd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在玩客云上用systemd实现sd卡的开机自动挂载</title>
+      <link>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</link>
+      <pubDate>Tue, 09 Jan 2024 16:12:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</guid>
+      <description>前言 想要在linux系统上实现开机自动挂载磁盘，有好几种实现方案。手动的方法可以通过编辑fstab，自动的方法可以用过安装udevil。
+但用fstab的方法，容易让系统无法启动。用udevil的方法，实测在玩客云上开机后无法自动挂载sd卡，需要手动插拔以后才能正常运行。
+在网上找了一些解决方案，最后决定用systemd来实现开机以后自动挂载sd卡。
+实现 首先要确定sd卡的硬件挂载点，比如我准备把sd卡设备挂载到/mnt/sdcard目录下。
+第一步：创建systemd的mount配置文件
+systemd配置文件存放目录/etc/systemd/system，在次目录下新建配置文件。
+sudo touch mnt-sdcard.mount 注意点：
+文件名mnt-sdcard和挂载路径要同名，但斜杠‘/’要转换成短杠‘-’，否则无法启动 文件后缀名是.mount而不是.service 第二步：编辑配置信息
+这里直接抄一下参考文章中提供的用例：
+[Unit] Description=sdcard auto mount After=network.target [Mount] What=/dev/mmcblk0p1 Where=/mnt/sdcard Type=ext4 Options=defaults [Install] WantedBy=multi-user.target 参数释疑：
+What: 被挂载设备文件全路径 Where: 挂载点全路径 Type: 文件系统类型 Options: 挂载选项 第三步：启用
+完成以上配置后，重新加载systemd配置然后启动即可。
+systemctl daemon-reload systemctl start mnt-sdcard.mount systemctl enable mnt-sdcard.mount 参考文章 systemd 之 开机自动挂载 Systemd 开机自动挂载硬盘 </description>
+    </item>
+    
+  </channel>
+</rss>
