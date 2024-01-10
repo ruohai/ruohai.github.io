@@ -98,6 +98,33 @@ c92开机，按f2进入bios，在boot标签页，在boot option priorities中调
     </item>
     
     <item>
+      <title>在玩客云上用Docker部署memos</title>
+      <link>https://ruohai.wang/202311/memos-install-on-onecloud/</link>
+      <pubDate>Tue, 14 Nov 2023 13:03:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202311/memos-install-on-onecloud/</guid>
+      <description>前言 开篇先来个提醒：目前memos这个项目正处于快速更新迭代中，重要数据记得做好备份。
+memos，轻量、方便好用、开源的自建笔记服务，可以拿来记笔记，也可以拿到当做一个自建小微博（或者自建小twitter）来用。
+memos的部署，目前官方只推荐docker或者docker-compose两种方式。
+那其实要部署就非常简单，准备好docker环境，然后一条命令/一个配置文件就搞定了。
+但在玩客云上安装稍微有点麻烦，因为玩客云的硬件是armv7，memos的的新版已经不支持这个架构。
+所以本次安装的核心就是找到支持armv7的docker镜像。
+部署 第一步：准备docker环境
+直接用debian仓库里的docker
+sudo apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
+sudo apt install docker-compose docker环境到此安装完毕
+第二步：准备memos的docker镜像
+memos最新发布的docker镜像已经不支持armv7架构，有两个解决方案：
+如果你动手能力比较强，那就下载源码自己编译一个支持armv7的版本 如果和我一样比较懒，那就找一下支持armv7的版本 在docker hub找到【neosmemo/memos】，点开tags标签，一直往前翻，可以看到2023年9月发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+在memos的github releases页面看一下0.15之后发布版本增加的新功能，最大的区别就是增加了用户之间评论 + 回复 + 留言的功能吧，memos从单机版变成了在线多人互动版。无奈玩客云硬件太老没有新版本可用，就安心玩单机版吧。😄
+第三步：部署memos
+我用的docker-compose方式部署，新建一个配置文件
+# 新建目录 mkdir ~/.memos ; cd $_ # 新建配置文件 touch docker-compose.yml 然后用编辑docker-compose.yml文件，录入以下内容。
+version: &amp;#34;3.0&amp;#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
+版本号，从latest指定为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可</description>
+    </item>
+    
+    <item>
       <title>Linux小主机（WS1608）折腾总结</title>
       <link>https://ruohai.wang/202310/ws1608-summary/</link>
       <pubDate>Wed, 04 Oct 2023 01:49:08 +0800</pubDate>

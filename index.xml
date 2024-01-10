@@ -5,7 +5,28 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 09 Jan 2024 16:12:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Jan 2024 23:47:21 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>为什么我开始选择自建服务</title>
+      <link>https://ruohai.wang/202401/why-i-choose-selfhosted-apps/</link>
+      <pubDate>Wed, 10 Jan 2024 23:47:21 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/why-i-choose-selfhosted-apps/</guid>
+      <description>twitter和memos 距离我的twitter账号被炸号，已经3个月了。时间过得好快啊。😄
+我没有选择在twitter新建小号复活，也没有选择转向thread、mastodon、telegram channel、bluesky、微博等等其它平台。我转向了自建服务：memos。
+memos是一个开源、轻量、方便、好用的笔记服务，github地址，官网地址。
+我的memos服务跑在一个armbian小设备上，机器是海鲜市场上只要10块钱一个的矿渣，迅雷赚钱宝二代（ws1508）。硬件性能羸弱，cpu架构老旧，经过一番刷机以后，用一根u盘作为存储介质刷入armbian，功耗2w。😄
+之前一直用【ipv6 + ddns + 域名】这套组合拳的模式来支持外网使用，最近弄了cloudflare tunnels，但实测不挂梯子几乎没法用。这里就不贴访问网址了，有心的可以telegram找我要。😄
+不能指望memos能和twitter、thread、mastodon之类比，我只是把它当作一个单机版的twitter/微博在用。
+它非常契合我的需求，但不一定满足你的需求：
+安卓 app、ios app都有人开发了，网页也支持pwa。 我的更新动机是记录生活。之前频繁更新twitter，不是为了流量变现，不是为了当网红被围观生活，只是喜欢记录生活琐事，没人看我也会记录。没人看，我就更不用在意内容尺度、错别字、个人形象之类，少了很多顾忌。在twitter交了这么多朋友，是我的幸事。 频繁的sns账号被炸以后，对互联网大厂提供的网络服务没啥好感了 贴一下我的memos使用频率，😄
+不过，memos也不是那么完美，我在这不短不长的使用过程中就碰到好几个非常明显的bug，还好我自己码力尚存还能自己动手修bug，最后都搞定了。😄
+自建服务 想起之个月之前，因为停止订阅google one，导致我的gmail因为15GB免费空间耗尽而无法使用，至此开始放弃google photos服务转移到自建nas。
+我似乎已经慢慢开始从使用互联网大厂提供的网络服务，慢慢转向了自建服务。
+回想一下这些年我的炸号经历：
+instagram账号突然退出，登录提示密码错误，选择重置密码，但一直收不到邮件。第一个instagram账号，卒。 instagram账号突然冻结，申请解冻要求拍摄本人手持签名的白纸的露脸照片证明自己是真人账号，感觉有点儿受辱，放弃解冻。第二个instagram账号，卒。 google photo权益缩水，这也没什么，互联网本就没有【永久】的承诺，没有【永久】免费的午餐。但google的photo、drive、gmail三者共享免费的15GB存储空间这事有点儿凹糟，我订阅100GB的google one，在photo上传了大量照片（超过15GB），之后取消google one订阅，竟然导致gmail无法使用。虽然事后想明白了这似乎很合理，但当时，我的主力邮箱突然无法使用以后是很慌的。至此我删除了photo里的照片，开始折腾nas。 twitter，或者应该按照新名字叫X，用了15年、马上16年的账号突然被冻结，多次申诉无效，我明白这个账号是gg了。甚至连获取archive存档数据让我保存在本地也行吧，对不起，没有。至此，我使用频率最高、几乎一日三餐、琐碎日常、感情八卦什么都往上发的twitter账号，消失在互联网上，消失在所有搜索引擎里了。 </description>
+    </item>
+    
     <item>
       <title>在玩客云上用systemd实现sd卡的开机自动挂载</title>
       <link>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</link>
@@ -335,24 +356,25 @@ A：也不全是。有个瑟推小号，上面都是18+内容，偶尔可能会�
       <pubDate>Tue, 14 Nov 2023 13:03:24 +0800</pubDate>
       
       <guid>https://ruohai.wang/202311/memos-install-on-onecloud/</guid>
-      <description>前言 memos的部署，目前官方只推了docker或者docker-compose两种方式。
+      <description>前言 开篇先来个提醒：目前memos这个项目正处于快速更新迭代中，重要数据记得做好备份。
+memos，轻量、方便好用、开源的自建笔记服务，可以拿来记笔记，也可以拿到当做一个自建小微博（或者自建小twitter）来用。
+memos的部署，目前官方只推荐docker或者docker-compose两种方式。
 那其实要部署就非常简单，准备好docker环境，然后一条命令/一个配置文件就搞定了。
-但在玩客云上安装稍微有点麻烦，因为玩客云的硬件是armv7，memos的的新版已经不支持这个硬件架构。
-所以本次安装的核心就是找到支持armv7的docker镜像
+但在玩客云上安装稍微有点麻烦，因为玩客云的硬件是armv7，memos的的新版已经不支持这个架构。
+所以本次安装的核心就是找到支持armv7的docker镜像。
 部署 第一步：准备docker环境
 直接用debian仓库里的docker
-apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
-apt install docker-compose docker环境到此安装完毕
-第二步：找memos镜像
-memos的新版本已经不支持armv7，有两个解决方案：
-如果你动手能力比较强，那就下载源码自己编译一个支持armv7的版本 如果和我一样比较懒，那就找一下支持armv7的版本 在memos的【docker-hub发布页面的tag标签】里，可以看到2个月前发布的0.15.0版本支持armv7。
-这就好办了，docker pull的时候指定版本即可。
+sudo apt install docker.io 我更喜欢用docker-compose，配置文件方便管理
+sudo apt install docker-compose docker环境到此安装完毕
+第二步：准备memos的docker镜像
+memos最新发布的docker镜像已经不支持armv7架构，有两个解决方案：
+如果你动手能力比较强，那就下载源码自己编译一个支持armv7的版本 如果和我一样比较懒，那就找一下支持armv7的版本 在docker hub找到【neosmemo/memos】，点开tags标签，一直往前翻，可以看到2023年9月发布的0.15.0版本支持armv7。这就好办了，docker pull的时候指定版本即可。
+在memos的github releases页面看一下0.15之后发布版本增加的新功能，最大的区别就是增加了用户之间评论 + 回复 + 留言的功能吧，memos从单机版变成了在线多人互动版。无奈玩客云硬件太老没有新版本可用，就安心玩单机版吧。😄
 第三步：部署memos
 我用的docker-compose方式部署，新建一个配置文件
-# 新建目录 mkdir ~/.memos &amp;amp; cd $_ # 新建配置文件 touch docker-compose.yml 然后用编辑docker-compose.yml文件，录入以下内容。
+# 新建目录 mkdir ~/.memos ; cd $_ # 新建配置文件 touch docker-compose.yml 然后用编辑docker-compose.yml文件，录入以下内容。
 version: &amp;#34;3.0&amp;#34; services: memos: image: ghcr.io/usememos/memos:0.15.0 container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 注意，针对官方提供的配置文件，我调整了几个参数：
-版本号，从latest指定为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可
-docker-compose up -d 注意事项 如果要升级或者重新部署memos，备份~/.memos/目录下的数据库文件memos_prod.db和附件目录assets 目前0.15.0和新版本的数据库表结构已经不兼容，新版已经支持用户评论，如果升级请留意表结构调整 </description>
+版本号，从latest指定为0.15.0 用户，默认是root用户运行memos，调整为UID:GID=1000:1000的non-root用户 重启方式，默认没有restart配置参数，调整为总是重启（always） 编辑好配置文件以后，开始部署即可</description>
     </item>
     
     <item>
