@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/github/</link>
+    <description>Recent content in Github on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 28 Jan 2024 22:52:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ssh: connect to host github.com port 22: Connection timed out问题处理</title>
+      <link>https://ruohai.wang/202401/github-connect-error/</link>
+      <pubDate>Sun, 28 Jan 2024 22:52:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/github-connect-error/</guid>
+      <description>今天准备push博客到github的时候发现push失败，错误提示内容如下
+ssh: connect to host github.com port 22: Connection timed out 在中国上网，碰到国外网络服务无法连接的直觉就是网站被屏蔽了。😔
+根据错误信息上网搜了搜，有个差不多情况的案例：
+坑：ssh: connect to host github.com port 22: Connection refused
+那就根据文章中的办法试试吧
+在~\.ssh\config中指定github的端口号
+Host github.com Hostname ssh.github.com Port 443 实测有效。</description>
+    </item>
+    
+  </channel>
+</rss>

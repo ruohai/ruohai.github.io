@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>ssh: connect to host github.com port 22: Connection timed out问题处理 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ssh: connect to host github.com port 22: Connection timed out问题处理"/>
+<meta name="twitter:description" content="今天准备push博客到github的时候发现push失败，错误提示内容如下
+ssh: connect to host github.com port 22: Connection timed out 在中国上网，碰到国外网络服务无法连接的直觉就是网站被屏蔽了。😔
+根据错误信息上网搜了搜，有个差不多情况的案例：
+坑：ssh: connect to host github.com port 22: Connection refused
+那就根据文章中的办法试试吧
+在~\.ssh\config中指定github的端口号
+Host github.com Hostname ssh.github.com Port 443 实测有效。"/>
+
+    <meta property="og:title" content="ssh: connect to host github.com port 22: Connection timed out问题处理" />
+<meta property="og:description" content="今天准备push博客到github的时候发现push失败，错误提示内容如下
+ssh: connect to host github.com port 22: Connection timed out 在中国上网，碰到国外网络服务无法连接的直觉就是网站被屏蔽了。😔
+根据错误信息上网搜了搜，有个差不多情况的案例：
+坑：ssh: connect to host github.com port 22: Connection refused
+那就根据文章中的办法试试吧
+在~\.ssh\config中指定github的端口号
+Host github.com Hostname ssh.github.com Port 443 实测有效。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202401/github-connect-error/" /><meta property="article:section" content="202401" />
+<meta property="article:published_time" content="2024-01-28T22:52:37+08:00" />
+<meta property="article:modified_time" content="2024-01-28T22:52:37+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">ssh: connect to host github.com port 22: Connection timed out问题处理</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 28, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/github/">Github</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>今天准备push博客到github的时候发现push失败，错误提示内容如下</p>
+<pre tabindex="0"><code>ssh: connect to host github.com port 22: Connection timed out
+</code></pre><p>在中国上网，碰到国外网络服务无法连接的直觉就是网站被屏蔽了。😔</p>
+<p>根据错误信息上网搜了搜，有个差不多情况的案例：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/521340971">坑：ssh: connect to host github.com port 22: Connection refused</a></p>
+<p>那就根据文章中的办法试试吧</p>
+<p>在<code>~\.ssh\config</code>中指定github的端口号</p>
+<pre tabindex="0"><code>Host github.com
+Hostname ssh.github.com
+Port 443
+</code></pre><p>实测有效。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
