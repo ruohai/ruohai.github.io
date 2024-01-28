@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>使用Tailsclae子网路由（Subnet routers）功能实现跳板机 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>Tailscale子网路由（Subnet routers）功能部署 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,7 +13,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用Tailsclae子网路由（Subnet routers）功能实现跳板机"/>
+<meta name="twitter:title" content="Tailscale子网路由（Subnet routers）功能部署"/>
 <meta name="twitter:description" content="前言 自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。
 但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。
 子网路由 简单文字描述这个功能，就是：
@@ -30,7 +30,7 @@
 echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则使用如下命令：
 echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.conf sudo sysctl -p /etc/sysctl."/>
 
-    <meta property="og:title" content="使用Tailsclae子网路由（Subnet routers）功能实现跳板机" />
+    <meta property="og:title" content="Tailscale子网路由（Subnet routers）功能部署" />
 <meta property="og:description" content="前言 自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。
 但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。
 子网路由 简单文字描述这个功能，就是：
@@ -82,7 +82,7 @@ echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">使用Tailsclae子网路由（Subnet routers）功能实现跳板机</h1>
+      <h1 class ="post-title">Tailscale子网路由（Subnet routers）功能部署</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
