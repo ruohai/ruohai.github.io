@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202401/</loc>
-    <lastmod>2024-01-10T23:47:21+08:00</lastmod>
+    <lastmod>2024-01-28T21:03:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-01-28T21:03:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/tailscale/</loc>
+    <lastmod>2024-01-28T21:03:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202401/tailscale-subnet-router/</loc>
+    <lastmod>2024-01-28T21:03:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-01-28T21:03:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/nmsl/</loc>
     <lastmod>2024-01-10T23:47:21+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-01-10T23:47:21+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202401/why-i-choose-selfhosted-apps/</loc>
-    <lastmod>2024-01-10T23:47:21+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-01-10T23:47:21+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/systemd/</loc>
@@ -477,9 +483,6 @@
     <lastmod>2023-07-15T00:28:12+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/tailscale-setup/</loc>
-    <lastmod>2023-07-15T00:25:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/tailscale/</loc>
     <lastmod>2023-07-15T00:25:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/firewalld/</loc>

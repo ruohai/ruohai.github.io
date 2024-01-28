@@ -5,7 +5,30 @@
     <link>https://ruohai.wang/202401/</link>
     <description>Recent content in 202401s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 10 Jan 2024 23:47:21 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202401/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Jan 2024 21:03:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202401/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Tailsclae子网路由（Subnet routers）功能实现跳板机</title>
+      <link>https://ruohai.wang/202401/tailscale-subnet-router/</link>
+      <pubDate>Sun, 28 Jan 2024 21:03:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202401/tailscale-subnet-router/</guid>
+      <description>前言 自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。
+但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。
+子网路由 简单文字描述这个功能，就是：
+局域网内有很多个服务器 这些机器在内网都用192.168.*.*的内网ip进行访问 并不是每台机器都能装tailscale 在一台机器上部署tailscale，开启subnet routers作为跳板机，通过这台机器，直接用192.168.*.*的局域网ip访问内网的机器 看上去还是比较拗口，那就直接看官网的图片解释吧
+部署 先贴上官网的subnet routers的指导手册：Subnet routers and traffic relay nodes
+然后我自己部署过程的步骤拆解：
+第一步：安装tailscale
+官网下载页面指路：https://tailscale.com/download
+注意：到安装完成那一步即可，不需要启动。
+第二步：开启ip转发
+使用子网路由功能必须开启本机的ip转发。
+这里以linux为例，这里直接照搬官网内容：
+如果你的linux系统存在/etc/sysctl.d目录，使用如下命令：
+echo &amp;#39;net.ipv4.ip_forward = 1&amp;#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &amp;#39;net.ipv6.conf.all.forwarding = 1&amp;#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则使用如下命令：
+echo &amp;#39;net.ipv4.ip_forward = 1&amp;#39; | sudo tee -a /etc/sysctl.conf echo &amp;#39;net.ipv6.conf.all.forwarding = 1&amp;#39; | sudo tee -a /etc/sysctl.conf sudo sysctl -p /etc/sysctl.</description>
+    </item>
+    
     <item>
       <title>为什么我开始选择自建服务</title>
       <link>https://ruohai.wang/202401/why-i-choose-selfhosted-apps/</link>

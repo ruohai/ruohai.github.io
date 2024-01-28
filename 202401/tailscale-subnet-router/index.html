@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>使用Tailsclae子网路由（Subnet routers）功能实现跳板机 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用Tailsclae子网路由（Subnet routers）功能实现跳板机"/>
+<meta name="twitter:description" content="前言 自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。
+但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。
+子网路由 简单文字描述这个功能，就是：
+局域网内有很多个服务器 这些机器在内网都用192.168.*.*的内网ip进行访问 并不是每台机器都能装tailscale 在一台机器上部署tailscale，开启subnet routers作为跳板机，通过这台机器，直接用192.168.*.*的局域网ip访问内网的机器 看上去还是比较拗口，那就直接看官网的图片解释吧
+部署 先贴上官网的subnet routers的指导手册：Subnet routers and traffic relay nodes
+然后我自己部署过程的步骤拆解：
+第一步：安装tailscale
+官网下载页面指路：https://tailscale.com/download
+注意：到安装完成那一步即可，不需要启动。
+第二步：开启ip转发
+使用子网路由功能必须开启本机的ip转发。
+这里以linux为例，这里直接照搬官网内容：
+如果你的linux系统存在/etc/sysctl.d目录，使用如下命令：
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则使用如下命令：
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.conf sudo sysctl -p /etc/sysctl."/>
+
+    <meta property="og:title" content="使用Tailsclae子网路由（Subnet routers）功能实现跳板机" />
+<meta property="og:description" content="前言 自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。
+但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。
+子网路由 简单文字描述这个功能，就是：
+局域网内有很多个服务器 这些机器在内网都用192.168.*.*的内网ip进行访问 并不是每台机器都能装tailscale 在一台机器上部署tailscale，开启subnet routers作为跳板机，通过这台机器，直接用192.168.*.*的局域网ip访问内网的机器 看上去还是比较拗口，那就直接看官网的图片解释吧
+部署 先贴上官网的subnet routers的指导手册：Subnet routers and traffic relay nodes
+然后我自己部署过程的步骤拆解：
+第一步：安装tailscale
+官网下载页面指路：https://tailscale.com/download
+注意：到安装完成那一步即可，不需要启动。
+第二步：开启ip转发
+使用子网路由功能必须开启本机的ip转发。
+这里以linux为例，这里直接照搬官网内容：
+如果你的linux系统存在/etc/sysctl.d目录，使用如下命令：
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则使用如下命令：
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.conf sudo sysctl -p /etc/sysctl." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202401/tailscale-subnet-router/" /><meta property="article:section" content="202401" />
+<meta property="article:published_time" content="2024-01-28T21:03:05+08:00" />
+<meta property="article:modified_time" content="2024-01-28T21:03:05+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用Tailsclae子网路由（Subnet routers）功能实现跳板机</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 28, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/tailscale/">Tailscale</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>自己折腾nas或者linux小机器，都会碰到内网穿透的需求，tailscale就是其中一个非常方便、好用又免费的方案。</p>
+<p>但我之前只是用它的最简单、基础的异地组网功能，这两天偶尔看到别人分享它的子网路由（subnet routers）功能，发现非常契合我的使用场景，所以抓紧时间折腾了一遍，顺便做个记录。</p>
+<hr>
+<h2 id="子网路由">子网路由</h2>
+<p>简单文字描述这个功能，就是：</p>
+<ul>
+<li>局域网内有很多个服务器</li>
+<li>这些机器在内网都用<code>192.168.*.*</code>的内网ip进行访问</li>
+<li>并不是每台机器都能装tailscale</li>
+<li>在一台机器上部署tailscale，开启subnet routers作为跳板机，通过这台机器，直接用<code>192.168.*.*</code>的局域网ip访问内网的机器</li>
+</ul>
+<p>看上去还是比较拗口，那就直接看官网的图片解释吧</p>
+<p><img src="https://img.311803.xyz/i/2024/01/28/yx0rqr-0.png" alt=""></p>
+<hr>
+<h2 id="部署">部署</h2>
+<p>先贴上官网的subnet routers的指导手册：<a href="https://tailscale.com/kb/1019/subnets">Subnet routers and traffic relay nodes</a></p>
+<p>然后我自己部署过程的步骤拆解：</p>
+<blockquote>
+<p>第一步：安装tailscale</p>
+</blockquote>
+<p>官网下载页面指路：https://tailscale.com/download</p>
+<p>注意：到安装完成那一步即可，不需要启动。</p>
+<blockquote>
+<p>第二步：开启ip转发</p>
+</blockquote>
+<p>使用子网路由功能必须开启本机的ip转发。</p>
+<p>这里以linux为例，这里直接照搬官网内容：</p>
+<p>如果你的linux系统存在<code>/etc/sysctl.d</code>目录，使用如下命令：</p>
+<pre tabindex="0"><code>echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+</code></pre><p>否则使用如下命令：</p>
+<pre tabindex="0"><code>echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf
+echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p /etc/sysctl.conf
+</code></pre><blockquote>
+<p>第三步：启动tailscale，广播子网路由</p>
+</blockquote>
+<p>命令如下</p>
+<pre tabindex="0"><code>sudo tailscale up --advertise-routes=192.168.1.0/24
+</code></pre><p>注意路由的网段，根据自己的情况调整即可。</p>
+<p>比如</p>
+<pre tabindex="0"><code>sudo tailscale up --advertise-routes=192.168.0.0/24,192.168.1.0/24
+</code></pre><p>我的内网所有机器使用的都是<code>192.168.1.0/24</code>网络，所以只广播这一个网段。</p>
+<blockquote>
+<p>第四步：网页端开启subnet routers功能</p>
+</blockquote>
+<p>在第三步中，使用<code>tailscale up</code>启动tailscale以后，会跳出链接要求绑定到账号，这里不做赘述。</p>
+<p>绑定成功以后，在官网管理台找到机器，点击右边三个点号出现菜单，选择<code>edit route settting</code>。</p>
+<p><img src="https://img.311803.xyz/i/2024/01/28/z85u88-0.png" alt=""></p>
+<p>在下一窗口子网路由的网段，保存。</p>
+<p><img src="https://img.311803.xyz/i/2024/01/28/zanx3r-0.png" alt=""></p>
+<p>到此，tailscale子网路由的功能部署完毕。在另外一台安装了tailscale并加入组网的机器上，就可以直接通过<code>192.168.1.*</code>的内网ip直接访问内网服务了。</p>
+<hr>
+<h2 id="结语">结语</h2>
+<p>祝你每天开心。</p>
+<p>😄</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

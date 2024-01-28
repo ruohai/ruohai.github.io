@@ -5,7 +5,16 @@
     <link>https://ruohai.wang/tags/</link>
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 10 Jan 2024 23:47:21 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Jan 2024 21:03:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tailscale</title>
+      <link>https://ruohai.wang/tags/tailscale/</link>
+      <pubDate>Sun, 28 Jan 2024 21:03:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/tailscale/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>NMSL</title>
       <link>https://ruohai.wang/tags/nmsl/</link>
@@ -498,15 +507,6 @@
       <pubDate>Sat, 15 Jul 2023 00:28:12 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/navidrome/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tailscale</title>
-      <link>https://ruohai.wang/tags/tailscale/</link>
-      <pubDate>Sat, 15 Jul 2023 00:25:16 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/tailscale/</guid>
       <description></description>
     </item>
     
