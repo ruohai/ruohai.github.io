@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Tailscale出口节点（Exit Nodes）功能部署 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tailscale出口节点（Exit Nodes）功能部署"/>
+<meta name="twitter:description" content="前言 这段时间忙着照顾家人，因为老母亲又双叒叕因为主动脉夹层的原因做了第二次心脏手术，需要24小时陪护，所以我大部分时间呆在乡下，就有了乡下 &amp; 杭州异地组网和通讯的需求。
+上一篇文章记录了tailscale的子网路由（subnet routers）功能，我拿它作为跳板机，这样我只需要在一台设备上安装tailscale，就可以直接通过原来的 192.168.1.* 的内网ip地址直接访问局域网里的nas、玩客云、openwrt，甚至可以直接访问光猫的后台地址，不需要再每台机器装tailscale然后使用100开头的vpn网络IP地址来访问。
+tailscale还有另一个功能：出口节点（exit nodes）。看了官方文档，作为中国人，我第一时间想到的应用场景，就是翻墙。😄
+正好我好友jrr在澳洲，和他一起玩了一下这个exit nodes功能，自此我有了一个悉尼的网络出口，😄。
+功能释疑 exit nodes的官方文档：Exit Nodes (route all traffic)
+通俗来讲，就是在一个设备上安装tailscale，启用exit nodes功能。然后其它装了tailscale的机器，比如机器A，可以指定这台设备为出口（exit node）。之后机器A的所有网络流量都会由指定的出口节点进行路由转发。
+官网的示意图。
+部署 第一步：下载&amp;安装tailscale
+官方地址：Download
+第二步：开启ip转发功能
+这里以linux为例，因为我把tailscale装在linux小盒子上。
+官方文档：Exit Nodes install
+如果你的linux系统存在/etc/sysctl.d路径，执行以下命令
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则执行以下命令
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl."/>
+
+    <meta property="og:title" content="Tailscale出口节点（Exit Nodes）功能部署" />
+<meta property="og:description" content="前言 这段时间忙着照顾家人，因为老母亲又双叒叕因为主动脉夹层的原因做了第二次心脏手术，需要24小时陪护，所以我大部分时间呆在乡下，就有了乡下 &amp; 杭州异地组网和通讯的需求。
+上一篇文章记录了tailscale的子网路由（subnet routers）功能，我拿它作为跳板机，这样我只需要在一台设备上安装tailscale，就可以直接通过原来的 192.168.1.* 的内网ip地址直接访问局域网里的nas、玩客云、openwrt，甚至可以直接访问光猫的后台地址，不需要再每台机器装tailscale然后使用100开头的vpn网络IP地址来访问。
+tailscale还有另一个功能：出口节点（exit nodes）。看了官方文档，作为中国人，我第一时间想到的应用场景，就是翻墙。😄
+正好我好友jrr在澳洲，和他一起玩了一下这个exit nodes功能，自此我有了一个悉尼的网络出口，😄。
+功能释疑 exit nodes的官方文档：Exit Nodes (route all traffic)
+通俗来讲，就是在一个设备上安装tailscale，启用exit nodes功能。然后其它装了tailscale的机器，比如机器A，可以指定这台设备为出口（exit node）。之后机器A的所有网络流量都会由指定的出口节点进行路由转发。
+官网的示意图。
+部署 第一步：下载&amp;安装tailscale
+官方地址：Download
+第二步：开启ip转发功能
+这里以linux为例，因为我把tailscale装在linux小盒子上。
+官方文档：Exit Nodes install
+如果你的linux系统存在/etc/sysctl.d路径，执行以下命令
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则执行以下命令
+echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202402/tailscale-exit-nodes/" /><meta property="article:section" content="202402" />
+<meta property="article:published_time" content="2024-02-06T10:04:55+08:00" />
+<meta property="article:modified_time" content="2024-02-06T10:04:55+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Tailscale出口节点（Exit Nodes）功能部署</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 6, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/tailscale/">Tailscale</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>这段时间忙着照顾家人，因为老母亲又双叒叕因为主动脉夹层的原因做了第二次心脏手术，需要24小时陪护，所以我大部分时间呆在乡下，就有了乡下 &amp; 杭州异地组网和通讯的需求。</p>
+<p>上一篇文章记录了tailscale的子网路由（subnet routers）功能，我拿它作为跳板机，这样我只需要在一台设备上安装tailscale，就可以直接通过原来的 <code>192.168.1.*</code> 的内网ip地址直接访问局域网里的nas、玩客云、openwrt，甚至可以直接访问光猫的后台地址，不需要再每台机器装tailscale然后使用100开头的vpn网络IP地址来访问。</p>
+<p>tailscale还有另一个功能：出口节点（exit nodes）。看了官方文档，作为中国人，我第一时间想到的应用场景，就是翻墙。😄</p>
+<p>正好我好友jrr在澳洲，和他一起玩了一下这个exit nodes功能，自此我有了一个悉尼的网络出口，😄。</p>
+<hr>
+<h2 id="功能释疑">功能释疑</h2>
+<p>exit nodes的官方文档：<a href="https://tailscale.com/kb/1103/exit-nodes">Exit Nodes (route all traffic)</a></p>
+<p>通俗来讲，就是在一个设备上安装tailscale，启用exit nodes功能。然后其它装了tailscale的机器，比如机器A，可以指定这台设备为出口（exit node）。之后机器A的所有网络流量都会由指定的出口节点进行路由转发。</p>
+<p>官网的示意图。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/kskmjh-0.png" alt=""></p>
+<h2 id="部署">部署</h2>
+<blockquote>
+<p>第一步：下载&amp;安装tailscale</p>
+</blockquote>
+<p>官方地址：<a href="https://tailscale.com/download">Download</a></p>
+<blockquote>
+<p>第二步：开启ip转发功能</p>
+</blockquote>
+<p>这里以linux为例，因为我把tailscale装在linux小盒子上。</p>
+<p>官方文档：<a href="https://tailscale.com/kb/1103/exit-nodes">Exit Nodes install</a></p>
+<p>如果你的linux系统存在<code>/etc/sysctl.d</code>路径，执行以下命令</p>
+<pre tabindex="0"><code>echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+</code></pre><p>否则执行以下命令</p>
+<pre tabindex="0"><code>echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf
+echo &#39;net.ipv6.conf.all.forwarding = 1&#39; | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p /etc/sysctl.conf
+</code></pre><blockquote>
+<p>第三步：启动tailscale</p>
+</blockquote>
+<p>完成以上配置以后，启动即可，加上exit node的参数。</p>
+<pre tabindex="0"><code>sudo tailscale up --advertise-exit-node
+</code></pre><blockquote>
+<p>第四步：控制台开启exit nodes功能</p>
+</blockquote>
+<p>登录tailscale的网页控制到，找到对应的机器，点开设置菜单</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/ll2xo0-0.png" alt=""></p>
+<p>勾选启用exit node功能，保存。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/llakw3-0.png" alt=""></p>
+<p>好了，到这一步就完成了出口节点机器的部署。接下去只要在其它安装了tailscale的机器上指定这台机器作为网口出口节点即可。</p>
+<blockquote>
+<p>第五步：指定exit node</p>
+</blockquote>
+<p>在另一台已经安装了tailscale的机器上，启动tailscale并指定exit node的ip地址。</p>
+<pre tabindex="0"><code>sudo tailscale up --exit-node=&lt;exit-node-ip&gt;
+</code></pre><p>至此，这台机器的所有网络流量都由出口节点那台机器进行路由转发。</p>
+<p>如果出口节点的机器在hk、jp、au、us，那对应的你就获得了hk、jp、au、us的出口和ip。</p>
+<blockquote>
+<p>第六步：取消路由</p>
+</blockquote>
+<p>如果不需要出口节点进行网络流量转发了，命令如下</p>
+<pre tabindex="0"><code>sudo tailscale up --exit-node=
+</code></pre><p>等号后面留空即可。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

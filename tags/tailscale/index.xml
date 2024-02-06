@@ -5,7 +5,30 @@
     <link>https://ruohai.wang/tags/tailscale/</link>
     <description>Recent content in Tailscale on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 28 Jan 2024 21:03:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Feb 2024 10:04:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tailscale出口节点（Exit Nodes）功能部署</title>
+      <link>https://ruohai.wang/202402/tailscale-exit-nodes/</link>
+      <pubDate>Tue, 06 Feb 2024 10:04:55 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202402/tailscale-exit-nodes/</guid>
+      <description>前言 这段时间忙着照顾家人，因为老母亲又双叒叕因为主动脉夹层的原因做了第二次心脏手术，需要24小时陪护，所以我大部分时间呆在乡下，就有了乡下 &amp;amp; 杭州异地组网和通讯的需求。
+上一篇文章记录了tailscale的子网路由（subnet routers）功能，我拿它作为跳板机，这样我只需要在一台设备上安装tailscale，就可以直接通过原来的 192.168.1.* 的内网ip地址直接访问局域网里的nas、玩客云、openwrt，甚至可以直接访问光猫的后台地址，不需要再每台机器装tailscale然后使用100开头的vpn网络IP地址来访问。
+tailscale还有另一个功能：出口节点（exit nodes）。看了官方文档，作为中国人，我第一时间想到的应用场景，就是翻墙。😄
+正好我好友jrr在澳洲，和他一起玩了一下这个exit nodes功能，自此我有了一个悉尼的网络出口，😄。
+功能释疑 exit nodes的官方文档：Exit Nodes (route all traffic)
+通俗来讲，就是在一个设备上安装tailscale，启用exit nodes功能。然后其它装了tailscale的机器，比如机器A，可以指定这台设备为出口（exit node）。之后机器A的所有网络流量都会由指定的出口节点进行路由转发。
+官网的示意图。
+部署 第一步：下载&amp;amp;安装tailscale
+官方地址：Download
+第二步：开启ip转发功能
+这里以linux为例，因为我把tailscale装在linux小盒子上。
+官方文档：Exit Nodes install
+如果你的linux系统存在/etc/sysctl.d路径，执行以下命令
+echo &amp;#39;net.ipv4.ip_forward = 1&amp;#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf echo &amp;#39;net.ipv6.conf.all.forwarding = 1&amp;#39; | sudo tee -a /etc/sysctl.d/99-tailscale.conf sudo sysctl -p /etc/sysctl.d/99-tailscale.conf 否则执行以下命令
+echo &amp;#39;net.ipv4.ip_forward = 1&amp;#39; | sudo tee -a /etc/sysctl.conf echo &amp;#39;net.ipv6.conf.all.forwarding = 1&amp;#39; | sudo tee -a /etc/sysctl.</description>
+    </item>
+    
     <item>
       <title>Tailscale子网路由（Subnet routers）功能部署</title>
       <link>https://ruohai.wang/202401/tailscale-subnet-router/</link>
