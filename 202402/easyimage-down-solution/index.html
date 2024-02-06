@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title> ERROR: unable to bind listening socket for address &#39;/run/php/php8.2-fpm.sock&#39;: No such file or directory (2)问题处理 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=" ERROR: unable to bind listening socket for address &#39;/run/php/php8.2-fpm.sock&#39;: No such file or directory (2)问题处理"/>
+<meta name="twitter:description" content="昨天重启了一下我的linux小盒子，今天发现我的php网站easyimage服务gg了，无法访问。
+排错过程 第一步：查看nginx错误日志
+首先访问网站地址，显示502 bad gateway。那就先看下nginx的错误日志。
+[crit] 8919#8919: *20 connect() to unix:/run/php/php8.2-fpm.sock failed (2: No such file or directory) while connecting to upstream, client: 192.168.1.*, server: easyimage, request: &#34;GET /index.php HTTP/1.1&#34;, upstream: &#34;fastcgi://unix:/run/php/php8.2-fpm.sock:&#34;, host: &#34;192.168.1.*:*&#34; 从这个错误日志可以判断错误原因是No such file or directory，找不到文件或路径。
+但是我的linux小盒子，弄好php、php-fpm以后一直运行正常，没有增删过任何文件，只是重启了一下而已，为什么会报错呢。
+第二步：查看php-fpm服务状态
+根据nginx的日志，大致可以判定错误原因和php-fpm服务有关，那就看下这个服务的状态
+systemctl status php8.2-fpm.service 结果如图
+现在可以判定是php-fpm服务出问题了无法启动，导致无法转发php的请求。
+第三步：php-fpm启动报错原因排查
+既然是php-fpm服务出问题了，先重启试试，看是否有报错信息。
+提示了查看详细错误信息的命令。
+journalctl -xeu php8.2-fpm.service 错误日志很长啊，但核心的就箭头所指的一条。
+虽然知道原因了，但不知道怎么解决，只能上网搜了。
+最后在stackoverflow找到了解决方案：Unable to bind listening socket for address php-fpm
+解决方案 在/run目录下新建一个php目录。
+没错，就是在/run目录下新建一个php目录，也就是/run/php。
+php-fpm启动以后需要这个/run/php/目录来存放运行文件。
+至于为什么之前php跑的好好的没问题，也不需要自己来新建这个文件，而且没有变更过任何的配置、用户、权限，今天怎么就不行了？
+🤔"/>
+
+    <meta property="og:title" content=" ERROR: unable to bind listening socket for address &#39;/run/php/php8.2-fpm.sock&#39;: No such file or directory (2)问题处理" />
+<meta property="og:description" content="昨天重启了一下我的linux小盒子，今天发现我的php网站easyimage服务gg了，无法访问。
+排错过程 第一步：查看nginx错误日志
+首先访问网站地址，显示502 bad gateway。那就先看下nginx的错误日志。
+[crit] 8919#8919: *20 connect() to unix:/run/php/php8.2-fpm.sock failed (2: No such file or directory) while connecting to upstream, client: 192.168.1.*, server: easyimage, request: &#34;GET /index.php HTTP/1.1&#34;, upstream: &#34;fastcgi://unix:/run/php/php8.2-fpm.sock:&#34;, host: &#34;192.168.1.*:*&#34; 从这个错误日志可以判断错误原因是No such file or directory，找不到文件或路径。
+但是我的linux小盒子，弄好php、php-fpm以后一直运行正常，没有增删过任何文件，只是重启了一下而已，为什么会报错呢。
+第二步：查看php-fpm服务状态
+根据nginx的日志，大致可以判定错误原因和php-fpm服务有关，那就看下这个服务的状态
+systemctl status php8.2-fpm.service 结果如图
+现在可以判定是php-fpm服务出问题了无法启动，导致无法转发php的请求。
+第三步：php-fpm启动报错原因排查
+既然是php-fpm服务出问题了，先重启试试，看是否有报错信息。
+提示了查看详细错误信息的命令。
+journalctl -xeu php8.2-fpm.service 错误日志很长啊，但核心的就箭头所指的一条。
+虽然知道原因了，但不知道怎么解决，只能上网搜了。
+最后在stackoverflow找到了解决方案：Unable to bind listening socket for address php-fpm
+解决方案 在/run目录下新建一个php目录。
+没错，就是在/run目录下新建一个php目录，也就是/run/php。
+php-fpm启动以后需要这个/run/php/目录来存放运行文件。
+至于为什么之前php跑的好好的没问题，也不需要自己来新建这个文件，而且没有变更过任何的配置、用户、权限，今天怎么就不行了？
+🤔" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202402/easyimage-down-solution/" /><meta property="article:section" content="202402" />
+<meta property="article:published_time" content="2024-02-06T12:25:17+08:00" />
+<meta property="article:modified_time" content="2024-02-06T12:25:17+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title"> ERROR: unable to bind listening socket for address &#39;/run/php/php8.2-fpm.sock&#39;: No such file or directory (2)问题处理</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 6, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/easyimage/">EasyImage</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>昨天重启了一下我的linux小盒子，今天发现我的php网站easyimage服务gg了，无法访问。</p>
+<hr>
+<h2 id="排错过程">排错过程</h2>
+<blockquote>
+<p>第一步：查看nginx错误日志</p>
+</blockquote>
+<p>首先访问网站地址，显示502 bad gateway。那就先看下nginx的错误日志。</p>
+<pre tabindex="0"><code>[crit] 8919#8919: *20 connect() to unix:/run/php/php8.2-fpm.sock failed (2: No such file or directory) while connecting to upstream, client: 192.168.1.*, server: easyimage, request: &#34;GET /index.php HTTP/1.1&#34;, upstream: &#34;fastcgi://unix:/run/php/php8.2-fpm.sock:&#34;, host: &#34;192.168.1.*:*&#34;
+</code></pre><p>从这个错误日志可以判断错误原因是<code>No such file or directory</code>，找不到文件或路径。</p>
+<p>但是我的linux小盒子，弄好php、php-fpm以后一直运行正常，没有增删过任何文件，只是重启了一下而已，为什么会报错呢。</p>
+<blockquote>
+<p>第二步：查看php-fpm服务状态</p>
+</blockquote>
+<p>根据nginx的日志，大致可以判定错误原因和php-fpm服务有关，那就看下这个服务的状态</p>
+<pre tabindex="0"><code>systemctl status php8.2-fpm.service
+</code></pre><p>结果如图</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/kg7q8n-0.png" alt=""></p>
+<p>现在可以判定是php-fpm服务出问题了无法启动，导致无法转发php的请求。</p>
+<blockquote>
+<p>第三步：php-fpm启动报错原因排查</p>
+</blockquote>
+<p>既然是php-fpm服务出问题了，先重启试试，看是否有报错信息。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/khockg-0.png" alt=""></p>
+<p>提示了查看详细错误信息的命令。</p>
+<pre tabindex="0"><code>journalctl -xeu php8.2-fpm.service
+</code></pre><p>错误日志很长啊，但核心的就箭头所指的一条。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/kive8u-0.png" alt=""></p>
+<p>虽然知道原因了，但不知道怎么解决，只能上网搜了。</p>
+<p>最后在stackoverflow找到了解决方案：<a href="https://stackoverflow.com/questions/29859131/unable-to-bind-listening-socket-for-address-php-fpm">Unable to bind listening socket for address php-fpm</a></p>
+<hr>
+<h2 id="解决方案">解决方案</h2>
+<p>在<code>/run</code>目录下新建一个<code>php</code>目录。</p>
+<p>没错，就是在<code>/run</code>目录下新建一个<code>php</code>目录，也就是<code>/run/php</code>。</p>
+<p>php-fpm启动以后需要这个<code>/run/php/</code>目录来存放运行文件。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/06/kn5tdd-0.png" alt=""></p>
+<p>至于为什么之前php跑的好好的没问题，也不需要自己来新建这个文件，而且没有变更过任何的配置、用户、权限，今天怎么就不行了？</p>
+<p>🤔</p>
+<p>我不知道。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

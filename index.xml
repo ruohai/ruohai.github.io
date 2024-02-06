@@ -5,7 +5,35 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 28 Jan 2024 22:52:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Feb 2024 12:25:17 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title> ERROR: unable to bind listening socket for address &#39;/run/php/php8.2-fpm.sock&#39;: No such file or directory (2)问题处理</title>
+      <link>https://ruohai.wang/202402/easyimage-down-solution/</link>
+      <pubDate>Tue, 06 Feb 2024 12:25:17 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202402/easyimage-down-solution/</guid>
+      <description>昨天重启了一下我的linux小盒子，今天发现我的php网站easyimage服务gg了，无法访问。
+排错过程 第一步：查看nginx错误日志
+首先访问网站地址，显示502 bad gateway。那就先看下nginx的错误日志。
+[crit] 8919#8919: *20 connect() to unix:/run/php/php8.2-fpm.sock failed (2: No such file or directory) while connecting to upstream, client: 192.168.1.*, server: easyimage, request: &amp;#34;GET /index.php HTTP/1.1&amp;#34;, upstream: &amp;#34;fastcgi://unix:/run/php/php8.2-fpm.sock:&amp;#34;, host: &amp;#34;192.168.1.*:*&amp;#34; 从这个错误日志可以判断错误原因是No such file or directory，找不到文件或路径。
+但是我的linux小盒子，弄好php、php-fpm以后一直运行正常，没有增删过任何文件，只是重启了一下而已，为什么会报错呢。
+第二步：查看php-fpm服务状态
+根据nginx的日志，大致可以判定错误原因和php-fpm服务有关，那就看下这个服务的状态
+systemctl status php8.2-fpm.service 结果如图
+现在可以判定是php-fpm服务出问题了无法启动，导致无法转发php的请求。
+第三步：php-fpm启动报错原因排查
+既然是php-fpm服务出问题了，先重启试试，看是否有报错信息。
+提示了查看详细错误信息的命令。
+journalctl -xeu php8.2-fpm.service 错误日志很长啊，但核心的就箭头所指的一条。
+虽然知道原因了，但不知道怎么解决，只能上网搜了。
+最后在stackoverflow找到了解决方案：Unable to bind listening socket for address php-fpm
+解决方案 在/run目录下新建一个php目录。
+没错，就是在/run目录下新建一个php目录，也就是/run/php。
+php-fpm启动以后需要这个/run/php/目录来存放运行文件。
+至于为什么之前php跑的好好的没问题，也不需要自己来新建这个文件，而且没有变更过任何的配置、用户、权限，今天怎么就不行了？
+🤔</description>
+    </item>
+    
     <item>
       <title>ssh: connect to host github.com port 22: Connection timed out问题处理</title>
       <link>https://ruohai.wang/202401/github-connect-error/</link>

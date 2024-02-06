@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202402/easyimage-down-solution/</loc>
+    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202402/</loc>
+    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/easyimage/</loc>
+    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202401/</loc>
     <lastmod>2024-01-28T22:52:37+08:00</lastmod>
   </url><url>
@@ -9,12 +24,6 @@
     <lastmod>2024-01-28T22:52:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202401/github-connect-error/</loc>
-    <lastmod>2024-01-28T22:52:37+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-01-28T22:52:37+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-01-28T22:52:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/tailscale/</loc>
@@ -75,9 +84,6 @@
     <lastmod>2023-12-18T23:08:25+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202311/</loc>
-    <lastmod>2023-11-27T23:34:11+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/easyimage/</loc>
     <lastmod>2023-11-27T23:34:11+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202311/easyimage-install-guide/</loc>
