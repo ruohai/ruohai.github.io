@@ -117,24 +117,27 @@ instagram账号突然退出，登录提示密码错误，选择重置密码，�
     </item>
     
     <item>
-      <title>在玩客云上用systemd实现sd卡的开机自动挂载</title>
+      <title>用systemd实现存储设备的开机自动挂载</title>
       <link>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</link>
       <pubDate>Tue, 09 Jan 2024 16:12:05 +0800</pubDate>
       
       <guid>https://ruohai.wang/202401/systemd-auto-mount-sdcard/</guid>
-      <description>前言 想要在linux系统上实现开机自动挂载磁盘，有好几种实现方案。手动的方法可以通过编辑fstab，自动的方法可以用过安装udevil。
-但用fstab的方法，容易让系统无法启动。用udevil的方法，实测在玩客云上开机后无法自动挂载sd卡，需要手动插拔以后才能正常运行。
-在网上找了一些解决方案，最后决定用systemd来实现开机以后自动挂载sd卡。
-实现 首先要确定sd卡的硬件挂载点，比如我准备把sd卡设备挂载到/mnt/sdcard目录下。
+      <description>前言 想要在linux系统上实现开机自动挂载磁盘，有好几种实现方案。我之前用过自动的udevil，也用过直接编辑/etc/fstab。
+但是这俩办法各自有点儿小缺陷：
+udevil，首先这包很久没更新了，然后好像是挂载exfat有点儿bug，需要自动再配置文件中调整下exfat相关的参数，其次玩客云上的sd卡槽插入sd卡，开机后首次无法自动挂载，需要手动重新插拔一下sd卡才能正常工作。 fstab，这个方法简单方便有效，但换盘以后如果忘记改fstab的配置，很容易让系统启动以后因为文件系统错误导致gg，需要进入修复模式修改fstab才能正常启动。 最近在网上找了一些其它解决方案，最后决定用systemd来实现开机以后自动挂载存储设备。
+实现 假定我要实现sd卡的开机自动挂载，sd卡上的存储分区是/dev/mmcblk0p1。
+首先要确定sd卡的硬件挂载点，比如我准备把sd卡设备挂载到/mnt/sdcard目录下。
 第一步：创建systemd的mount配置文件
 systemd配置文件存放目录/etc/systemd/system，在次目录下新建配置文件。
 sudo touch mnt-sdcard.mount 注意点：
-文件名mnt-sdcard和挂载路径要同名，但斜杠‘/’要转换成短杠‘-’，否则无法启动 文件后缀名是.mount而不是.service 第二步：编辑配置信息
-这里直接抄一下参考文章中提供的用例：
+文件名规则设定，mnt-sdcard由挂载路径/mnt/sdcard转化而来，斜杠‘/’要转换成短杠‘-’ 文件后缀名是.mount而不是.service 第二步：编辑配置信息
+编辑mnt-sdcard.mount，录入以下内容：
 [Unit] Description=sdcard auto mount After=network.target [Mount] What=/dev/mmcblk0p1 Where=/mnt/sdcard Type=ext4 Options=defaults [Install] WantedBy=multi-user.target 参数释疑：
 What: 被挂载设备文件全路径 Where: 挂载点全路径 Type: 文件系统类型 Options: 挂载选项 第三步：启用
 完成以上配置后，重新加载systemd配置然后启动即可。
-systemctl daemon-reload systemctl start mnt-sdcard.mount systemctl enable mnt-sdcard.mount 参考文章 systemd 之 开机自动挂载 Systemd 开机自动挂载硬盘 </description>
+systemctl daemon-reload systemctl start mnt-sdcard.mount systemctl enable mnt-sdcard.mount 注意事项 用systemd实现存储设备自动挂载的实现非常的简单好用，而且也不会轻易导致系统gg。
+但是这个方案依然有它自己的小问题：如果外挂了多个存储设备，比如/dev/sda1、/dev/sdb1、/dev/sdc1，那系统重启的时候可能出现盘符名称不固定的问题，也就是A设备本次是/dev/sda1，下次重启以后可能会变成/dev/sdc1。这时候systemd的挂载脚本没法这么智能的去分辨哪个设备对应哪个配置，只会机械的按照配置去挂载，最后导致错误挂载然后文件错乱。
+参考文章 systemd 之 开机自动挂载 Systemd 开机自动挂载硬盘 </description>
     </item>
     
     <item>
