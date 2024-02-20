@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>创维电视盒子E900V22D刷入Armbian系统步骤 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>创维电视盒子E900V22D刷入Armbian系统 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,10 +13,10 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="创维电视盒子E900V22D刷入Armbian系统步骤"/>
+<meta name="twitter:title" content="创维电视盒子E900V22D刷入Armbian系统"/>
 <meta name="twitter:description" content="前言 我手上现有的垃圾盒子都是arm32/v7l的cpu架构（迅雷赚钱宝一代/二代/三代），虽然debian12甚至下一个debian13依然会继续支持arm32，但很多我使用的软件和docker镜像已经不再支持arm32/v7的硬件了。
 所以从闲鱼入手了一个电视盒子，型号是创维E900V22D，拆机确认芯片型号的S905L-3，aarch64架构，2GB内存 &#43; 8GB emmc存储，百兆网口，2个usb2.0接口。
-这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心给被割了韭菜，怒亏10rmb。
+这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心被割了韭菜，怒亏10rmb。
 在海鲜市场淘电视盒子的时候，除了挑机器型号之外，一定要问清楚cpu芯片。因为电视盒子全国不同地区、不同厂家，可能同一个型号的机器会出现硬件配置不同的情况，比如我淘的这个E900V22D。
 因为我的盒子型号和cpu芯片与ophub的amlogic-s9xxx-armbian项目中现有的支持设备也对应不上，所以刷机过程中也碰到了一点儿小问题，不过最后还是完美刷入了armbian。
 这里做个刷机步骤的简单记录，方便以后回溯。
@@ -24,19 +24,21 @@
 首先卸掉背壳的三颗螺丝，然后用撬片插入撬孔就可以掀开真个背壳。
 确认了芯片型号是s905l-3。
 固件 在amlogic-s9xxx-armbian项目主页，根据自己的芯片型号，确定使用amlogic_s905l3.img这版固件。
-然后再release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。
+然后在release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。
 在固件列表里选择自己喜欢的内核版本。这里有个注意事项，使用s905l-3芯片的创维E900V22D，固件需要选择cm211这个版本。
 下载固件以后，使用软件（比如rufus）把固件烧录到u盘即可。
 刷机 需要的设备
-使用s905l-3芯片的创维E900V22D，刷机需要用到遥控器，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。
+使用s905l-3芯片的创维E900V22D，刷机不需要短接，只需要用到遥控器，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。
 刷机的方法
-盒子通电以后按遥控器的右方向键，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了，默认账户root，默认密码1234。
-将armbian刷入内置的emmc存储"/>
+刷好固件的u盘插在离电源近的usb接口，先按住遥控器的右方向键（网上的教程都说是一秒钟按三次右键）然后通电，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了。
+假定ip地址是192.168.1.5，连接方式：打开ssh终端（Windows上可以直接用系统自带的cmd），输入ssh root@192.168.1.5然后回车即可。默认账户root，默认密码1234。
+将armbian刷入内置的emmc存储
+注意事项：armbian刷入emmc以后，盒子的红外遥控功能无法再次驱动。如果之后想要再次刷armbian，必须要重新刷入android tv电视系统，才能支持遥控器右键进入u盘引导。重刷教程指路：E900V22D-2（S905L3）刷入成功，&#43;TF卡槽成功"/>
 
-    <meta property="og:title" content="创维电视盒子E900V22D刷入Armbian系统步骤" />
+    <meta property="og:title" content="创维电视盒子E900V22D刷入Armbian系统" />
 <meta property="og:description" content="前言 我手上现有的垃圾盒子都是arm32/v7l的cpu架构（迅雷赚钱宝一代/二代/三代），虽然debian12甚至下一个debian13依然会继续支持arm32，但很多我使用的软件和docker镜像已经不再支持arm32/v7的硬件了。
 所以从闲鱼入手了一个电视盒子，型号是创维E900V22D，拆机确认芯片型号的S905L-3，aarch64架构，2GB内存 &#43; 8GB emmc存储，百兆网口，2个usb2.0接口。
-这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心给被割了韭菜，怒亏10rmb。
+这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心被割了韭菜，怒亏10rmb。
 在海鲜市场淘电视盒子的时候，除了挑机器型号之外，一定要问清楚cpu芯片。因为电视盒子全国不同地区、不同厂家，可能同一个型号的机器会出现硬件配置不同的情况，比如我淘的这个E900V22D。
 因为我的盒子型号和cpu芯片与ophub的amlogic-s9xxx-armbian项目中现有的支持设备也对应不上，所以刷机过程中也碰到了一点儿小问题，不过最后还是完美刷入了armbian。
 这里做个刷机步骤的简单记录，方便以后回溯。
@@ -44,14 +46,16 @@
 首先卸掉背壳的三颗螺丝，然后用撬片插入撬孔就可以掀开真个背壳。
 确认了芯片型号是s905l-3。
 固件 在amlogic-s9xxx-armbian项目主页，根据自己的芯片型号，确定使用amlogic_s905l3.img这版固件。
-然后再release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。
+然后在release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。
 在固件列表里选择自己喜欢的内核版本。这里有个注意事项，使用s905l-3芯片的创维E900V22D，固件需要选择cm211这个版本。
 下载固件以后，使用软件（比如rufus）把固件烧录到u盘即可。
 刷机 需要的设备
-使用s905l-3芯片的创维E900V22D，刷机需要用到遥控器，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。
+使用s905l-3芯片的创维E900V22D，刷机不需要短接，只需要用到遥控器，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。
 刷机的方法
-盒子通电以后按遥控器的右方向键，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了，默认账户root，默认密码1234。
-将armbian刷入内置的emmc存储" />
+刷好固件的u盘插在离电源近的usb接口，先按住遥控器的右方向键（网上的教程都说是一秒钟按三次右键）然后通电，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了。
+假定ip地址是192.168.1.5，连接方式：打开ssh终端（Windows上可以直接用系统自带的cmd），输入ssh root@192.168.1.5然后回车即可。默认账户root，默认密码1234。
+将armbian刷入内置的emmc存储
+注意事项：armbian刷入emmc以后，盒子的红外遥控功能无法再次驱动。如果之后想要再次刷armbian，必须要重新刷入android tv电视系统，才能支持遥控器右键进入u盘引导。重刷教程指路：E900V22D-2（S905L3）刷入成功，&#43;TF卡槽成功" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202402/e900v22d-install-armbian-to-emmc/" /><meta property="article:section" content="202402" />
 <meta property="article:published_time" content="2024-02-20T13:00:45+08:00" />
@@ -88,7 +92,7 @@
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">创维电视盒子E900V22D刷入Armbian系统步骤</h1>
+      <h1 class ="post-title">创维电视盒子E900V22D刷入Armbian系统</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -119,7 +123,7 @@
 <p>我手上现有的垃圾盒子都是arm32/v7l的cpu架构（迅雷赚钱宝一代/二代/三代），虽然debian12甚至下一个debian13依然会继续支持arm32，但很多我使用的软件和docker镜像已经不再支持arm32/v7的硬件了。</p>
 <p>所以从闲鱼入手了一个电视盒子，型号是创维E900V22D，拆机确认芯片型号的S905L-3，aarch64架构，2GB内存 + 8GB emmc存储，百兆网口，2个usb2.0接口。</p>
 <p><img src="https://img.311803.xyz/i/2024/02/20/134610-0.webp" alt=""></p>
-<p>这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心给被割了韭菜，怒亏10rmb。</p>
+<p>这机器入手价格是40rmb（加上邮费），一开始觉得性价比高，因为E900V22D按理是s905l-3a/3b的芯片，但我拆机以后发现是s905l-3，编号少了一个a和b，性能也差一大截。实际这个芯片的盒子价格应该在25rmb（不含邮费）左右，对应的热门盒子型号是cm211-1。所以我一不小心被割了韭菜，怒亏10rmb。</p>
 <p>在海鲜市场淘电视盒子的时候，除了挑机器型号之外，一定要问清楚cpu芯片。因为电视盒子全国不同地区、不同厂家，可能同一个型号的机器会出现硬件配置不同的情况，比如我淘的这个E900V22D。</p>
 <p>因为我的盒子型号和cpu芯片与<code>ophub</code>的<a href="https://github.com/ophub/amlogic-s9xxx-armbian">amlogic-s9xxx-armbian</a>项目中现有的支持设备也对应不上，所以刷机过程中也碰到了一点儿小问题，不过最后还是完美刷入了armbian。</p>
 <p>这里做个刷机步骤的简单记录，方便以后回溯。</p>
@@ -134,25 +138,28 @@
 <h2 id="固件">固件</h2>
 <p>在<a href="https://github.com/ophub/amlogic-s9xxx-armbian">amlogic-s9xxx-armbian</a>项目主页，根据自己的芯片型号，确定使用<code>amlogic_s905l3.img</code>这版固件。</p>
 <p><img src="https://img.311803.xyz/i/2024/02/20/132332-0.webp" alt=""></p>
-<p>然后再release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。</p>
+<p>然后在release页面，根据自己的喜好下载对应版本的armbian。我一直用的debian bookworm版。</p>
 <p><img src="https://img.311803.xyz/i/2024/02/20/132504-0.webp" alt=""></p>
 <p>在固件列表里选择自己喜欢的内核版本。这里有个注意事项，使用s905l-3芯片的创维E900V22D，固件需要选择cm211这个版本。</p>
 <p><img src="https://img.311803.xyz/i/2024/02/20/132712-0.webp" alt=""></p>
 <p>下载固件以后，使用软件（比如rufus）把固件烧录到u盘即可。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/20/135137-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/i/2024/02/20/142748-0.webp" alt=""></p>
 <hr>
 <h2 id="刷机">刷机</h2>
 <blockquote>
 <p>需要的设备</p>
 </blockquote>
-<p>使用s905l-3芯片的创维E900V22D，刷机需要用到<code>遥控器</code>，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。</p>
+<p>使用s905l-3芯片的创维E900V22D，刷机不需要短接，只需要用到<code>遥控器</code>，如果手头没有原装的遥控器，可以使用支持红外的手机（比如小米）的万能遥控app来控制。没有遥控器无法进行刷机。</p>
 <blockquote>
 <p>刷机的方法</p>
 </blockquote>
-<p>盒子通电以后按<code>遥控器</code>的<code>右方向键</code>，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了，默认账户<code>root</code>，默认密码<code>1234</code>。</p>
+<p>刷好固件的u盘插在离电源近的usb接口，先按住<code>遥控器</code>的<code>右方向键</code>（网上的教程都说是一秒钟按三次右键）然后通电，盒子就会自动从u盘引导，此时如果hdmi接口连接了显示器，显示的是花屏，无需紧张。耐心等待一段时间之后，就可以在路由器的控制台看到多了一个设备，此时就可以根据ip地址通过ssh连上盒子了。</p>
+<p>假定ip地址是<code>192.168.1.5</code>，连接方式：打开ssh终端（Windows上可以直接用系统自带的cmd），输入<code>ssh root@192.168.1.5</code>然后回车即可。默认账户<code>root</code>，默认密码<code>1234</code>。</p>
 <blockquote>
 <p>将armbian刷入内置的emmc存储</p>
 </blockquote>
+<p><code>注意事项</code>：armbian刷入emmc以后，盒子的红外遥控功能无法再次驱动。如果之后想要再次刷armbian，必须要重新刷入android tv电视系统，才能支持遥控器右键进入u盘引导。重刷教程指路：<a href="https://github.com/ophub/amlogic-s9xxx-armbian/issues/2058">E900V22D-2（S905L3）刷入成功，+TF卡槽成功</a></p>
+<p><img src="https://img.311803.xyz/i/2024/02/20/151732-0.webp" alt=""></p>
 
     </div>
     <div class="post-footer">
