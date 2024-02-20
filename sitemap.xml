@@ -2,19 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202402/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/armbian/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202402/e900v22d-install-armbian-to-emmc/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202402/easyimage-down-solution/</loc>
     <lastmod>2024-02-06T12:25:17+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/202402/</loc>
-    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/easyimage/</loc>
-    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-02-06T12:25:17+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-02-06T12:25:17+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/tailscale/</loc>
@@ -42,9 +51,6 @@
     <lastmod>2024-01-10T23:47:21+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/systemd/</loc>
-    <lastmod>2024-01-09T16:12:05+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
     <lastmod>2024-01-09T16:12:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/</loc>
