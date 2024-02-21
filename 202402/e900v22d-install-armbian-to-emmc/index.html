@@ -47,8 +47,17 @@ armbian-install 接下去比较重要的选项是选择设备列表
 这种情况其实已经说这台设备变砖了，必须要通过短接来救活，在【这个issue】下有人给出了解决方法。
 但是，但是啊，不要高兴的太早了，这里接下去还有坑，因为我就碰到了刷入这个安卓tv的底包以后，能开机也能进入安卓电视系统，但是无论我怎么按遥控器右键都无法实现u盘引导，这就是第二个大坑。
 如果你的盒子在刷入这版安卓底包以后非常幸运的可以通过按遥控器右方向键来实现u盘引导，那恭喜你下面的内容可以不用看了。
-踩坑2：已经短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导
-待完善。。。"/>
+踩坑2：已经通过短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导
+这种情况下就需要通过adb工具来实现u盘引导。
+依然是【手册的12.4条】。
+电视盒子通电，进入安卓tv系统以后，在路由器控制台获取ip地址，假定192.168.1.5，输入以下命令：
+adb connect 192.168.1.5 adb shell reboot update 此时盒子会重启并从u盘引导，就可以成功的刷入armbian惹。
+但是~~~~，接下去依然有坑，这就是第三个大坑。
+踩坑3：用户权限异常/sudo命令提示文件归属权异常/su切换root用户提示密码错误
+踩过了上述的所有坑、耗费了大量时间和精力以后，我终于看上去成功后的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。
+具体问题如下：
+从普通用户用su命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。
+在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图 有大量目录的所属用户和组都显示的1023，大致如下图 在查看了【armbian-software 安装docker时：sudo: /etc/sudo."/>
 
     <meta property="og:title" content="创维电视盒子E900V22D刷入Armbian系统" />
 <meta property="og:description" content="前言 我手上现有的垃圾盒子都是arm32/v7l的cpu架构（迅雷赚钱宝一代/二代/三代），虽然debian12甚至下一个debian13依然会继续支持arm32，但很多我使用的软件和docker镜像已经不再支持arm32/v7的硬件了。
@@ -84,8 +93,17 @@ armbian-install 接下去比较重要的选项是选择设备列表
 这种情况其实已经说这台设备变砖了，必须要通过短接来救活，在【这个issue】下有人给出了解决方法。
 但是，但是啊，不要高兴的太早了，这里接下去还有坑，因为我就碰到了刷入这个安卓tv的底包以后，能开机也能进入安卓电视系统，但是无论我怎么按遥控器右键都无法实现u盘引导，这就是第二个大坑。
 如果你的盒子在刷入这版安卓底包以后非常幸运的可以通过按遥控器右方向键来实现u盘引导，那恭喜你下面的内容可以不用看了。
-踩坑2：已经短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导
-待完善。。。" />
+踩坑2：已经通过短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导
+这种情况下就需要通过adb工具来实现u盘引导。
+依然是【手册的12.4条】。
+电视盒子通电，进入安卓tv系统以后，在路由器控制台获取ip地址，假定192.168.1.5，输入以下命令：
+adb connect 192.168.1.5 adb shell reboot update 此时盒子会重启并从u盘引导，就可以成功的刷入armbian惹。
+但是~~~~，接下去依然有坑，这就是第三个大坑。
+踩坑3：用户权限异常/sudo命令提示文件归属权异常/su切换root用户提示密码错误
+踩过了上述的所有坑、耗费了大量时间和精力以后，我终于看上去成功后的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。
+具体问题如下：
+从普通用户用su命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。
+在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图 有大量目录的所属用户和组都显示的1023，大致如下图 在查看了【armbian-software 安装docker时：sudo: /etc/sudo." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202402/e900v22d-install-armbian-to-emmc/" /><meta property="article:section" content="202402" />
 <meta property="article:published_time" content="2024-02-20T13:00:45+08:00" />
@@ -217,9 +235,37 @@ armbian-install 接下去比较重要的选项是选择设备列表
 <p>但是，但是啊，不要高兴的太早了，这里接下去还有坑，因为我就碰到了刷入这个安卓tv的底包以后，能开机也能进入安卓电视系统，但是无论我怎么按遥控器右键都无法实现u盘引导，这就是第二个大坑。</p>
 <p>如果你的盒子在刷入这版安卓底包以后非常幸运的可以通过按遥控器右方向键来实现u盘引导，那恭喜你下面的内容可以不用看了。</p>
 <blockquote>
-<p>踩坑2：已经短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导</p>
+<p>踩坑2：已经通过短接刷入了安卓tv底包，但按遥控器右方向键无法实现u盘引导</p>
 </blockquote>
-<p>待完善。。。</p>
+<p>这种情况下就需要通过adb工具来实现u盘引导。</p>
+<p>依然是【<a href="https://github.com/ophub/amlogic-s9xxx-armbian/blob/main/documents/README.cn.md#1241-%E5%88%9D%E6%AC%A1%E5%AE%89%E8%A3%85-armbian-%E7%B3%BB%E7%BB%9F">手册的12.4条</a>】。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/21/173531-0.webp" alt=""></p>
+<p>电视盒子通电，进入安卓tv系统以后，在路由器控制台获取ip地址，假定<code>192.168.1.5</code>，输入以下命令：</p>
+<pre tabindex="0"><code>adb connect 192.168.1.5
+
+adb shell reboot update
+</code></pre><p>此时盒子会重启并从u盘引导，就可以成功的刷入armbian惹。</p>
+<p>但是~~~~，接下去依然有坑，这就是第三个大坑。</p>
+<blockquote>
+<p>踩坑3：用户权限异常/sudo命令提示文件归属权异常/su切换root用户提示密码错误</p>
+</blockquote>
+<p>踩过了上述的所有坑、耗费了大量时间和精力以后，我终于<code>看上去成功后</code>的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。</p>
+<p>具体问题如下：</p>
+<ul>
+<li>
+<p>从普通用户用<code>su</code>命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。</p>
+</li>
+<li>
+<p>在普通用户身份下，使用<code>sudo</code>命令，提示<code>sudo: /etc/sudo.conf is owned by uid 1023, should be 0</code>，大致如下图
+<img src="https://img.311803.xyz/i/2024/02/21/181700-0.webp" alt=""></p>
+</li>
+<li>
+<p>有大量目录的所属用户和组都显示的<code>1023</code>，大致如下图
+<img src="https://img.311803.xyz/i/2024/02/21/181955-0.webp" alt=""></p>
+</li>
+</ul>
+<p>在查看了【<a href="https://github.com/ophub/amlogic-s9xxx-armbian/issues/652">armbian-software 安装docker时：sudo: /etc/sudo.conf is owned by uid 1023, should be 0</a>】和【<a href="https://github.com/ophub/amlogic-s9xxx-armbian/issues/1374">root用户授予不了权限及用户所属的问题</a>】这两个issue以后，知道了bug原因是：</p>
+<p><img src="https://img.311803.xyz/i/2024/02/21/182156-0.webp" alt=""></p>
 
     </div>
     <div class="post-footer">
