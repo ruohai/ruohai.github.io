@@ -57,7 +57,7 @@ adb connect 192.168.1.5 adb shell reboot update 此时盒子会重启并从u盘�
 踩过了上述的所有坑、耗费了大量时间和精力以后，我终于看上去成功后的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。
 具体问题如下：
 从普通用户用su命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。
-在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图 有大量目录的所属用户和组都显示的1023，大致如下图 在查看了【armbian-software 安装docker时：sudo: /etc/sudo."/>
+在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图"/>
 
     <meta property="og:title" content="创维电视盒子E900V22D刷入Armbian系统" />
 <meta property="og:description" content="前言 我手上现有的垃圾盒子都是arm32/v7l的cpu架构（迅雷赚钱宝一代/二代/三代），虽然debian12甚至下一个debian13依然会继续支持arm32，但很多我使用的软件和docker镜像已经不再支持arm32/v7的硬件了。
@@ -103,7 +103,7 @@ adb connect 192.168.1.5 adb shell reboot update 此时盒子会重启并从u盘�
 踩过了上述的所有坑、耗费了大量时间和精力以后，我终于看上去成功后的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。
 具体问题如下：
 从普通用户用su命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。
-在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图 有大量目录的所属用户和组都显示的1023，大致如下图 在查看了【armbian-software 安装docker时：sudo: /etc/sudo." />
+在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202402/e900v22d-install-armbian-to-emmc/" /><meta property="article:section" content="202402" />
 <meta property="article:published_time" content="2024-02-20T13:00:45+08:00" />
@@ -256,16 +256,19 @@ adb shell reboot update
 <p>从普通用户用<code>su</code>命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。</p>
 </li>
 <li>
-<p>在普通用户身份下，使用<code>sudo</code>命令，提示<code>sudo: /etc/sudo.conf is owned by uid 1023, should be 0</code>，大致如下图
-<img src="https://img.311803.xyz/i/2024/02/21/181700-0.webp" alt=""></p>
-</li>
-<li>
-<p>有大量目录的所属用户和组都显示的<code>1023</code>，大致如下图
-<img src="https://img.311803.xyz/i/2024/02/21/181955-0.webp" alt=""></p>
+<p>在普通用户身份下，使用<code>sudo</code>命令，提示<code>sudo: /etc/sudo.conf is owned by uid 1023, should be 0</code>，大致如下图</p>
 </li>
 </ul>
+<p><img src="https://img.311803.xyz/i/2024/02/21/181700-0.webp" alt=""></p>
+<ul>
+<li>有大量目录的所属用户和组都显示的<code>1023</code>，大致如下图</li>
+</ul>
+<p><img src="https://img.311803.xyz/i/2024/02/21/181955-0.webp" alt=""></p>
 <p>在查看了【<a href="https://github.com/ophub/amlogic-s9xxx-armbian/issues/652">armbian-software 安装docker时：sudo: /etc/sudo.conf is owned by uid 1023, should be 0</a>】和【<a href="https://github.com/ophub/amlogic-s9xxx-armbian/issues/1374">root用户授予不了权限及用户所属的问题</a>】这两个issue以后，知道了bug原因是：</p>
 <p><img src="https://img.311803.xyz/i/2024/02/21/182156-0.webp" alt=""></p>
+<p>在盒子刷入安卓tv且开机运行的情况下插入u盘，此时u盘里的文件会被安卓tv系统改动权限，这也是<code>1023</code>这个用户的来源。</p>
+<p>要解决这个问题，首先重新用rufus烧录一个干净的armbian固件，切记先不要插上刷了安卓tv的盒子。</p>
+<p>先通过<code>adb shell reboot update</code>命令重启盒子，等盒子开始重启以后，再插入新烧录的u盘，此时就不会被安卓tv系统改动文件权限了。</p>
 
     </div>
     <div class="post-footer">

@@ -55,7 +55,7 @@ adb connect 192.168.1.5 adb shell reboot update 此时盒子会重启并从u盘�
 踩过了上述的所有坑、耗费了大量时间和精力以后，我终于看上去成功后的给这个盒子刷入了armbian，似乎已经大功告成了，但很快又一盆冷水泼面而来。
 具体问题如下：
 从普通用户用su命令切换到root用户时，虽然输入了正确的root密码，但一直提示认证失败。同样的密码，可以正常以root用户连接ssh，说明密码是正确的。
-在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图 有大量目录的所属用户和组都显示的1023，大致如下图 在查看了【armbian-software 安装docker时：sudo: /etc/sudo.</description>
+在普通用户身份下，使用sudo命令，提示sudo: /etc/sudo.conf is owned by uid 1023, should be 0，大致如下图</description>
     </item>
     
     <item>
