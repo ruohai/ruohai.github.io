@@ -186,7 +186,7 @@ services:
 <li><code>user: 1000:1000</code>，这个配置是指定运行memos服务的用户，如果你喜欢直接用root用户一把梭，或者不明白linux的用户权限、组权限，这个配置可以删掉。</li>
 <li><code>restart: always</code>，设定容器的重启策略，比如系统重启以后，容器是否自动重启。</li>
 <li><code>volumes:</code>，指定数据文件的存放位置，默认是<code>~/.memos/</code>，也就是运行用户的用户目录下，可以根据自己喜好调整。冒号后面的<code>/var/opt/memos</code>不要动，这是docker容器内的数据目录。</li>
-<li><code>ports:</code>，设定服务的端口号，默认5230。</li>
+<li><code>ports:</code>，设定服务的端口号，默认5230。如果要自定义端口，改前一个5230即可，后一个是docker容器内的端口号。</li>
 </ul>
 <p>以上各个设定根据自己需求调整了以后，就可以进入最后一步部署了。</p>
 <blockquote>
