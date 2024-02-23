@@ -5,7 +5,36 @@
     <link>https://ruohai.wang/tags/memos/</link>
     <description>Recent content in memos on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 25 Dec 2023 00:31:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/memos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Feb 2024 14:28:43 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/memos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从0自建Memos服务教程</title>
+      <link>https://ruohai.wang/202402/memos-self-hosting-guide/</link>
+      <pubDate>Fri, 23 Feb 2024 14:28:43 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202402/memos-self-hosting-guide/</guid>
+      <description>前言 之前已经写过一篇博客，【在玩客云上用Docker部署memos】。但
+但几个月过去，memos进行了大量的更新，托管的docker镜像也从ghcr.io转移到了docker hub，而且经过这段时间的安利，有好几个朋友有兴趣玩memos，想自己部署一个。
+所以重新记录一下部署memos的过程，这次不针对玩客云，所有硬件通用。
+当然，如果你有基础的英文阅读能力，也有基础的linux操作经验，可以直接看【memos官网的操作手册】
+准备 一个装了linux的vps，或者是电脑、电视盒子甚至其它电子垃圾 linux发行版最好选debian，因为我喜欢用debian，😄 因为要拖docker镜像，国内的网络环境你懂的，注意配置好docker镜像加速 部署 第一步：安装docker环境
+ssh连上debian安装docker。个人建议使用docker-compose方式不是，因为这种方式会有一个配置文件，方便编辑和管理。
+sudo apt install docker.io docker-compose 第二步：配置docker镜像加速器（没需求可以跳过）
+国内特殊的网络环境，如果不配置docker镜像加速，在拉取镜像的时候那叫一个折磨人。目前的docker国内镜像源，我测过很多，不管是网易云、百度云、上海交大，在拉去memos镜像时都没有效果，最后还是得用阿里云的镜像加速服务。
+阿里云的docker镜像加速没有公共的地址，而是针对不同的用户有唯一的地址，所以需要登录自己的阿里云查看。
+获取到自己的阿里云镜像加速其地址以后，进入/etc/docker/目录看下是不是有daemon.json文件，没有的话新建一个
+sudo touch /etc/docker/daemon.json 然后用nano或者vim编辑daemon.json
+sudo nano daemon.json 往文档中添加如下内容
+{ &amp;#34;registry-mirrors&amp;#34;: [&amp;#34;https://&amp;lt;你的加速器地址&amp;gt;.mirror.aliyuncs.com&amp;#34;] } 最后重启docker即可
+sudo systemctl restart docker.service 重启以后，可以执行以下命令确认变更是否生效
+sudo docker info 显示结果如图
+第三步：编辑memos配置文件
+通过docker-compose方式部署memos，需要提前准备一个docker-compose.yml的配置文件，里面设定安装目录、重启方式、端口号、运行用户等几个细节。
+首先在debian系统中找一个自己喜欢的目录，新建文件
+touch docker-compose.yml 然后用nano或者vim编辑
+nano docker-compose.yml 最后往文件中粘贴以下内容
+version: &amp;#34;3.0&amp;#34; services: memos: image: neosmemo/memos:stable container_name: memos user: 1000:1000 restart: always volumes: - ~/.memos/:/var/opt/memos ports: - 5230:5230 配置文件的简单释疑：</description>
+    </item>
+    
     <item>
       <title>土法解决Memos的SQLite3 WAL模式下丢失数据问题</title>
       <link>https://ruohai.wang/202312/memos-turn-off-wal-log/</link>
