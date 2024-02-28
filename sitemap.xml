@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202402/</loc>
-    <lastmod>2024-02-26T22:08:14+08:00</lastmod>
+    <lastmod>2024-02-28T20:47:06+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-02-26T22:08:14+08:00</lastmod>
+    <lastmod>2024-02-28T20:47:06+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/202402/restaurant-fuwan/</loc>
-    <lastmod>2024-02-26T22:08:14+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/ttyd/</loc>
+    <lastmod>2024-02-28T20:47:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/</loc>
+    <lastmod>2024-02-28T20:47:06+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-02-28T20:47:06+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202402/restaurant-fuwan/</loc>
     <lastmod>2024-02-26T22:08:14+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
@@ -435,9 +441,6 @@
     <lastmod>2023-07-16T13:15:51+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/ttyd-update-to-https/</loc>
-    <lastmod>2023-07-16T01:17:58+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/ttyd/</loc>
     <lastmod>2023-07-16T01:17:58+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/file-browser/</loc>

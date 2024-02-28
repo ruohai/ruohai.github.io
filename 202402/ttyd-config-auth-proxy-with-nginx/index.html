@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication） // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）"/>
+<meta name="twitter:description" content="前言 ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
+ttyd -c jacky:123456 bash 这样确实很方便啊，但是有一个问题，就是使用htop查看进程时，会发现ttyd的进程是明文的，也就是进程会显示
+ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。
+那有没有其它认证的方法，比如把用户和密码信息保存在文件中，ttyd启动命令从文件中读取用户信息。
+查了项目github主页的issues，很多年前就有开发者提交了这个功能的代码，但都被作者关闭、驳回了。
+既然ttyd的开发者如此固执的拒绝合并这个功能的代码，那就看下怎么通过他所说的Auth Proxy来实现。
+配置 首先贴上ttyd项目wiki中提供的配置手册：【Auth Proxy】
+第一步：ttyd启动命令调整
+ttyd的启动命令，从之前的
+ttyd -c jacky:123456 bash 调整为
+ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 第二步：nginx配置
+先安装nginx这个不多说了。wiki中给出的nginx配置如下，可以直接复制粘贴。
+location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/ttyd_htpasswd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1.1; proxy_set_header Host $host; proxy_set_header X-Forwarded-Proto $scheme; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &#34;upgrade&#34;; proxy_pass http://unix:/tmp/ttyd.sock; } 第三步：配置用户信息
+这一步wiki中没有讲太多，在网上搜索了解以后，过程如下：
+/etc/nginx/ttyd_htpasswd，这个文件中保存用户信息，格式name:password。这个文件路径可以自行调整。 其中的密码并不是明文，需要通过函数加密，可以通过openssl工具实现。比如密码是12345，执行命令openssl passwd 12345，得到的字符串$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1才是正确的密码格式。 将用户信息录入到文件ttyd_htpasswd中，格式：jacky:$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1。 完成以上配置以后，可以重启ttyd、重启nginx使配置生效。此时访问ttyd，会要求输入用户信息进行认证。"/>
+
+    <meta property="og:title" content="ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）" />
+<meta property="og:description" content="前言 ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
+ttyd -c jacky:123456 bash 这样确实很方便啊，但是有一个问题，就是使用htop查看进程时，会发现ttyd的进程是明文的，也就是进程会显示
+ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。
+那有没有其它认证的方法，比如把用户和密码信息保存在文件中，ttyd启动命令从文件中读取用户信息。
+查了项目github主页的issues，很多年前就有开发者提交了这个功能的代码，但都被作者关闭、驳回了。
+既然ttyd的开发者如此固执的拒绝合并这个功能的代码，那就看下怎么通过他所说的Auth Proxy来实现。
+配置 首先贴上ttyd项目wiki中提供的配置手册：【Auth Proxy】
+第一步：ttyd启动命令调整
+ttyd的启动命令，从之前的
+ttyd -c jacky:123456 bash 调整为
+ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 第二步：nginx配置
+先安装nginx这个不多说了。wiki中给出的nginx配置如下，可以直接复制粘贴。
+location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/ttyd_htpasswd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1.1; proxy_set_header Host $host; proxy_set_header X-Forwarded-Proto $scheme; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &#34;upgrade&#34;; proxy_pass http://unix:/tmp/ttyd.sock; } 第三步：配置用户信息
+这一步wiki中没有讲太多，在网上搜索了解以后，过程如下：
+/etc/nginx/ttyd_htpasswd，这个文件中保存用户信息，格式name:password。这个文件路径可以自行调整。 其中的密码并不是明文，需要通过函数加密，可以通过openssl工具实现。比如密码是12345，执行命令openssl passwd 12345，得到的字符串$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1才是正确的密码格式。 将用户信息录入到文件ttyd_htpasswd中，格式：jacky:$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1。 完成以上配置以后，可以重启ttyd、重启nginx使配置生效。此时访问ttyd，会要求输入用户信息进行认证。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/" /><meta property="article:section" content="202402" />
+<meta property="article:published_time" content="2024-02-28T20:47:06+08:00" />
+<meta property="article:modified_time" content="2024-02-28T20:47:06+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 28, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/ttyd/">ttyd</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>ttyd默认的认证方法是在启动命令中使用<code>-c</code>参数来设置用户名和密码，举例如下</p>
+<pre tabindex="0"><code>ttyd -c jacky:123456 bash
+</code></pre><p>这样确实很方便啊，但是有一个问题，就是使用<code>htop</code>查看进程时，会发现ttyd的进程是明文的，也就是进程会显示</p>
+<pre tabindex="0"><code>ttyd -c jacky:123456 bash
+</code></pre><p>🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。</p>
+<p>那有没有其它认证的方法，比如把用户和密码信息保存在文件中，ttyd启动命令从文件中读取用户信息。</p>
+<p>查了项目github主页的issues，很多年前就有开发者提交了这个功能的代码，但都被作者关闭、驳回了。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/28/205907-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/i/2024/02/28/205957-0.webp" alt=""></p>
+<p>既然ttyd的开发者如此固执的拒绝合并这个功能的代码，那就看下怎么通过他所说的<code>Auth Proxy</code>来实现。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<p>首先贴上ttyd项目wiki中提供的配置手册：【<a href="https://github.com/tsl0922/ttyd/wiki/Auth-Proxy">Auth Proxy</a>】</p>
+<blockquote>
+<p>第一步：ttyd启动命令调整</p>
+</blockquote>
+<p>ttyd的启动命令，从之前的</p>
+<pre tabindex="0"><code>ttyd -c jacky:123456 bash
+</code></pre><p>调整为</p>
+<pre tabindex="0"><code>ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash
+</code></pre><blockquote>
+<p>第二步：nginx配置</p>
+</blockquote>
+<p>先安装nginx这个不多说了。wiki中给出的nginx配置如下，可以直接复制粘贴。</p>
+<pre tabindex="0"><code>location / {
+    auth_basic &#34;ttyd&#34;;
+    auth_basic_user_file &#34;/etc/nginx/ttyd_htpasswd&#34;;
+    proxy_set_header X-WEBAUTH-USER $remote_user;
+    proxy_set_header Authorization &#34;&#34;;
+
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection &#34;upgrade&#34;;
+    
+    proxy_pass http://unix:/tmp/ttyd.sock;
+}
+</code></pre><blockquote>
+<p>第三步：配置用户信息</p>
+</blockquote>
+<p>这一步wiki中没有讲太多，在网上搜索了解以后，过程如下：</p>
+<ol>
+<li><code>/etc/nginx/ttyd_htpasswd</code>，这个文件中保存用户信息，格式<code>name:password</code>。这个文件路径可以自行调整。</li>
+<li>其中的密码并不是明文，需要通过函数加密，可以通过<code>openssl</code>工具实现。比如密码是<code>12345</code>，执行命令<code>openssl passwd 12345</code>，得到的字符串<code>$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1</code>才是正确的密码格式。</li>
+<li>将用户信息录入到文件<code>ttyd_htpasswd</code>中，格式：<code>jacky:$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1</code>。</li>
+</ol>
+<p>完成以上配置以后，可以重启ttyd、重启nginx使配置生效。此时访问ttyd，会要求输入用户信息进行认证。</p>
+<p><img src="https://img.311803.xyz/i/2024/02/28/212229-0.webp" alt=""></p>
+<blockquote>
+<p>第四步：修改文件权限（可选）</p>
+</blockquote>
+<p>如果完成第三步以后服务正常可用，这一步就无需操作。</p>
+<p>wiki中提到，一些情况下还需要修改文件权限，根据自己的情况酌情修改。</p>
+<pre tabindex="0"><code>sudo chown www-data:www-data /tmp/ttyd.sock
+</code></pre><hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://github.com/tsl0922/ttyd/wiki/Auth-Proxy">Auth Proxy</a></li>
+<li><a href="https://www.jianshu.com/p/1c0691c9ad3c">nginx配置指令auth_basic、auth_basic_user_file及相关知识</a></li>
+<li><a href="https://github.com/tsl0922/ttyd/issues/1262">Support &ndash;credential-file #1262</a></li>
+<li><a href="https://github.com/tsl0922/ttyd/pull/700">Add file credential option #700</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
