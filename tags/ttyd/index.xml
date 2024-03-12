@@ -12,7 +12,8 @@
       <pubDate>Wed, 28 Feb 2024 20:47:06 +0800</pubDate>
       
       <guid>https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/</guid>
-      <description>前言 ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
+      <description>前言 之前写过一篇在玩客云上安装ttyd的博客，文章指路：【在玩客云上安装ttyd】
+ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
 ttyd -c jacky:123456 bash 这样确实很方便啊，但是有一个问题，就是使用htop查看进程时，会发现ttyd的进程是明文的，也就是进程会显示
 ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。
 那有没有其它认证的方法，比如把用户和密码信息保存在文件中，ttyd启动命令从文件中读取用户信息。
@@ -22,11 +23,10 @@ ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人�
 第一步：ttyd启动命令调整
 ttyd的启动命令，从之前的
 ttyd -c jacky:123456 bash 调整为
-ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 第二步：nginx配置
-先安装nginx这个不多说了。wiki中给出的nginx配置如下，可以直接复制粘贴。
-location / { auth_basic &amp;#34;ttyd&amp;#34;; auth_basic_user_file &amp;#34;/etc/nginx/ttyd_htpasswd&amp;#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &amp;#34;&amp;#34;; proxy_http_version 1.1; proxy_set_header Host $host; proxy_set_header X-Forwarded-Proto $scheme; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &amp;#34;upgrade&amp;#34;; proxy_pass http://unix:/tmp/ttyd.sock; } 第三步：配置用户信息
-这一步wiki中没有讲太多，在网上搜索了解以后，过程如下：
-/etc/nginx/ttyd_htpasswd，这个文件中保存用户信息，格式name:password。这个文件路径可以自行调整。 其中的密码并不是明文，需要通过函数加密，可以通过openssl工具实现。比如密码是12345，执行命令openssl passwd 12345，得到的字符串$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1才是正确的密码格式。 将用户信息录入到文件ttyd_htpasswd中，格式：jacky:$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1。 完成以上配置以后，可以重启ttyd、重启nginx使配置生效。此时访问ttyd，会要求输入用户信息进行认证。</description>
+ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 调整后完整版的ttyd.service配置如下
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash Type=simple Restart=always [Install] WantedBy=multi-user.target 第二步：nginx配置
+先安装nginx这个不多说了。根据wiki中给出的nginx配置，完整版本如下，注意调整监听的端口号。
+server { listen 123456; server_name ttyd; location / { auth_basic &amp;#34;ttyd&amp;#34;; auth_basic_user_file &amp;#34;/etc/nginx/htpasswd/ttyd&amp;#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &amp;#34;&amp;#34;; proxy_http_version 1.</description>
     </item>
     
     <item>
@@ -62,22 +62,20 @@ git config --system user.</description>
       <pubDate>Sat, 15 Jul 2023 16:38:06 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-ttyd/</guid>
-      <description>前言 ttyd，webui版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
-github项目指路：(https://github.com/tsl0922/ttyd)
+      <description>前言 ttyd，web版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
+github项目指路：【ttyd - Share your terminal over the web】
 安装 第一步：下载安装包
-第一步就是创建安装目录、下载安装包、解压的基础操作，不赘述。玩客云的硬件是arm32v7，注意选择正确的版本。
-mkdir -p /op/ttyd ; cd &amp;amp;_ wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf 第二步：授权
+第一步就是创建安装目录、下载安装包基础操作，不赘述。玩客云的硬件是arm32/armv7，选择armhf版本。
+sudo mkdir -p /op/ttyd ; cd $_ sudo wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf 第二步：添加可执行权限
 下载的二进制包默认没有执行权限，需要授权
-chmod +x ttyd.armhf 第三步：查看学习手册
+sudo chmod +x ttyd.armhf 第三步：查看学习手册
 先学习一下ttyd的手册，有几个参数后面需要用到
--p，指定端口 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6 第四步：新建服务文件
+-p，指定端口 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6，如果通过ipv6 + ddns进行访问的家宽用户可以添加这个参数 第四步：创建systemd配置文件
 要把ttyd添加到系统服务，设置开机自启。
 先创建systemd配置文件
-nano ttyd.service 添加以下内容。如果不是用root用户运行，记得修改User参数。
-[Unit] Description=ttyd After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash [Install] WantedBy=multi-user.target 然后进/system/目录创建软链接
-cd /etc/systemd/system ln -s /opt/ttyd/ttyd.service ttyd.service 第六步：启动ttyd
-systemd重载三件套，ttyd，启动！
-# 重载 systemctl daemon-reload # 启动 systemctl start ttyd.service # 开机自启 systemctl enable ttyd.service 现在就可以打开浏览器，访问http://host-ip:port使用ttyd惹。</description>
+sudo nano ttyd.service 添加以下内容。如果不是用root用户运行，记得修改User参数。其中-p和-c参数的值根据自己的喜好调整。
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash Type=simple Restart=always [Install] WantedBy=multi-user.target 然后进/system/目录创建软链接
+cd /etc/systemd/system sudo ln -s /opt/ttyd/ttyd.service ttyd.service 第六步：启动ttyd</description>
     </item>
     
   </channel>
