@@ -7,15 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 12 Mar 2024 18:20:47 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202403/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>黑豹（Panther)X2刷入armbian系统</title>
+      <title>黑豹（Panther)X2刷入Armbian系统</title>
       <link>https://ruohai.wang/202403/panther-x2-flash-armbian/</link>
       <pubDate>Tue, 12 Mar 2024 18:20:47 +0800</pubDate>
       
       <guid>https://ruohai.wang/202403/panther-x2-flash-armbian/</guid>
-      <description>前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不都已经翻一倍了。😂
+      <description>前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不多已经翻一倍了。😂
 硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。
-这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以都网口啥的没需求。
-我入手这个盒子就是用来专门跑相册服务的，比如photoprism或者immich，所以到手先刷个armbian。
+这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以对网口啥的没需求。
+ophub的项目amlogic-s9xxx-armbian中已经有这个盒子的armbian固件，本文中提到的armbian固件都从这个项目中下载。
 卡刷 黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。
 第一步：u盘/tf卡引导
 用rufus把armbian固件写入tf卡或者u盘，然后插到机器上后通电，等待半分钟后可以在路由器后台看到新增armbian设备的ip，然后ssh连上设备。
@@ -28,7 +28,7 @@ dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷
 第二步：选择固件
 启动RKDevTool软件，在boot一栏中，选择rk356x-MiniLoaderAll.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
 第三步：开始刷机
-设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有叮咚提示音，在瑞芯微开发工具中会显示发现一个LOADER设备。 点击【高级功能——进入maskrom】让设备重启。 点击【下载镜像——执行】开始刷机。 提示下载完成后刷机完成，可以拔掉双公头usb线缆，然后通电开机。 参考文章 PantherX2(黑豹X2)刷机。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。 百元矿渣Panther X2（黑豹 X2）：小白折腾日记1 资源包 百度网盘：【Panther-X2-刷机工具.7z】 提取码: 7e4a</description>
+设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有叮咚提示音，在瑞芯微开发工具中会显示发现一个LOADER设备。 点击【高级功能——进入maskrom】让设备重启。 点击【下载镜像——执行】开始刷机。 提示下载完成即为刷机完成，可以拔掉双公头usb线缆，然后通电开机。 参考文章 PantherX2(黑豹X2)刷机。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。 百元矿渣Panther X2（黑豹 X2）：小白折腾日记1 资源包 百度网盘：【Panther-X2-刷机工具.7z】 提取码: 7e4a</description>
     </item>
     
   </channel>
