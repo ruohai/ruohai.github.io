@@ -7,14 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 12 Mar 2024 18:20:47 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>黑豹（Panther)X2刷入Armbian系统</title>
+      <title>黑豹X2（Panther X2）刷入Armbian系统</title>
       <link>https://ruohai.wang/202403/panther-x2-flash-armbian/</link>
       <pubDate>Tue, 12 Mar 2024 18:20:47 +0800</pubDate>
       
       <guid>https://ruohai.wang/202403/panther-x2-flash-armbian/</guid>
       <description>前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不多已经翻一倍了。😂
-硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。
-这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以对网口啥的没需求。
+硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有视频输出接口，原封包装的话自带一张64GB闪迪tf卡，12v/2a的dc供电。
+这个硬件配置，cpu性能在一众盒子里算比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展，aarch64/arm64架构，在很长一段时间里都不用担心性能瓶颈，更不用担心像玩客云的arm32/armv7l架构缺少第三方应用支持。不过鸡肋的地方也很多，比如usb接口只是2.0而且只给了一个，没有hdmi/dp没法当电视盒子用，只有单个网口不能当软路由。
 ophub的项目amlogic-s9xxx-armbian中已经有这个盒子的armbian固件，本文中提到的armbian固件都从这个项目中下载。
 卡刷 黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。
 第一步：u盘/tf卡引导
@@ -24,7 +24,8 @@ ophub的项目amlogic-s9xxx-armbian中已经有这个盒子的armbian固件，�
 这个操作和amlogic芯片的电视盒子有区别，无法直接用armbian-install来完成了。
 在上一步tf/u盘中的系统成功启动以后，需要用dd命令直接将armbian固件（eg：Armbian_24.5.0_xxx.img）写入到内置的emmc上。写入完成后，关机拔掉tf卡/u盘，再通电开机，就进入emmc上的armbian系统惹。
 dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷需要准备：
-双公头usb线 rockchip驱动程序DriverAssitant rockchip开发工具RKDevTool rk356x的bootloader文件 第一步：电脑安装驱动
+双公头usb线 rockchip驱动程序DriverAssitant rockchip开发工具RKDevTool rk356x的bootloader文件 刷机工具包下载地址在文章最后。
+第一步：电脑安装驱动
 第二步：选择固件
 启动RKDevTool软件，在boot一栏中，选择rk356x-MiniLoaderAll.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
 第三步：开始刷机
