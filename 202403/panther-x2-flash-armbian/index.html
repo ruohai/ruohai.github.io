@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>黑豹（Panther)X2刷入armbian系统 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="黑豹（Panther)X2刷入armbian系统"/>
+<meta name="twitter:description" content="前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不都已经翻一倍了。😂
+硬件配置是rockchip 3566 &#43; 4gb内存 &#43; 32gb 内置emmc闪存 &#43; tf卡扩展 &#43; 千兆网口 &#43; usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。
+这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以都网口啥的没需求。
+我入手这个盒子就是用来专门跑相册服务的，比如photoprism或者immich，所以到手先刷个armbian。
+卡刷 黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。
+第一步：u盘/tf卡引导
+用rufus把armbian固件写入tf卡或者u盘，然后插到机器上后通电，等待半分钟后可以在路由器后台看到新增armbian设备的ip，然后ssh连上设备。
+如果不需要把系统写入emmc，到这一步就可以直接使用了，也就是把u盘/tf卡作为存储介质。
+第二步：固件写入内置emmc
+这个操作和amlogic芯片的电视盒子有区别，无法直接用armbian-install来完成了。
+在上一步tf/u盘中的系统成功启动以后，需要用dd命令直接将armbian固件（eg：Armbian_24.5.0_xxx.img）写入到内置的emmc上。写入完成后，关机拔掉tf卡/u盘，再通电开机，就进入emmc上的armbian系统惹。
+dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷需要准备：
+双公头usb线 rockchip驱动程序DriverAssitant rockchip开发工具RKDevTool rk356x的bootloader文件 第一步：电脑安装驱动
+第二步：选择固件
+启动RKDevTool软件，在boot一栏中，选择rk356x-MiniLoaderAll.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第三步：开始刷机
+设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有叮咚提示音，在瑞芯微开发工具中会显示发现一个LOADER设备。 点击【高级功能——进入maskrom】让设备重启。 点击【下载镜像——执行】开始刷机。 提示下载完成后刷机完成，可以拔掉双公头usb线缆，然后通电开机。 参考文章 PantherX2(黑豹X2)刷机。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。 百元矿渣Panther X2（黑豹 X2）：小白折腾日记1 资源包 百度网盘：【Panther-X2-刷机工具.7z】 提取码: 7e4a"/>
+
+    <meta property="og:title" content="黑豹（Panther)X2刷入armbian系统" />
+<meta property="og:description" content="前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不都已经翻一倍了。😂
+硬件配置是rockchip 3566 &#43; 4gb内存 &#43; 32gb 内置emmc闪存 &#43; tf卡扩展 &#43; 千兆网口 &#43; usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。
+这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以都网口啥的没需求。
+我入手这个盒子就是用来专门跑相册服务的，比如photoprism或者immich，所以到手先刷个armbian。
+卡刷 黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。
+第一步：u盘/tf卡引导
+用rufus把armbian固件写入tf卡或者u盘，然后插到机器上后通电，等待半分钟后可以在路由器后台看到新增armbian设备的ip，然后ssh连上设备。
+如果不需要把系统写入emmc，到这一步就可以直接使用了，也就是把u盘/tf卡作为存储介质。
+第二步：固件写入内置emmc
+这个操作和amlogic芯片的电视盒子有区别，无法直接用armbian-install来完成了。
+在上一步tf/u盘中的系统成功启动以后，需要用dd命令直接将armbian固件（eg：Armbian_24.5.0_xxx.img）写入到内置的emmc上。写入完成后，关机拔掉tf卡/u盘，再通电开机，就进入emmc上的armbian系统惹。
+dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷需要准备：
+双公头usb线 rockchip驱动程序DriverAssitant rockchip开发工具RKDevTool rk356x的bootloader文件 第一步：电脑安装驱动
+第二步：选择固件
+启动RKDevTool软件，在boot一栏中，选择rk356x-MiniLoaderAll.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第三步：开始刷机
+设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有叮咚提示音，在瑞芯微开发工具中会显示发现一个LOADER设备。 点击【高级功能——进入maskrom】让设备重启。 点击【下载镜像——执行】开始刷机。 提示下载完成后刷机完成，可以拔掉双公头usb线缆，然后通电开机。 参考文章 PantherX2(黑豹X2)刷机。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。 百元矿渣Panther X2（黑豹 X2）：小白折腾日记1 资源包 百度网盘：【Panther-X2-刷机工具.7z】 提取码: 7e4a" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202403/panther-x2-flash-armbian/" /><meta property="article:section" content="202403" />
+<meta property="article:published_time" content="2024-03-12T18:20:47+08:00" />
+<meta property="article:modified_time" content="2024-03-12T18:20:47+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">黑豹（Panther)X2刷入armbian系统</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 12, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不都已经翻一倍了。😂</p>
+<p>硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/12/183152-0.webp" alt=""></p>
+<p>这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以都网口啥的没需求。</p>
+<p>我入手这个盒子就是用来专门跑相册服务的，比如photoprism或者immich，所以到手先刷个armbian。</p>
+<hr>
+<h2 id="卡刷">卡刷</h2>
+<p>黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。</p>
+<blockquote>
+<p>第一步：u盘/tf卡引导</p>
+</blockquote>
+<p>用rufus把armbian固件写入tf卡或者u盘，然后插到机器上后通电，等待半分钟后可以在路由器后台看到新增armbian设备的ip，然后ssh连上设备。</p>
+<p>如果不需要把系统写入emmc，到这一步就可以直接使用了，也就是把u盘/tf卡作为存储介质。</p>
+<blockquote>
+<p>第二步：固件写入内置emmc</p>
+</blockquote>
+<p>这个操作和amlogic芯片的电视盒子有区别，无法直接用<code>armbian-install</code>来完成了。</p>
+<p>在上一步tf/u盘中的系统成功启动以后，需要用<code>dd</code>命令直接将armbian固件（eg：Armbian_24.5.0_xxx.img）写入到内置的emmc上。写入完成后，关机拔掉tf卡/u盘，再通电开机，就进入emmc上的armbian系统惹。</p>
+<pre tabindex="0"><code>dd if=Armbian_24.5.0_xxx.img  of=/dev/mmcblk1  bs=1M status=progress
+</code></pre><hr>
+<h2 id="线刷">线刷</h2>
+<p>线刷需要准备：</p>
+<ul>
+<li>双公头usb线</li>
+<li>rockchip驱动程序<code>DriverAssitant</code></li>
+<li>rockchip开发工具<code>RKDevTool</code></li>
+<li>rk356x的bootloader文件</li>
+</ul>
+<blockquote>
+<p>第一步：电脑安装驱动</p>
+</blockquote>
+<p><img src="https://img.311803.xyz/i/2024/03/12/190703-0.webp" alt=""></p>
+<blockquote>
+<p>第二步：选择固件</p>
+</blockquote>
+<p>启动RKDevTool软件，在<code>boot</code>一栏中，选择<code>rk356x-MiniLoaderAll.bin</code>文件，在<code>system</code>一栏中，选择自己下载的armbian镜像文件。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/12/190120-0.webp" alt=""></p>
+<blockquote>
+<p>第三步：开始刷机</p>
+</blockquote>
+<ol>
+<li>设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有<code>叮咚</code>提示音，在瑞芯微开发工具中会显示<code>发现一个LOADER设备</code>。</li>
+</ol>
+<p><img src="https://img.311803.xyz/i/2024/03/12/191359-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/i/2024/03/12/191505-0.webp" alt="图片来自 rupu.net"></p>
+<ol start="2">
+<li>点击【高级功能——进入maskrom】让设备重启。</li>
+</ol>
+<p><img src="https://img.311803.xyz/i/2024/03/12/191841-0.webp" alt="图片来自 rupu.net"></p>
+<ol start="3">
+<li>点击【下载镜像——执行】开始刷机。</li>
+</ol>
+<p><img src="https://img.311803.xyz/i/2024/03/12/192003-0.webp" alt="图片来自 rupu.net"></p>
+<ol start="4">
+<li>提示<code>下载完成</code>后刷机完成，可以拔掉双公头usb线缆，然后通电开机。</li>
+</ol>
+<p><img src="https://img.311803.xyz/i/2024/03/12/192125-0.webp" alt="图片来自 rupu.net"></p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://rupu.net/archives/pantherx2">PantherX2(黑豹X2)刷机</a>。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。</li>
+<li><a href="https://bbs.deepin.org/post/268881">百元矿渣Panther X2（黑豹 X2）：小白折腾日记1</a></li>
+</ol>
+<hr>
+<h2 id="资源包">资源包</h2>
+<p>百度网盘：【<a href="https://pan.baidu.com/s/14QYP6tgOL6KI4qJPojU9Kw">Panther-X2-刷机工具.7z</a>】
+提取码: 7e4a</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

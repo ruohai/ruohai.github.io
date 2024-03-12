@@ -5,7 +5,32 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 28 Feb 2024 20:47:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Mar 2024 18:20:47 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>黑豹（Panther)X2刷入armbian系统</title>
+      <link>https://ruohai.wang/202403/panther-x2-flash-armbian/</link>
+      <pubDate>Tue, 12 Mar 2024 18:20:47 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202403/panther-x2-flash-armbian/</guid>
+      <description>前言 前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不都已经翻一倍了。😂
+硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有hdmi，原封包装的话自带一张64GB的闪迪tf卡，没有视频输出接口，12v/2a的dc供电。
+这个硬件配置，cpu性能在一众盒子里比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展。鸡肋的地方就是usb接口只给了2.0，而且没有任何视频输出接口。我不玩软路由，所以都网口啥的没需求。
+我入手这个盒子就是用来专门跑相册服务的，比如photoprism或者immich，所以到手先刷个armbian。
+卡刷 黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。
+第一步：u盘/tf卡引导
+用rufus把armbian固件写入tf卡或者u盘，然后插到机器上后通电，等待半分钟后可以在路由器后台看到新增armbian设备的ip，然后ssh连上设备。
+如果不需要把系统写入emmc，到这一步就可以直接使用了，也就是把u盘/tf卡作为存储介质。
+第二步：固件写入内置emmc
+这个操作和amlogic芯片的电视盒子有区别，无法直接用armbian-install来完成了。
+在上一步tf/u盘中的系统成功启动以后，需要用dd命令直接将armbian固件（eg：Armbian_24.5.0_xxx.img）写入到内置的emmc上。写入完成后，关机拔掉tf卡/u盘，再通电开机，就进入emmc上的armbian系统惹。
+dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷需要准备：
+双公头usb线 rockchip驱动程序DriverAssitant rockchip开发工具RKDevTool rk356x的bootloader文件 第一步：电脑安装驱动
+第二步：选择固件
+启动RKDevTool软件，在boot一栏中，选择rk356x-MiniLoaderAll.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第三步：开始刷机
+设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有叮咚提示音，在瑞芯微开发工具中会显示发现一个LOADER设备。 点击【高级功能——进入maskrom】让设备重启。 点击【下载镜像——执行】开始刷机。 提示下载完成后刷机完成，可以拔掉双公头usb线缆，然后通电开机。 参考文章 PantherX2(黑豹X2)刷机。注：本文中有5张图片都引用自这篇博客，因为我刷机的时候没有截图，事后也懒得重刷补图。这里感谢 rupu.net 的辛苦制图。 百元矿渣Panther X2（黑豹 X2）：小白折腾日记1 资源包 百度网盘：【Panther-X2-刷机工具.7z】 提取码: 7e4a</description>
+    </item>
+    
     <item>
       <title>ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）</title>
       <link>https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/</link>
@@ -541,18 +566,20 @@ version: &amp;#39;3&amp;#39; services: lsky-pro: image: tyroyal/lsky-pro-x:lates
       
       <guid>https://ruohai.wang/202311/photoprism-install-on-onecloud/</guid>
       <description>前言 硬件性能：
-photoprism官方明确要求部署pp服务的最低硬件要求是4核 + 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用很多图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入20张图片未出现oom。适合轻负载使用 实测转码一张mi10s拍摄的2400万像素的heif/heic格式的照片到jpg需要7s钟 转码视频，mi10s拍摄的1080p@60fps h265视频30秒，转码成720p avc视频，大概需要2分半 存储空间：
+photoprism官方明确要求部署pp服务的最低硬件要求是4核 + 4GB内存，玩客云的cpu性能孱弱而且内存也仅仅只有1GB 能跑起来的前提是禁用全部的图像算法识别功能 如果你需要的是一个全功能的photoprism，那这个方案不适合你，更不适合玩客云 实测部署成功以后，photoprism能跑，网页端访问流畅，导入100+张图片未出现oom。适合轻负载使用 实测转码一张mi10s拍摄的2400万像素的heif/heic格式的照片到jpg需要7秒钟，纯cpu编解码 转码视频，mi10s拍摄的1080p@60fps h265视频30秒，转码成720p avc视频，大概需要2分半，纯cpu编解码 存储空间：
 docker.io + docker-compose大概占用300MB存储 photoprism + mariadb镜像大概占用1.6GB存储 合计大概占用2GB空间，玩客云内置emmc可用空间大概是6GB，能装下，但需要提前考虑存储空间的占用 部署 &amp;amp; 优化 第一步：安装docker环境
 直接用debian仓库里的docker.io
 apt install docker.io 使用docker-compose方式部署
-apt install dockere-compose 因为docker hub被封，记得配置docker国内镜像
-nano /etc/docker/daemon.json 录入以下内容，需要注意没必要填太多镜像站，一两个就够了：
-{ &amp;#34;registry-mirrors&amp;#34;: [&amp;#34;http://hub-mirror.c.163.com&amp;#34;], &amp;#34;iptables&amp;#34;: false } 保存后退出，然后重启docker。
-systemctl restart docker.service 其中的&amp;quot;iptables&amp;quot;: false是禁止docker调整iptables，因为我用的ufw管理防火墙。请根据自己的情况保留或者删除这条。
+apt install dockere-compose 因为docker hub国内被屏蔽，记得配置docker国内镜像
 第二步：配置文件调整
 先创建目录吧。玩客云内置存储空间比较珍贵，pp的运行目录记得放在外置存储。
 # 创建目录，记得把pp运行目录指向外置硬盘 mkdir photoprism ; cd $_ # 下载官方的配置文件 wget https://dl.photoprism.app/docker/armv7/docker-compose.yml 官方提供的配置文件，除了常规的密码、运行目录之类，还有以下几个项目要修改
-PHOTOPRISM_DEFAULT_TLS: &amp;quot;false&amp;quot;，这个选项是pp程序初次部署时生成一个自签名的https/tls证书，没卵用，而且在玩客云上部署时会耗费大量时间以生成证书，建议禁用 PHOTOPRISM_DISABLE_CHOWN: &amp;quot;true&amp;quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &amp;quot;true&amp;quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &amp;quot;true&amp;quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &amp;quot;1000:1000&amp;quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10.</description>
+PHOTOPRISM_DEFAULT_TLS: &amp;quot;false&amp;quot;，这个选项是pp程序初次部署时生成一个自签名的https/tls证书，没卵用，而且在玩客云上部署时会耗费大量时间以生成证书，建议禁用 PHOTOPRISM_DISABLE_CHOWN: &amp;quot;true&amp;quot;，这个选项是pp每次启动的时候调整storage目录的权限，如果图库文件数量很大，会导致每次pp启动都非常非常耗时，建议禁用 PHOTOPRISM_DISABLE_WEBDAV: &amp;quot;true&amp;quot;，禁用webdav服务。webdav服务用来分享照片的，用不上，禁用。也可以在webui里禁用。 PHOTOPRISM_DISABLE_TENSORFLOW: &amp;quot;true&amp;quot;，禁用tensorflow。图像算法识别功能，吃硬件性能，玩客云上跑pp必须禁用掉。务必在配置文件中直接禁用，要不然启动pp都很难。 user: &amp;quot;1000:1000&amp;quot;，有权限洁癖的用户需要这个，自己加一行参数，指定photoprism以non-root用户运行。如果加了这条，对应的originals、import、storage三个目录需要提前手动创建并分配用户权限。如果以root用户运行，这条可以无视。 image: linuxserver/mariadb:10.6.13，这是mariadb的配置项，目前支持armv7的mariadb的最新（后）一个版本就是10.6.13，需要指定版本。 改完配置文件以后，就可以开始部署了
+docker-compose up -d 不出意外等命令跑完就OK了。
+不过pp启动还是会稍微有点耗时，大概需要半分钟到一分钟的样子就可以访问web端了。
+第三步：web端功能精简
+有些功能可以在webui中进行优化（禁用），可以酌情调整。
+一般：人物：建议关闭，需要tensorflow进行人脸识别 一般：标签：建议关闭，需要tensorflow进行照片主题识别添加标签，禁用tensorflow以后没有标签了，没必要保留入口 一般：瞬间：建议关闭，根据地点、标签、人脸之类标签来汇总整理的相册功能，禁用掉地点和tensorfow以后这功能就是个残废，没必要保留入口 资料库：估算：建议关闭，地理坐标的功能 高级：禁用webdav：建议关闭 高级：禁用地点：建议关闭，除了吃硬件性能之外，这服务还会需要去网上下载地图数据，碰到网络差或者网站被屏蔽时会导致照片索引服务卡在网络请求这一步很久 高级：禁用exiftool：建议关闭，每个照片都会创建一个exif json文件，非常吃i/o存储性能 高级：禁用tensorflow：务必关闭，玩客云上开这个功能的话pp根本没法用 高级：禁用备份：建议关闭，pp默认会统一修改原文件名，所以需要备份原始元数据到yaml文件，大量小文件吃i/o性能，对原文件名没有要求的话可以关闭 高级：动态预览：建议关闭，它自述不适合低性能nas，所以关闭 高级：禁用imagemagick：建议关闭，raw文件生成缩略图用的，没有raw文件就关闭 大致就这些了，禁用掉这些功能以后，photoprism在玩客云上就能流畅运行了。</description>
     </item>
     
     <item>
