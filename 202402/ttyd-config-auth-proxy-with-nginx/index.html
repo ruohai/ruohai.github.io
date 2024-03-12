@@ -14,7 +14,7 @@
     
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）"/>
-<meta name="twitter:description" content="前言 之前写过一篇在玩客云上安装ttyd的博客，文章指路：【在玩客云上安装ttyd】
+<meta name="twitter:description" content="前言 之前写过一篇在玩客云上安装ttyd的博客，文章指路：【在玩客云上安装ttyd】。
 ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
 ttyd -c jacky:123456 bash 这样确实很方便啊，但是有一个问题，就是使用htop查看进程时，会发现ttyd的进程是明文的，也就是进程会显示
 ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。
@@ -26,12 +26,12 @@ ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人�
 ttyd的启动命令，从之前的
 ttyd -c jacky:123456 bash 调整为
 ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 调整后完整版的ttyd.service配置如下
-[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash Type=simple Restart=always [Install] WantedBy=multi-user.target 第二步：nginx配置
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 12345 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash Type=simple Restart=always [Install] WantedBy=multi-user.target 第二步：nginx配置
 先安装nginx这个不多说了。根据wiki中给出的nginx配置，完整版本如下，注意调整监听的端口号。
-server { listen 123456; server_name ttyd; location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/htpasswd/ttyd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1."/>
+server { listen 12345; server_name ttyd; location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/htpasswd/ttyd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1."/>
 
     <meta property="og:title" content="ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）" />
-<meta property="og:description" content="前言 之前写过一篇在玩客云上安装ttyd的博客，文章指路：【在玩客云上安装ttyd】
+<meta property="og:description" content="前言 之前写过一篇在玩客云上安装ttyd的博客，文章指路：【在玩客云上安装ttyd】。
 ttyd默认的认证方法是在启动命令中使用-c参数来设置用户名和密码，举例如下
 ttyd -c jacky:123456 bash 这样确实很方便啊，但是有一个问题，就是使用htop查看进程时，会发现ttyd的进程是明文的，也就是进程会显示
 ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。
@@ -43,9 +43,9 @@ ttyd -c jacky:123456 bash 🤔，不管这个系统是独自使用还是多人�
 ttyd的启动命令，从之前的
 ttyd -c jacky:123456 bash 调整为
 ttyd -i /tmp/ttyd.sock -H X-WEBAUTH-USER bash 调整后完整版的ttyd.service配置如下
-[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash Type=simple Restart=always [Install] WantedBy=multi-user.target 第二步：nginx配置
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 12345 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash Type=simple Restart=always [Install] WantedBy=multi-user.target 第二步：nginx配置
 先安装nginx这个不多说了。根据wiki中给出的nginx配置，完整版本如下，注意调整监听的端口号。
-server { listen 123456; server_name ttyd; location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/htpasswd/ttyd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1." />
+server { listen 12345; server_name ttyd; location / { auth_basic &#34;ttyd&#34;; auth_basic_user_file &#34;/etc/nginx/htpasswd/ttyd&#34;; proxy_set_header X-WEBAUTH-USER $remote_user; proxy_set_header Authorization &#34;&#34;; proxy_http_version 1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/" /><meta property="article:section" content="202402" />
 <meta property="article:published_time" content="2024-02-28T20:47:06+08:00" />
@@ -109,7 +109,7 @@ server { listen 123456; server_name ttyd; location / { auth_basic &#34;ttyd&#34;
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>之前写过一篇在玩客云上安装ttyd的博客，文章指路：【<a href="http://localhost:1313/202307/install-ttyd/">在玩客云上安装ttyd</a>】</p>
+<p>之前写过一篇在玩客云上安装ttyd的博客，文章指路：【<a href="https://ruohai.wang/202307/install-ttyd/">在玩客云上安装ttyd</a>】。</p>
 <p>ttyd默认的认证方法是在启动命令中使用<code>-c</code>参数来设置用户名和密码，举例如下</p>
 <pre tabindex="0"><code>ttyd -c jacky:123456 bash
 </code></pre><p>这样确实很方便啊，但是有一个问题，就是使用<code>htop</code>查看进程时，会发现ttyd的进程是明文的，也就是进程会显示</p>
@@ -138,7 +138,7 @@ After=network.target
 
 [Service]
 User=[user]
-ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash
+ExecStart=/opt/ttyd/ttyd.armhf -p 12345 -i /tmp/ttyd.sock -H X-WEBAUTH-USER -W bash
 Type=simple
 Restart=always
 
@@ -149,7 +149,7 @@ WantedBy=multi-user.target
 </blockquote>
 <p>先安装nginx这个不多说了。根据wiki中给出的nginx配置，完整版本如下，注意调整监听的端口号。</p>
 <pre tabindex="0"><code>server {
-	listen 123456;
+	listen 12345;
 
 	server_name ttyd;
 
