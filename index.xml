@@ -5,7 +5,25 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 23 Mar 2024 14:05:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Mar 2024 22:56:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PhotoPrism社区版解析照片地理位置（Geocoding）接口请求超时</title>
+      <link>https://ruohai.wang/202403/photoprism-geocoding-api-limit/</link>
+      <pubDate>Thu, 28 Mar 2024 22:56:25 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202403/photoprism-geocoding-api-limit/</guid>
+      <description>在自建相册应用的选择上我一直用的photoprism，社区版免费而且功能已经能满足我的需求，更重要的是官方还在维护基于arm32/v7版本的镜像，这就意味着我可以把它安装在玩客云上（前提是关掉所有需要tensorflow图像识别算法的功能）。
+之前我使用photoprism的时候，偶尔用docker-compose logs -f，或者在web端的资料库-日志中查看日志时，会看到获取照片地理位置的接口报错，提示请求超时，最后导致照片无法获取详细的地理位置信息。
+我一直以为是网络原因（被gfw干扰之类）所以接口不稳定，也试过给photoprism挂全局代理，但似乎并没有什么卵用。
+直到今天，我偶尔从web端的版本比较入口跳转到官网
+仔细查看了社区版与订阅版的区别，发现了其中一条
+社区版的geocoding接口是有请求频率限制的！！！
+这个接口的用途就是根据照片中保存的gps经纬度信息，转译成自然语言的地理信息。
+它被限制请求频率，意味着在导入照片数量比较大的时候，照片的地理位置无法转译。具体的免费请求次数、频率在官网没有查到。
+对这个功能有强烈需求的话，可以考虑花钱订阅photoprism，最便宜的€2/mo就解除限制惹。
+😂</description>
+    </item>
+    
     <item>
       <title>海南五天四夜环岛自驾游记录</title>
       <link>https://ruohai.wang/202403/road-trip-in-hainan/</link>
