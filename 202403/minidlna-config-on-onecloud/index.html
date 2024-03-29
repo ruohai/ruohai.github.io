@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>在玩客云上安装&amp;配置MiniDLNA // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在玩客云上安装&amp;配置MiniDLNA"/>
+<meta name="twitter:description" content="前言 在看海纳思官方页面的一些功能介绍的时候发现了minidlna。之前我都是直接用的samba，对dlna协议还真没试过，这次正好了解下。
+实际在配置的过程中碰到了不少问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。
+安装 玩客云刷的是armbian系统，安装minidlna很简单，一条命令。
+sudo apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
+配置 先列一下minidlna的三个配置文件：
+/etc/minidlna.conf /etc/defalut/minidlna.conf /lib/systemd/system/minidlna.service 再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。
+媒体文件目录
+修改/etc/minidlna.conf，把media_dir=/var/lib/minidlna调整为自己存放媒体文件的目录
+默认端口
+修改/etc/minidlna.conf，找到port=8200，可以用默认端口，也可以根据自己的喜好调整。如果有安装ufw或者firewalld，记得放行端口。
+默认用户/组
+默认用户:组都是minidlna，会碰到一些目录读取的权限问题。图方便的话可以直接chmod 777，或者修改/lib/systemd/system/minidlna.service，调整User=minidlna和Group=minidlna两项，想省事可以可以都用root账户。
+如果改成其它用户/组，修改以后注意一起修改/var/cache/minidlna目录的权限。
+max_user_watches
+改完上面这些以后，启动minidlna依然会报错，查看/var/log/minidlna下的日志，发现有报错信息
+monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit. Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches. 意识是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些
+修改方法
+sudo sysctl -w fs.inotify.max_user_watches=524288 到这一步，minidlna重新载入配置然后重启即可。"/>
+
+    <meta property="og:title" content="在玩客云上安装&amp;配置MiniDLNA" />
+<meta property="og:description" content="前言 在看海纳思官方页面的一些功能介绍的时候发现了minidlna。之前我都是直接用的samba，对dlna协议还真没试过，这次正好了解下。
+实际在配置的过程中碰到了不少问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。
+安装 玩客云刷的是armbian系统，安装minidlna很简单，一条命令。
+sudo apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
+配置 先列一下minidlna的三个配置文件：
+/etc/minidlna.conf /etc/defalut/minidlna.conf /lib/systemd/system/minidlna.service 再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。
+媒体文件目录
+修改/etc/minidlna.conf，把media_dir=/var/lib/minidlna调整为自己存放媒体文件的目录
+默认端口
+修改/etc/minidlna.conf，找到port=8200，可以用默认端口，也可以根据自己的喜好调整。如果有安装ufw或者firewalld，记得放行端口。
+默认用户/组
+默认用户:组都是minidlna，会碰到一些目录读取的权限问题。图方便的话可以直接chmod 777，或者修改/lib/systemd/system/minidlna.service，调整User=minidlna和Group=minidlna两项，想省事可以可以都用root账户。
+如果改成其它用户/组，修改以后注意一起修改/var/cache/minidlna目录的权限。
+max_user_watches
+改完上面这些以后，启动minidlna依然会报错，查看/var/log/minidlna下的日志，发现有报错信息
+monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit. Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches. 意识是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些
+修改方法
+sudo sysctl -w fs.inotify.max_user_watches=524288 到这一步，minidlna重新载入配置然后重启即可。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202403/minidlna-config-on-onecloud/" /><meta property="article:section" content="202403" />
+<meta property="article:published_time" content="2024-03-30T06:02:16+08:00" />
+<meta property="article:modified_time" content="2024-03-30T06:02:16+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在玩客云上安装&amp;配置MiniDLNA</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 30, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/minidlna/">MiniDLNA</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>在看海纳思官方页面的一些功能介绍的时候发现了minidlna。之前我都是直接用的samba，对dlna协议还真没试过，这次正好了解下。</p>
+<p>实际在配置的过程中碰到了不少问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。</p>
+<hr>
+<h2 id="安装">安装</h2>
+<p>玩客云刷的是armbian系统，安装minidlna很简单，一条命令。</p>
+<pre tabindex="0"><code>sudo apt install minidlna
+</code></pre><p>需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<p>先列一下minidlna的三个配置文件：</p>
+<ul>
+<li>/etc/minidlna.conf</li>
+<li>/etc/defalut/minidlna.conf</li>
+<li>/lib/systemd/system/minidlna.service</li>
+</ul>
+<p>再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。</p>
+<blockquote>
+<p>媒体文件目录</p>
+</blockquote>
+<p>修改<code>/etc/minidlna.conf</code>，把<code>media_dir=/var/lib/minidlna</code>调整为自己存放媒体文件的目录</p>
+<blockquote>
+<p>默认端口</p>
+</blockquote>
+<p>修改<code>/etc/minidlna.conf</code>，找到<code>port=8200</code>，可以用默认端口，也可以根据自己的喜好调整。如果有安装ufw或者firewalld，记得放行端口。</p>
+<blockquote>
+<p>默认用户/组</p>
+</blockquote>
+<p>默认用户:组都是minidlna，会碰到一些目录读取的权限问题。图方便的话可以直接<code>chmod 777</code>，或者修改<code>/lib/systemd/system/minidlna.service</code>，调整<code>User=minidlna</code>和<code>Group=minidlna</code>两项，想省事可以可以都用<code>root</code>账户。</p>
+<p>如果改成其它用户/组，修改以后注意一起修改<code>/var/cache/minidlna</code>目录的权限。</p>
+<blockquote>
+<p>max_user_watches</p>
+</blockquote>
+<p>改完上面这些以后，启动minidlna依然会报错，查看<code>/var/log/minidlna</code>下的日志，发现有报错信息</p>
+<pre tabindex="0"><code>monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit.  Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches.
+</code></pre><p>意识是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些</p>
+<p>修改方法</p>
+<pre tabindex="0"><code>sudo sysctl -w fs.inotify.max_user_watches=524288
+</code></pre><p>到这一步，minidlna重新载入配置然后重启即可。</p>
+<pre tabindex="0"><code># 重载
+sudo systemctl daemon-reload
+
+# 重启
+sudo systemctl restart minidlna.service
+</code></pre><p>然后可以在浏览器中访问<code>http://host_ip:8200</code>查看minidlna的运行状况，会有一个简单的数据展示</p>
+<p><img src="https://img.311803.xyz/i/2024/03/30/062854-0.webp" alt=""></p>
+<p>接下去就可以在手机上使用支持dlna的播放器软件播放影音文件惹。</p>
+<p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
