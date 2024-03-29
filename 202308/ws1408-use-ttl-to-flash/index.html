@@ -26,7 +26,7 @@
 接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
 先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
 然后电脑上打开putty，连接类型选Serial，Serial line填COM3，Speed填115200。然后点击Open打开终端。
-这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
+这个时候主板接电源通电，注意使用dc电源通电而不是插usb通电，usb会干扰putty识别设备。通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
 到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
 最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
 到这里就大功告成了，用usb转ttl工具刷机结束~
@@ -45,7 +45,7 @@
 接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
 先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
 然后电脑上打开putty，连接类型选Serial，Serial line填COM3，Speed填115200。然后点击Open打开终端。
-这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
+这个时候主板接电源通电，注意使用dc电源通电而不是插usb通电，usb会干扰putty识别设备。通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入update后敲回车键确认，此时终端中会显示进入了线刷模式。
 到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
 最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
 到这里就大功告成了，用usb转ttl工具刷机结束~
@@ -129,20 +129,20 @@
 <h2 id="拆机">拆机</h2>
 <p>要刷机，首先需要把ws1408的主板拆出来。</p>
 <p>撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/XtLCNINL.jpg" alt="1690971715949.jpg"></p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/190157-0.webp" alt=""></p>
 <p>取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/rDBRMk2f.png" alt="1690972136441.png"></p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/190228-0.webp" alt=""></p>
 <p>到这里就完成拆机了。</p>
 <hr>
 <h2 id="刷机">刷机</h2>
 <p>先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/9CqdR3wX.jpg" alt="1690972229868.jpg"></p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/185940-0.webp" alt=""></p>
 <p>接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。</p>
 <p>先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/Pt7nSX6Y.png" alt="1690972690327.png"></p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/190021-0.webp" alt=""></p>
 <p>然后电脑上打开putty，连接类型选<code>Serial</code>，Serial line填<code>COM3</code>，Speed填<code>115200</code>。然后点击<code>Open</code>打开终端。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/go4bPRQt.png" alt="1690972839371.png"></p>
-<p>这个时候主板接电源通电，通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入<code>update</code>后敲回车键确认，此时终端中会显示进入了线刷模式。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/190032-0.webp" alt=""></p>
+<p>这个时候主板接电源通电，注意使用dc电源通电而不是插usb通电，usb会干扰putty识别设备。通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入<code>update</code>后敲回车键确认，此时终端中会显示进入了线刷模式。</p>
 <p><img src="https://img1.imgtp.com/2023/08/02/tR2SIXuo.jpg" alt="1690973001239.jpg"></p>
 <p>到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择<code>普通擦除</code>，然后点开始。</p>
 <p><img src="https://img1.imgtp.com/2023/08/02/nbn6lju5.jpg" alt="1690973162123.jpg"></p>
