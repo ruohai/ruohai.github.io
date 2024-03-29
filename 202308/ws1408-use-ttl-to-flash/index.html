@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机（救砖） // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,15 +13,21 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机"/>
-<meta name="twitter:description" content="前言 这是一篇图片比较多的文章。
-前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。
-然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。
-刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。
-准备 有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。 电脑已经安装了putty 拆机 要刷机，首先需要把ws1408的主板拆出来。
-撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。
-取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。
-到这里就完成拆机了。
+<meta name="twitter:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机（救砖）"/>
+<meta name="twitter:description" content="前言 迅雷赚钱宝一代，型号ws1408，nand存储 &#43; 256mb的内存。目前可用的第三方固件都是提取的官方固件的内核制作而成的各种openwrt。
+我找了恩山论坛的【这个固件】，在用晶晨刷机软件amlogic usb burning tools线刷的时候，习惯性的选择了全部擦除。
+最后成功刷机。但是想要再次线刷的时候，发现晶晨软件已经无法识别到设备了，也就是变砖了。
+虽然这设备几乎没啥可玩性，放海鲜市场上卖10块估计还得包邮，但我还是想给它抢救一下。
+最后在恩山上找到了用ttl救砖的方法，这里做个简单记录。
+准备 一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载，在文章末尾也提供了百度盘下载。 电脑上安装了软件putty，【下载地址】 双公头usb数据线一根 拆机 要刷机，首先需要把ws1408的主板拆出来。
+撕掉贴纸，卸掉螺丝，撬开外壳，卸掉中间的螺丝，然后撬开底盖。
+再卸掉四个螺丝，然后取下主板保护盖。
+然后就可以把主板取下来了。
+安装驱动 先下载驱动，驱动可以找淘宝商家拿，所以在文章末尾找。
+注意，需要先把转接头插到电脑上，要不然安装驱动的时候会提示找不到设备。
+压缩包解压后，双击setup.exe
+然后点击安装即可。
+安装成功后，在电脑的设备管理中查看是否多了一个usb串口设备。
 刷机 先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。
 接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
 先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
@@ -30,17 +36,24 @@
 到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
 最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
 到这里就大功告成了，用usb转ttl工具刷机结束~
-😄"/>
+😄
+刷机工具 CH340G_USB驱动 → 链接: https://pan.baidu.com/s/1QDyUuiPgCpQ89RU6ofAjLg 提取码: hdc3 WS1408可用的openwrt19固件。这般固件是纯净版本的openwrt19，没有装任何插件。这版固件在刷机的时候可以选择完全擦除，不影响二次线刷。 → 链接: https://pan.baidu.com/s/18b57mh514RjHhG-1SKC0wg 提取码: xbt9 "/>
 
-    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机" />
-<meta property="og:description" content="前言 这是一篇图片比较多的文章。
-前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。
-然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。
-刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。
-准备 有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。 电脑已经安装了putty 拆机 要刷机，首先需要把ws1408的主板拆出来。
-撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。
-取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。
-到这里就完成拆机了。
+    <meta property="og:title" content="迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机（救砖）" />
+<meta property="og:description" content="前言 迅雷赚钱宝一代，型号ws1408，nand存储 &#43; 256mb的内存。目前可用的第三方固件都是提取的官方固件的内核制作而成的各种openwrt。
+我找了恩山论坛的【这个固件】，在用晶晨刷机软件amlogic usb burning tools线刷的时候，习惯性的选择了全部擦除。
+最后成功刷机。但是想要再次线刷的时候，发现晶晨软件已经无法识别到设备了，也就是变砖了。
+虽然这设备几乎没啥可玩性，放海鲜市场上卖10块估计还得包邮，但我还是想给它抢救一下。
+最后在恩山上找到了用ttl救砖的方法，这里做个简单记录。
+准备 一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线 有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载，在文章末尾也提供了百度盘下载。 电脑上安装了软件putty，【下载地址】 双公头usb数据线一根 拆机 要刷机，首先需要把ws1408的主板拆出来。
+撕掉贴纸，卸掉螺丝，撬开外壳，卸掉中间的螺丝，然后撬开底盖。
+再卸掉四个螺丝，然后取下主板保护盖。
+然后就可以把主板取下来了。
+安装驱动 先下载驱动，驱动可以找淘宝商家拿，所以在文章末尾找。
+注意，需要先把转接头插到电脑上，要不然安装驱动的时候会提示找不到设备。
+压缩包解压后，双击setup.exe
+然后点击安装即可。
+安装成功后，在电脑的设备管理中查看是否多了一个usb串口设备。
 刷机 先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。
 接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。
 先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。
@@ -49,7 +62,8 @@
 到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择普通擦除，然后点开始。
 最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。
 到这里就大功告成了，用usb转ttl工具刷机结束~
-😄" />
+😄
+刷机工具 CH340G_USB驱动 → 链接: https://pan.baidu.com/s/1QDyUuiPgCpQ89RU6ofAjLg 提取码: hdc3 WS1408可用的openwrt19固件。这般固件是纯净版本的openwrt19，没有装任何插件。这版固件在刷机的时候可以选择完全擦除，不影响二次线刷。 → 链接: https://pan.baidu.com/s/18b57mh514RjHhG-1SKC0wg 提取码: xbt9 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202308/ws1408-use-ttl-to-flash/" /><meta property="article:section" content="202308" />
 <meta property="article:published_time" content="2023-08-02T17:36:56+08:00" />
@@ -86,7 +100,7 @@
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机</h1>
+      <h1 class ="post-title">迅雷赚钱宝一代（WS1408）用USB转TTL工具刷机（救砖）</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -114,25 +128,38 @@
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>这是一篇图片比较多的文章。</p>
-<p>前两天提到我在给ws1408刷机的时候，因为选择了完全擦除flash模式，导致无法再二次刷机，因为usb burning tool软件中无法识别到设备。虽然不重新刷机也能用，但垃圾佬手上的设备，不能刷机怎么行，必须刷。</p>
-<p>然后就入手了usb转ttl的工具，快递一到就立刻动手给两台ws1408拆机用ttl工具重新线刷。</p>
-<p>刷机过程的步骤和资料，都是从恩山论坛获取的。但恩山论坛上的各种内容比较分散，在这里就简单的汇总记录。</p>
+<p>迅雷赚钱宝一代，型号ws1408，nand存储 + 256mb的内存。目前可用的第三方固件都是提取的官方固件的内核制作而成的各种openwrt。</p>
+<p>我找了恩山论坛的【<a href="https://www.right.com.cn/forum/thread-8279376-1-1.html">这个固件</a>】，在用晶晨刷机软件amlogic usb burning tools线刷的时候，习惯性的选择了<code>全部擦除</code>。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/210223-0.webp" alt=""></p>
+<p>最后成功刷机。但是想要再次线刷的时候，发现晶晨软件已经无法识别到设备了，也就是变砖了。</p>
+<p>虽然这设备几乎没啥可玩性，放海鲜市场上卖10块估计还得包邮，但我还是想给它抢救一下。</p>
+<p>最后在恩山上找到了用ttl救砖的方法，这里做个简单记录。</p>
 <hr>
 <h2 id="准备">准备</h2>
 <ul>
-<li>有一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → <a href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=683362260002">CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线</a></li>
-<li>有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载。记得安装驱动时需要把转接头插到电脑上，要不然会一直提示驱动安装失败。</li>
-<li>电脑已经安装了putty</li>
+<li>一个usb转ttl的转接头和杜邦线。我买的是一款CH340G型号的转接头，指路 → <a href="https://detail.tmall.com/item.htm?abbucket=0&amp;id=683362260002">CH340G土豪金USB转TTL模块RS232转串口模块刷机升级小板送杜邦线</a></li>
+<li>有了转接头以后，需要安装驱动。驱动程序在卖转接头的淘宝店就有提供下载，在文章末尾也提供了百度盘下载。</li>
+<li>电脑上安装了软件putty，【<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">下载地址</a>】</li>
+<li>双公头usb数据线一根</li>
 </ul>
 <hr>
 <h2 id="拆机">拆机</h2>
 <p>要刷机，首先需要把ws1408的主板拆出来。</p>
-<p>撕掉贴纸，卸掉螺丝，撬开外壳，再卸掉4颗螺丝。</p>
+<p>撕掉贴纸，卸掉螺丝，撬开外壳，卸掉中间的螺丝，然后撬开底盖。</p>
 <p><img src="https://img.311803.xyz/i/2024/03/29/190157-0.webp" alt=""></p>
-<p>取下主板保护盖，就可以看到主板了。到这里主板已经可以直接取下来。</p>
+<p>再卸掉四个螺丝，然后取下主板保护盖。</p>
 <p><img src="https://img.311803.xyz/i/2024/03/29/190228-0.webp" alt=""></p>
-<p>到这里就完成拆机了。</p>
+<p>然后就可以把主板取下来了。</p>
+<hr>
+<h2 id="安装驱动">安装驱动</h2>
+<p>先下载驱动，驱动可以找淘宝商家拿，所以在文章末尾找。</p>
+<p>注意，需要先把转接头插到电脑上，要不然安装驱动的时候会提示找不到设备。</p>
+<p>压缩包解压后，双击<code>setup.exe</code></p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/212814-0.webp" alt=""></p>
+<p>然后点击安装即可。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/212847-0.webp" alt=""></p>
+<p>安装成功后，在电脑的设备管理中查看是否多了一个usb串口设备。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/29/190021-0.webp" alt=""></p>
 <hr>
 <h2 id="刷机">刷机</h2>
 <p>先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。</p>
@@ -143,12 +170,16 @@
 <p>然后电脑上打开putty，连接类型选<code>Serial</code>，Serial line填<code>COM3</code>，Speed填<code>115200</code>。然后点击<code>Open</code>打开终端。</p>
 <p><img src="https://img.311803.xyz/i/2024/03/29/190032-0.webp" alt=""></p>
 <p>这个时候主板接电源通电，注意使用dc电源通电而不是插usb通电，usb会干扰putty识别设备。通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入<code>update</code>后敲回车键确认，此时终端中会显示进入了线刷模式。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/tR2SIXuo.jpg" alt="1690973001239.jpg"></p>
 <p>到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择<code>普通擦除</code>，然后点开始。</p>
-<p><img src="https://img1.imgtp.com/2023/08/02/nbn6lju5.jpg" alt="1690973162123.jpg"></p>
 <p>最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。</p>
 <p>到这里就大功告成了，用usb转ttl工具刷机结束~</p>
 <p>😄</p>
+<hr>
+<h2 id="刷机工具">刷机工具</h2>
+<ul>
+<li>CH340G_USB驱动 → 链接: <a href="https://pan.baidu.com/s/1QDyUuiPgCpQ89RU6ofAjLg">https://pan.baidu.com/s/1QDyUuiPgCpQ89RU6ofAjLg</a> 提取码: hdc3</li>
+<li>WS1408可用的openwrt19固件。这般固件是纯净版本的openwrt19，没有装任何插件。这版固件在刷机的时候可以选择<code>完全擦除</code>，不影响二次线刷。 → 链接: <a href="https://pan.baidu.com/s/18b57mh514RjHhG-1SKC0wg">https://pan.baidu.com/s/18b57mh514RjHhG-1SKC0wg</a> 提取码: xbt9</li>
+</ul>
 
     </div>
     <div class="post-footer">
