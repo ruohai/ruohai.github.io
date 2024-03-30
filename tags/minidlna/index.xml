@@ -17,19 +17,19 @@
 安装 玩客云刷的是armbian系统，安装minidlna很简单，一条命令。
 sudo apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
 配置 先列一下minidlna的三个配置文件：
-/etc/minidlna.conf /etc/defalut/minidlna.conf /lib/systemd/system/minidlna.service 再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。
+/etc/minidlna.conf /etc/defalut/minidlna /lib/systemd/system/minidlna.service 再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。其中第二个配置文件是针对sysv init，玩客云armbian用的是systemd，所以可以忽略这个文件。
 媒体文件目录
 修改/etc/minidlna.conf，把media_dir=/var/lib/minidlna调整为自己存放媒体文件的目录
 默认端口
 修改/etc/minidlna.conf，找到port=8200，可以用默认端口，也可以根据自己的喜好调整。如果有安装ufw或者firewalld，记得放行端口。
 默认用户/组
-默认用户:组都是minidlna，会碰到一些目录读取的权限问题。图方便的话可以直接chmod 777，或者修改/lib/systemd/system/minidlna.service，调整User=minidlna和Group=minidlna两项，想省事可以可以都用root账户。
+默认用户/组都是minidlna，在指定媒体目录的时候注意权限问题，要不然会碰到扫描不到媒体文件的问题。图方便的话可以直接将媒体文件chmod 777，或者修改/lib/systemd/system/minidlna.service，调整User=minidlna和Group=minidlna两项，想省事可以可以都用root账户。
 如果改成其它用户/组，修改以后注意一起修改/var/cache/minidlna目录的权限。
 max_user_watches
 改完上面这些以后，启动minidlna依然会报错，查看/var/log/minidlna下的日志，发现有报错信息
-monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit. Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches. 意识是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些
+monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit. Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches. 意思是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些
 修改方法
-sudo sysctl -w fs.inotify.max_user_watches=524288 到这一步，minidlna重新载入配置然后重启即可。</description>
+sudo sysctl -w fs.</description>
     </item>
     
   </channel>
