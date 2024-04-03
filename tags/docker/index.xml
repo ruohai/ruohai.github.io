@@ -5,6 +5,7 @@
     <link>https://ruohai.wang/tags/docker/</link>
     <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 06 Oct 2023 19:35:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>UFW防火墙对Docker容器不生效的问题解决</title>

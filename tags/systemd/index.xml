@@ -5,6 +5,7 @@
     <link>https://ruohai.wang/tags/systemd/</link>
     <description>Recent content in systemd on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
     <lastBuildDate>Tue, 09 Jan 2024 16:12:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/systemd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用systemd实现存储设备的开机自动挂载</title>

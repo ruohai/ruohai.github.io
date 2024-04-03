@@ -5,6 +5,7 @@
     <link>https://ruohai.wang/</link>
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
     <lastBuildDate>Sat, 30 Mar 2024 06:02:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在玩客云上安装&amp;配置MiniDLNA</title>
@@ -2238,7 +2239,8 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
       
       <guid>https://ruohai.wang/about/</guid>
       <description>关于未来你总有周密的安排，然而剧情却总是被现实篡改。
-关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。</description>
+关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。
+博客备用地址：【😹ฅ^•ﻌ•^ฅ】</description>
     </item>
     
     <item>

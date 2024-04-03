@@ -5,6 +5,7 @@
     <link>https://ruohai.wang/tags/github/</link>
     <description>Recent content in Github on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
     <lastBuildDate>Sun, 28 Jan 2024 22:52:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/github/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ssh: connect to host github.com port 22: Connection timed out问题处理</title>

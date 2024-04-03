@@ -5,6 +5,7 @@
     <link>https://ruohai.wang/202310/</link>
     <description>Recent content in 202310s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
     <lastBuildDate>Tue, 31 Oct 2023 17:10:42 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202310/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用tune2fs释放ext4文件系统的预留空间</title>
