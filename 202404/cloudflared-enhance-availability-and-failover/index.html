@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Cloudflare Tunnels服务增强可用性和容错率 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cloudflare Tunnels服务增强可用性和容错率"/>
+<meta name="twitter:description" content="前言 cloudflare公司提供了tunnels服务可以实现内网穿透，而且非常良心的免费版本就已经足够用来对外弄个小网站。
+但是免费的服务总是有代价，比如不保证稳定性。我就经常看到自己的tunnels服务显示DEGRADE甚至DOWN，但半分钟左右又会很快恢复到HEALTHY，我只能理解为cloudflare官方需要不定期重置链接来保证服务可用吧（😅
+因为我有三个服务挂在tunnel上，所以有了花钱保稳定的想法。到官网查了下价格，emm，🤔
+英文版的对比不太看得出来付费版本的优势，所以我找了官网中文的付费套餐对比。
+可以看到7刀/月的订阅计划中包含了100%正常运行时间SLA。
+$7/mo，换算成人民币的话50rmb/mo，一年就是600rmb，啧，我不禁倒吸一口冷气。这个费用，我还不如直接买国外的vps，或者买阿里云的99rmb/y的ecs然后用frp做内网穿透。
+被价格吓退以后，顺便看了官网的tunnels服务的手册，想不到有专门一节提到【Tunnel availability and failover】，讲如何提到tunnels服务的可用性和容错率。
+英文阅读无障碍的话，可以直接看官网。我这里只做简单的转译和操作记录。
+方案 手册里提到的提高可用性的方案有两种，方案一免费，就是堆cloudflared实例，方案二收费，用官方提供的负载平衡（load balanecer)服务。
+方案一：创建多个cloudflared副本
+一个tunnle可以对应多个cloudflared实例，所以只需要多装几个cloudflared就行了。
+那想要多装几个cloudflared，有俩方案，如果只有一个主机（host），可以用docker部署多个容器，如果有多个主机，那每个主机上都安装一遍cloudflared即可。
+多个cloudflared实例之间调用的优先级，官方的策略是：优先选择地理位置最近的实例，如果无法获取地理位置或者请求失败，再尝试另一个实例。
+这个方案的好处是：免费。我用的是这个方案，一个tunnel跑了三个cloudflared实例来保证可用性。😂
+方案二：负载均衡
+这个方案付费，最少2个源服务器，保底$5/mo，前50w次查询免费，超过这个数量额外收费。
+具体的配置方法直接看官网手册吧，我没用这方案，所以无法给出步骤。"/>
+
+    <meta property="og:title" content="Cloudflare Tunnels服务增强可用性和容错率" />
+<meta property="og:description" content="前言 cloudflare公司提供了tunnels服务可以实现内网穿透，而且非常良心的免费版本就已经足够用来对外弄个小网站。
+但是免费的服务总是有代价，比如不保证稳定性。我就经常看到自己的tunnels服务显示DEGRADE甚至DOWN，但半分钟左右又会很快恢复到HEALTHY，我只能理解为cloudflare官方需要不定期重置链接来保证服务可用吧（😅
+因为我有三个服务挂在tunnel上，所以有了花钱保稳定的想法。到官网查了下价格，emm，🤔
+英文版的对比不太看得出来付费版本的优势，所以我找了官网中文的付费套餐对比。
+可以看到7刀/月的订阅计划中包含了100%正常运行时间SLA。
+$7/mo，换算成人民币的话50rmb/mo，一年就是600rmb，啧，我不禁倒吸一口冷气。这个费用，我还不如直接买国外的vps，或者买阿里云的99rmb/y的ecs然后用frp做内网穿透。
+被价格吓退以后，顺便看了官网的tunnels服务的手册，想不到有专门一节提到【Tunnel availability and failover】，讲如何提到tunnels服务的可用性和容错率。
+英文阅读无障碍的话，可以直接看官网。我这里只做简单的转译和操作记录。
+方案 手册里提到的提高可用性的方案有两种，方案一免费，就是堆cloudflared实例，方案二收费，用官方提供的负载平衡（load balanecer)服务。
+方案一：创建多个cloudflared副本
+一个tunnle可以对应多个cloudflared实例，所以只需要多装几个cloudflared就行了。
+那想要多装几个cloudflared，有俩方案，如果只有一个主机（host），可以用docker部署多个容器，如果有多个主机，那每个主机上都安装一遍cloudflared即可。
+多个cloudflared实例之间调用的优先级，官方的策略是：优先选择地理位置最近的实例，如果无法获取地理位置或者请求失败，再尝试另一个实例。
+这个方案的好处是：免费。我用的是这个方案，一个tunnel跑了三个cloudflared实例来保证可用性。😂
+方案二：负载均衡
+这个方案付费，最少2个源服务器，保底$5/mo，前50w次查询免费，超过这个数量额外收费。
+具体的配置方法直接看官网手册吧，我没用这方案，所以无法给出步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202404/cloudflared-enhance-availability-and-failover/" /><meta property="article:section" content="202404" />
+<meta property="article:published_time" content="2024-04-05T22:30:32+08:00" />
+<meta property="article:modified_time" content="2024-04-05T22:30:32+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Cloudflare Tunnels服务增强可用性和容错率</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 5, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/cloudflare/">Cloudflare</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>cloudflare公司提供了tunnels服务可以实现内网穿透，而且非常良心的免费版本就已经足够用来对外弄个小网站。</p>
+<p>但是免费的服务总是有代价，比如不保证稳定性。我就经常看到自己的tunnels服务显示<code>DEGRADE</code>甚至<code>DOWN</code>，但半分钟左右又会很快恢复到<code>HEALTHY</code>，我只能理解为cloudflare官方需要不定期重置链接来保证服务可用吧（😅</p>
+<p>因为我有三个服务挂在tunnel上，所以有了花钱保稳定的想法。到官网查了下价格，emm，🤔</p>
+<p><img src="https://img.311803.xyz/i/2024/04/05/224412-0.webp" alt=""></p>
+<p>英文版的对比不太看得出来付费版本的优势，所以我找了官网中文的付费套餐对比。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/05/224550-0.webp" alt=""></p>
+<p>可以看到7刀/月的订阅计划中包含了<code>100%正常运行时间SLA</code>。</p>
+<p>$7/mo，换算成人民币的话50rmb/mo，一年就是600rmb，啧，我不禁倒吸一口冷气。这个费用，我还不如直接买国外的vps，或者买阿里云的99rmb/y的ecs然后用frp做内网穿透。</p>
+<p>被价格吓退以后，顺便看了官网的tunnels服务的手册，想不到有专门一节提到【<a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/deploy-tunnels/deploy-cloudflared-replicas/">Tunnel availability and failover</a>】，讲如何提到tunnels服务的可用性和容错率。</p>
+<p>英文阅读无障碍的话，可以直接看官网。我这里只做简单的转译和操作记录。</p>
+<hr>
+<h2 id="方案">方案</h2>
+<p>手册里提到的提高可用性的方案有两种，方案一免费，就是堆<code>cloudflared</code>实例，方案二收费，用官方提供的负载平衡（load balanecer)服务。</p>
+<blockquote>
+<p>方案一：创建多个cloudflared副本</p>
+</blockquote>
+<p>一个tunnle可以对应多个cloudflared实例，所以只需要多装几个cloudflared就行了。</p>
+<p>那想要多装几个cloudflared，有俩方案，如果只有一个主机（host），可以用docker部署多个容器，如果有多个主机，那每个主机上都安装一遍cloudflared即可。</p>
+<p>多个cloudflared实例之间调用的优先级，官方的策略是：优先选择地理位置最近的实例，如果无法获取地理位置或者请求失败，再尝试另一个实例。</p>
+<p>这个方案的好处是：免费。我用的是这个方案，一个tunnel跑了三个cloudflared实例来保证可用性。😂</p>
+<p><img src="https://img.311803.xyz/i/2024/04/05/230959-0.webp" alt=""></p>
+<blockquote>
+<p>方案二：负载均衡</p>
+</blockquote>
+<p>这个方案付费，最少2个源服务器，保底$5/mo，前50w次查询免费，超过这个数量额外收费。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/05/231304-0.webp" alt=""></p>
+<p>具体的配置方法直接看官网手册吧，我没用这方案，所以无法给出步骤。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

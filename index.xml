@@ -6,7 +6,32 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 30 Mar 2024 06:02:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Apr 2024 22:30:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloudflare Tunnels服务增强可用性和容错率</title>
+      <link>https://ruohai.wang/202404/cloudflared-enhance-availability-and-failover/</link>
+      <pubDate>Fri, 05 Apr 2024 22:30:32 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/cloudflared-enhance-availability-and-failover/</guid>
+      <description>前言 cloudflare公司提供了tunnels服务可以实现内网穿透，而且非常良心的免费版本就已经足够用来对外弄个小网站。
+但是免费的服务总是有代价，比如不保证稳定性。我就经常看到自己的tunnels服务显示DEGRADE甚至DOWN，但半分钟左右又会很快恢复到HEALTHY，我只能理解为cloudflare官方需要不定期重置链接来保证服务可用吧（😅
+因为我有三个服务挂在tunnel上，所以有了花钱保稳定的想法。到官网查了下价格，emm，🤔
+英文版的对比不太看得出来付费版本的优势，所以我找了官网中文的付费套餐对比。
+可以看到7刀/月的订阅计划中包含了100%正常运行时间SLA。
+$7/mo，换算成人民币的话50rmb/mo，一年就是600rmb，啧，我不禁倒吸一口冷气。这个费用，我还不如直接买国外的vps，或者买阿里云的99rmb/y的ecs然后用frp做内网穿透。
+被价格吓退以后，顺便看了官网的tunnels服务的手册，想不到有专门一节提到【Tunnel availability and failover】，讲如何提到tunnels服务的可用性和容错率。
+英文阅读无障碍的话，可以直接看官网。我这里只做简单的转译和操作记录。
+方案 手册里提到的提高可用性的方案有两种，方案一免费，就是堆cloudflared实例，方案二收费，用官方提供的负载平衡（load balanecer)服务。
+方案一：创建多个cloudflared副本
+一个tunnle可以对应多个cloudflared实例，所以只需要多装几个cloudflared就行了。
+那想要多装几个cloudflared，有俩方案，如果只有一个主机（host），可以用docker部署多个容器，如果有多个主机，那每个主机上都安装一遍cloudflared即可。
+多个cloudflared实例之间调用的优先级，官方的策略是：优先选择地理位置最近的实例，如果无法获取地理位置或者请求失败，再尝试另一个实例。
+这个方案的好处是：免费。我用的是这个方案，一个tunnel跑了三个cloudflared实例来保证可用性。😂
+方案二：负载均衡
+这个方案付费，最少2个源服务器，保底$5/mo，前50w次查询免费，超过这个数量额外收费。
+具体的配置方法直接看官网手册吧，我没用这方案，所以无法给出步骤。</description>
+    </item>
+    
     <item>
       <title>在玩客云上安装&amp;配置MiniDLNA</title>
       <link>https://ruohai.wang/202403/minidlna-config-on-onecloud/</link>
