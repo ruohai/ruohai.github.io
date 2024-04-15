@@ -6,7 +6,31 @@
     <description>Recent content in 202404s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 05 Apr 2024 22:30:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202404/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 15 Apr 2024 19:42:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202404/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>私家云二代/比特米盒/CumeBox2刷入Armbian</title>
+      <link>https://ruohai.wang/202404/cumebox2-install-armbian/</link>
+      <pubDate>Mon, 15 Apr 2024 19:42:52 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/cumebox2-install-armbian/</guid>
+      <description>前言 又从海鲜市场花了48rmb入手了一个矿渣盒子，或者叫轻nas盒子，名称很多，私家云二代、比特米盒、cumebox2，其实就是同一个产品，就像玩客云也被叫做赚钱宝三代。
+这盒子扩展接口非常丰富，有两个a口usb2.0，一个typec，一个sd卡槽，一个hdmi，一个百兆网口，然后盒子里面还有两个2.5寸sata硬盘仓。
+千万不要奢望这盒子的usb口/typec口/sata口能有高速率，都是usb2.0啦。而且网口也是百兆，就算是给usb3和sata3也是只就跑满百兆带宽10MB/s左右而已。
+这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用。
+就不多吐槽了，简单记录下这玩意怎么刷机吧。
+准备工作 这个机器大概是因为可玩性太差，没有大佬给它适配一键线刷固件，所以整个刷机过程比较曲折，需要准备的软件工具比较多。
+软件
+amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】。我用的是当下最新的版本Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。 打包好的软件工具在文章末尾有下载连接。
+硬件
+镊子（用来短接） typc数据线一根（用来线刷） 两个u盘（sd卡也可以） 开始刷机 这机器因的刷机过程分成三个阶段：
+第一阶段：制作引导u盘
+准备【第一个u盘】，用rufus之类软件刷入Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img这个镜像。 u盘镜像写好以后，用disk genuis或者其它支持的软件访问u盘上的文件，修改boot目录下的uEnv.ini文件，修改其中内容，将dtb/meson-gxl-s905x-khadas-vim.dtb改成dtb/meson-gxl-s905x-p212.dtb，保存退出 好了，引导u盘道这里制作完成，下文称之为【第一个u盘】。
+第二阶段：准备卡刷apk和系统镜像
+准备【第二个u盘】，文件系统最好是fat32，我不清楚atv6这个安卓电视系统能不能识别ntfs/exfat这俩格式。 把切换卡载系统V1.0.apk和armbian官方下载的Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img镜像文件复制到u盘里。 好了，第二个u盘制作完成，下文称之为【第二个u盘】。
+第三阶段：开始刷机
+用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。 盒子通电开机，进入atv安卓电视系统。 把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到切换卡载系统V1.0.apk文件，点击安装。 如果你和我一样是插鼠标操作，记得安装完apk以后不要点done，因为鼠标没法返回上一级，请点击open，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。 拔掉第二个u盘，插上第一个u盘，然后点击上一步的弹窗，选择新司机 出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统 在路由器管理后台中找到盒子的ip，名称应该是aml，然后ssh连上去，账户root，密码1234，连上以后进行简单的初始化配置 再插上第二个u盘，把u盘挂载到系统 用dd命令把armbian的镜像文件写入到emmc。dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1 dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。 </description>
+    </item>
+    
     <item>
       <title>Cloudflare Tunnels服务增强可用性和容错率</title>
       <link>https://ruohai.wang/202404/cloudflared-enhance-availability-and-failover/</link>

@@ -3,18 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202404/</loc>
-    <lastmod>2024-04-05T22:30:32+08:00</lastmod>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/armbian/</loc>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202404/cumebox2-install-armbian/</loc>
+    <lastmod>2024-04-15T19:42:52+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/cloudflare/</loc>
     <lastmod>2024-04-05T22:30:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/cloudflared-enhance-availability-and-failover/</loc>
-    <lastmod>2024-04-05T22:30:32+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-04-05T22:30:32+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-04-05T22:30:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/</loc>
@@ -37,9 +46,6 @@
   </url><url>
     <loc>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2024-03-23T14:05:26+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
-    <lastmod>2024-03-12T18:20:47+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/panther-x2-flash-armbian/</loc>
     <lastmod>2024-03-12T18:20:47+08:00</lastmod>
@@ -67,9 +73,6 @@
   </url><url>
     <loc>https://ruohai.wang/202402/movie-article-20-comment/</loc>
     <lastmod>2024-02-22T12:27:14+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/armbian/</loc>
-    <lastmod>2024-02-20T13:00:45+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202402/e900v22d-install-armbian-to-emmc/</loc>
     <lastmod>2024-02-20T13:00:45+08:00</lastmod>
