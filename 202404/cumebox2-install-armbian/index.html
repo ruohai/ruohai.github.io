@@ -17,11 +17,12 @@
 <meta name="twitter:description" content="前言 又从海鲜市场花了48rmb入手了一个矿渣盒子，或者叫轻nas盒子，名称很多，私家云二代、比特米盒、cumebox2，其实就是同一个产品，就像玩客云也被叫做赚钱宝三代。
 这盒子扩展接口非常丰富，有两个a口usb2.0，一个typec，一个sd卡槽，一个hdmi，一个百兆网口，然后盒子里面还有两个2.5寸sata硬盘仓。
 千万不要奢望这盒子的usb口/typec口/sata口能有高速率，都是usb2.0啦。而且网口也是百兆，就算是给usb3和sata3也是只就跑满百兆带宽10MB/s左右而已。
-这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用。
+这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用，不过khadas的固件没有适配液晶屏和散热风扇，wifi、蓝牙什么的我还没测，不清楚有没有适配。
 就不多吐槽了，简单记录下这玩意怎么刷机吧。
 准备工作 这个机器大概是因为可玩性太差，没有大佬给它适配一键线刷固件，所以整个刷机过程比较曲折，需要准备的软件工具比较多。
 软件
-amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】。我用的是当下最新的版本Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。 打包好的软件工具在文章末尾有下载连接。
+amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】 我用的是当下最新的版本，Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。
+打包好的软件工具在文章末尾有下载连接。
 硬件
 镊子（用来短接） typc数据线一根（用来线刷） 两个u盘（sd卡也可以） 开始刷机 这机器因的刷机过程分成三个阶段：
 第一阶段：制作引导u盘
@@ -29,17 +30,20 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
 第二阶段：准备卡刷apk和系统镜像
 准备【第二个u盘】，文件系统最好是fat32，我不清楚atv6这个安卓电视系统能不能识别ntfs/exfat这俩格式。 把切换卡载系统V1.0.apk和armbian官方下载的Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img镜像文件复制到u盘里。 好了，第二个u盘制作完成，下文称之为【第二个u盘】。
 第三阶段：开始刷机
-用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。 盒子通电开机，进入atv安卓电视系统。 把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到切换卡载系统V1.0.apk文件，点击安装。 如果你和我一样是插鼠标操作，记得安装完apk以后不要点done，因为鼠标没法返回上一级，请点击open，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。 拔掉第二个u盘，插上第一个u盘，然后点击上一步的弹窗，选择新司机 出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统 在路由器管理后台中找到盒子的ip，名称应该是aml，然后ssh连上去，账户root，密码1234，连上以后进行简单的初始化配置 再插上第二个u盘，把u盘挂载到系统 用dd命令把armbian的镜像文件写入到emmc。dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1 dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。 "/>
+用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。 短接点所在位置
+短接点
+盒子通电开机，进入atv安卓电视系统。 把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到切换卡载系统V1.0.apk文件，点击安装。 如果你和我一样是插鼠标操作，记得安装完apk以后不要点done，因为鼠标没法返回上一级，请点击open，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。 拔掉第二个u盘，插上第一个u盘，然后点击上一步的弹窗，选择新司机 出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统 在路由器管理后台中找到盒子的ip，名称应该是aml，然后ssh连上去，账户root，密码1234，连上以后进行简单的初始化配置 再插上第二个u盘，把u盘挂载到系统 用dd命令把armbian的镜像文件写入到emmc。 dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1 dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。 刷机软件下载 百度网盘：https://pan.baidu.com/s/1mOk0h1zT2oJSoGlFcfYmZA 提取码：5mk0"/>
 
     <meta property="og:title" content="私家云二代/比特米盒/CumeBox2刷入Armbian" />
 <meta property="og:description" content="前言 又从海鲜市场花了48rmb入手了一个矿渣盒子，或者叫轻nas盒子，名称很多，私家云二代、比特米盒、cumebox2，其实就是同一个产品，就像玩客云也被叫做赚钱宝三代。
 这盒子扩展接口非常丰富，有两个a口usb2.0，一个typec，一个sd卡槽，一个hdmi，一个百兆网口，然后盒子里面还有两个2.5寸sata硬盘仓。
 千万不要奢望这盒子的usb口/typec口/sata口能有高速率，都是usb2.0啦。而且网口也是百兆，就算是给usb3和sata3也是只就跑满百兆带宽10MB/s左右而已。
-这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用。
+这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用，不过khadas的固件没有适配液晶屏和散热风扇，wifi、蓝牙什么的我还没测，不清楚有没有适配。
 就不多吐槽了，简单记录下这玩意怎么刷机吧。
 准备工作 这个机器大概是因为可玩性太差，没有大佬给它适配一键线刷固件，所以整个刷机过程比较曲折，需要准备的软件工具比较多。
 软件
-amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】。我用的是当下最新的版本Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。 打包好的软件工具在文章末尾有下载连接。
+amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】 我用的是当下最新的版本，Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。
+打包好的软件工具在文章末尾有下载连接。
 硬件
 镊子（用来短接） typc数据线一根（用来线刷） 两个u盘（sd卡也可以） 开始刷机 这机器因的刷机过程分成三个阶段：
 第一阶段：制作引导u盘
@@ -47,7 +51,9 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
 第二阶段：准备卡刷apk和系统镜像
 准备【第二个u盘】，文件系统最好是fat32，我不清楚atv6这个安卓电视系统能不能识别ntfs/exfat这俩格式。 把切换卡载系统V1.0.apk和armbian官方下载的Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img镜像文件复制到u盘里。 好了，第二个u盘制作完成，下文称之为【第二个u盘】。
 第三阶段：开始刷机
-用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。 盒子通电开机，进入atv安卓电视系统。 把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到切换卡载系统V1.0.apk文件，点击安装。 如果你和我一样是插鼠标操作，记得安装完apk以后不要点done，因为鼠标没法返回上一级，请点击open，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。 拔掉第二个u盘，插上第一个u盘，然后点击上一步的弹窗，选择新司机 出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统 在路由器管理后台中找到盒子的ip，名称应该是aml，然后ssh连上去，账户root，密码1234，连上以后进行简单的初始化配置 再插上第二个u盘，把u盘挂载到系统 用dd命令把armbian的镜像文件写入到emmc。dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1 dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。 " />
+用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。 短接点所在位置
+短接点
+盒子通电开机，进入atv安卓电视系统。 把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到切换卡载系统V1.0.apk文件，点击安装。 如果你和我一样是插鼠标操作，记得安装完apk以后不要点done，因为鼠标没法返回上一级，请点击open，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。 拔掉第二个u盘，插上第一个u盘，然后点击上一步的弹窗，选择新司机 出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统 在路由器管理后台中找到盒子的ip，名称应该是aml，然后ssh连上去，账户root，密码1234，连上以后进行简单的初始化配置 再插上第二个u盘，把u盘挂载到系统 用dd命令把armbian的镜像文件写入到emmc。 dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1 dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。 刷机软件下载 百度网盘：https://pan.baidu.com/s/1mOk0h1zT2oJSoGlFcfYmZA 提取码：5mk0" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202404/cumebox2-install-armbian/" /><meta property="article:section" content="202404" />
 <meta property="article:published_time" content="2024-04-15T19:42:52+08:00" />
@@ -114,8 +120,9 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
       <h2 id="前言">前言</h2>
 <p>又从海鲜市场花了48rmb入手了一个矿渣盒子，或者叫轻nas盒子，名称很多，私家云二代、比特米盒、cumebox2，其实就是同一个产品，就像玩客云也被叫做赚钱宝三代。</p>
 <p>这盒子扩展接口非常丰富，有两个a口usb2.0，一个typec，一个sd卡槽，一个hdmi，一个百兆网口，然后盒子里面还有两个2.5寸sata硬盘仓。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/15/231337-0.webp" alt=""></p>
 <p>千万不要奢望这盒子的usb口/typec口/sata口能有高速率，都是usb2.0啦。而且网口也是百兆，就算是给usb3和sata3也是只就跑满百兆带宽10MB/s左右而已。</p>
-<p>这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用。</p>
+<p>这个盒子都说是照抄的国外一个叫做khadas-vim1的硬件，所以khadas-vim1的armbian固件可以直接拿来用，不过khadas的固件没有适配液晶屏和散热风扇，wifi、蓝牙什么的我还没测，不清楚有没有适配。</p>
 <p>就不多吐槽了，简单记录下这玩意怎么刷机吧。</p>
 <hr>
 <h2 id="准备工作">准备工作</h2>
@@ -128,8 +135,9 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
 <li>切换卡载系统V1.0.apk</li>
 <li>atv6.img</li>
 <li>Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img</li>
-<li>最新的khadas-vim1-armbian镜像，下载地址：【<a href="https://www.armbian.com/khadas-vim1/">Khadas VIM1</a>】。我用的是当下最新的版本<code>Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img</code>。</li>
+<li>最新的khadas-vim1-armbian镜像，下载地址：【<a href="https://www.armbian.com/khadas-vim1/">Khadas VIM1</a>】</li>
 </ul>
+<p>我用的是当下最新的版本，<code>Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img</code>。</p>
 <p>打包好的软件工具在文章末尾有下载连接。</p>
 <blockquote>
 <p>硬件</p>
@@ -163,6 +171,12 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
 </blockquote>
 <ol>
 <li>用镊子短接触点后，用amlogic usb burning tools线刷atv6安卓电视系统。注意事项：进入电视系统以后需要遥控器进行操作，如果没有遥控器，可以插鼠标。</li>
+</ol>
+<p>短接点所在位置</p>
+<p><img src="https://img.311803.xyz/i/2024/04/15/231645-0.webp" alt=""></p>
+<p>短接点</p>
+<p><img src="https://img.311803.xyz/i/2024/04/15/231723-0.webp" alt=""></p>
+<ol start="2">
 <li>盒子通电开机，进入atv安卓电视系统。</li>
 <li>把第二个u盘插到机器上，然后在电视系统的文件浏览器中找到<code>切换卡载系统V1.0.apk</code>文件，点击安装。</li>
 <li>如果你和我一样是插鼠标操作，记得安装完apk以后不要点<code>done</code>，因为鼠标没法返回上一级，请点击<code>open</code>，会出现弹窗让选择老司机还是新司机，到这个界面后暂停操作。</li>
@@ -170,9 +184,16 @@ amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s
 <li>出现弹窗申请root权限，选择永久授权。盒子会自动重启，进入u盘上的ubuntu系统</li>
 <li>在路由器管理后台中找到盒子的ip，名称应该是<code>aml</code>，然后ssh连上去，账户<code>root</code>，密码<code>1234</code>，连上以后进行简单的初始化配置</li>
 <li>再插上第二个u盘，把u盘挂载到系统</li>
-<li>用dd命令把armbian的镜像文件写入到emmc。<code>dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1</code></li>
+<li>用dd命令把armbian的镜像文件写入到emmc。</li>
+</ol>
+<pre tabindex="0"><code>dd if=/mnt/Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img of=/dev/mmcblk1
+</code></pre><ol start="10">
 <li>dd命令执行完成后，拔掉全部u盘，拔电重启，就进入armbian系统惹。</li>
 </ol>
+<hr>
+<h2 id="刷机软件下载">刷机软件下载</h2>
+<p>百度网盘：https://pan.baidu.com/s/1mOk0h1zT2oJSoGlFcfYmZA
+提取码：5mk0</p>
 
     </div>
     <div class="post-footer">
