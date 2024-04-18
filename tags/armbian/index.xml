@@ -6,7 +6,50 @@
     <description>Recent content in Armbian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 15 Apr 2024 19:42:52 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/armbian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 18 Apr 2024 15:17:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/armbian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>贝壳云P1刷入Armbian</title>
+      <link>https://ruohai.wang/202404/beikeyun-install-armbian/</link>
+      <pubDate>Thu, 18 Apr 2024 15:17:01 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/beikeyun-install-armbian/</guid>
+      <description>前言 最近又双叒叕从海鲜市场入手了一个，嗷，不是一个，是入手了两个矿渣，型号是贝壳云p1，价格是两个打包120rmb。😂
+它长这个样子。
+正面
+背面
+在网上搜刷机资料的时候，发现这机器在2020年左右已经是非常热门的矿渣，因为它给了四个usb3.0 + 千兆网口，这配置在一众捡垃圾设备里完全是鹤立鸡群的存在，所以早早的就有大佬给他适配了各种固件。
+设备到手依然是先刷机，这里做个简单记录。
+准备工作 贝壳云p1刷机比我之前玩过的矿渣都更复杂一些，它除了需要拆机短接，还需要从主板上的usb焊盘上引出一个usb接口，要不然没法刷机。所以完整的刷机工具如下：
+硬件
+家用电烙铁（没有的话可以用胶布临时应急） 一根剪线的usb线缆 镊子或者回形针（用来短接） 软件
+贝壳云p1的bootloader rockchip驱动程序DriverAssistant rockchip开发工具AndroidTools armbian固件，ophub/amlogic-s9xxx-armbian项目已经适配了贝壳云，可以到项目主页根据型号下载，【项目地址】 软件工具打包在文章末尾有下载连接
+刷机 第一步：拆机
+先抠掉背面的三个橡胶脚垫
+然后卸掉三颗螺丝
+然后用撬片或者手指甲解开上盖的卡扣，这里注意上盖扣的比较紧，注意巧劲
+上盖可以拿起以后不要太用力，led灯的排线要解开
+主板上还有一颗螺丝卸掉
+到这里整个主板就可以取下来惹。
+第二步：接usb线
+贝壳云刷机首先要接出主板焊盘上的usb线，所以最好准备一个家用电烙铁，可以减少很多麻烦。但如果你和我一样没有家用电烙铁，但又着急想立刻刷机，那可以试试用，emmm，胶布和手。
+首先要准备一根剪线的usb，里面四根线芯，黑白红绿。其中红线是usb的5v供电线。我因为是没有电烙铁而是用胶布粘的，怕供电不稳影响刷机，所以这里剪掉了红线，改用充电头dc供电。
+然后根据黑-绿-白-红的线序用电烙铁焊到四个焊点上（没有电烙铁可以用胶布贴住）
+第三步：安装软件
+安装驱动
+启动AndroidTool软件，在boot一栏中，选择rk3328_loader_v1.14.249.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第四步：开始刷机
+如果usb红色线芯焊上了，操作步骤：短接——usb插电脑
+如果usb红色线芯没焊，操作步骤：usb插电脑——短接——插电
+短接点见图
+如果你和我一样用胶布应急方案，那需要注意：
+从此时开始全程需要用手按住这几根线芯，因为胶布固定不够稳定，很容易接触不良导致电脑无法识别 如果电脑提示无法正确识别usb设备或者不支持的usb设备，那说明usb线芯接触不良（尤其是白色线芯） 此时软件上会显示发现一个maskrom设备
+点击【高级功能】，点击【进入maskrom】。
+之后软件会显示设备重启然后红字连接失败之类，不用在意，回到【下载镜像】，点击【执行】，右侧会显示开始刷机进度。
+等最后显示【下载完成】，整个刷机过程就结束惹，重新通电开机，就进入armbian系统。
+软件下载 百度网盘下载连接：https://pan.baidu.com/s/1DGoQPH7VZK4YMlWw6uFQbA
+提取码：gzyh</description>
+    </item>
+    
     <item>
       <title>私家云二代/比特米盒/CumeBox2刷入Armbian</title>
       <link>https://ruohai.wang/202404/cumebox2-install-armbian/</link>

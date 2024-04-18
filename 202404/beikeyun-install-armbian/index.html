@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>贝壳云P1刷入Armbian // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="贝壳云P1刷入Armbian"/>
+<meta name="twitter:description" content="前言 最近又双叒叕从海鲜市场入手了一个，嗷，不是一个，是入手了两个矿渣，型号是贝壳云p1，价格是两个打包120rmb。😂
+它长这个样子。
+正面
+背面
+在网上搜刷机资料的时候，发现这机器在2020年左右已经是非常热门的矿渣，因为它给了四个usb3.0 &#43; 千兆网口，这配置在一众捡垃圾设备里完全是鹤立鸡群的存在，所以早早的就有大佬给他适配了各种固件。
+设备到手依然是先刷机，这里做个简单记录。
+准备工作 贝壳云p1刷机比我之前玩过的矿渣都更复杂一些，它除了需要拆机短接，还需要从主板上的usb焊盘上引出一个usb接口，要不然没法刷机。所以完整的刷机工具如下：
+硬件
+家用电烙铁（没有的话可以用胶布临时应急） 一根剪线的usb线缆 镊子或者回形针（用来短接） 软件
+贝壳云p1的bootloader rockchip驱动程序DriverAssistant rockchip开发工具AndroidTools armbian固件，ophub/amlogic-s9xxx-armbian项目已经适配了贝壳云，可以到项目主页根据型号下载，【项目地址】 软件工具打包在文章末尾有下载连接
+刷机 第一步：拆机
+先抠掉背面的三个橡胶脚垫
+然后卸掉三颗螺丝
+然后用撬片或者手指甲解开上盖的卡扣，这里注意上盖扣的比较紧，注意巧劲
+上盖可以拿起以后不要太用力，led灯的排线要解开
+主板上还有一颗螺丝卸掉
+到这里整个主板就可以取下来惹。
+第二步：接usb线
+贝壳云刷机首先要接出主板焊盘上的usb线，所以最好准备一个家用电烙铁，可以减少很多麻烦。但如果你和我一样没有家用电烙铁，但又着急想立刻刷机，那可以试试用，emmm，胶布和手。
+首先要准备一根剪线的usb，里面四根线芯，黑白红绿。其中红线是usb的5v供电线。我因为是没有电烙铁而是用胶布粘的，怕供电不稳影响刷机，所以这里剪掉了红线，改用充电头dc供电。
+然后根据黑-绿-白-红的线序用电烙铁焊到四个焊点上（没有电烙铁可以用胶布贴住）
+第三步：安装软件
+安装驱动
+启动AndroidTool软件，在boot一栏中，选择rk3328_loader_v1.14.249.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第四步：开始刷机
+如果usb红色线芯焊上了，操作步骤：短接——usb插电脑
+如果usb红色线芯没焊，操作步骤：usb插电脑——短接——插电
+短接点见图
+如果你和我一样用胶布应急方案，那需要注意：
+从此时开始全程需要用手按住这几根线芯，因为胶布固定不够稳定，很容易接触不良导致电脑无法识别 如果电脑提示无法正确识别usb设备或者不支持的usb设备，那说明usb线芯接触不良（尤其是白色线芯） 此时软件上会显示发现一个maskrom设备
+点击【高级功能】，点击【进入maskrom】。
+之后软件会显示设备重启然后红字连接失败之类，不用在意，回到【下载镜像】，点击【执行】，右侧会显示开始刷机进度。
+等最后显示【下载完成】，整个刷机过程就结束惹，重新通电开机，就进入armbian系统。
+软件下载 百度网盘下载连接：https://pan.baidu.com/s/1DGoQPH7VZK4YMlWw6uFQbA
+提取码：gzyh"/>
+
+    <meta property="og:title" content="贝壳云P1刷入Armbian" />
+<meta property="og:description" content="前言 最近又双叒叕从海鲜市场入手了一个，嗷，不是一个，是入手了两个矿渣，型号是贝壳云p1，价格是两个打包120rmb。😂
+它长这个样子。
+正面
+背面
+在网上搜刷机资料的时候，发现这机器在2020年左右已经是非常热门的矿渣，因为它给了四个usb3.0 &#43; 千兆网口，这配置在一众捡垃圾设备里完全是鹤立鸡群的存在，所以早早的就有大佬给他适配了各种固件。
+设备到手依然是先刷机，这里做个简单记录。
+准备工作 贝壳云p1刷机比我之前玩过的矿渣都更复杂一些，它除了需要拆机短接，还需要从主板上的usb焊盘上引出一个usb接口，要不然没法刷机。所以完整的刷机工具如下：
+硬件
+家用电烙铁（没有的话可以用胶布临时应急） 一根剪线的usb线缆 镊子或者回形针（用来短接） 软件
+贝壳云p1的bootloader rockchip驱动程序DriverAssistant rockchip开发工具AndroidTools armbian固件，ophub/amlogic-s9xxx-armbian项目已经适配了贝壳云，可以到项目主页根据型号下载，【项目地址】 软件工具打包在文章末尾有下载连接
+刷机 第一步：拆机
+先抠掉背面的三个橡胶脚垫
+然后卸掉三颗螺丝
+然后用撬片或者手指甲解开上盖的卡扣，这里注意上盖扣的比较紧，注意巧劲
+上盖可以拿起以后不要太用力，led灯的排线要解开
+主板上还有一颗螺丝卸掉
+到这里整个主板就可以取下来惹。
+第二步：接usb线
+贝壳云刷机首先要接出主板焊盘上的usb线，所以最好准备一个家用电烙铁，可以减少很多麻烦。但如果你和我一样没有家用电烙铁，但又着急想立刻刷机，那可以试试用，emmm，胶布和手。
+首先要准备一根剪线的usb，里面四根线芯，黑白红绿。其中红线是usb的5v供电线。我因为是没有电烙铁而是用胶布粘的，怕供电不稳影响刷机，所以这里剪掉了红线，改用充电头dc供电。
+然后根据黑-绿-白-红的线序用电烙铁焊到四个焊点上（没有电烙铁可以用胶布贴住）
+第三步：安装软件
+安装驱动
+启动AndroidTool软件，在boot一栏中，选择rk3328_loader_v1.14.249.bin文件，在system一栏中，选择自己下载的armbian镜像文件。
+第四步：开始刷机
+如果usb红色线芯焊上了，操作步骤：短接——usb插电脑
+如果usb红色线芯没焊，操作步骤：usb插电脑——短接——插电
+短接点见图
+如果你和我一样用胶布应急方案，那需要注意：
+从此时开始全程需要用手按住这几根线芯，因为胶布固定不够稳定，很容易接触不良导致电脑无法识别 如果电脑提示无法正确识别usb设备或者不支持的usb设备，那说明usb线芯接触不良（尤其是白色线芯） 此时软件上会显示发现一个maskrom设备
+点击【高级功能】，点击【进入maskrom】。
+之后软件会显示设备重启然后红字连接失败之类，不用在意，回到【下载镜像】，点击【执行】，右侧会显示开始刷机进度。
+等最后显示【下载完成】，整个刷机过程就结束惹，重新通电开机，就进入armbian系统。
+软件下载 百度网盘下载连接：https://pan.baidu.com/s/1DGoQPH7VZK4YMlWw6uFQbA
+提取码：gzyh" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202404/beikeyun-install-armbian/" /><meta property="article:section" content="202404" />
+<meta property="article:published_time" content="2024-04-18T15:17:01+08:00" />
+<meta property="article:modified_time" content="2024-04-18T15:17:01+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">贝壳云P1刷入Armbian</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 18, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/armbian/">Armbian</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近又双叒叕从海鲜市场入手了一个，嗷，不是一个，是入手了两个矿渣，型号是贝壳云p1，价格是两个打包120rmb。😂</p>
+<p>它长这个样子。</p>
+<p>正面</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/172316-0.webp" alt=""></p>
+<p>背面</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/172335-0.webp" alt=""></p>
+<p>在网上搜刷机资料的时候，发现这机器在2020年左右已经是非常热门的矿渣，因为它给了四个usb3.0 + 千兆网口，这配置在一众捡垃圾设备里完全是鹤立鸡群的存在，所以早早的就有大佬给他适配了各种固件。</p>
+<p>设备到手依然是先刷机，这里做个简单记录。</p>
+<hr>
+<h2 id="准备工作">准备工作</h2>
+<p>贝壳云p1刷机比我之前玩过的矿渣都更复杂一些，它除了需要拆机短接，还需要从主板上的usb焊盘上引出一个usb接口，要不然没法刷机。所以完整的刷机工具如下：</p>
+<blockquote>
+<p>硬件</p>
+</blockquote>
+<ul>
+<li>家用电烙铁（没有的话可以用胶布临时应急）</li>
+<li>一根剪线的usb线缆</li>
+<li>镊子或者回形针（用来短接）</li>
+</ul>
+<blockquote>
+<p>软件</p>
+</blockquote>
+<ul>
+<li>贝壳云p1的bootloader</li>
+<li>rockchip驱动程序DriverAssistant</li>
+<li>rockchip开发工具AndroidTools</li>
+<li>armbian固件，<code>ophub/amlogic-s9xxx-armbian</code>项目已经适配了贝壳云，可以到项目主页根据型号下载，【<a href="https://github.com/ophub/amlogic-s9xxx-armbian">项目地址</a>】</li>
+</ul>
+<p>软件工具打包在文章末尾有下载连接</p>
+<hr>
+<h2 id="刷机">刷机</h2>
+<blockquote>
+<p>第一步：拆机</p>
+</blockquote>
+<p>先抠掉背面的三个橡胶脚垫</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/172813-0.webp" alt=""></p>
+<p>然后卸掉三颗螺丝</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/172911-0.webp" alt=""></p>
+<p>然后用撬片或者手指甲解开上盖的卡扣，这里注意上盖扣的比较紧，注意巧劲</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/173008-0.webp" alt=""></p>
+<p>上盖可以拿起以后不要太用力，led灯的排线要解开</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/173109-0.webp" alt=""></p>
+<p>主板上还有一颗螺丝卸掉</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/173221-0.webp" alt=""></p>
+<p>到这里整个主板就可以取下来惹。</p>
+<blockquote>
+<p>第二步：接usb线</p>
+</blockquote>
+<p>贝壳云刷机首先要接出主板焊盘上的usb线，所以最好准备一个家用电烙铁，可以减少很多麻烦。但如果你和我一样没有家用电烙铁，但又着急想立刻刷机，那可以试试用，emmm，胶布和手。</p>
+<p>首先要准备一根剪线的usb，里面四根线芯，黑白红绿。其中红线是usb的5v供电线。我因为是没有电烙铁而是用胶布粘的，怕供电不稳影响刷机，所以这里剪掉了红线，改用充电头dc供电。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/173806-0.webp" alt=""></p>
+<p>然后根据黑-绿-白-红的线序用电烙铁焊到四个焊点上（没有电烙铁可以用胶布贴住）</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/173447-0.webp" alt=""></p>
+<blockquote>
+<p>第三步：安装软件</p>
+</blockquote>
+<p>安装驱动</p>
+<p><img src="https://img.311803.xyz/i/2024/03/12/190703-0.webp" alt=""></p>
+<p>启动AndroidTool软件，在boot一栏中，选择<code>rk3328_loader_v1.14.249.bin</code>文件，在system一栏中，选择自己下载的armbian镜像文件。</p>
+<p><img src="https://img.311803.xyz/i/2024/03/12/190120-0.webp" alt=""></p>
+<blockquote>
+<p>第四步：开始刷机</p>
+</blockquote>
+<p>如果usb红色线芯焊上了，操作步骤：短接——usb插电脑</p>
+<p>如果usb红色线芯没焊，操作步骤：usb插电脑——短接——插电</p>
+<p>短接点见图</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/174220-0.webp" alt=""></p>
+<p>如果你和我一样用胶布应急方案，那需要注意：</p>
+<ul>
+<li>从此时开始全程需要用手按住这几根线芯，因为胶布固定不够稳定，很容易接触不良导致电脑无法识别</li>
+<li>如果电脑提示<code>无法正确识别usb设备</code>或者<code>不支持的usb设备</code>，那说明usb线芯接触不良（尤其是白色线芯）</li>
+</ul>
+<p>此时软件上会显示<code>发现一个maskrom设备</code></p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/175419-0.webp" alt=""></p>
+<p>点击【高级功能】，点击【进入maskrom】。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/175618-0.webp" alt=""></p>
+<p>之后软件会显示<code>设备重启</code>然后红字<code>连接失败</code>之类，不用在意，回到【下载镜像】，点击【执行】，右侧会显示开始刷机进度。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/175958-0.webp" alt=""></p>
+<p>等最后显示【下载完成】，整个刷机过程就结束惹，重新通电开机，就进入armbian系统。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/18/180125-0.webp" alt=""></p>
+<hr>
+<h2 id="软件下载">软件下载</h2>
+<p>百度网盘下载连接：https://pan.baidu.com/s/1DGoQPH7VZK4YMlWw6uFQbA</p>
+<p>提取码：gzyh</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
