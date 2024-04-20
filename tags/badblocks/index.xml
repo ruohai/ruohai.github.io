@@ -17,20 +17,20 @@
 这些硬盘应该都是从联想笔记本电脑上拆下来的，pdd商家没有做格式化只直接卖给了我这样的捡垃圾爱好者，所以在这十多片硬盘里我看到了好多原用户的各种资料，很多cad图纸、cmmb项目计划、家人旅游照片、小孩满月照片、结婚照等等，最离谱的是竟然还有gv/av。
 翻阅别人的隐私内容肯定是不正确的，在正式开始扫描硬盘坏道之前，对这些硬盘做了简单格式化。
 下面开始简单记录下处理硬盘坏道吧。
-扫描&amp;amp;屏蔽坏道 处理坏道有两个方案
-方案一：用badblocks扫描 &amp;amp; 用e2fsck屏蔽
-这个方案适合硬盘上没有数据的情况。
-首先用badblocks扫描硬盘，常用参数
--b, 指定磁盘区块大小，单位byte，理解为最小扫描单位 -o，指定扫描结果的输出路径 -s，检查时显示进度 -v，检查时显示详细的信息 -w，检查时执行写入测试。注意-w会执行破坏性的写入操作，会让硬盘数据全部丢失，请提前备份数据 -n，检查时执行没有破坏性的写入测试 一般情况下只需要以下命令即可，默认检查区块单位是4096bytes。
-badblocks -wsv -o badblocks.log /dev/sda 如果想要指定检查区块大小，做到每一个sector应检尽检，可以用-b指定区块大小
-badblocks -wsv -b 512 -o badblocks.log /dev/sda 想要知道自己的硬盘的区块大小，可以用fdisk查看
+扫描坏道 首先用badblocks扫描硬盘，常用参数
+-b, 指定磁盘区块大小，单位byte，理解为最小扫描单位 -o，指定扫描结果的输出路径 -s，检查时显示进度 -v，检查时显示详细的信息 -w，检查时执行有破坏性的写入测试，注意这个操作会破坏硬盘上的数据，请提前做好数据备份 -n，检查时执行没有破坏性的写入测试 一般情况下只需要以下命令即可，默认检查区块大小是4096bytes。
+badblocks -nsv -o badblocks.log /dev/sda 如果想要指定检查区块大小，做到每一个sector应检尽检，可以用-b指定区块大小
+badblocks -nsv -b 512 -o badblocks.log /dev/sda 想要知道自己的硬盘的区块大小，可以用fdisk查看
 fdisk -l /dev/sda 在输出结果中可以看到硬盘的区块大小是多少
-扫描结束以后，再用e2fsck把坏道屏蔽
-e2fsck -l badblocks.log /dev/sda 方案二：用e2fsck扫描 &amp;amp; 屏蔽
-这个方案适合硬盘上已经有数据的情况。
-常用参数：
-v，显示结果 c，扫描坏道&amp;amp;屏蔽坏道 e2fsck -vcc /dev/sda 命令中有两个c，是因为archwiki的文章中提到，一个c是只有读测试，两个c是非破坏性读写测试。
-参考文章 ArchWiki:badblocks Linux badblocks命令 badblocks命令 – 检查磁盘装置中损坏的区块 linux修复磁盘坏道(本教程完全来自实例、实测，具体参数请根据个人情况修改) </description>
+屏蔽坏道 扫描结束以后，再用e2fsck把坏道屏蔽。
+e2fsck -l badblocks.log /dev/sda 这个方案比较软，就是把扫描出来的坏道数据添加到文件系统的黑名单里，适合硬盘上已经有数据的情况。
+还有个方案比较硬，用badblocks往指定范围的区块上写入数据，写入失败时硬盘会自动重新映射，这个方案适合硬盘上没有数据的情况。
+badblocks -wsv /dev/sda [END] [START] 注意[END]是结束区块编号，[START]是开始区块编号。
+一键扫描+屏蔽 工具e2fsck也支持硬盘坏道的扫描 + 屏蔽，命令如下
+e2fsck -vcc /dev/sda 参数释义：
+v，显示结果 c，扫描坏道&amp;amp;屏蔽坏道 命令中有两个c，是因为archwiki的文章中提到，一个c是只有读测试，两个c是非破坏性的读&amp;amp;写测试(咦怎么让我想到了氧气姐，氧原子它是一个O&amp;hellip;)
+所以上面这条命令就等于
+badblocks -nsv /dev/sda &amp;amp; e2fsck -l $ /dev/sda 参考文章 ArchWiki:badblocks Linux badblocks命令 badblocks命令 – 检查磁盘装置中损坏的区块 linux修复磁盘坏道(本教程完全来自实例、实测，具体参数请根据个人情况修改) </description>
     </item>
     
   </channel>
