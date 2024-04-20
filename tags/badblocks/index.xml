@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>badblocks on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/badblocks/</link>
+    <description>Recent content in badblocks on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 20 Apr 2024 18:02:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/badblocks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux使用badblocks扫描&amp;屏蔽硬盘坏道</title>
+      <link>https://ruohai.wang/202404/badblocks-check-guide/</link>
+      <pubDate>Sat, 20 Apr 2024 18:02:41 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/badblocks-check-guide/</guid>
+      <description>前言 最近从pdd上入手了10多片拆机硬盘，都是250gb的hdd，到手以后用crystal diskinfo看了下参数，fujitsu(富士通）硬盘，sata150速率，生产日期2009。
+这些硬盘应该都是从联想笔记本电脑上拆下来的，pdd商家没有做格式化只直接卖给了我这样的捡垃圾爱好者，所以在这十多片硬盘里我看到了好多原用户的各种资料，很多cad图纸、cmmb项目计划、家人旅游照片、小孩满月照片、结婚照等等，最离谱的是竟然还有gv/av。
+翻阅别人的隐私内容肯定是不正确的，在正式开始扫描硬盘坏道之前，对这些硬盘做了简单格式化。
+下面开始简单记录下处理硬盘坏道吧。
+扫描坏道 badblocks常用参数
+-b, 指定磁盘去区块大小，单位byte，理解为最小扫描单位 -o，指定扫描结果的输出路径 -s，检查时显示进度 -v，检查时显示详细的信息 -w，检查时执行写入测试。注意-w会执行破坏性的写入操作，会让硬盘数据全部丢失，请提前备份数据 -n，检查时执行没有破坏性的写入测试 一般情况下只需要以下命令即可，默认检查区块单位是4096byte。
+badblocks -sv -o badblocks.log /dev/sda 如果想要指定检查区块大小，做到每一个sector应检尽检，可以用-b指定区块大小
+badblocks -sv -b 512 -o badblocks.log /dev/sda 想要知道自己的硬盘的区块大小，可以用fdisk查看
+fdisk -l /dev/sda 在输出结果中可以看到硬盘的区块大小是多少
+屏蔽坏道 网上搜到的几个方案。
+方案一：用badblocks执行写测试来屏蔽坏道
+根据扫描的结果，对指定的区块执行w写入测试，写入失败会自动重映射。注意语法中结束区块序号在前，开始区块序号在后。
+注意：这个方案会破坏硬盘数据，请做好数据备份
+badblocks -wsv /dev/sda [END_SECTOR] [START_SECTOR] 方案二：用fsck/e2fsck屏蔽坏道
+根据扫描的结果，用fsck或者e2fsck进行针对性屏蔽
+fsck -l badblocks.log /dev/sda 如果硬盘格式是ext3/ext4，可以使用e2fsck
+e2fsck -l badblocks.log /dev/sda 方案三：直接用fsck进行读写测试并屏蔽坏道
+这个方案不需要用badblocks扫描，而是直接用fsck进行非破坏性的读写测试的同时屏蔽坏道
+fsck -vcck /dev/sda 参数释义：
+v，显示结果 cc，非破坏性的读写测试 k，屏蔽坏道 同样的，如果是ext3/ext4的文件格式，可以用esfsck
+e2fsck -vcck /dev/sda 参考文章 ArchWiki:badblocks Linux badblocks命令 badblocks命令 – 检查磁盘装置中损坏的区块 linux修复磁盘坏道(本教程完全来自实例、实测，具体参数请根据个人情况修改) </description>
+    </item>
+    
+  </channel>
+</rss>
