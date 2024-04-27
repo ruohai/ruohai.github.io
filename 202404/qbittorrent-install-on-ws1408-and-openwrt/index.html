@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装qBittorrent教程 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装qBittorrent教程"/>
+<meta name="twitter:description" content="前言 手上有两个迅雷赚钱宝一代，硬件型号ws1408，当时捡垃圾的时候卖家作为添头10块钱一个打包入手的。它长这个样子
+正面
+背面的接口
+这机器性能孱弱，赚钱宝系列连用三代的amlogic s805芯片方案，256MB内存，usb2.0接口 &#43; tf槽，先进的百兆网口，所以吸引不了大佬给它适配固件，装个3.10老旧内核的openwrt再装个bt下载软件当下载机是个不错的选择。但openwrt软件源仓库里只有aria2和trasmission，这俩在bt下载能力上远远不如qbit，所以我一直想在这机器上装qbit。
+最近找了一些教程，最后成功跑起来了。这里做个简单记录。
+固件 目前这机器可用的固件都是从官方固件中提取的3.10内核魔改的openwrt，我用下来觉得比较好用的是这俩版本：
+openwrt-19.07.7 openwrt-21.02.7 这俩版本都可以用amlogic usb burnning tools软件直接线刷。俩固件都是干净整洁无异味的openwrt官版，没有安装任何插件，甚至连语言包都没装，适合喜欢纯净版的你，内置的软件源直接可用。
+我推荐使用openwrt-21.02.7版本，版本比较新，软件仓库的里提供的软件版本也更新。而且openwrt-19.07.7这个版本有点小问题，作者在弄镜像的时候弄乱了用户，根目录下看到很多目录的所属用户和组都是1000:1000，还需要自己chown -R还原回来。
+两版固件在文章末尾都提供了下载连接。
+安装qbit openwrt的软件源仓库里没有提供qbit，装qbit需要找别人编译好的二进制包。我用的是这个项目【userdocs/qbittorrent-nox-static】的包。
+第一步：下载软件
+这机器的硬件架构是 armv7l，在项目的release页面找到对应的版本。
+ssh进入openwrt，选择目录开始下载。我在mnt目录下挂载了一个硬盘，路径为/mnt/data，下文中就以此举例。
+# 创建软件目录并进入目录 mkdir /mnt/data/qbittorrent ; cd $_ # 下载软件 wget -O qbittorrent-nox https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.6.4_v2.0.10/armv7-qbittorrent-nox # 赋予可执行权限 chmod 700 qbittorrent-nox 到这里，软件的下载和赋权就完成了。
+第二步：运行软件
+有一点linux基础使用能力的人肯定知道一个可执行的二进制包，只需要敲命令./qbittorrent-nox就可以直接跑起来了。这样确实可以，但我还是想精细一点。
+首先就是指定qbittorrent-nox软件的配置文件目录。这机器内置存储是nand，不知道啥时候就挂了，所以我想把配置文件都保存在比较安全的地方，方便下次刷机以后直接恢复。
+# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲y
+【忘记截图了，下次再补】
+qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
+【忘记截图了，下次再补】
+用账户和随机密码登录网页的qbit，调整中文语言，修改账户和密码，然后保存。到这里就完成了qbit的初始化，已经可以正常使用了。
+【忘记截图了，下次再补】
+但这个时候qbit是以前台任务的形式在终端里运行，如果ctrl &#43;c或者关掉终端，qbit也会停止运行。
+所以接下去要写一个init.d开机启动的脚本。
+第三步：启动脚本
+openwrt的启动脚本放在/etc/init.d目录。
+先看一下启动脚本的简单模板：
+#!/bin/sh /etc/rc."/>
+
+    <meta property="og:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装qBittorrent教程" />
+<meta property="og:description" content="前言 手上有两个迅雷赚钱宝一代，硬件型号ws1408，当时捡垃圾的时候卖家作为添头10块钱一个打包入手的。它长这个样子
+正面
+背面的接口
+这机器性能孱弱，赚钱宝系列连用三代的amlogic s805芯片方案，256MB内存，usb2.0接口 &#43; tf槽，先进的百兆网口，所以吸引不了大佬给它适配固件，装个3.10老旧内核的openwrt再装个bt下载软件当下载机是个不错的选择。但openwrt软件源仓库里只有aria2和trasmission，这俩在bt下载能力上远远不如qbit，所以我一直想在这机器上装qbit。
+最近找了一些教程，最后成功跑起来了。这里做个简单记录。
+固件 目前这机器可用的固件都是从官方固件中提取的3.10内核魔改的openwrt，我用下来觉得比较好用的是这俩版本：
+openwrt-19.07.7 openwrt-21.02.7 这俩版本都可以用amlogic usb burnning tools软件直接线刷。俩固件都是干净整洁无异味的openwrt官版，没有安装任何插件，甚至连语言包都没装，适合喜欢纯净版的你，内置的软件源直接可用。
+我推荐使用openwrt-21.02.7版本，版本比较新，软件仓库的里提供的软件版本也更新。而且openwrt-19.07.7这个版本有点小问题，作者在弄镜像的时候弄乱了用户，根目录下看到很多目录的所属用户和组都是1000:1000，还需要自己chown -R还原回来。
+两版固件在文章末尾都提供了下载连接。
+安装qbit openwrt的软件源仓库里没有提供qbit，装qbit需要找别人编译好的二进制包。我用的是这个项目【userdocs/qbittorrent-nox-static】的包。
+第一步：下载软件
+这机器的硬件架构是 armv7l，在项目的release页面找到对应的版本。
+ssh进入openwrt，选择目录开始下载。我在mnt目录下挂载了一个硬盘，路径为/mnt/data，下文中就以此举例。
+# 创建软件目录并进入目录 mkdir /mnt/data/qbittorrent ; cd $_ # 下载软件 wget -O qbittorrent-nox https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.6.4_v2.0.10/armv7-qbittorrent-nox # 赋予可执行权限 chmod 700 qbittorrent-nox 到这里，软件的下载和赋权就完成了。
+第二步：运行软件
+有一点linux基础使用能力的人肯定知道一个可执行的二进制包，只需要敲命令./qbittorrent-nox就可以直接跑起来了。这样确实可以，但我还是想精细一点。
+首先就是指定qbittorrent-nox软件的配置文件目录。这机器内置存储是nand，不知道啥时候就挂了，所以我想把配置文件都保存在比较安全的地方，方便下次刷机以后直接恢复。
+# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲y
+【忘记截图了，下次再补】
+qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
+【忘记截图了，下次再补】
+用账户和随机密码登录网页的qbit，调整中文语言，修改账户和密码，然后保存。到这里就完成了qbit的初始化，已经可以正常使用了。
+【忘记截图了，下次再补】
+但这个时候qbit是以前台任务的形式在终端里运行，如果ctrl &#43;c或者关掉终端，qbit也会停止运行。
+所以接下去要写一个init.d开机启动的脚本。
+第三步：启动脚本
+openwrt的启动脚本放在/etc/init.d目录。
+先看一下启动脚本的简单模板：
+#!/bin/sh /etc/rc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202404/qbittorrent-install-on-ws1408-and-openwrt/" /><meta property="article:section" content="202404" />
+<meta property="article:published_time" content="2024-04-27T07:46:15+08:00" />
+<meta property="article:modified_time" content="2024-04-27T07:46:15+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装qBittorrent教程</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 27, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/openwrt/">OpenWrt</a>
+              <a class="tag" href="https://ruohai.wang/tags/qbittorrent/">qBittorrent</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>手上有两个迅雷赚钱宝一代，硬件型号ws1408，当时捡垃圾的时候卖家作为添头10块钱一个打包入手的。它长这个样子</p>
+<p>正面</p>
+<p><img src="https://img.311803.xyz/i/2024/04/27/165701-0.webp" alt=""></p>
+<p>背面的接口</p>
+<p><img src="https://img.311803.xyz/i/2024/04/27/165717-0.webp" alt=""></p>
+<p>这机器性能孱弱，赚钱宝系列连用三代的amlogic s805芯片方案，256MB内存，usb2.0接口 + tf槽，<code>先进</code>的百兆网口，所以吸引不了大佬给它适配固件，装个3.10老旧内核的openwrt再装个bt下载软件当下载机是个不错的选择。但openwrt软件源仓库里只有aria2和trasmission，这俩在bt下载能力上远远不如qbit，所以我一直想在这机器上装qbit。</p>
+<p>最近找了一些教程，最后成功跑起来了。这里做个简单记录。</p>
+<hr>
+<h2 id="固件">固件</h2>
+<p>目前这机器可用的固件都是从官方固件中提取的3.10内核魔改的openwrt，我用下来觉得比较好用的是这俩版本：</p>
+<ul>
+<li>openwrt-19.07.7</li>
+<li>openwrt-21.02.7</li>
+</ul>
+<p>这俩版本都可以用amlogic usb burnning tools软件直接线刷。俩固件都是干净整洁<del>无异味</del>的openwrt官版，没有安装任何插件，甚至连语言包都没装，适合喜欢纯净版的你，内置的软件源直接可用。</p>
+<p>我推荐使用<code>openwrt-21.02.7</code>版本，版本比较新，软件仓库的里提供的软件版本也更新。而且<code>openwrt-19.07.7</code>这个版本有点小问题，作者在弄镜像的时候弄乱了用户，根目录下看到很多目录的所属用户和组都是1000:1000，还需要自己<code>chown -R</code>还原回来。</p>
+<p>两版固件在文章末尾都提供了下载连接。</p>
+<hr>
+<h2 id="安装qbit">安装qbit</h2>
+<p>openwrt的软件源仓库里没有提供qbit，装qbit需要找别人编译好的二进制包。我用的是这个项目【<a href="https://github.com/userdocs/qbittorrent-nox-static">userdocs/qbittorrent-nox-static</a>】的包。</p>
+<blockquote>
+<p>第一步：下载软件</p>
+</blockquote>
+<p>这机器的硬件架构是 <code>armv7l</code>，在项目的release页面找到对应的版本。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/27/173106-0.webp" alt=""></p>
+<p>ssh进入openwrt，选择目录开始下载。我在<code>mnt</code>目录下挂载了一个硬盘，路径为<code>/mnt/data</code>，下文中就以此举例。</p>
+<pre tabindex="0"><code># 创建软件目录并进入目录
+mkdir /mnt/data/qbittorrent ; cd $_
+
+# 下载软件
+wget -O qbittorrent-nox https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.6.4_v2.0.10/armv7-qbittorrent-nox
+
+# 赋予可执行权限
+chmod 700 qbittorrent-nox
+</code></pre><p>到这里，软件的下载和赋权就完成了。</p>
+<blockquote>
+<p>第二步：运行软件</p>
+</blockquote>
+<p>有一点linux基础使用能力的人肯定知道一个可执行的二进制包，只需要敲命令<code>./qbittorrent-nox</code>就可以直接跑起来了。这样确实可以，但我还是想精细一点。</p>
+<p>首先就是指定qbittorrent-nox软件的配置文件目录。这机器内置存储是nand，不知道啥时候就挂了，所以我想把配置文件都保存在比较安全的地方，方便下次刷机以后直接恢复。</p>
+<pre tabindex="0"><code># 依然是在qbit的安装目录
+cd /mnt/data/qbittorrent
+
+# 首次运行qbit，用--profile参数指定配置文件目录
+./qbittorrent-nox --profile=/mnt/data/qbittorrent/config
+</code></pre><p>这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲<code>y</code></p>
+<p>【忘记截图了，下次再补】</p>
+<p>qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。</p>
+<p>【忘记截图了，下次再补】</p>
+<p>用账户和随机密码登录网页的qbit，调整中文语言，修改账户和密码，然后保存。到这里就完成了qbit的初始化，已经可以正常使用了。</p>
+<p>【忘记截图了，下次再补】</p>
+<p>但这个时候qbit是以前台任务的形式在终端里运行，如果<code>ctrl +c</code>或者关掉终端，qbit也会停止运行。</p>
+<p>所以接下去要写一个init.d开机启动的脚本。</p>
+<blockquote>
+<p>第三步：启动脚本</p>
+</blockquote>
+<p>openwrt的启动脚本放在<code>/etc/init.d</code>目录。</p>
+<p>先看一下启动脚本的简单模板：</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=95
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start  /usr/bin/caddy run -config /etc/caddy/Caddyfile
+}
+stop() {
+  service_stop /usr/bin/caddy
+}
+</code></pre><p>看不懂也没关系，我也看不懂，只需要照葫芦画瓢，知道改哪里、怎么改就行了。</p>
+<pre tabindex="0"><code># 进入目录
+cd /etc/init.d
+
+# 新建脚本文件
+touch qbittorrent-nox
+
+# 编辑脚本，没有nano可以用vim
+nano qbittorrent-nox
+</code></pre><p>然后把根据模板修改好的代码粘贴进去，然后保存退出。</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=95
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start  /mnt/data/qbittorrent/qbittorrent-nox --profile=/mnt/data/qbittorrent/config
+}
+stop() {
+  service_stop /mnt/data/qbittorrent/qbittorrent-nox
+}
+</code></pre><p>启动脚本写好以后，增加可执行权限。</p>
+<pre tabindex="0"><code>chmod +x qbittorrent-nox
+</code></pre><p>然后把启动脚本添加到开机自启</p>
+<pre tabindex="0"><code># 设置开机自启
+service qbittorrent-nox enable
+
+# 启动服务
+service qbittorrent-nox start
+</code></pre><p>到这里就完成openwrt上qbittorrent-nox的安装和设置开机自启了，开始愉快的bt下载吧。</p>
+<hr>
+<h2 id="固件下载">固件下载</h2>
+<p>百度网盘链接：https://pan.baidu.com/s/1r5bh-jexKaTtrn_m5UP2gQ</p>
+<p>提取码：p3zz</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://nen.ink/posts/openwrt-init/">Openwrt 路由设置（四）：启动脚本</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
