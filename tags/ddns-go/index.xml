@@ -6,7 +6,26 @@
     <description>Recent content in DDNS-GO on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 26 Dec 2023 20:20:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ddns-go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 29 Apr 2024 23:55:45 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ddns-go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DDNS-GO通过命令获取有效的IPv6地址</title>
+      <link>https://ruohai.wang/202404/ddns-go-use-shell-command-to-get-valid-ipv6-addr/</link>
+      <pubDate>Mon, 29 Apr 2024 23:55:45 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/ddns-go-use-shell-command-to-get-valid-ipv6-addr/</guid>
+      <description>前言 使用ipv6 + ddns来实现公网访问部署在自己机器上的网络服务是现在很多nas玩家必备的技能，非常的方便、好用而且免费。
+但是在实际使用过程中，我的armbian小盒子经常出现多个ipv6公网地址，有时候是2个，有时候是3个，更有的时候当我在刷机玩openwrt时会短暂出现5个ipv6公网地址。
+我用ddns-go来实现ddns，这个软件非常好用，基本能在90%的场景下正常运作。但当我的设备出现3个甚至3个以上的ipv6公网地址时，我不得不一次次的手动去调整，这实在是非常的智障。
+我也在网上找了一些获取有效ipv6公网地址的命令，比如【Linux中获取本机的最新IPv6地址_更新ddns的脚本_获取openwrt的IP地址】文章中提供的命令，是根据多个ipv6地址的valid_lft来排序，获取最长有效生命时长的ipv6地址。但我实测并不好用，因为当设备出现两个valid_lft相差不到1秒钟的ipv6地址时（是的，这么稀有的情况我都会碰到而且碰到了好几次），会导致命令筛选处的结果在两个ipv6地址之间反复横跳，引起频繁的dns更新请求，反而让网络服务的访问变得更不稳定。
+在网上反复搜索都没有合适的解决方案，那只能自己动手了。
+命令 根据我自己使用armbian小盒子近一年的观察，使用ip -6 addr show ifce获取到的ipv6地址，排在最后面的那个就是最新的那个，也就是valid_lft最长的那一个。
+所以这个命令的原理就是：用ip -6 addr获取ipv6地址，然后选择排在最后面那一个。
+先直接给出结果：
+ip -6 addr show eth0 | grep -v deprecated | grep &amp;#39;inet6 [^f:]&amp;#39; | awk -F&amp;#39; &amp;#39; &amp;#39;{print $2}&amp;#39; | awk -F&amp;#39;/&amp;#39; &amp;#39;{print $1}&amp;#39; | tail -1 然后是步骤拆解：
+ip -6 addr show eth0，显示网卡（eth0）的全部ipv6地址 grep -v deprecated，去除已经失效（deprecated）的地址 grep &#39;inet6 [^f:]&#39;，只显示ipv6地址的那一行 awk -F&#39; &#39; &#39;{print $2}&#39;，根据空格符号分列，打印第二列 awk -F&#39;/&#39; &#39;{print $1}&#39;，根据斜杠符号/分列，打印第一列 tail -1，显示最后一行 实测不管有多少个ipv6地址，都可以正确获取到最后一个有效的ipv6公网地址。因为这个命令的获取方式并不是根据valid_lft排序，所以也不会出现因为两个ipv6地址因为valid_lft间隔少于1秒钟导致获取到的地址反复横跳的bug。
+这个命令已经是我能想到的、能写出来的最精简、最有效的命令了（也许两个awk可以合并成一个）。</description>
+    </item>
+    
     <item>
       <title>DDNS-GO使用命令获取最新IPv6公网地址</title>
       <link>https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/</link>

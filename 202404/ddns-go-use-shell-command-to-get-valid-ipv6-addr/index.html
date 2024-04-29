@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>DDNS-GO通过命令获取有效的IPv6地址 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DDNS-GO通过命令获取有效的IPv6地址"/>
+<meta name="twitter:description" content="前言 使用ipv6 &#43; ddns来实现公网访问部署在自己机器上的网络服务是现在很多nas玩家必备的技能，非常的方便、好用而且免费。
+但是在实际使用过程中，我的armbian小盒子经常出现多个ipv6公网地址，有时候是2个，有时候是3个，更有的时候当我在刷机玩openwrt时会短暂出现5个ipv6公网地址。
+我用ddns-go来实现ddns，这个软件非常好用，基本能在90%的场景下正常运作。但当我的设备出现3个甚至3个以上的ipv6公网地址时，我不得不一次次的手动去调整，这实在是非常的智障。
+我也在网上找了一些获取有效ipv6公网地址的命令，比如【Linux中获取本机的最新IPv6地址_更新ddns的脚本_获取openwrt的IP地址】文章中提供的命令，是根据多个ipv6地址的valid_lft来排序，获取最长有效生命时长的ipv6地址。但我实测并不好用，因为当设备出现两个valid_lft相差不到1秒钟的ipv6地址时（是的，这么稀有的情况我都会碰到而且碰到了好几次），会导致命令筛选处的结果在两个ipv6地址之间反复横跳，引起频繁的dns更新请求，反而让网络服务的访问变得更不稳定。
+在网上反复搜索都没有合适的解决方案，那只能自己动手了。
+命令 根据我自己使用armbian小盒子近一年的观察，使用ip -6 addr show ifce获取到的ipv6地址，排在最后面的那个就是最新的那个，也就是valid_lft最长的那一个。
+所以这个命令的原理就是：用ip -6 addr获取ipv6地址，然后选择排在最后面那一个。
+先直接给出结果：
+ip -6 addr show eth0 | grep -v deprecated | grep &#39;inet6 [^f:]&#39; | awk -F&#39; &#39; &#39;{print $2}&#39; | awk -F&#39;/&#39; &#39;{print $1}&#39; | tail -1 然后是步骤拆解：
+ip -6 addr show eth0，显示网卡（eth0）的全部ipv6地址 grep -v deprecated，去除已经失效（deprecated）的地址 grep &#39;inet6 [^f:]&#39;，只显示ipv6地址的那一行 awk -F&#39; &#39; &#39;{print $2}&#39;，根据空格符号分列，打印第二列 awk -F&#39;/&#39; &#39;{print $1}&#39;，根据斜杠符号/分列，打印第一列 tail -1，显示最后一行 实测不管有多少个ipv6地址，都可以正确获取到最后一个有效的ipv6公网地址。因为这个命令的获取方式并不是根据valid_lft排序，所以也不会出现因为两个ipv6地址因为valid_lft间隔少于1秒钟导致获取到的地址反复横跳的bug。
+这个命令已经是我能想到的、能写出来的最精简、最有效的命令了（也许两个awk可以合并成一个）。"/>
+
+    <meta property="og:title" content="DDNS-GO通过命令获取有效的IPv6地址" />
+<meta property="og:description" content="前言 使用ipv6 &#43; ddns来实现公网访问部署在自己机器上的网络服务是现在很多nas玩家必备的技能，非常的方便、好用而且免费。
+但是在实际使用过程中，我的armbian小盒子经常出现多个ipv6公网地址，有时候是2个，有时候是3个，更有的时候当我在刷机玩openwrt时会短暂出现5个ipv6公网地址。
+我用ddns-go来实现ddns，这个软件非常好用，基本能在90%的场景下正常运作。但当我的设备出现3个甚至3个以上的ipv6公网地址时，我不得不一次次的手动去调整，这实在是非常的智障。
+我也在网上找了一些获取有效ipv6公网地址的命令，比如【Linux中获取本机的最新IPv6地址_更新ddns的脚本_获取openwrt的IP地址】文章中提供的命令，是根据多个ipv6地址的valid_lft来排序，获取最长有效生命时长的ipv6地址。但我实测并不好用，因为当设备出现两个valid_lft相差不到1秒钟的ipv6地址时（是的，这么稀有的情况我都会碰到而且碰到了好几次），会导致命令筛选处的结果在两个ipv6地址之间反复横跳，引起频繁的dns更新请求，反而让网络服务的访问变得更不稳定。
+在网上反复搜索都没有合适的解决方案，那只能自己动手了。
+命令 根据我自己使用armbian小盒子近一年的观察，使用ip -6 addr show ifce获取到的ipv6地址，排在最后面的那个就是最新的那个，也就是valid_lft最长的那一个。
+所以这个命令的原理就是：用ip -6 addr获取ipv6地址，然后选择排在最后面那一个。
+先直接给出结果：
+ip -6 addr show eth0 | grep -v deprecated | grep &#39;inet6 [^f:]&#39; | awk -F&#39; &#39; &#39;{print $2}&#39; | awk -F&#39;/&#39; &#39;{print $1}&#39; | tail -1 然后是步骤拆解：
+ip -6 addr show eth0，显示网卡（eth0）的全部ipv6地址 grep -v deprecated，去除已经失效（deprecated）的地址 grep &#39;inet6 [^f:]&#39;，只显示ipv6地址的那一行 awk -F&#39; &#39; &#39;{print $2}&#39;，根据空格符号分列，打印第二列 awk -F&#39;/&#39; &#39;{print $1}&#39;，根据斜杠符号/分列，打印第一列 tail -1，显示最后一行 实测不管有多少个ipv6地址，都可以正确获取到最后一个有效的ipv6公网地址。因为这个命令的获取方式并不是根据valid_lft排序，所以也不会出现因为两个ipv6地址因为valid_lft间隔少于1秒钟导致获取到的地址反复横跳的bug。
+这个命令已经是我能想到的、能写出来的最精简、最有效的命令了（也许两个awk可以合并成一个）。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202404/ddns-go-use-shell-command-to-get-valid-ipv6-addr/" /><meta property="article:section" content="202404" />
+<meta property="article:published_time" content="2024-04-29T23:55:45+08:00" />
+<meta property="article:modified_time" content="2024-04-29T23:55:45+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">DDNS-GO通过命令获取有效的IPv6地址</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 29, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/ddns-go/">DDNS-GO</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>使用ipv6 + ddns来实现公网访问部署在自己机器上的网络服务是现在很多nas玩家必备的技能，非常的方便、好用而且免费。</p>
+<p>但是在实际使用过程中，我的armbian小盒子经常出现多个ipv6公网地址，有时候是2个，有时候是3个，更有的时候当我在刷机玩openwrt时会短暂出现5个ipv6公网地址。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/30/001208-0.webp" alt=""></p>
+<p>我用ddns-go来实现ddns，这个软件非常好用，基本能在90%的场景下正常运作。但当我的设备出现3个甚至3个以上的ipv6公网地址时，我不得不一次次的手动去调整，这实在是非常的智障。</p>
+<p>我也在网上找了一些获取有效ipv6公网地址的命令，比如【<a href="https://www.cnblogs.com/osnosn/p/11813096.html">Linux中获取本机的最新IPv6地址_更新ddns的脚本_获取openwrt的IP地址</a>】文章中提供的命令，是根据多个ipv6地址的<code>valid_lft</code>来排序，获取<code>最长有效生命时长</code>的ipv6地址。但我实测并不好用，因为当设备出现两个valid_lft相差不到1秒钟的ipv6地址时（是的，这么稀有的情况我都会碰到而且碰到了好几次），会导致命令筛选处的结果在两个ipv6地址之间反复横跳，引起频繁的dns更新请求，反而让网络服务的访问变得更不稳定。</p>
+<p>在网上反复搜索都没有合适的解决方案，那只能自己动手了。</p>
+<hr>
+<h2 id="命令">命令</h2>
+<p>根据我自己使用armbian小盒子近一年的观察，使用<code>ip -6 addr show ifce</code>获取到的ipv6地址，排在最后面的那个就是最新的那个，也就是<code>valid_lft</code>最长的那一个。</p>
+<p>所以这个命令的原理就是：用<code>ip -6 addr</code>获取ipv6地址，然后选择排在最后面那一个。</p>
+<p>先直接给出结果：</p>
+<pre tabindex="0"><code>ip -6 addr show eth0 | grep -v deprecated | grep &#39;inet6 [^f:]&#39; | awk -F&#39; &#39; &#39;{print $2}&#39; | awk -F&#39;/&#39; &#39;{print $1}&#39; | tail -1
+</code></pre><p>然后是步骤拆解：</p>
+<ol>
+<li><code>ip -6 addr show eth0</code>，显示网卡（eth0）的全部ipv6地址</li>
+<li><code>grep -v deprecated</code>，去除已经失效（deprecated）的地址</li>
+<li><code>grep 'inet6 [^f:]'</code>，只显示ipv6地址的那一行</li>
+<li><code>awk -F' ' '{print $2}'</code>，根据空格符号分列，打印第二列</li>
+<li><code>awk -F'/' '{print $1}'</code>，根据斜杠符号/分列，打印第一列</li>
+<li><code>tail -1</code>，显示最后一行</li>
+</ol>
+<p>实测不管有多少个ipv6地址，都可以正确获取到<code>最后一个</code>有效的ipv6公网地址。因为这个命令的获取方式并不是根据<code>valid_lft</code>排序，所以也不会出现因为两个ipv6地址因为<code>valid_lft</code>间隔少于1秒钟导致获取到的地址反复横跳的bug。</p>
+<p>这个命令已经是我能想到的、能写出来的最精简、最有效的命令了（也许两个awk可以合并成一个）。</p>
+<p>终于可以从手动选择ipv6地址的困扰中解脱惹。</p>
+<p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
