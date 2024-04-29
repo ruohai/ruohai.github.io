@@ -31,10 +31,7 @@ ssh进入openwrt，选择目录开始下载。我在mnt目录下挂载了一个�
 第二步：运行软件
 有一点linux基础使用能力的人肯定知道一个可执行的二进制包，只需要敲命令./qbittorrent-nox就可以直接跑起来了。这样确实可以，但我还是想精细一点。
 首先就是指定qbittorrent-nox软件的配置文件目录。这机器内置存储是nand，不知道啥时候就挂了，所以我想把配置文件都保存在比较安全的地方，方便下次刷机以后直接恢复。
-# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲y
-【忘记截图了，下次再补】
-qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
-【忘记截图了，下次再补】
+# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示说bt分享的免责声明，询问是否继续运行，敲y。然后qbit成功启动，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
 用账户和随机密码登录网页的qbit，调整中文语言
 修改账户和密码，然后保存。
 到这里就完成了qbit的初始化，已经可以正常使用了。
@@ -42,7 +39,8 @@ qbit启动成功以后，终端会输出访问web ui的网址，以及初始的�
 所以接下去要写一个init.d开机启动的脚本。
 第三步：启动脚本
 openwrt的启动脚本放在/etc/init.d目录。
-先看一下启动脚本的简单模板："/>
+先看一下启动脚本的简单模板：
+#!/bin/sh /etc/rc.common START=95 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /usr/bin/caddy run -config /etc/caddy/Caddyfile } stop() { service_stop /usr/bin/caddy } 看不懂也没关系，我也看不懂，只需要照葫芦画瓢，知道改哪里、怎么改就行了。"/>
 
     <meta property="og:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装qBittorrent教程" />
 <meta property="og:description" content="前言 手上有两个迅雷赚钱宝一代，硬件型号ws1408，当时捡垃圾的时候卖家作为添头10块钱一个打包入手的。它长这个样子
@@ -62,10 +60,7 @@ ssh进入openwrt，选择目录开始下载。我在mnt目录下挂载了一个�
 第二步：运行软件
 有一点linux基础使用能力的人肯定知道一个可执行的二进制包，只需要敲命令./qbittorrent-nox就可以直接跑起来了。这样确实可以，但我还是想精细一点。
 首先就是指定qbittorrent-nox软件的配置文件目录。这机器内置存储是nand，不知道啥时候就挂了，所以我想把配置文件都保存在比较安全的地方，方便下次刷机以后直接恢复。
-# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲y
-【忘记截图了，下次再补】
-qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
-【忘记截图了，下次再补】
+# 依然是在qbit的安装目录 cd /mnt/data/qbittorrent # 首次运行qbit，用--profile参数指定配置文件目录 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config 这时候qbit开始启动，终端会出现提示说bt分享的免责声明，询问是否继续运行，敲y。然后qbit成功启动，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。
 用账户和随机密码登录网页的qbit，调整中文语言
 修改账户和密码，然后保存。
 到这里就完成了qbit的初始化，已经可以正常使用了。
@@ -73,7 +68,8 @@ qbit启动成功以后，终端会输出访问web ui的网址，以及初始的�
 所以接下去要写一个init.d开机启动的脚本。
 第三步：启动脚本
 openwrt的启动脚本放在/etc/init.d目录。
-先看一下启动脚本的简单模板：" />
+先看一下启动脚本的简单模板：
+#!/bin/sh /etc/rc.common START=95 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /usr/bin/caddy run -config /etc/caddy/Caddyfile } stop() { service_stop /usr/bin/caddy } 看不懂也没关系，我也看不懂，只需要照葫芦画瓢，知道改哪里、怎么改就行了。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202404/qbittorrent-install-on-ws1408-and-openwrt/" /><meta property="article:section" content="202404" />
 <meta property="article:published_time" content="2024-04-27T07:46:15+08:00" />
@@ -183,10 +179,8 @@ cd /mnt/data/qbittorrent
 
 # 首次运行qbit，用--profile参数指定配置文件目录
 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config
-</code></pre><p>这时候qbit开始启动，终端会出现提示，询问是否继续运行，敲<code>y</code></p>
-<p>【忘记截图了，下次再补】</p>
-<p>qbit启动成功以后，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。</p>
-<p>【忘记截图了，下次再补】</p>
+</code></pre><p>这时候qbit开始启动，终端会出现提示说bt分享的免责声明，询问是否继续运行，敲<code>y</code>。然后qbit成功启动，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/29/192448-0.webp" alt=""></p>
 <p>用账户和随机密码登录网页的qbit，调整中文语言</p>
 <p><img src="https://img.311803.xyz/i/2024/04/27/184512-0.webp" alt=""></p>
 <p>修改账户和密码，然后保存。</p>
