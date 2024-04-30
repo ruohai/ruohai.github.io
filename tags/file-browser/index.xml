@@ -6,7 +6,31 @@
     <description>Recent content in File Browser on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Jul 2023 00:25:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/file-browser/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Apr 2024 21:21:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/file-browser/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装File Browser</title>
+      <link>https://ruohai.wang/202404/filebrowser-install-on-ws1408/</link>
+      <pubDate>Tue, 30 Apr 2024 21:21:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202404/filebrowser-install-on-ws1408/</guid>
+      <description>前言 迅雷赚钱宝一代，硬件型号ws1408，芯片是大家的老朋友amlogic s805，配了256MB内存，刷机可以后可用存储空间只有72MB左右。
+我刷的固件是openwrt 21.02.7，内核3.10.33。
+这个硬件配置，这个内核版本，docker肯定是不用想了，所以看看还能装点儿啥软件吧。
+安装 这里先吐槽一下filebrowser官方吧，现在官方文档里的安装方式只给了一键脚本和docker两种方式，而且也没有提供比较明白的编写配置的文档，不明白在怎么想的。
+第一步：下载
+首先找到filebroser项目的github页面【filebrowser/filebrowser】，在releases页面找到正确的安装包。
+我们的老朋友s805芯片是armv7/armhf架构，不要选错。
+ssh连上openwrt，使用wget下载。我在机器上插了一个sd卡挂载到/mnt/sdcard作为软件安装目录。
+# 进目录 cd /mnt/sdcard/filebrowser # 下载 wget -O filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf filebrowser.tar.gz 解压以后可以看到filebrowser这个二进制包已经有可执行权限，但是文件的归属权限比较乱，默认是1001:127。
+所以先改一下归属用户和组。
+# 调整文件的用户和组为root chown -R root:root * 第二步：编辑配置文件
+依然是在软件的目录下，开始编辑配置文件
+# 新建配置文件 touch config.json # 编辑，没有nano的话可以用vim nano config.json 把下面的代码粘贴进去
+{ &amp;#34;port&amp;#34;: 8080, &amp;#34;address&amp;#34;: &amp;#34;0.0.0.0&amp;#34;, &amp;#34;root&amp;#34;: &amp;#34;/&amp;#34;, &amp;#34;database&amp;#34;: &amp;#34;/mnt/sdcard/filebrowser/filebrowser.db&amp;#34;, &amp;#34;log&amp;#34;: &amp;#34;/mnt/sdcard/filebrowser/filebrowser.log&amp;#34;, &amp;#34;username&amp;#34;: &amp;#34;admin&amp;#34; } 配置释义：
+port：指定服务使用的端口号 address：指定服务的访问地址，默认0.0.0.0就是监听所有来源的网络请求 root：指filebrowser可以访问的根目录，比如我只想让filebrowser访问/mnt目录下的文件，那就改成&amp;quot;root&amp;quot;:&amp;quot;/mnt&amp;quot; database：指filebrowser的数据库文件存放路径 log：指filebrowser的日志文件的存放路径 username：指初始用户名 以上根据自己的喜好调整即可。
+到这一步，可以直接./filebrowser -c config.</description>
+    </item>
+    
     <item>
       <title>Linux下用Nginx给File Browser设置SSL开启HTTPS访问</title>
       <link>https://ruohai.wang/202307/filebrowser-update-to-https/</link>

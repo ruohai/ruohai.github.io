@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装File Browser // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装File Browser"/>
+<meta name="twitter:description" content="前言 迅雷赚钱宝一代，硬件型号ws1408，芯片是大家的老朋友amlogic s805，配了256MB内存，刷机可以后可用存储空间只有72MB左右。
+我刷的固件是openwrt 21.02.7，内核3.10.33。
+这个硬件配置，这个内核版本，docker肯定是不用想了，所以看看还能装点儿啥软件吧。
+安装 这里先吐槽一下filebrowser官方吧，现在官方文档里的安装方式只给了一键脚本和docker两种方式，而且也没有提供比较明白的编写配置的文档，不明白在怎么想的。
+第一步：下载
+首先找到filebroser项目的github页面【filebrowser/filebrowser】，在releases页面找到正确的安装包。
+我们的老朋友s805芯片是armv7/armhf架构，不要选错。
+ssh连上openwrt，使用wget下载。我在机器上插了一个sd卡挂载到/mnt/sdcard作为软件安装目录。
+# 进目录 cd /mnt/sdcard/filebrowser # 下载 wget -O filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf filebrowser.tar.gz 解压以后可以看到filebrowser这个二进制包已经有可执行权限，但是文件的归属权限比较乱，默认是1001:127。
+所以先改一下归属用户和组。
+# 调整文件的用户和组为root chown -R root:root * 第二步：编辑配置文件
+依然是在软件的目录下，开始编辑配置文件
+# 新建配置文件 touch config.json # 编辑，没有nano的话可以用vim nano config.json 把下面的代码粘贴进去
+{ &#34;port&#34;: 8080, &#34;address&#34;: &#34;0.0.0.0&#34;, &#34;root&#34;: &#34;/&#34;, &#34;database&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.db&#34;, &#34;log&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.log&#34;, &#34;username&#34;: &#34;admin&#34; } 配置释义：
+port：指定服务使用的端口号 address：指定服务的访问地址，默认0.0.0.0就是监听所有来源的网络请求 root：指filebrowser可以访问的根目录，比如我只想让filebrowser访问/mnt目录下的文件，那就改成&quot;root&quot;:&quot;/mnt&quot; database：指filebrowser的数据库文件存放路径 log：指filebrowser的日志文件的存放路径 username：指初始用户名 以上根据自己的喜好调整即可。
+到这一步，可以直接./filebrowser -c config."/>
+
+    <meta property="og:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装File Browser" />
+<meta property="og:description" content="前言 迅雷赚钱宝一代，硬件型号ws1408，芯片是大家的老朋友amlogic s805，配了256MB内存，刷机可以后可用存储空间只有72MB左右。
+我刷的固件是openwrt 21.02.7，内核3.10.33。
+这个硬件配置，这个内核版本，docker肯定是不用想了，所以看看还能装点儿啥软件吧。
+安装 这里先吐槽一下filebrowser官方吧，现在官方文档里的安装方式只给了一键脚本和docker两种方式，而且也没有提供比较明白的编写配置的文档，不明白在怎么想的。
+第一步：下载
+首先找到filebroser项目的github页面【filebrowser/filebrowser】，在releases页面找到正确的安装包。
+我们的老朋友s805芯片是armv7/armhf架构，不要选错。
+ssh连上openwrt，使用wget下载。我在机器上插了一个sd卡挂载到/mnt/sdcard作为软件安装目录。
+# 进目录 cd /mnt/sdcard/filebrowser # 下载 wget -O filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-armv7-filebrowser.tar.gz # 解压 tar -zxvf filebrowser.tar.gz 解压以后可以看到filebrowser这个二进制包已经有可执行权限，但是文件的归属权限比较乱，默认是1001:127。
+所以先改一下归属用户和组。
+# 调整文件的用户和组为root chown -R root:root * 第二步：编辑配置文件
+依然是在软件的目录下，开始编辑配置文件
+# 新建配置文件 touch config.json # 编辑，没有nano的话可以用vim nano config.json 把下面的代码粘贴进去
+{ &#34;port&#34;: 8080, &#34;address&#34;: &#34;0.0.0.0&#34;, &#34;root&#34;: &#34;/&#34;, &#34;database&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.db&#34;, &#34;log&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.log&#34;, &#34;username&#34;: &#34;admin&#34; } 配置释义：
+port：指定服务使用的端口号 address：指定服务的访问地址，默认0.0.0.0就是监听所有来源的网络请求 root：指filebrowser可以访问的根目录，比如我只想让filebrowser访问/mnt目录下的文件，那就改成&quot;root&quot;:&quot;/mnt&quot; database：指filebrowser的数据库文件存放路径 log：指filebrowser的日志文件的存放路径 username：指初始用户名 以上根据自己的喜好调整即可。
+到这一步，可以直接./filebrowser -c config." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202404/filebrowser-install-on-ws1408/" /><meta property="article:section" content="202404" />
+<meta property="article:published_time" content="2024-04-30T21:21:05+08:00" />
+<meta property="article:modified_time" content="2024-04-30T21:21:05+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装File Browser</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 30, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/openwrt/">OpenWrt</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>迅雷赚钱宝一代，硬件型号ws1408，芯片是大家的老朋友amlogic s805，配了256MB内存，刷机可以后可用存储空间只有72MB左右。</p>
+<p>我刷的固件是openwrt 21.02.7，内核3.10.33。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/30/212645-0.webp" alt=""></p>
+<p>这个硬件配置，这个内核版本，docker肯定是不用想了，所以看看还能装点儿啥软件吧。</p>
+<hr>
+<h2 id="安装">安装</h2>
+<p>这里先吐槽一下filebrowser官方吧，现在官方文档里的安装方式只给了一键脚本和docker两种方式，而且也没有提供比较明白的编写配置的文档，不明白在怎么想的。</p>
+<blockquote>
+<p>第一步：下载</p>
+</blockquote>
+<p>首先找到filebroser项目的github页面【<a href="https://github.com/filebrowser/filebrowser">filebrowser/filebrowser</a>】，在<code>releases</code>页面找到正确的安装包。</p>
+<p>我们的老朋友s805芯片是armv7/armhf架构，不要选错。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/30/213109-0.webp" alt=""></p>
+<p>ssh连上openwrt，使用wget下载。我在机器上插了一个sd卡挂载到<code>/mnt/sdcard</code>作为软件安装目录。</p>
+<pre tabindex="0"><code># 进目录
+cd /mnt/sdcard/filebrowser
+
+# 下载
+wget -O filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-armv7-filebrowser.tar.gz
+
+# 解压
+tar -zxvf filebrowser.tar.gz
+</code></pre><p>解压以后可以看到<code>filebrowser</code>这个二进制包已经有可执行权限，但是文件的归属权限比较乱，默认是<code>1001:127</code>。</p>
+<p><img src="https://img.311803.xyz/i/2024/04/30/213420-0.webp" alt=""></p>
+<p>所以先改一下归属用户和组。</p>
+<pre tabindex="0"><code># 调整文件的用户和组为root
+chown -R root:root *
+</code></pre><blockquote>
+<p>第二步：编辑配置文件</p>
+</blockquote>
+<p>依然是在软件的目录下，开始编辑配置文件</p>
+<pre tabindex="0"><code># 新建配置文件
+touch config.json
+
+# 编辑，没有nano的话可以用vim
+nano config.json
+</code></pre><p>把下面的代码粘贴进去</p>
+<pre tabindex="0"><code>{
+    &#34;port&#34;: 8080,
+    &#34;address&#34;: &#34;0.0.0.0&#34;,
+    &#34;root&#34;: &#34;/&#34;,
+    &#34;database&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.db&#34;,
+    &#34;log&#34;: &#34;/mnt/sdcard/filebrowser/filebrowser.log&#34;,
+    &#34;username&#34;: &#34;admin&#34;
+}
+</code></pre><p>配置释义：</p>
+<ul>
+<li><code>port</code>：指定服务使用的端口号</li>
+<li><code>address</code>：指定服务的访问地址，默认<code>0.0.0.0</code>就是监听所有来源的网络请求</li>
+<li><code>root</code>：指filebrowser可以访问的根目录，比如我只想让filebrowser访问<code>/mnt</code>目录下的文件，那就改成<code>&quot;root&quot;:&quot;/mnt&quot;</code></li>
+<li><code>database</code>：指filebrowser的数据库文件存放路径</li>
+<li><code>log</code>：指filebrowser的日志文件的存放路径</li>
+<li><code>username</code>：指初始用户名</li>
+</ul>
+<p>以上根据自己的喜好调整即可。</p>
+<p>到这一步，可以直接<code>./filebrowser -c config.json</code>启动filebrowser了，打开浏览器访问<code>http://host-ip:8080</code>开始使用，默认用户admin，默认密码admin。</p>
+<blockquote>
+<p>第三步：编辑init.d服务脚本</p>
+</blockquote>
+<p>如果想让filebrowser作为系统服务，添加到开机自启，需要编写init.d的脚本。</p>
+<pre tabindex="0"><code># 进目录
+cd /etc/init.d
+
+# 新建文件
+touch filebrowser
+
+# 编辑文件，没有nano可以用vim
+nano filebrowser
+</code></pre><p>然后把下面的代码粘贴进去，保存退出。</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=96
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start  /mnt/sdcard/filebrowser/filebrowser -c /mnt/sdcard/filebrowser/config.json
+}
+stop() {
+  service_stop /mnt/sdcard/filebrowser/filebrowser
+}
+</code></pre><p>最后给脚本添加可执行权限。</p>
+<pre tabindex="0"><code>chmod +x filebrowser
+</code></pre><p>现在就可以把它添加到开机启动啦。</p>
+<pre tabindex="0"><code># 开机启动
+service filebrowser enable
+
+# 启动filebrowser
+service filebrowser start
+</code></pre><p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

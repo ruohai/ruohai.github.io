@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202404/</loc>
-    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/cloudflared/</loc>
-    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/file-browser/</loc>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/openwrt/</loc>
-    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202404/filebrowser-install-on-ws1408/</loc>
+    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/cloudflared/</loc>
     <lastmod>2024-04-30T13:14:36+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/cloudflared-install-on-openwrt/</loc>
@@ -493,9 +499,6 @@
   </url><url>
     <loc>https://ruohai.wang/202307/ttyd-update-to-https/</loc>
     <lastmod>2023-07-16T01:17:58+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/file-browser/</loc>
-    <lastmod>2023-07-16T00:25:11+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/filebrowser-update-to-https/</loc>
     <lastmod>2023-07-16T00:25:11+08:00</lastmod>
