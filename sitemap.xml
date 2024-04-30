@@ -3,22 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202404/</loc>
-    <lastmod>2024-04-29T23:55:45+08:00</lastmod>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/cloudflared/</loc>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/openwrt/</loc>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202404/cloudflared-install-on-openwrt/</loc>
+    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/ddns-go/</loc>
     <lastmod>2024-04-29T23:55:45+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/ddns-go-use-shell-command-to-get-valid-ipv6-addr/</loc>
     <lastmod>2024-04-29T23:55:45+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-04-29T23:55:45+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2024-04-29T23:55:45+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/openwrt/</loc>
-    <lastmod>2024-04-27T07:46:15+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/qbittorrent/</loc>
     <lastmod>2024-04-27T07:46:15+08:00</lastmod>
