@@ -29,7 +29,7 @@ tailscale官方只提供了一键安装的脚本，那我们只能找第三方�
 第二步：将tailscaled添加为sysv服务
 网上搜了一圈没找到tailscale的sysv配置文件，所以根据以往经验，再参考systemd版本的配置文件，可用的sysv配置文件如下。我的tailscale文件保存在/mnt/sdcard目录下，请根据自己的实际情况调整这个路径。
 # 进入目录 cd /etc/init.d/ # 创建配置文件 touch tailscaled # 编辑配置文件(没有nano可以用vim) nano tailscaled 然后把这段代码粘贴进去，保存退出。
-#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/tailscaled } stop() { service_stop /mnt/sdcard/tailscaled --cleanup } 最后给文件添加可执行权限并启动</description>
+#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/tailscale/tailscaled --state=/mnt/sdcard/tailscale/tailscaled.state --socket=/mnt/sdcard/tailscale/tailscaled.sock --port=123456 } stop() { service_stop /mnt/sdcard/tailscale/tailscaled --cleanup } 最后给文件添加可执行权限并启动</description>
     </item>
     
     <item>
