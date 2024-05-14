@@ -6,7 +6,32 @@
     <description>Recent content in Tailscale on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 06 Feb 2024 10:04:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 May 2024 18:42:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装Tailscale教程</title>
+      <link>https://ruohai.wang/202405/tailscale-install-on-ws1408/</link>
+      <pubDate>Tue, 14 May 2024 18:42:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/tailscale-install-on-ws1408/</guid>
+      <description>前言 先说明一下我的迅雷赚钱宝一代ws1408（下文称做小方块）刷的系统是openwrt 21.02.7（文章末尾有下载链接），内核3.10.33。
+之前没有想到这个小方块的可玩性还挺强，因为内核太老、内存太小导致没有什么可用的固件，只能基于现有的openwrt固件来屎上雕花，让它继续发光发热了。
+tailscale官方只提供了一键安装的脚本，那我们只能找第三方编译好的安装包了，项目地址：【Azathothas/Static-Binaries】。
+有了已经编译好的安装包，那我们就开始吧！
+安装 【Azathothas/Static-Binaries】项目的release页面提供的二进制包，不仔细看还以为同样的包提供了两份，仔细看一个是tailscale，另一个是tailscaled。
+根据我浅薄的linux使用经验，名称中带d的那个肯定就是守护进程的版本惹。
+项目的手册中提供了安装教程，地址【Install TailScale】，英文阅读无障碍的话直接看项目手册就行。
+根据我实际安装的经验，tailscale不带d的这个安装包，是用来进行初始化配置的（比如设置子网路由、关联tailscale账号），tailscaled带d的安装包，是实际运行的服务程序。所以，想要跑tailscale，需要两个安装包都下载到本地。
+不过项目的release页面还提供了merged版本，看名字我觉得是二合一版本，但实际测试发现还是俩包分开的比较容易上手，所以这篇文章不聊这个merged版本。
+第一步：下载
+小方块用的芯片是我们的老朋友amlogic s805，硬件架构是arm32/armv7l/armhf，固件openwrt用的init系统是sysv，根据这些信息找到正确的安装包：
+注意有两个安装包，一个是初始化配置用的、不带d的tailscale，一个是带d的tailscaled。
+# 下载tailscaled wget -O tailscaled https://github.com/Azathothas/Static-Binaries/releases/download/tailscale_v1.66.1/tailscaled_arm_abi_Linux # 下载tailscale wget -O tailscale https://github.com/Azathothas/Static-Binaries/releases/download/tailscale_v1.66.1/tailscale_arm_abi_Linux # 给俩文件添加可执行权限 chmod +x tailscale tailscaled 到这里，下载的步骤就完成了。
+第二步：将tailscaled添加为sysv服务
+网上搜了一圈没找到tailscale的sysv配置文件，所以根据以往经验，再参考systemd版本的配置文件，可用的sysv配置文件如下。我的tailscale文件保存在/mnt/sdcard目录下，请根据自己的实际情况调整这个路径。
+# 进入目录 cd /etc/init.d/ # 创建配置文件 touch tailscaled # 编辑配置文件(没有nano可以用vim) nano tailscaled 然后把这段代码粘贴进去，保存退出。
+#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/tailscaled } stop() { service_stop /mnt/sdcard/tailscaled --cleanup } 最后给文件添加可执行权限并启动</description>
+    </item>
+    
     <item>
       <title>Tailscale出口节点（Exit Nodes）功能部署</title>
       <link>https://ruohai.wang/202402/tailscale-exit-nodes/</link>
