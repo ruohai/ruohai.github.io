@@ -6,7 +6,38 @@
     <description>Recent content in 202405s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 14 May 2024 18:42:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 May 2024 17:44:08 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上开启Swap交换分区</title>
+      <link>https://ruohai.wang/202405/swapon-on-ws1408/</link>
+      <pubDate>Wed, 15 May 2024 17:44:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/swapon-on-ws1408/</guid>
+      <description>前言 不知直觉已经在我的迅雷赚钱宝一代ws1408（下称小方块）上部署了不少服务，比只有70MB可用的存储空间更金贵的，是只有228MB可用的运行内存。
+这点内存，稍微跑几个服务就容易oom，比如qbittorrent-nox，很容易闪退。虽然之后我在qbit的设置中调小了内存占用的数值，但依然会出现10GB的大文件下载完成后校验时闪退。
+我刷的openwrt21固件默认不启用swap分区。在经历了好几次oom以后，痛定思痛，我准备开启swap分区来缓解小方块内存太小的问题。
+配置 小方块有两个扩展接口，一个tf卡槽，一个usb2.0接口。
+我在机器上插了一张tf卡挂载到/mnt/sdcard作为存储空间用，留下usb2.0来外接硬盘作为数据盘。所以这次的思路是，在sd卡上创建一个200MB的swap文件作为系统的swap分区使用。关于swap分区的大小应该设置成多少，很多古董文章里都说要设置成内存的2倍大小，不用机械的按照这个奇怪的规则去设定，设定成和内存同样大小、1/2大小、5倍大小都可以，根据自己的实际情况来定就可以。
+tf卡的i/o性能肯定没法和内存相提并论，实测开启swap以后，系统的响应速度都会被拖慢，但好处也很明显，可以部署大量的服务而不用担心oom惹。
+第一步：创建swap文件
+先新建一个200MB大小的文件。
+可以用dd命令
+dd if=/dev/zero of=/mnt/sdcard/swap bs=1M count=200 也可以用fallocate命令
+fallocate -l 200M /mnt/sdcard/swap 第二步：格式化
+将创建的指定大小的swap文件格式化为swap文件系统
+mkswap /mnt/sdcard/swap 第三步：启动swap设备
+执行命令
+swapon /mnt/sdcard/swap 到这一步以后，可以用free -m或者htop工具来查看swap是否已经启用。
+htop
+free -m
+第四步：设定开机自动挂载swap
+网上很多文章到这一步都会让设置/etc/fstab然后把swap挂载信息写上去，这个方法需要block-mount工具的支持，小方块的openwrt默认并没有安装这个工具。
+所以这里用的添加启动脚本的方法来解决。在自动挂载sdcard的命令后面，加上一条启动swap的命令即可。
+swapon /mnt/sdcard/swap 最后点击保存。
+到这里，在openwrt上开启swap的操作就全部完成惹。
+🎉</description>
+    </item>
+    
     <item>
       <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装Tailscale教程</title>
       <link>https://ruohai.wang/202405/tailscale-install-on-ws1408/</link>
