@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程"/>
+<meta name="twitter:description" content="前言 迅雷赚钱宝一代（下称小方块）这机器折腾到现在，相信你也摸出规律了，但凡是支持armbian32/armhf/armv7l的软件，只要有已经编译好的二进制包，在openwrt上都能跑，无非就是需要自己动手写一个sysvinit版本的启动脚本。
+这么看来，小方块上还能继续安装navidrome、hugo、alist、ttyd等等我之前装在armbian小盒子上的服务。既然都有alist了，那挂个小雅合集也不是难事。
+说远了，这篇文章就简单说一下怎么装navidrome
+安装 第一步：下载
+首先就是去navidrome项目的github仓库找安装包，项目地址【navidrome/navidrome】。
+在release页面找到armv7版本的包，复制链接
+然后用wget命令下载到本地并解压
+# 下载 wget -O navidrome.tar.gz https://github.com/navidrome/navidrome/releases/download/v0.52.5/navidrome_0.52.5_linux_armv7.tar.gz # 解压 tar -zxvf navidrome.tar.gz 解压以后看到navirome二进制包已经有可执行权限了，如果没有的话，执行一下chmod &#43;x navidrome即可。
+第二步：编辑配置文件
+在二进制包的目录下，新建配置文件
+# 新建 touch navirome.toml # 编辑(没有nano就用vim) nano navidrome.toml 在配置文件中，有以下几个参数需要指定：
+MusicFolder：歌曲文件所在目录 DataFolder：软件运行数据的存放目录，默认是./data，也就是当前目录下新建一个/data目录 Port：端口号，默认是4533 除了以上三个我觉得比较重要，其它更多参数可以看官方的手册，指路：【Navidrome/Available Options】
+比如我的配置如下：
+编辑完成后保存即可。
+第三步：编辑启动脚本
+现在到最后一步了，需要编辑一份适合sysvinit的启动脚本。
+# 进目录 cd /etc/init.d # 新建 touch navidrome # 编辑 nano navidrome 我提供一个最简单可用的版本(里面的文件路径记得自行调整)：
+#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/navidrome/navidrome --configfile &#34;/mnt/sdcard/navidrome/navidrome.toml&#34; } stop() { kill $(pidof navidrome) } 粘贴以后保存退出。"/>
+
+    <meta property="og:title" content="在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程" />
+<meta property="og:description" content="前言 迅雷赚钱宝一代（下称小方块）这机器折腾到现在，相信你也摸出规律了，但凡是支持armbian32/armhf/armv7l的软件，只要有已经编译好的二进制包，在openwrt上都能跑，无非就是需要自己动手写一个sysvinit版本的启动脚本。
+这么看来，小方块上还能继续安装navidrome、hugo、alist、ttyd等等我之前装在armbian小盒子上的服务。既然都有alist了，那挂个小雅合集也不是难事。
+说远了，这篇文章就简单说一下怎么装navidrome
+安装 第一步：下载
+首先就是去navidrome项目的github仓库找安装包，项目地址【navidrome/navidrome】。
+在release页面找到armv7版本的包，复制链接
+然后用wget命令下载到本地并解压
+# 下载 wget -O navidrome.tar.gz https://github.com/navidrome/navidrome/releases/download/v0.52.5/navidrome_0.52.5_linux_armv7.tar.gz # 解压 tar -zxvf navidrome.tar.gz 解压以后看到navirome二进制包已经有可执行权限了，如果没有的话，执行一下chmod &#43;x navidrome即可。
+第二步：编辑配置文件
+在二进制包的目录下，新建配置文件
+# 新建 touch navirome.toml # 编辑(没有nano就用vim) nano navidrome.toml 在配置文件中，有以下几个参数需要指定：
+MusicFolder：歌曲文件所在目录 DataFolder：软件运行数据的存放目录，默认是./data，也就是当前目录下新建一个/data目录 Port：端口号，默认是4533 除了以上三个我觉得比较重要，其它更多参数可以看官方的手册，指路：【Navidrome/Available Options】
+比如我的配置如下：
+编辑完成后保存即可。
+第三步：编辑启动脚本
+现在到最后一步了，需要编辑一份适合sysvinit的启动脚本。
+# 进目录 cd /etc/init.d # 新建 touch navidrome # 编辑 nano navidrome 我提供一个最简单可用的版本(里面的文件路径记得自行调整)：
+#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/navidrome/navidrome --configfile &#34;/mnt/sdcard/navidrome/navidrome.toml&#34; } stop() { kill $(pidof navidrome) } 粘贴以后保存退出。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202405/navidrome-install-on-ws1408/" /><meta property="article:section" content="202405" />
+<meta property="article:published_time" content="2024-05-15T18:36:51+08:00" />
+<meta property="article:modified_time" content="2024-05-15T18:36:51+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 15, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/naidrome/">Naidrome</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>迅雷赚钱宝一代（下称小方块）这机器折腾到现在，相信你也摸出规律了，但凡是支持armbian32/armhf/armv7l的软件，只要有已经编译好的二进制包，在openwrt上都能跑，无非就是需要自己动手写一个sysvinit版本的启动脚本。</p>
+<p>这么看来，小方块上还能继续安装navidrome、hugo、alist、ttyd等等我之前装在armbian小盒子上的服务。既然都有alist了，那挂个小雅合集也不是难事。</p>
+<p>说远了，这篇文章就简单说一下怎么装navidrome</p>
+<hr>
+<h2 id="安装">安装</h2>
+<blockquote>
+<p>第一步：下载</p>
+</blockquote>
+<p>首先就是去navidrome项目的github仓库找安装包，项目地址【<a href="https://github.com/navidrome/navidrome">navidrome/navidrome</a>】。</p>
+<p>在release页面找到armv7版本的包，复制链接</p>
+<p><img src="https://img.311803.xyz/i/2024/05/16/194317-0.webp" alt=""></p>
+<p>然后用wget命令下载到本地并解压</p>
+<pre tabindex="0"><code># 下载
+wget -O navidrome.tar.gz https://github.com/navidrome/navidrome/releases/download/v0.52.5/navidrome_0.52.5_linux_armv7.tar.gz
+
+# 解压
+tar -zxvf navidrome.tar.gz
+</code></pre><p>解压以后看到navirome二进制包已经有可执行权限了，如果没有的话，执行一下<code>chmod +x navidrome</code>即可。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/16/194628-0.webp" alt=""></p>
+<blockquote>
+<p>第二步：编辑配置文件</p>
+</blockquote>
+<p>在二进制包的目录下，新建配置文件</p>
+<pre tabindex="0"><code># 新建
+touch navirome.toml
+
+# 编辑(没有nano就用vim)
+nano navidrome.toml
+</code></pre><p>在配置文件中，有以下几个参数需要指定：</p>
+<ul>
+<li>MusicFolder：歌曲文件所在目录</li>
+<li>DataFolder：软件运行数据的存放目录，默认是<code>./data</code>，也就是当前目录下新建一个<code>/data</code>目录</li>
+<li>Port：端口号，默认是4533</li>
+</ul>
+<p>除了以上三个我觉得比较重要，其它更多参数可以看官方的手册，指路：【<a href="https://www.navidrome.org/docs/usage/configuration-options/">Navidrome/Available Options</a>】</p>
+<p>比如我的配置如下：</p>
+<p><img src="https://img.311803.xyz/i/2024/05/16/200054-0.webp" alt=""></p>
+<p>编辑完成后保存即可。</p>
+<blockquote>
+<p>第三步：编辑启动脚本</p>
+</blockquote>
+<p>现在到最后一步了，需要编辑一份适合sysvinit的启动脚本。</p>
+<pre tabindex="0"><code># 进目录
+cd /etc/init.d
+
+# 新建
+touch navidrome
+
+# 编辑
+nano navidrome
+</code></pre><p>我提供一个最简单可用的版本(里面的文件路径记得自行调整)：</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=96
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start /mnt/sdcard/navidrome/navidrome --configfile &#34;/mnt/sdcard/navidrome/navidrome.toml&#34;
+}
+stop() {
+  kill $(pidof navidrome)
+}
+</code></pre><p>粘贴以后保存退出。</p>
+<p>然后继续敲命令</p>
+<pre tabindex="0"><code># 启动
+service navidrome start
+
+# 开机启动
+service navidrome enable
+</code></pre><p>好了，到这里整个安装navidrome的过程就结束了，可以在浏览器中访问<code>http://host_ip:4533</code>开始使用惹。</p>
+<p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

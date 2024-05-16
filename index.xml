@@ -6,7 +6,33 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 15 May 2024 17:44:08 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 May 2024 18:36:51 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程</title>
+      <link>https://ruohai.wang/202405/navidrome-install-on-ws1408/</link>
+      <pubDate>Wed, 15 May 2024 18:36:51 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/navidrome-install-on-ws1408/</guid>
+      <description>前言 迅雷赚钱宝一代（下称小方块）这机器折腾到现在，相信你也摸出规律了，但凡是支持armbian32/armhf/armv7l的软件，只要有已经编译好的二进制包，在openwrt上都能跑，无非就是需要自己动手写一个sysvinit版本的启动脚本。
+这么看来，小方块上还能继续安装navidrome、hugo、alist、ttyd等等我之前装在armbian小盒子上的服务。既然都有alist了，那挂个小雅合集也不是难事。
+说远了，这篇文章就简单说一下怎么装navidrome
+安装 第一步：下载
+首先就是去navidrome项目的github仓库找安装包，项目地址【navidrome/navidrome】。
+在release页面找到armv7版本的包，复制链接
+然后用wget命令下载到本地并解压
+# 下载 wget -O navidrome.tar.gz https://github.com/navidrome/navidrome/releases/download/v0.52.5/navidrome_0.52.5_linux_armv7.tar.gz # 解压 tar -zxvf navidrome.tar.gz 解压以后看到navirome二进制包已经有可执行权限了，如果没有的话，执行一下chmod +x navidrome即可。
+第二步：编辑配置文件
+在二进制包的目录下，新建配置文件
+# 新建 touch navirome.toml # 编辑(没有nano就用vim) nano navidrome.toml 在配置文件中，有以下几个参数需要指定：
+MusicFolder：歌曲文件所在目录 DataFolder：软件运行数据的存放目录，默认是./data，也就是当前目录下新建一个/data目录 Port：端口号，默认是4533 除了以上三个我觉得比较重要，其它更多参数可以看官方的手册，指路：【Navidrome/Available Options】
+比如我的配置如下：
+编辑完成后保存即可。
+第三步：编辑启动脚本
+现在到最后一步了，需要编辑一份适合sysvinit的启动脚本。
+# 进目录 cd /etc/init.d # 新建 touch navidrome # 编辑 nano navidrome 我提供一个最简单可用的版本(里面的文件路径记得自行调整)：
+#!/bin/sh /etc/rc.common START=96 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/sdcard/navidrome/navidrome --configfile &amp;#34;/mnt/sdcard/navidrome/navidrome.toml&amp;#34; } stop() { kill $(pidof navidrome) } 粘贴以后保存退出。</description>
+    </item>
+    
     <item>
       <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上开启Swap交换分区</title>
       <link>https://ruohai.wang/202405/swapon-on-ws1408/</link>
