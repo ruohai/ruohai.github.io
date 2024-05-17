@@ -6,16 +6,7 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 17 May 2024 10:31:57 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Memos Run on Openwrt</title>
-      <link>https://ruohai.wang/202405/memos-run-on-openwrt/</link>
-      <pubDate>Fri, 17 May 2024 10:31:57 +0000</pubDate>
-      
-      <guid>https://ruohai.wang/202405/memos-run-on-openwrt/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Fri, 17 May 2024 12:52:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在刷了Armbian的玩客云（WS1608）上编译Memos教程</title>
       <link>https://ruohai.wang/202405/memos-compile-one-onecloud/</link>
