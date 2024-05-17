@@ -6,7 +6,42 @@
     <description>Recent content in 202405s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 15 May 2024 18:36:51 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 17 May 2024 12:52:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了Armbian的玩客云（WS1608）上编译Memos教程</title>
+      <link>https://ruohai.wang/202405/memos-compile-one-onecloud/</link>
+      <pubDate>Fri, 17 May 2024 12:52:28 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/memos-compile-one-onecloud/</guid>
+      <description>前言 memos是一个很不错的开源笔记服务，我在刷了armbian的迅雷赚钱宝二代（下称小飞碟）上用docker方式部署了一个自己的memos，已经高强度使用至今。
+但玩过迅雷赚钱宝系列的垃圾佬肯定知道这系列机器从一代到三代，用的芯片都是amlogic s805，架构是arm32/armv7l/armhf，而memos官方从v0.15.0开始就不再发布针对该硬件架构的docker镜像。因为如此，所以我使用的memos一直停留在0.15.0，坏处当然是用不上最新版、体验不到新特性，不过也有好处，至少稳定、不折腾了用了半年。
+在docker hub上也能搜到第三方发布的针对各个硬件架构的memos的镜像，比如这个：【lincolnthalles/memos】，几乎覆盖了全部可能的硬件。
+但我还想更geek一点，我想不再囿于docker，而是直接用源码编译出memos的二进制包，然后把编译出来的memos丢到刷了openwrt的机器上跑。
+先说一下结果：
+成功的编译出了arm32/armv7l/armhf版本的memos，可以在刷了armbian的玩客云/小飞碟上正常跑 编译出来的memos在openwrt上跑不起来，目测应该是openwrt是musl而编译出来memos用的libc 尝试直接在openwrt上编译，没成功 虽然最终的目的没有达成，但至少也成功了一半。所以写篇博客，记录一下过程，也许能帮到你。
+环境准备 编译memos项目，分成前端和后端两个部分。
+编译后端，需要golang，我用的debian仓库里的golang，直接apt install golang即可，版本1.19。
+编译前端需要nodejs，最好再装个yarn。
+因为玩客云的内存太小，我尝试在玩客云上直接编译前端项目时会因为oom而中断。考虑到前端项目的代码不区分硬件平台，所以我是在windows电脑上编译的前端项目然后再copy到玩客云上。
+nodejs设置镜像源、go设定GOPATH、解决网络问题这些属于基操了，不再赘述。
+编译环境准备好了以后，接下去就开始吧！
+开始编译 从github下载源码，解压，进入项目根目录这些操作略过。
+前端
+进入web目录用yarn编译，执行以下命令
+# 进目录 cd web # 安装依赖 yarn # 打包 yarn build 编译完成后，把web目录下生成的dist/目录整个复制到/server/dist/下，也就是
+mv web/dist server/dist 如果你跟我一样在其它机器上编译的前端项目，同样只需要把web目录下的dist/复制到最终机器上的server目录下就可以了。
+到这里，前端项目编译完成。
+后端
+在项目根目录执行命令
+go build -o memos ./main.go 命令跑完以后在项目根目录下会出现一个memos的文件，就是编译好的后端了。
+关于后端编译有一个坑需要注意，就是，比如我在/mnt/data/memos.v0.15.0目录下编译出了一个memos后端，那这个memos后端只会去/mnt/data/memos.v0.15.0/server/dist目录下找前端，aka后端文件中的前端项目路径在编译的时候就写死了。如果把编译好的memos后端放到其它目录下，就会找不到前端项目。
+运行
+前端和后端都编译完成后，最终我们需要的项目结构如下：
+----memos_project |--memos |--server |--dist |--assets |--index.html |--logo.webp |--manifest.json |--sw.js |--... 最后在项目根目录下执行命令即可，记得根据自己喜好调整端口号和数据保存路径。
+./memos --mode=prod --port=5230 --data=/path/to/save/data 看到这个界面就算是成功惹，打开浏览器，访问http://host-ip:5230就可以使用自己编译的memos。
+systemd配置文件</description>
+    </item>
+    
     <item>
       <title>在刷了OpenWrt的迅雷赚钱宝一代（WS408）上安装Navidrome教程</title>
       <link>https://ruohai.wang/202405/navidrome-install-on-ws1408/</link>
