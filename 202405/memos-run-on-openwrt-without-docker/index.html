@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>非Docker方式在Openwrt上运行Memos // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="非Docker方式在Openwrt上运行Memos"/>
+<meta name="twitter:description" content="前言 长话短说了。
+Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.0以后已经停止维护针对arm32/armhf/armv7l的版本。
+我的系统是3.10内核的openwrt 21，因为内核太老所以不支持安装docker。
+我的硬件是迅雷赚钱宝一代，硬件型号ws1408，芯片amlogic s805，内存228MB。
+我用的memos后端是v0.15.2，是从github下载的，指路：【memospot/memos-builds】。
+你可能会问为什么不用更高的版本，😂，有苦衷的。其一是因为前端部分需要自己编译，我只成功编译出了v0.15.0版本，更新的版本我本地编译都会报错，暂时没有精力去debug。其二是因为之前受arm32平台的限制，我一直用的是v0.15.0的docker镜像，而从v0.16开始的更新就涉及到数据库表结构的变更，没法平滑的升级，所以本次还是停留在v0.15这个大版本。
+至于后端v0.15.2 &#43; 前端v0.15.0这种奇怪的版本组合，😂，我用了一个周末，还没有发现什么bug，可以正常使用。
+我自己编译的v0.15.0的前端项目的下载放在文章最后。
+这种方式也适用于在其它linux版本上直接用编译好的二进制包运行memos，自行调整配置文件即可。
+配置 先把v0.15.2的后端 &#43; v0.15.0的前端上传到服务器，然后按照项目结构进行组织。后端文件memos不要忘记添加可执行权限，chmod &#43;x memos。
+---- --memos --server | --dist 我的项目结构如下图，其中data用来存放memos的数据。
+接下去就是配置启动脚本以及一些bug处理。
+第一步：sysv脚本
+在/etc/init.d目录下新建文件memos，记得添加可执行权限chmod &#43;x memos，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
+# 启动服务 service memos start # 添加启动项 service memos enable 注意这个脚本只设置了start和stop两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。
+第二步：设置缓存图目录
+memos应该是硬编码了去/var/opt/memos/assets目录下索引图片来生成缓存，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
+比如我的memos数据都存放在/mnt/data/memos/data目录下。
+解决的方法是建立一个软连接，把缓存目录指向我们的数据目录。
+# 新建目录 mkdir -p /var/opt/memos/ # 把硬编码的目录通过软链接指向我们自己的数据目录 ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets 但机器可能偶尔会重启，一重启整个/var目录会被清空，不可能每次重启都手动创建一遍目录 &#43; 软连接，所以需要把这个操作添加到启动项。"/>
+
+    <meta property="og:title" content="非Docker方式在Openwrt上运行Memos" />
+<meta property="og:description" content="前言 长话短说了。
+Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.0以后已经停止维护针对arm32/armhf/armv7l的版本。
+我的系统是3.10内核的openwrt 21，因为内核太老所以不支持安装docker。
+我的硬件是迅雷赚钱宝一代，硬件型号ws1408，芯片amlogic s805，内存228MB。
+我用的memos后端是v0.15.2，是从github下载的，指路：【memospot/memos-builds】。
+你可能会问为什么不用更高的版本，😂，有苦衷的。其一是因为前端部分需要自己编译，我只成功编译出了v0.15.0版本，更新的版本我本地编译都会报错，暂时没有精力去debug。其二是因为之前受arm32平台的限制，我一直用的是v0.15.0的docker镜像，而从v0.16开始的更新就涉及到数据库表结构的变更，没法平滑的升级，所以本次还是停留在v0.15这个大版本。
+至于后端v0.15.2 &#43; 前端v0.15.0这种奇怪的版本组合，😂，我用了一个周末，还没有发现什么bug，可以正常使用。
+我自己编译的v0.15.0的前端项目的下载放在文章最后。
+这种方式也适用于在其它linux版本上直接用编译好的二进制包运行memos，自行调整配置文件即可。
+配置 先把v0.15.2的后端 &#43; v0.15.0的前端上传到服务器，然后按照项目结构进行组织。后端文件memos不要忘记添加可执行权限，chmod &#43;x memos。
+---- --memos --server | --dist 我的项目结构如下图，其中data用来存放memos的数据。
+接下去就是配置启动脚本以及一些bug处理。
+第一步：sysv脚本
+在/etc/init.d目录下新建文件memos，记得添加可执行权限chmod &#43;x memos，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
+# 启动服务 service memos start # 添加启动项 service memos enable 注意这个脚本只设置了start和stop两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。
+第二步：设置缓存图目录
+memos应该是硬编码了去/var/opt/memos/assets目录下索引图片来生成缓存，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
+比如我的memos数据都存放在/mnt/data/memos/data目录下。
+解决的方法是建立一个软连接，把缓存目录指向我们的数据目录。
+# 新建目录 mkdir -p /var/opt/memos/ # 把硬编码的目录通过软链接指向我们自己的数据目录 ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets 但机器可能偶尔会重启，一重启整个/var目录会被清空，不可能每次重启都手动创建一遍目录 &#43; 软连接，所以需要把这个操作添加到启动项。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/" /><meta property="article:section" content="202405" />
+<meta property="article:published_time" content="2024-05-20T00:32:48+08:00" />
+<meta property="article:modified_time" content="2024-05-20T00:32:48+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">非Docker方式在Openwrt上运行Memos</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 20, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/memos/">memos</a>
+              <a class="tag" href="https://ruohai.wang/tags/openwrt/">OpenWrt</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>长话短说了。</p>
+<p>Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.0以后已经停止维护针对arm32/armhf/armv7l的版本。</p>
+<p>我的系统是3.10内核的openwrt 21，因为内核太老所以不支持安装docker。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/01.webp" alt=""></p>
+<p>我的硬件是迅雷赚钱宝一代，硬件型号ws1408，芯片amlogic s805，内存228MB。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/02.webp" alt=""></p>
+<p>我用的memos后端是v0.15.2，是从github下载的，指路：【<a href="https://github.com/memospot/memos-builds/releases">memospot/memos-builds</a>】。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/03.webp" alt=""></p>
+<p>你可能会问为什么不用更高的版本，😂，有苦衷的。其一是因为前端部分需要自己编译，我只成功编译出了v0.15.0版本，更新的版本我本地编译都会报错，暂时没有精力去debug。其二是因为之前受arm32平台的限制，我一直用的是v0.15.0的docker镜像，而从v0.16开始的更新就涉及到数据库表结构的变更，没法平滑的升级，所以本次还是停留在v0.15这个大版本。</p>
+<p>至于后端v0.15.2 + 前端v0.15.0这种奇怪的版本组合，😂，我用了一个周末，还没有发现什么bug，可以正常使用。</p>
+<p>我自己编译的v0.15.0的前端项目的下载放在文章最后。</p>
+<p>这种方式也适用于在其它linux版本上直接用编译好的二进制包运行memos，自行调整配置文件即可。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<p>先把v0.15.2的后端 + v0.15.0的前端上传到服务器，然后按照项目结构进行组织。后端文件<code>memos</code>不要忘记添加可执行权限，<code>chmod +x memos</code>。</p>
+<pre tabindex="0"><code>----
+--memos
+--server
+    |
+    --dist
+</code></pre><p>我的项目结构如下图，其中data用来存放memos的数据。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/04.webp" alt=""></p>
+<p>接下去就是配置启动脚本以及一些bug处理。</p>
+<blockquote>
+<p>第一步：sysv脚本</p>
+</blockquote>
+<p>在<code>/etc/init.d</code>目录下新建文件<code>memos</code>，记得添加可执行权限<code>chmod +x memos</code>，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=99
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data
+}
+
+stop() {
+  kill $(pidof memos)
+}
+</code></pre><p>保存后退出，然后启动服务并设置开机启动。</p>
+<pre tabindex="0"><code># 启动服务
+service memos start
+
+# 添加启动项
+service memos enable
+</code></pre><p>注意这个脚本只设置了<code>start</code>和<code>stop</code>两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。</p>
+<blockquote>
+<p>第二步：设置缓存图目录</p>
+</blockquote>
+<p>memos应该是硬编码了去<code>/var/opt/memos/assets</code>目录下索引图片来生成缓存，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，<code>/var</code>目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。</p>
+<p>比如我的memos数据都存放在<code>/mnt/data/memos/data</code>目录下。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/05.webp" alt=""></p>
+<p>解决的方法是建立一个软连接，把缓存目录指向我们的数据目录。</p>
+<pre tabindex="0"><code># 新建目录
+mkdir -p /var/opt/memos/
+
+# 把硬编码的目录通过软链接指向我们自己的数据目录
+ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets
+</code></pre><p>但机器可能偶尔会重启，一重启整个<code>/var</code>目录会被清空，不可能每次重启都手动创建一遍目录 + 软连接，所以需要把这个操作添加到启动项。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/06.webp" alt=""></p>
+<p>把两条命令合并在一起</p>
+<pre tabindex="0"><code>mkdir -p /var/opt/memos/ ; ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets
+</code></pre><blockquote>
+<p>第三步：手动创建缓存图片目录</p>
+</blockquote>
+<p>在memos的数据目录下，还需要手动创建图片缓存目录<code>.thumbnail_cache</code>，我测试下如果不手动创建这个目录，缓存图片功能依然会报目录确实的错误。😂</p>
+<pre tabindex="0"><code>mkdir /mnt/data/memos/data/.thumbnail_cache
+</code></pre><blockquote>
+<p>第四步：选择正确的时区</p>
+</blockquote>
+<p>memos服务的时区是根据系统的时区来生成时间戳，所以记得确认下宿主系统的时区是不是设置正确。</p>
+<p>比如我的宿主系统是openwrt，时区设置<code>Asia/Shanghai</code>，千万不要选错时区导致发布的笔记时间错乱。</p>
+<p><img src="https://img.311803.xyz/i/2024/05/20/07.webp" alt=""></p>
+<p>好了，到这里所有的配置就完成了，可以不用docker就在各种宿主系统上运行memos惹。</p>
+<p>🎉</p>
+<hr>
+<h2 id="下载">下载</h2>
+<p>百度网盘链接：https://pan.baidu.com/s/1hOSZHQ_VfsEPYUxb64X72g</p>
+<p>提取码：s6pg</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

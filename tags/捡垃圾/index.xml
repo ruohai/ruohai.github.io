@@ -6,7 +6,36 @@
     <description>Recent content in 捡垃圾 on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 17 May 2024 12:52:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 May 2024 00:32:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>非Docker方式在Openwrt上运行Memos</title>
+      <link>https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/</link>
+      <pubDate>Mon, 20 May 2024 00:32:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/</guid>
+      <description>前言 长话短说了。
+Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.0以后已经停止维护针对arm32/armhf/armv7l的版本。
+我的系统是3.10内核的openwrt 21，因为内核太老所以不支持安装docker。
+我的硬件是迅雷赚钱宝一代，硬件型号ws1408，芯片amlogic s805，内存228MB。
+我用的memos后端是v0.15.2，是从github下载的，指路：【memospot/memos-builds】。
+你可能会问为什么不用更高的版本，😂，有苦衷的。其一是因为前端部分需要自己编译，我只成功编译出了v0.15.0版本，更新的版本我本地编译都会报错，暂时没有精力去debug。其二是因为之前受arm32平台的限制，我一直用的是v0.15.0的docker镜像，而从v0.16开始的更新就涉及到数据库表结构的变更，没法平滑的升级，所以本次还是停留在v0.15这个大版本。
+至于后端v0.15.2 + 前端v0.15.0这种奇怪的版本组合，😂，我用了一个周末，还没有发现什么bug，可以正常使用。
+我自己编译的v0.15.0的前端项目的下载放在文章最后。
+这种方式也适用于在其它linux版本上直接用编译好的二进制包运行memos，自行调整配置文件即可。
+配置 先把v0.15.2的后端 + v0.15.0的前端上传到服务器，然后按照项目结构进行组织。后端文件memos不要忘记添加可执行权限，chmod +x memos。
+---- --memos --server | --dist 我的项目结构如下图，其中data用来存放memos的数据。
+接下去就是配置启动脚本以及一些bug处理。
+第一步：sysv脚本
+在/etc/init.d目录下新建文件memos，记得添加可执行权限chmod +x memos，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
+# 启动服务 service memos start # 添加启动项 service memos enable 注意这个脚本只设置了start和stop两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。
+第二步：设置缓存图目录
+memos应该是硬编码了去/var/opt/memos/assets目录下索引图片来生成缓存，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
+比如我的memos数据都存放在/mnt/data/memos/data目录下。
+解决的方法是建立一个软连接，把缓存目录指向我们的数据目录。
+# 新建目录 mkdir -p /var/opt/memos/ # 把硬编码的目录通过软链接指向我们自己的数据目录 ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets 但机器可能偶尔会重启，一重启整个/var目录会被清空，不可能每次重启都手动创建一遍目录 + 软连接，所以需要把这个操作添加到启动项。</description>
+    </item>
+    
     <item>
       <title>在刷了Armbian的玩客云（WS1608）上编译Memos教程</title>
       <link>https://ruohai.wang/202405/memos-compile-one-onecloud/</link>

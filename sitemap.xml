@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202405/</loc>
-    <lastmod>2024-05-17T12:52:28+08:00</lastmod>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/memos/</loc>
-    <lastmod>2024-05-17T12:52:28+08:00</lastmod>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/openwrt/</loc>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-05-17T12:52:28+08:00</lastmod>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
-    <lastmod>2024-05-17T12:52:28+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/202405/memos-compile-one-onecloud/</loc>
-    <lastmod>2024-05-17T12:52:28+08:00</lastmod>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/</loc>
+    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202405/memos-compile-one-onecloud/</loc>
     <lastmod>2024-05-17T12:52:28+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/naidrome/</loc>
@@ -42,9 +48,6 @@
     <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/file-browser/</loc>
-    <lastmod>2024-04-30T21:21:05+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/openwrt/</loc>
     <lastmod>2024-04-30T21:21:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/filebrowser-install-on-ws1408/</loc>
