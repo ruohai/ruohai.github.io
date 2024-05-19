@@ -23,16 +23,16 @@ Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.
 我自己编译的v0.15.0的前端项目的下载放在文章最后。
 这种方式也适用于在其它linux版本上直接用编译好的二进制包运行memos，自行调整配置文件即可。
 配置 先把v0.15.2的后端 + v0.15.0的前端上传到服务器，然后按照项目结构进行组织。后端文件memos不要忘记添加可执行权限，chmod +x memos。
----- --memos --server | --dist 我的项目结构如下图，其中data用来存放memos的数据。
+--memos --server | --dist 我的项目结构如下图，其中data用来存放memos的数据。
 接下去就是配置启动脚本以及一些bug处理。
 第一步：sysv脚本
 在/etc/init.d目录下新建文件memos，记得添加可执行权限chmod +x memos，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。
 #!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
 # 启动服务 service memos start # 添加启动项 service memos enable 注意这个脚本只设置了start和stop两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。
-第二步：设置缓存图目录
-memos应该是硬编码了去/var/opt/memos/assets目录下索引图片来生成缓存，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
+第二步：设置缩略图目录
+memos应该是硬编码了到/var/opt/memos/assets这个附件目录下索引图片来生成缩略图，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
 比如我的memos数据都存放在/mnt/data/memos/data目录下。
-解决的方法是建立一个软连接，把缓存目录指向我们的数据目录。
+解决的方法是建立一个软连接，把附件目录指向我们自定义的附件目录。
 # 新建目录 mkdir -p /var/opt/memos/ # 把硬编码的目录通过软链接指向我们自己的数据目录 ln -s /mnt/data/memos/data/assets/ /var/opt/memos/assets 但机器可能偶尔会重启，一重启整个/var目录会被清空，不可能每次重启都手动创建一遍目录 + 软连接，所以需要把这个操作添加到启动项。</description>
     </item>
     
