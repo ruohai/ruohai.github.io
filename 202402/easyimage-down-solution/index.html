@@ -134,17 +134,17 @@ php-fpm启动以后需要这个/run/php/目录来存放运行文件。
 <p>根据nginx的日志，大致可以判定错误原因和php-fpm服务有关，那就看下这个服务的状态</p>
 <pre tabindex="0"><code>systemctl status php8.2-fpm.service
 </code></pre><p>结果如图</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/kg7q8n-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/kg7q8n-0.png" alt=""></p>
 <p>现在可以判定是php-fpm服务出问题了无法启动，导致无法转发php的请求。</p>
 <blockquote>
 <p>第三步：php-fpm启动报错原因排查</p>
 </blockquote>
 <p>既然是php-fpm服务出问题了，先重启试试，看是否有报错信息。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/khockg-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/khockg-0.png" alt=""></p>
 <p>提示了查看详细错误信息的命令。</p>
 <pre tabindex="0"><code>journalctl -xeu php8.2-fpm.service
 </code></pre><p>错误日志很长啊，但核心的就箭头所指的一条。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/kive8u-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/kive8u-0.png" alt=""></p>
 <p>虽然知道原因了，但不知道怎么解决，只能上网搜了。</p>
 <p>最后在stackoverflow找到了解决方案：<a href="https://stackoverflow.com/questions/29859131/unable-to-bind-listening-socket-for-address-php-fpm">Unable to bind listening socket for address php-fpm</a></p>
 <hr>
@@ -152,7 +152,7 @@ php-fpm启动以后需要这个/run/php/目录来存放运行文件。
 <p>在<code>/run</code>目录下新建一个<code>php</code>目录。</p>
 <p>没错，就是在<code>/run</code>目录下新建一个<code>php</code>目录，也就是<code>/run/php</code>。</p>
 <p>php-fpm启动以后需要这个<code>/run/php/</code>目录来存放运行文件。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/kn5tdd-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/kn5tdd-0.png" alt=""></p>
 <p>至于为什么之前php跑的好好的没问题，也不需要自己来新建这个文件，而且没有变更过任何的配置、用户、权限，今天怎么就不行了？</p>
 <p>🤔</p>
 <p>我不知道。</p>

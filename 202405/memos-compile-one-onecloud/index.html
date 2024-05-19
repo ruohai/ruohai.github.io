@@ -135,10 +135,10 @@ systemd配置文件" />
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>memos是一个很不错的开源笔记服务，我在刷了armbian的迅雷赚钱宝二代（下称小飞碟）上用docker方式部署了一个自己的memos，已经高强度使用至今。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/17/125531-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/17/125531-0.webp" alt=""></p>
 <p>但玩过迅雷赚钱宝系列的垃圾佬肯定知道这系列机器从一代到三代，用的芯片都是amlogic s805，架构是arm32/armv7l/armhf，而memos官方从v0.15.0开始就不再发布针对该硬件架构的docker镜像。因为如此，所以我使用的memos一直停留在0.15.0，坏处当然是用不上最新版、体验不到新特性，不过也有好处，至少稳定、不折腾了用了半年。</p>
 <p>在docker hub上也能搜到第三方发布的针对各个硬件架构的memos的镜像，比如这个：【<a href="https://hub.docker.com/r/lincolnthalles/memos">lincolnthalles/memos</a>】，几乎覆盖了全部可能的硬件。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/17/130019-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/17/130019-0.webp" alt=""></p>
 <p>但我还想更geek一点，我想不再囿于docker，而是直接用源码编译出memos的二进制包，然后把编译出来的memos丢到刷了openwrt的机器上跑。</p>
 <p>先说一下结果：</p>
 <ul>
@@ -152,7 +152,7 @@ systemd配置文件" />
 <p>编译memos项目，分成前端和后端两个部分。</p>
 <p>编译后端，需要<code>golang</code>，我用的debian仓库里的golang，直接<code>apt install golang</code>即可，版本1.19。</p>
 <p>编译前端需要<code>nodejs</code>，最好再装个yarn。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/17/130909-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/17/130909-0.webp" alt=""></p>
 <p>因为玩客云的内存太小，我尝试在玩客云上直接编译前端项目时会因为oom而中断。考虑到前端项目的代码不区分硬件平台，所以我是在windows电脑上编译的前端项目然后再copy到玩客云上。</p>
 <p>nodejs设置镜像源、go设定GOPATH、解决网络问题这些属于基操了，不再赘述。</p>
 <p>编译环境准备好了以后，接下去就开始吧！</p>
@@ -181,7 +181,7 @@ yarn build
 <p>在项目根目录执行命令</p>
 <pre tabindex="0"><code>go build -o memos ./main.go
 </code></pre><p>命令跑完以后在项目根目录下会出现一个<code>memos</code>的文件，就是编译好的后端了。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/17/132203-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/17/132203-0.webp" alt=""></p>
 <p>关于后端编译有一个坑需要注意，就是，比如我在<code>/mnt/data/memos.v0.15.0</code>目录下编译出了一个memos后端，那这个memos后端只会去<code>/mnt/data/memos.v0.15.0/server/dist</code>目录下找前端，aka后端文件中的前端项目路径在编译的时候就写死了。如果把编译好的memos后端放到其它目录下，就会找不到前端项目。</p>
 <blockquote>
 <p>运行</p>
@@ -200,7 +200,7 @@ yarn build
 </code></pre><p>最后在项目根目录下执行命令即可，记得根据自己喜好调整端口号和数据保存路径。</p>
 <pre tabindex="0"><code>./memos --mode=prod --port=5230 --data=/path/to/save/data
 </code></pre><p>看到这个界面就算是成功惹，打开浏览器，访问<code>http://host-ip:5230</code>就可以使用自己编译的memos。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/17/133544-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/17/133544-0.webp" alt=""></p>
 <blockquote>
 <p>systemd配置文件</p>
 </blockquote>

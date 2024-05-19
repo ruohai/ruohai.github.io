@@ -135,7 +135,7 @@ service cloudflared start 😂" />
 <p>手上的迅雷赚钱宝一代（ws1408）刷了openwrt，然后装了samba4、qbit、wol、filebrowser、ttyd、minidlna，除了这些以总想着还能在这个电子垃圾上挖掘出什么功能，最后想到它作为一个24小时开机的下载机，再弄个cloudflared给我的cloudflare tunnle做冗余connector是个不错的主意。</p>
 <p>之前的博客里提到过，cloudflare tunnel的官方文档里就写了，想要提高一个tunnel的稳定性，有花钱的方案也有免费的方案，免费的方案就是自己多弄几个机器装cloudflared来作为tunnel的connector，这样哪怕其中一个connector崩了，还有其它几个connector备份可用。</p>
 <p>我实测一个tunnel配置两个connector（cloudflared）就再没见过<code>degrade</code>或者<code>down</code>的标识了。但这玩意多多益善，3个总是比2个稳定，那就开始吧~</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/132647-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/132647-0.webp" alt=""></p>
 <hr>
 <h2 id="安装">安装</h2>
 <blockquote>
@@ -144,7 +144,7 @@ service cloudflared start 😂" />
 <p>openwrt说到底还是魔改的linux，所以找到合适版本的cloudflared就行了。</p>
 <p>实测clouflare官方提供的二进制包就可以直接使用，项目地址：【<a href="https://github.com/cloudflare/cloudflared">cloudflare/cloudflared</a>】</p>
 <p>ws1408用的芯片是大家的老朋友amlogic s805，我们都很熟悉它是armv7l/armhf的架构。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/133532-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/133532-0.webp" alt=""></p>
 <p>可以选择复制下载链接，然后ssh连上openwrt，再用wget下载。也可以直接下载到本地，然后通过winscp或者其它方法上传到机器。</p>
 <p>我在机器上插了一张sd卡挂载到<code>/mnt/sdcard</code>作为软件安装目录，因为ws1408自带存储只有72MB太金贵啦。</p>
 <pre tabindex="0"><code># 进入目录
@@ -159,9 +159,9 @@ chmod +x cloudflared
 <p>第二部：安装</p>
 </blockquote>
 <p>软件下载完以后，首先需要登录cloudflare官网，进入tunnel配置页面，找到自己的tunnel，在configure页面的overview标签页，找到自己的这个tunnel的token。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/135624-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/135624-0.webp" alt=""></p>
 <p>打码的就是token了，复制以后先放一边备用。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/134500-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/134500-0.webp" alt=""></p>
 <p>然后依然是ssh连上openwrt，开始安装</p>
 <pre tabindex="0"><code># 进目录
 cd /mnt/sdcard/cloudflared
@@ -169,29 +169,29 @@ cd /mnt/sdcard/cloudflared
 # 安装服务
 ./cloudflared service install [token]
 </code></pre><p>执行<code>install</code>命令以后，终端会有一些信息输出，提示在环境变量$PATH中找不到可执行文件。</p>
-<p><img src="https://img.311803.xyz/i/2024/05/04/124238-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/05/04/124238-0.webp" alt=""></p>
 <p>这里可以先不管它，我们手动启动。</p>
 <pre tabindex="0"><code># 进入init.d目录
 cd /etc/init.d
 </code></pre><p>确定目录下有cloudflared的服务配置文件。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/135037-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/135037-0.webp" alt=""></p>
 <p>然后启动cloudflared</p>
 <pre tabindex="0"><code>service cloudflared start
 </code></pre><p>然后用<code>htop</code>确认cloudflared是否启动</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/135209-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/135209-0.webp" alt=""></p>
 <p>到这里就完成在openwrt上安装cloudflare tunnel的connector惹。</p>
 <p>🎉</p>
 <hr>
 <h2 id="一些已知问题">一些已知问题</h2>
 <p>我的ws1408装的opwnwrt版本是21.02.7，内核是3.10.33。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/135916-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/135916-0.webp" alt=""></p>
 <p>按照上文的方法安装好cloudflared以后，可以启动，但是没法把它添加到开机自启。执行<code>service cloudflared enable</code>会提示不支持<code>enable</code>命令。</p>
 <p>在openwrt的后台——启动项中显示cloudflared的启动项是<code>禁用</code>，点击启用，会提示启用失败。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/30/140110-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/30/140110-0.webp" alt=""></p>
 <p>如果你熟悉init.d的启动脚本语法，可以试试调整<code>/etc/init.d/cloudflared</code>能否解决这个bug。</p>
 <p>我用了另外的办法解决，那就是在本地启动脚本里手动添加一条命令。</p>
 <pre tabindex="0"><code>service cloudflared start
-</code></pre><p><img src="https://img.311803.xyz/i/2024/04/30/140407-0.webp" alt=""></p>
+</code></pre><p><img src="https://img.311803.xyz/2024/04/30/140407-0.webp" alt=""></p>
 <p>😂</p>
 
     </div>

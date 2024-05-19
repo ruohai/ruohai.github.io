@@ -138,7 +138,7 @@ badblocks -sv /dev/sda &amp; e2fsck -l $ /dev/sda 参考文章 ArchWiki:badblock
 </code></pre><p>想要知道自己的硬盘的区块大小，可以用<code>fdisk</code>查看</p>
 <pre tabindex="0"><code>fdisk -l /dev/sda
 </code></pre><p>在输出结果中可以看到硬盘的区块大小是多少</p>
-<p><img src="https://img.311803.xyz/i/2024/04/20/182507-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/20/182507-0.webp" alt=""></p>
 <hr>
 <h2 id="屏蔽坏道">屏蔽坏道</h2>
 <p>扫描结束以后，再用e2fsck把坏道屏蔽。</p>

@@ -136,9 +136,9 @@ openwrt的启动脚本放在/etc/init.d目录。
       <h2 id="前言">前言</h2>
 <p>手上有两个迅雷赚钱宝一代，硬件型号ws1408，当时捡垃圾的时候卖家作为添头10块钱一个打包入手的。它长这个样子</p>
 <p>正面</p>
-<p><img src="https://img.311803.xyz/i/2024/04/27/165701-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/165701-0.webp" alt=""></p>
 <p>背面的接口</p>
-<p><img src="https://img.311803.xyz/i/2024/04/27/165717-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/165717-0.webp" alt=""></p>
 <p>这机器性能孱弱，赚钱宝系列连用三代的amlogic s805芯片方案，256MB内存，usb2.0接口 + tf槽，<code>先进</code>的百兆网口，所以吸引不了大佬给它适配固件，装个3.10老旧内核的openwrt再装个bt下载软件当下载机是个不错的选择。但openwrt软件源仓库里只有aria2和trasmission，这俩在bt下载能力上远远不如qbit，所以我一直想在这机器上装qbit。</p>
 <p>最近找了一些教程，最后成功跑起来了。这里做个简单记录。</p>
 <hr>
@@ -158,7 +158,7 @@ openwrt的启动脚本放在/etc/init.d目录。
 <p>第一步：下载软件</p>
 </blockquote>
 <p>这机器的硬件架构是 <code>armv7l</code>，在项目的release页面找到对应的版本。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/27/173106-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/173106-0.webp" alt=""></p>
 <p>ssh进入openwrt，选择目录开始下载。我在<code>mnt</code>目录下挂载了一个硬盘，路径为<code>/mnt/data</code>，下文中就以此举例。</p>
 <pre tabindex="0"><code># 创建软件目录并进入目录
 mkdir /mnt/data/qbittorrent ; cd $_
@@ -180,11 +180,11 @@ cd /mnt/data/qbittorrent
 # 首次运行qbit，用--profile参数指定配置文件目录
 ./qbittorrent-nox --profile=/mnt/data/qbittorrent/config
 </code></pre><p>这时候qbit开始启动，终端会出现提示说bt分享的免责声明，询问是否继续运行，敲<code>y</code>。然后qbit成功启动，终端会输出访问web ui的网址，以及初始的账户（admin）和随机密码。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/29/192448-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/29/192448-0.webp" alt=""></p>
 <p>用账户和随机密码登录网页的qbit，调整中文语言</p>
-<p><img src="https://img.311803.xyz/i/2024/04/27/184512-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/184512-0.webp" alt=""></p>
 <p>修改账户和密码，然后保存。</p>
-<p><img src="https://img.311803.xyz/i/2024/04/27/184538-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/184538-0.webp" alt=""></p>
 <p>到这里就完成了qbit的初始化，已经可以正常使用了。</p>
 <p>但这个时候qbit是以前台任务的形式在终端里运行，如果<code>ctrl +c</code>或者关掉终端，qbit也会停止运行。</p>
 <p>所以接下去要写一个init.d开机启动的脚本。</p>
@@ -255,7 +255,7 @@ service qbittorrent-nox start
 <li>物理内存（RAM）用量上限：默认是512MB，改成100MB，这已经是接近50%的内存占用了</li>
 <li>校验时内存使用扩增量：默认32MB，改成最小值1MB</li>
 </ul>
-<p><img src="https://img.311803.xyz/i/2024/04/27/185116-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/04/27/185116-0.webp" alt=""></p>
 <p>改完这两处以后，那个6.1GB的windows镜像终于安全的下载到硬盘里惹。</p>
 <hr>
 <h2 id="固件下载">固件下载</h2>

@@ -117,8 +117,8 @@ server { listen 12345; server_name ttyd; location / { auth_basic &#34;ttyd&#34;;
 </code></pre><p>🤔，不管这个系统是独自使用还是多人共用，这种完全暴露用户名和密码的方式实在是让人身心不安。</p>
 <p>那有没有其它认证的方法，比如把用户和密码信息保存在文件中，ttyd启动命令从文件中读取用户信息。</p>
 <p>查了项目github主页的issues，很多年前就有开发者提交了这个功能的代码，但都被作者关闭、驳回了。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/28/205907-0.webp" alt=""></p>
-<p><img src="https://img.311803.xyz/i/2024/02/28/205957-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/28/205907-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/28/205957-0.webp" alt=""></p>
 <p>既然ttyd的开发者如此固执的拒绝合并这个功能的代码，那就看下怎么通过他所说的<code>Auth Proxy</code>来实现。</p>
 <hr>
 <h2 id="配置">配置</h2>
@@ -179,7 +179,7 @@ WantedBy=multi-user.target
 <li>将用户信息录入到文件<code>ttyd_htpasswd</code>中，格式：<code>jacky:$1$5PVQRvf2$uRvP6n56L9DtSXrEmBMCi1</code>。</li>
 </ol>
 <p>完成以上配置以后，可以重启ttyd、重启nginx使配置生效。此时访问ttyd，会要求输入用户信息进行认证。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/28/212229-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/28/212229-0.webp" alt=""></p>
 <blockquote>
 <p>第四步：修改文件权限（可选）</p>
 </blockquote>

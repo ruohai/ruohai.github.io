@@ -117,10 +117,10 @@ dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷
       <h2 id="前言">前言</h2>
 <p>前段时间逛海鲜市场的时候留意到一个矿渣盒子，黑豹x2，又是一个类似迅雷赚钱宝这样的挖矿项目已经gg的定制硬件盒子，目前海鲜市场的价格大概在135rmb左右。去年的时候好像价格只要70rmb，现在价格差不多已经翻一倍了。😂</p>
 <p>硬件配置是rockchip 3566 + 4gb内存 + 32gb 内置emmc闪存 + tf卡扩展 + 千兆网口 + usb2.0接口，没有视频输出接口，原封包装的话自带一张64GB闪迪tf卡，12v/2a的dc供电。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/12/183152-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/12/183152-0.webp" alt=""></p>
 <p>这个硬件配置，cpu性能在一众盒子里算比较顶，内存和闪存给的都比较充裕，而且支持tf卡扩展，aarch64/arm64架构，在很长一段时间里都不用担心性能瓶颈，更不用担心像玩客云的arm32/armv7l架构缺少第三方应用支持。不过鸡肋的地方也很多，比如usb接口只是2.0而且只给了一个，没有hdmi/dp没法当电视盒子用，只有单个网口不能当软路由。</p>
 <p>ophub的项目<a href="https://github.com/ophub/amlogic-s9xxx-armbian">amlogic-s9xxx-armbian</a>中已经有这个盒子的armbian固件，本文中提到的armbian固件都从这个项目中下载。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/12/194255-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/12/194255-0.webp" alt=""></p>
 <hr>
 <h2 id="卡刷">卡刷</h2>
 <p>黑豹x2刷机有两种方法，第一种是卡刷，这种方法比较简单而且不需要特殊工具。</p>
@@ -148,32 +148,32 @@ dd if=Armbian_24.5.0_xxx.img of=/dev/mmcblk1 bs=1M status=progress 线刷 线刷
 <blockquote>
 <p>第一步：电脑安装驱动</p>
 </blockquote>
-<p><img src="https://img.311803.xyz/i/2024/03/12/190703-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/12/190703-0.webp" alt=""></p>
 <blockquote>
 <p>第二步：选择固件</p>
 </blockquote>
 <p>启动RKDevTool软件，在<code>boot</code>一栏中，选择<code>rk356x-MiniLoaderAll.bin</code>文件，在<code>system</code>一栏中，选择自己下载的armbian镜像文件。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/12/190120-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/12/190120-0.webp" alt=""></p>
 <blockquote>
 <p>第三步：开始刷机</p>
 </blockquote>
 <ol>
 <li>设备不要通电。用卡针长按盒子的reset，然后连接双公头usb线，电脑会有<code>叮咚</code>提示音，在瑞芯微开发工具中会显示<code>发现一个LOADER设备</code>。</li>
 </ol>
-<p><img src="https://img.311803.xyz/i/2024/03/12/191359-0.webp" alt="图片来自 rupu.net"></p>
-<p><img src="https://img.311803.xyz/i/2024/03/12/191505-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/2024/03/12/191359-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/2024/03/12/191505-0.webp" alt="图片来自 rupu.net"></p>
 <ol start="2">
 <li>点击【高级功能——进入maskrom】让设备重启。</li>
 </ol>
-<p><img src="https://img.311803.xyz/i/2024/03/12/191841-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/2024/03/12/191841-0.webp" alt="图片来自 rupu.net"></p>
 <ol start="3">
 <li>点击【下载镜像——执行】开始刷机。</li>
 </ol>
-<p><img src="https://img.311803.xyz/i/2024/03/12/192003-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/2024/03/12/192003-0.webp" alt="图片来自 rupu.net"></p>
 <ol start="4">
 <li>提示<code>下载完成</code>即为刷机完成，可以拔掉双公头usb线缆，然后通电开机。</li>
 </ol>
-<p><img src="https://img.311803.xyz/i/2024/03/12/192125-0.webp" alt="图片来自 rupu.net"></p>
+<p><img src="https://img.311803.xyz/2024/03/12/192125-0.webp" alt="图片来自 rupu.net"></p>
 <hr>
 <h2 id="参考文章">参考文章</h2>
 <ol>

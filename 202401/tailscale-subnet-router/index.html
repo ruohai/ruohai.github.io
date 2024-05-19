@@ -121,7 +121,7 @@ echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;
 <li>在一台机器上部署tailscale，开启subnet routers，通过这台机器，在已经用tailscale组网的机器上，可以直接用<code>192.168.*.*</code>ip访问内网的机器</li>
 </ul>
 <p>看上去还是比较拗口，那就直接看官网的图片解释吧</p>
-<p><img src="https://img.311803.xyz/i/2024/01/28/yx0rqr-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/01/28/yx0rqr-0.png" alt=""></p>
 <hr>
 <h2 id="部署">部署</h2>
 <p>先贴上官网的subnet routers的指导手册：<a href="https://tailscale.com/kb/1019/subnets">Subnet routers and traffic relay nodes</a></p>
@@ -158,9 +158,9 @@ sudo sysctl -p /etc/sysctl.conf
 </blockquote>
 <p>在第三步中，使用<code>tailscale up</code>启动tailscale以后，会跳出链接要求绑定到账号，这里不做赘述。</p>
 <p>绑定成功以后，在官网管理台找到机器，点击右边三个点号出现菜单，选择<code>edit route settting</code>。</p>
-<p><img src="https://img.311803.xyz/i/2024/01/28/z85u88-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/01/28/z85u88-0.png" alt=""></p>
 <p>在下一窗口子网路由的网段，保存。</p>
-<p><img src="https://img.311803.xyz/i/2024/01/28/zanx3r-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/01/28/zanx3r-0.png" alt=""></p>
 <p>到此，tailscale子网路由的功能部署完毕。在另外一台安装了tailscale并加入组网的机器上，就可以直接通过<code>192.168.1.*</code>的内网ip直接访问内网服务了。</p>
 <hr>
 <h2 id="结语">结语</h2>

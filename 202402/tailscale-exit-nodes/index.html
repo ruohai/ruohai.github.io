@@ -118,7 +118,7 @@ echo &#39;net.ipv4.ip_forward = 1&#39; | sudo tee -a /etc/sysctl.conf echo &#39;
 <p>exit nodes的官方文档：<a href="https://tailscale.com/kb/1103/exit-nodes">Exit Nodes (route all traffic)</a></p>
 <p>通俗来讲，就是在一个设备上安装tailscale，启用exit nodes功能。然后其它装了tailscale的机器，比如机器A，可以指定这台设备为出口（exit node）。之后机器A的所有网络流量都会由指定的出口节点进行路由转发。</p>
 <p>官网的示意图。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/kskmjh-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/kskmjh-0.png" alt=""></p>
 <h2 id="部署">部署</h2>
 <blockquote>
 <p>第一步：下载&amp;安装tailscale</p>
@@ -146,9 +146,9 @@ sudo sysctl -p /etc/sysctl.conf
 <p>第四步：控制台开启exit nodes功能</p>
 </blockquote>
 <p>登录tailscale的网页控制到，找到对应的机器，点开设置菜单</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/ll2xo0-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/ll2xo0-0.png" alt=""></p>
 <p>勾选启用exit node功能，保存。</p>
-<p><img src="https://img.311803.xyz/i/2024/02/06/llakw3-0.png" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/02/06/llakw3-0.png" alt=""></p>
 <p>好了，到这一步就完成了出口节点机器的部署。接下去只要在其它安装了tailscale的机器上指定这台机器作为网口出口节点即可。</p>
 <blockquote>
 <p>第五步：指定exit node</p>

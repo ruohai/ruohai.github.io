@@ -130,7 +130,7 @@
       <h2 id="前言">前言</h2>
 <p>迅雷赚钱宝一代，型号ws1408，nand存储 + 256mb的内存。目前可用的第三方固件都是提取的官方固件的内核制作而成的各种openwrt。</p>
 <p>我找了恩山论坛的【<a href="https://www.right.com.cn/forum/thread-8279376-1-1.html">这个固件</a>】，在用晶晨刷机软件amlogic usb burning tools线刷的时候，习惯性的选择了<code>全部擦除</code>。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/210223-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/210223-0.webp" alt=""></p>
 <p>最后成功刷机。但是想要再次线刷的时候，发现晶晨软件已经无法识别到设备了，也就是变砖了。</p>
 <p>虽然这设备几乎没啥可玩性，放海鲜市场上卖10块估计还得包邮，但我还是想给它抢救一下。</p>
 <p>最后在恩山上找到了用ttl救砖的方法，这里做个简单记录。</p>
@@ -146,29 +146,29 @@
 <h2 id="拆机">拆机</h2>
 <p>要刷机，首先需要把ws1408的主板拆出来。</p>
 <p>撕掉贴纸，卸掉螺丝，撬开外壳，卸掉中间的螺丝，然后撬开底盖。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/190157-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/190157-0.webp" alt=""></p>
 <p>再卸掉四个螺丝，然后取下主板保护盖。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/190228-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/190228-0.webp" alt=""></p>
 <p>然后就可以把主板取下来了。</p>
 <hr>
 <h2 id="安装驱动">安装驱动</h2>
 <p>先下载驱动，驱动可以找淘宝商家拿，所以在文章末尾找。</p>
 <p>注意，需要先把转接头插到电脑上，要不然安装驱动的时候会提示找不到设备。</p>
 <p>压缩包解压后，双击<code>setup.exe</code></p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/212814-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/212814-0.webp" alt=""></p>
 <p>然后点击安装即可。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/212847-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/212847-0.webp" alt=""></p>
 <p>安装成功后，在电脑的设备管理中查看是否多了一个usb串口设备。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/190021-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/190021-0.webp" alt=""></p>
 <hr>
 <h2 id="刷机">刷机</h2>
 <p>先确定一下主板上ttl针脚的定义，从左往右编号1234，1是TX，2是GND，4是RX。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/185940-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/185940-0.webp" alt=""></p>
 <p>接下去要连接主板和转接头。主板的tx对应转接头的rx，主板gnd对应转接头的gnd，主板rx对应转接头tx。接好后，usb头插入电脑。</p>
 <p>先打开电脑的设备管理，查看usb转接头的硬件名称，这里看到是COM3。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/190021-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/190021-0.webp" alt=""></p>
 <p>然后电脑上打开putty，连接类型选<code>Serial</code>，Serial line填<code>COM3</code>，Speed填<code>115200</code>。然后点击<code>Open</code>打开终端。</p>
-<p><img src="https://img.311803.xyz/i/2024/03/29/190032-0.webp" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/03/29/190032-0.webp" alt=""></p>
 <p>这个时候主板接电源通电，注意使用dc电源通电而不是插usb通电，usb会干扰putty识别设备。通电后putty终端会开始代码跑屏，立刻按下回车键暂停，然后在终端中输入<code>update</code>后敲回车键确认，此时终端中会显示进入了线刷模式。</p>
 <p>到这一步，就可以在电脑上打开usb burning tool软件，导入镜像包，记得选择擦除flash选择<code>普通擦除</code>，然后点开始。</p>
 <p>最后用双公头连接主板和电脑，usb burning tool就会检测到硬件，开始烧入固件。</p>
