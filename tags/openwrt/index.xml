@@ -27,7 +27,7 @@ Memos的开发者只提供了docker镜像这一种部署方式，而且从v0.15.
 接下去就是配置启动脚本以及一些bug处理。
 第一步：sysv脚本
 在/etc/init.d目录下新建文件memos，记得添加可执行权限chmod +x memos，然后粘贴以下代码。其中的文件路径、端口号、数据存放目录请自行修改。
-#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=52031 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/memos/memos --mode=prod --port=5203 --data=/mnt/data/memos/data } stop() { kill $(pidof memos) } 保存后退出，然后启动服务并设置开机启动。
 # 启动服务 service memos start # 添加启动项 service memos enable 注意这个脚本只设置了start和stop两个命令，其它的restart之类都没有适配，有需求的话请自行添加代码。
 第二步：设置缩略图目录
 memos应该是硬编码了到/var/opt/memos/assets这个附件目录下索引图片来生成缩略图，但我们用二进制包运行memos的话，数据存放路径都会自定义设置，其次是openwrt系统下，/var目录是个临时目录，一重启就会清空数据，所以肯定要修正这个bug。
