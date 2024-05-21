@@ -6,7 +6,31 @@
     <description>Recent content in ttyd on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 28 Feb 2024 20:47:06 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ttyd/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 May 2024 20:47:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/ttyd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在OpenWrt上安装ttyd</title>
+      <link>https://ruohai.wang/202405/ttyd-install-one-openwrt/</link>
+      <pubDate>Tue, 21 May 2024 20:47:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/ttyd-install-one-openwrt/</guid>
+      <description>前言 简单交代一下我想要跑ttyd的硬件和系统。
+我的硬件是迅雷赚钱宝一代，硬件型号ws1408，228MB的内存，amlogic s805芯片。
+我给这硬件刷的系统是openwrt21，内核3.10。
+其实openwrt的软件仓库就带了luci-ttyd，但我觉得用起来不方便，要登录openwrt——服务——ttyd，然后二次登录。除此之外，luci-ttyd的窗口大小也受限制，没法做到浏览器全屏。
+所以最后还是用二进制包的方式在openwrt上安装一遍ttyd。
+安装 第一步：下载
+ttyd的github项目主页指路：【tsl0922/ttyd】，在release页面找到对应版本的二进制包。ws1408是arm32/armhf/armv7l，三种叫法都对。我这里选择ttyd.armhf。
+wget -O ttyd https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.armhf 注意看下下载的文件是不是有可执行权限，没有的话chmod +x ttyd赋权。
+第二步：sysv脚本
+在/etc/init.d目录下新建文件ttyd，然后粘贴以下代码，端口号和文件路径请自行调整：
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/ttyd/ttyd -p 12345 -W login } stop() { kill $(pidof ttyd) } 保存后退出，然后给文件添加可执行权限，chmod +x ttyd。
+这里有两个个注意点，第一是ttyd从某个版本以后默认是只读权限了，启动命令需要添加-W参数才会有写入权限。第二是我这个脚本只适配了start和stop命令，其它的restart没做适配，有需求的可以自己参考sysvinit的语法补足。
+第三步：ttyd启动
+看了这么多篇在openwrt上装软件的博客，启动和添加启动项大家应该都很熟练了。
+# 启动 service ttyd start # 添加启动项 service ttyd enable 好了，到这里在openwrt上运行ttyd二进制包的操作就完成惹。
+🎉</description>
+    </item>
+    
     <item>
       <title>ttyd使用Nginx实现HTTP基本认证（HTTP Basic Authentication）</title>
       <link>https://ruohai.wang/202402/ttyd-config-auth-proxy-with-nginx/</link>
