@@ -32,7 +32,8 @@ corepack enable &amp;amp;&amp;amp; pnpm i --frozen-lockfile 等命令跑完以�
 跑完以后提示如下：
 到这里整个前端项目的编译工作就结束惹，接下去只需要把web目录下的dist目录整个复制出来放到项目的server目录下即可。
 项目结构示意：
---memos --server | --dist 好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。
+--memos --server | --dist 不过这个目录结构仅限于v0.15，后续版本我看到是调整过目录结构，具体请根据dockerfile里的部署方式来调整。
+好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。
 🎉</description>
     </item>
     
