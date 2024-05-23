@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202405/</loc>
-    <lastmod>2024-05-21T20:47:37+08:00</lastmod>
+    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/memos/</loc>
+    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</loc>
+    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/openwrt/</loc>
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-05-21T20:47:37+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/ttyd/</loc>
-    <lastmod>2024-05-21T20:47:37+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/ttyd-install-one-openwrt/</loc>
@@ -22,9 +28,6 @@
   </url><url>
     <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/memos/</loc>
-    <lastmod>2024-05-20T00:32:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/</loc>
     <lastmod>2024-05-20T00:32:48+08:00</lastmod>

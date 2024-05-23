@@ -6,7 +6,36 @@
     <description>Recent content in 202405s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 21 May 2024 20:47:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 May 2024 19:03:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Windows上编译Memos的前端项目</title>
+      <link>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</link>
+      <pubDate>Thu, 23 May 2024 19:03:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</guid>
+      <description>前言 memos很好用，是我高频使用的一个服务，自从我的twitter炸号以后我已经把memos当作自建twitter（或者自建微博）在使用。
+memos官方一直只维护docker部署的方式，确实挺方便的，一键安装不用操心什么环境、依赖、硬件架构的问题。
+但我还是渐渐的想脱离docker环境使用memos。前几天写了一篇文章写怎么编译memos前端，那篇是根据项目的github仓库的issues中很多人的回答总结出来的。但写完文章就发现其实正确的编译方法已经完整的写在源码的dockerfile文件里了。
+所以这次再次自己动手，开始编译前端项目。
+你可能要问为什么后端项目也自己编译，🤔，因为后端二进制包受宿主系统的硬件架构限制，amd64上编译出来的包没法在arm32平台上跑，甚至我在arm32平台上编译的包（libc）在musl的openwrt上都跑不起来。所以后端项目我直接用了github上现成编译好的，就不自己折腾了。
+又因为我是windows用户，所以我用来编译的环境就是windows惹，其它系统其实也没区别，自行理解就行。
+编译 先准备前端项目的编译环境，参考dockerfile中要求的版本号，实测更高版本也可以。
+node，版本18 buf，版本1.26.1 先从memos的官方github项目主页下载源码、解压这些就不说了。因为从v0.15升级到v0.16涉及到数据库的表结构变更，我暂时不想步子迈这么大，所以这次以v0.15.2为例。
+buf官方提供了二进制包，可以直接下载使用。指路：【bufbuild/buf】
+下载后最好放到memos项目源码的proto目录（windows下应该叫做文件夹，但这里还是用linux的习惯叫目录）。
+然后打开windows terminal（没有terminal就用cmd，下同），进入这个目录，执行buf-Windows-x86_64.exe generate。因为没有设置环境变量，所以这里buf命令需要用完整的文件名。
+运行完以后没有报错的话就ok惹。
+然后用管理员权限启动windows terminal（因为非管理员账户执行pnpm可能会提示权限不足）。
+进入到memos项目源码的web目录，执行以下命令：
+corepack enable &amp;amp;&amp;amp; pnpm i --frozen-lockfile 等命令跑完以后，提示内容大致如下：
+然后继续执行命令pnpm build
+跑完以后提示如下：
+到这里整个前端项目的编译工作就结束惹，接下去只需要把web目录下的dist目录整个复制出来放到项目的server目录下即可。
+项目结构示意：
+--memos --server | --dist 好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。
+🎉</description>
+    </item>
+    
     <item>
       <title>在OpenWrt上安装ttyd</title>
       <link>https://ruohai.wang/202405/ttyd-install-one-openwrt/</link>

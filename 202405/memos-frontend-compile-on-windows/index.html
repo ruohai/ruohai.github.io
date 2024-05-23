@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在Windows上编译Memos的前端项目 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Windows上编译Memos的前端项目"/>
+<meta name="twitter:description" content="前言 memos很好用，是我高频使用的一个服务，自从我的twitter炸号以后我已经把memos当作自建twitter（或者自建微博）在使用。
+memos官方一直只维护docker部署的方式，确实挺方便的，一键安装不用操心什么环境、依赖、硬件架构的问题。
+但我还是渐渐的想脱离docker环境使用memos。前几天写了一篇文章写怎么编译memos前端，那篇是根据项目的github仓库的issues中很多人的回答总结出来的。但写完文章就发现其实正确的编译方法已经完整的写在源码的dockerfile文件里了。
+所以这次再次自己动手，开始编译前端项目。
+你可能要问为什么后端项目也自己编译，🤔，因为后端二进制包受宿主系统的硬件架构限制，amd64上编译出来的包没法在arm32平台上跑，甚至我在arm32平台上编译的包（libc）在musl的openwrt上都跑不起来。所以后端项目我直接用了github上现成编译好的，就不自己折腾了。
+又因为我是windows用户，所以我用来编译的环境就是windows惹，其它系统其实也没区别，自行理解就行。
+编译 先准备前端项目的编译环境，参考dockerfile中要求的版本号，实测更高版本也可以。
+node，版本18 buf，版本1.26.1 先从memos的官方github项目主页下载源码、解压这些就不说了。因为从v0.15升级到v0.16涉及到数据库的表结构变更，我暂时不想步子迈这么大，所以这次以v0.15.2为例。
+buf官方提供了二进制包，可以直接下载使用。指路：【bufbuild/buf】
+下载后最好放到memos项目源码的proto目录（windows下应该叫做文件夹，但这里还是用linux的习惯叫目录）。
+然后打开windows terminal（没有terminal就用cmd，下同），进入这个目录，执行buf-Windows-x86_64.exe generate。因为没有设置环境变量，所以这里buf命令需要用完整的文件名。
+运行完以后没有报错的话就ok惹。
+然后用管理员权限启动windows terminal（因为非管理员账户执行pnpm可能会提示权限不足）。
+进入到memos项目源码的web目录，执行以下命令：
+corepack enable &amp;&amp; pnpm i --frozen-lockfile 等命令跑完以后，提示内容大致如下：
+然后继续执行命令pnpm build
+跑完以后提示如下：
+到这里整个前端项目的编译工作就结束惹，接下去只需要把web目录下的dist目录整个复制出来放到项目的server目录下即可。
+项目结构示意：
+--memos --server | --dist 好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。
+🎉"/>
+
+    <meta property="og:title" content="在Windows上编译Memos的前端项目" />
+<meta property="og:description" content="前言 memos很好用，是我高频使用的一个服务，自从我的twitter炸号以后我已经把memos当作自建twitter（或者自建微博）在使用。
+memos官方一直只维护docker部署的方式，确实挺方便的，一键安装不用操心什么环境、依赖、硬件架构的问题。
+但我还是渐渐的想脱离docker环境使用memos。前几天写了一篇文章写怎么编译memos前端，那篇是根据项目的github仓库的issues中很多人的回答总结出来的。但写完文章就发现其实正确的编译方法已经完整的写在源码的dockerfile文件里了。
+所以这次再次自己动手，开始编译前端项目。
+你可能要问为什么后端项目也自己编译，🤔，因为后端二进制包受宿主系统的硬件架构限制，amd64上编译出来的包没法在arm32平台上跑，甚至我在arm32平台上编译的包（libc）在musl的openwrt上都跑不起来。所以后端项目我直接用了github上现成编译好的，就不自己折腾了。
+又因为我是windows用户，所以我用来编译的环境就是windows惹，其它系统其实也没区别，自行理解就行。
+编译 先准备前端项目的编译环境，参考dockerfile中要求的版本号，实测更高版本也可以。
+node，版本18 buf，版本1.26.1 先从memos的官方github项目主页下载源码、解压这些就不说了。因为从v0.15升级到v0.16涉及到数据库的表结构变更，我暂时不想步子迈这么大，所以这次以v0.15.2为例。
+buf官方提供了二进制包，可以直接下载使用。指路：【bufbuild/buf】
+下载后最好放到memos项目源码的proto目录（windows下应该叫做文件夹，但这里还是用linux的习惯叫目录）。
+然后打开windows terminal（没有terminal就用cmd，下同），进入这个目录，执行buf-Windows-x86_64.exe generate。因为没有设置环境变量，所以这里buf命令需要用完整的文件名。
+运行完以后没有报错的话就ok惹。
+然后用管理员权限启动windows terminal（因为非管理员账户执行pnpm可能会提示权限不足）。
+进入到memos项目源码的web目录，执行以下命令：
+corepack enable &amp;&amp; pnpm i --frozen-lockfile 等命令跑完以后，提示内容大致如下：
+然后继续执行命令pnpm build
+跑完以后提示如下：
+到这里整个前端项目的编译工作就结束惹，接下去只需要把web目录下的dist目录整个复制出来放到项目的server目录下即可。
+项目结构示意：
+--memos --server | --dist 好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。
+🎉" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202405/memos-frontend-compile-on-windows/" /><meta property="article:section" content="202405" />
+<meta property="article:published_time" content="2024-05-23T19:03:48+08:00" />
+<meta property="article:modified_time" content="2024-05-23T19:03:48+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在Windows上编译Memos的前端项目</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 23, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/memos/">memos</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>memos很好用，是我高频使用的一个服务，自从我的twitter炸号以后我已经把memos当作自建twitter（或者自建微博）在使用。</p>
+<p>memos官方一直只维护docker部署的方式，确实挺方便的，一键安装不用操心什么环境、依赖、硬件架构的问题。</p>
+<p>但我还是渐渐的想脱离docker环境使用memos。前几天写了一篇文章写怎么编译memos前端，那篇是根据项目的github仓库的issues中很多人的回答总结出来的。但写完文章就发现其实正确的编译方法已经完整的写在源码的dockerfile文件里了。</p>
+<p>所以这次再次自己动手，开始编译前端项目。</p>
+<p>你可能要问为什么后端项目也自己编译，🤔，因为后端二进制包受宿主系统的硬件架构限制，amd64上编译出来的包没法在arm32平台上跑，甚至我在arm32平台上编译的包（libc）在musl的openwrt上都跑不起来。所以后端项目我直接用了github上现成编译好的，就不自己折腾了。</p>
+<p>又因为我是windows用户，所以我用来编译的环境就是windows惹，其它系统其实也没区别，自行理解就行。</p>
+<hr>
+<h2 id="编译">编译</h2>
+<p>先准备前端项目的编译环境，参考dockerfile中要求的版本号，实测更高版本也可以。</p>
+<ul>
+<li>node，版本18</li>
+<li>buf，版本1.26.1</li>
+</ul>
+<p>先从memos的官方github项目主页下载源码、解压这些就不说了。因为从v0.15升级到v0.16涉及到数据库的表结构变更，我暂时不想步子迈这么大，所以这次以v0.15.2为例。</p>
+<p>buf官方提供了二进制包，可以直接下载使用。指路：【<a href="https://github.com/bufbuild/buf/releases">bufbuild/buf</a>】</p>
+<p><img src="https://img.311803.xyz/2024/05/23/01.webp" alt=""></p>
+<p>下载后最好放到memos项目源码的<code>proto</code>目录（windows下应该叫做文件夹，但这里还是用linux的习惯叫目录）。</p>
+<p><img src="https://img.311803.xyz/2024/05/23/02.webp" alt=""></p>
+<p>然后打开windows terminal（没有terminal就用cmd，下同），进入这个目录，执行<code>buf-Windows-x86_64.exe generate</code>。因为没有设置环境变量，所以这里<code>buf</code>命令需要用完整的文件名。</p>
+<p>运行完以后没有报错的话就ok惹。</p>
+<p><img src="https://img.311803.xyz/2024/05/23/03.webp" alt=""></p>
+<p>然后用管理员权限启动windows terminal（因为非管理员账户执行pnpm可能会提示权限不足）。</p>
+<p><img src="https://img.311803.xyz/2024/05/23/04.webp" alt=""></p>
+<p>进入到memos项目源码的web目录，执行以下命令：</p>
+<pre tabindex="0"><code>corepack enable &amp;&amp; pnpm i --frozen-lockfile
+</code></pre><p><img src="https://img.311803.xyz/2024/05/23/05.webp" alt=""></p>
+<p>等命令跑完以后，提示内容大致如下：</p>
+<p><img src="https://img.311803.xyz/2024/05/23/06.webp" alt=""></p>
+<p>然后继续执行命令<code>pnpm build</code></p>
+<p><img src="https://img.311803.xyz/2024/05/23/07.webp" alt=""></p>
+<p>跑完以后提示如下：</p>
+<p><img src="https://img.311803.xyz/2024/05/23/08.webp" alt=""></p>
+<p>到这里整个前端项目的编译工作就结束惹，接下去只需要把web目录下的<code>dist</code>目录整个复制出来放到项目的<code>server</code>目录下即可。</p>
+<p>项目结构示意：</p>
+<pre tabindex="0"><code>--memos
+--server
+    |
+    --dist
+</code></pre><p>好了，恭喜你编译成功，接下去就可以脱离docker环境直接跑memos惹。</p>
+<p>🎉</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
