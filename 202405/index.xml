@@ -6,7 +6,27 @@
     <description>Recent content in 202405s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 23 May 2024 19:03:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 May 2024 19:39:46 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202405/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次照片文件的去重操作</title>
+      <link>https://ruohai.wang/202405/deduplicate-media-files/</link>
+      <pubDate>Fri, 24 May 2024 19:39:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/deduplicate-media-files/</guid>
+      <description>最近因为频繁的刷机 &amp;amp; 部署photoprism，导致有一个盘上已经按照photoprism的入库规则统一重命名 &amp;amp; 归档的400张照片忘记全部备份到群晖，然后又二次误操作把这几百张照片导入了新部署的photoprism。
+这时候就出现了一个重复文件的问题：
+这400张照片，一部分已经备份到群晖，一部分没有。备份用的是rsync整个目录增量备份。 新部署的photoprism中，已经有100多张新照片，这次又二次导入了400张老照片，是新旧混杂的状态。 导入photoprism的照片，都会按照yyyyMMdd-hhmmss-xxxxxx这种年月日-时分秒-随机六位字符的格式作为唯一编号进行重命名，也就意味着这几百张二次导入的照片，文件名应该都发生了变化，变成了新文件，再用rsync增量备份的时候应该都会备当作新文件重复备份到群晖。 作为有轻微电子洁癖的我肯定受不了这种nas里出现几百张重复照片的事情，所以立刻想着怎么去重。
+当时想到的有两个方案：
+先全部备份到群晖，然后用群晖的重复文件检验功能筛选出重复文件的清单，最后手动清理群晖中的重复文件 使用第三方去重软件，比如alldup 这俩方法可行性都挺高的，虽然都略微繁琐，但最后肯定能实现去重的目的。
+不过这俩方法我都没有用。因为前者需要把文件导入到群晖后，在群晖里操作。群晖里有我这十多年来的接近10万份个人文件，我担心在群晖里把文件弄乱，那就彻底gg。后者alldup支持smb网络文件夹，但是会把需要校验的文件都缓存到本地来计算hash。
+因为我手上万幸还保留着那400张老照片，简单记录一下我的处理思路：
+去重的核心是只修改文件名不会让文件的hash发生变化 先把400张老照片全量备份到群晖，解决这些老照片部分已备份 + 部分未备份的问题 接下去只需要比对photoprism图库中的全部照片 vs 400张老照片 在部署photoprism的armbian盒子上，用sha256sum获取到所有新文件和旧文件的hash值 + 文件名的清单 将上一步得到的清单粘贴到excel，用vlookup筛选出重复文件，以及这些重复文件的新文件名 写一个超级简单的bash脚本，直接将新重复的新文件从photoprism中删除 在photoprism中对资料库进行清理，将已经删除的文件清除索引 最后方便 &amp;amp; 快速的完成了文件去重而且0误伤。🎉
+这个方案的好处是
+不在群晖里操作，避免搞乱群晖的文件 在linux操作的命令也很简单，只需要进入照片目录，执行sha256sum * &amp;gt; hush.log就可以获取到全部的hash filename格式的文本清单。 比对和筛选重复文件时在excel中用vlookup来完成，非常简单易懂直观 获取到最终要删除的文件名清单以后，只需要写一个很简单的bash脚本就可以批量删除文件 bash脚本如下：
+最后，本次操作还发现一个新知识点：photoprism在归档照片的时候，如果照片的exif完整，包含拍摄时间这个参数，那生成的新文件名是固定的。
+之前我一直以为photoprism的文件名规则中最后六位字符是随机字符，实测不是的，是固定值。</description>
+    </item>
+    
     <item>
       <title>在Windows上编译Memos的前端项目</title>
       <link>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</link>
