@@ -6,7 +6,16 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 24 May 2024 19:39:46 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 May 2024 16:22:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Armbian</title>
+      <link>https://ruohai.wang/tags/armbian/</link>
+      <pubDate>Thu, 30 May 2024 16:22:10 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/armbian/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>生活</title>
       <link>https://ruohai.wang/tags/%E7%94%9F%E6%B4%BB/</link>
@@ -121,15 +130,6 @@
       <pubDate>Sat, 20 Apr 2024 18:02:41 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/badblocks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Armbian</title>
-      <link>https://ruohai.wang/tags/armbian/</link>
-      <pubDate>Thu, 18 Apr 2024 15:17:01 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/armbian/</guid>
       <description></description>
     </item>
     

@@ -6,7 +6,25 @@
     <description>Recent content in Armbian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 18 Apr 2024 15:17:01 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/armbian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 May 2024 16:22:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/armbian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian下的简单网络配置与重启</title>
+      <link>https://ruohai.wang/202405/network-interface-change-on-debian/</link>
+      <pubDate>Thu, 30 May 2024 16:22:10 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202405/network-interface-change-on-debian/</guid>
+      <description>debian系统配置静态ip之前已经写过一篇笔记，但时隔久远，重新记录一下。
+配置文件路径/etc/network/interfaces
+固定ip/静态ip
+假定网卡名称是eth0，设置静态ip的配置如下，其中的具体参数根据自己的实际情况调整。
+# 开机自动启用eth0 auto eth0 # 使用静态ip iface eth0 inet static # ip地址 address 192.168.1.4 # 子网掩码 netmask 255.255.255.0 # 网关地址 gateway 192.168.1.1 # dns服务器 dns-nameservers 192.168.1.1 其中的auto指在系统启动时获取网络信息，如果你的使用环境需要经常热插拔网线，可以改成allow-hotplug，意指网线热插拔以后可以重新获取网络。
+切换网卡
+如果机器上有两个网卡，比如一个有线一个无线，依然是编辑/etc/network/interfaces，把原来的primary network interface注释，改成自己需要的网卡。
+重启网络
+debian下重启网络
+systemctl restart networking.service 参考文章 Debian 中 allow-hotplug 与 auto 的区别 </description>
+    </item>
+    
     <item>
       <title>贝壳云P1刷机Armbian小白教程</title>
       <link>https://ruohai.wang/202404/beikeyun-install-armbian/</link>
