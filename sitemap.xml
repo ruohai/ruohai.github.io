@@ -2,16 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202406/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/cloudflared/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/openrwrt/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202406/cloudflared-install-on-openwrt/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202405/</loc>
     <lastmod>2024-05-30T16:22:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/armbian/</loc>
-    <lastmod>2024-05-30T16:22:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-05-30T16:22:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-05-30T16:22:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/network-interface-change-on-debian/</loc>
@@ -36,9 +51,6 @@
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/ttyd-install-one-openwrt/</loc>
-    <lastmod>2024-05-21T20:47:37+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/memos-run-on-openwrt-without-docker/</loc>
@@ -73,9 +85,6 @@
   </url><url>
     <loc>https://ruohai.wang/202404/filebrowser-install-on-ws1408/</loc>
     <lastmod>2024-04-30T21:21:05+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/cloudflared/</loc>
-    <lastmod>2024-04-30T13:14:36+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/cloudflared-install-on-openwrt/</loc>
     <lastmod>2024-04-30T13:14:36+08:00</lastmod>

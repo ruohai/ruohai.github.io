@@ -6,7 +6,34 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 30 May 2024 16:22:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Jun 2024 13:25:24 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloudflared</title>
+      <link>https://ruohai.wang/tags/cloudflared/</link>
+      <pubDate>Wed, 05 Jun 2024 13:25:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/cloudflared/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OpenrWrt</title>
+      <link>https://ruohai.wang/tags/openrwrt/</link>
+      <pubDate>Wed, 05 Jun 2024 13:25:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/openrwrt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>捡垃圾</title>
+      <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
+      <pubDate>Wed, 05 Jun 2024 13:25:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Armbian</title>
       <link>https://ruohai.wang/tags/armbian/</link>
@@ -53,15 +80,6 @@
     </item>
     
     <item>
-      <title>捡垃圾</title>
-      <link>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</link>
-      <pubDate>Tue, 21 May 2024 20:47:37 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Naidrome</title>
       <link>https://ruohai.wang/tags/naidrome/</link>
       <pubDate>Wed, 15 May 2024 18:36:51 +0800</pubDate>
@@ -94,15 +112,6 @@
       <pubDate>Tue, 30 Apr 2024 21:21:05 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/file-browser/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cloudflared</title>
-      <link>https://ruohai.wang/tags/cloudflared/</link>
-      <pubDate>Tue, 30 Apr 2024 13:14:36 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/cloudflared/</guid>
       <description></description>
     </item>
     

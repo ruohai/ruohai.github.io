@@ -6,7 +6,23 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 30 May 2024 16:22:10 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Jun 2024 13:25:24 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上运行Cloudflared</title>
+      <link>https://ruohai.wang/202406/cloudflared-install-on-openwrt/</link>
+      <pubDate>Wed, 05 Jun 2024 13:25:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/cloudflared-install-on-openwrt/</guid>
+      <description>上个月已经写过一篇博客记录怎么在刷了openwrt固件的迅雷赚钱宝一代上面运行cloudflared，但是写那篇文章的时候对sysvint的脚本完全不熟悉，只是照虎画猫（现在也没有什么进步😂），但经过这一段时间的debug，发现了（看上去）没什么问题的运行方式，所以更新一下。
+首先还是找到cloudflared的github仓库主页【cloudflare/cloudflared】，在release页面找到预编译的适配各硬件平台的二进制包。迅雷赚钱宝一代可以用arm或者armhf，我选择用armhf。
+ssh连上openwrt，下载到本地
+# 下载 wget -O cloudflared https://github.com/cloudflare/cloudflared/releases/download/2024.6.0/cloudflared-linux-armhf # 授权 chmod +x cloudflared 然后在/etc/init.d目录下新建cloudflared文件，录入以下内容，注意我的cloudflared文件路径是/mnt/data/cloudflared/cloudflared，还有token的值，都需要你根据自己的情况修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/cloudflared/cloudflared --pidfile /var/run/cloudflared.pid --autoupdate-freq 24h0m0s tunnel run --token [你的token] } stop() { kill $(pidof cloudflared) } 保存文件后退出，记得chmod +x cloudflared授权。
+然后启动并添加开机启动项即可。
+# 启动 service cloudflared start # 添加启动项 service cloudflared enable 注意我的sysvinit脚本中没有只适配了start和stop两个命令，其它的restart、status没有适配，有需求的话可以自行增加代码。
+🎉</description>
+    </item>
+    
     <item>
       <title>在Debian下的简单网络配置与重启</title>
       <link>https://ruohai.wang/202405/network-interface-change-on-debian/</link>
