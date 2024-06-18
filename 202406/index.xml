@@ -19,7 +19,8 @@
 因为一直没有debug的思路，所以我就放弃了uptime kuma。
 但是今天写这篇文章，就是因为我知道这个报错的原因了！
 先说一下我的部署方式：x86_64平台的debian，防火墙ufw，docker-compose方式部署，network_mode方式是默认的bridge。
-出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。</description>
+出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。
+不过有一点要注意，network_mode改成host模式以后就不支持端口映射了，默认是3001端口，如果装了防火墙的话记得放行端口号。</description>
     </item>
     
     <item>

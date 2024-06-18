@@ -20,7 +20,8 @@
 因为一直没有debug的思路，所以我就放弃了uptime kuma。
 但是今天写这篇文章，就是因为我知道这个报错的原因了！
 先说一下我的部署方式：x86_64平台的debian，防火墙ufw，docker-compose方式部署，network_mode方式是默认的bridge。
-出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。"/>
+出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。
+不过有一点要注意，network_mode改成host模式以后就不支持端口映射了，默认是3001端口，如果装了防火墙的话记得放行端口号。"/>
 
     <meta property="og:title" content="Uptime Kuma异常报错getaddrinfo EAI_AGAIN的处理" />
 <meta property="og:description" content="好几次想在自己的小主机上用docke方式部署uptime kuma来检测自己部署的几个服务的可用状态，但几乎每次都碰到同一个问题：getaddrinfo EAI_AGAIN。
@@ -29,7 +30,8 @@
 因为一直没有debug的思路，所以我就放弃了uptime kuma。
 但是今天写这篇文章，就是因为我知道这个报错的原因了！
 先说一下我的部署方式：x86_64平台的debian，防火墙ufw，docker-compose方式部署，network_mode方式是默认的bridge。
-出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。" />
+出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。
+不过有一点要注意，network_mode改成host模式以后就不支持端口映射了，默认是3001端口，如果装了防火墙的话记得放行端口号。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202406/uptime-kuma-error-solve/" /><meta property="article:section" content="202406" />
 <meta property="article:published_time" content="2024-06-18T20:11:35+08:00" />
@@ -102,6 +104,7 @@
 <p>先说一下我的部署方式：x86_64平台的debian，防火墙ufw，docker-compose方式部署，<code>network_mode</code>方式是默认的bridge。</p>
 <p>出现<code>getaddrinfo EAI_AGAIN</code>的原因就是docker默认部署的应用都是<code>network_mode:bridge</code>，改成<code>host</code>模式就没问题了。</p>
 <p><img src="https://img.311803.xyz/2024/06/18/02.webp" alt=""></p>
+<p>不过有一点要注意，<code>network_mode</code>改成<code>host</code>模式以后就不支持端口映射了，默认是3001端口，如果装了防火墙的话记得放行端口号。</p>
 
     </div>
     <div class="post-footer">
