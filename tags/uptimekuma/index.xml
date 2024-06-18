@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>UptimeKuma on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/uptimekuma/</link>
+    <description>Recent content in UptimeKuma on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 18 Jun 2024 20:11:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/uptimekuma/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Uptime Kuma异常报错getaddrinfo EAI_AGAIN的处理</title>
+      <link>https://ruohai.wang/202406/uptime-kuma-error-solve/</link>
+      <pubDate>Tue, 18 Jun 2024 20:11:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/uptime-kuma-error-solve/</guid>
+      <description>好几次想在自己的小主机上用docke方式部署uptime kuma来检测自己部署的几个服务的可用状态，但几乎每次都碰到同一个问题：getaddrinfo EAI_AGAIN。
+网上也搜了好久的错误原因和解决方案，有得说网络问题，有的说dns解析问题。我也在项目的github仓库查看了大量的类似issues，但都没有找到有用的解决方案。
+我觉得可能是我检测的几个服务都是套了cloudflare tunnel的缘故，但实测检测baidu.com这个域名也会报同样的错误。
+因为一直没有debug的思路，所以我就放弃了uptime kuma。
+但是今天写这篇文章，就是因为我知道这个报错的原因了！
+先说一下我的部署方式：x86_64平台的debian，防火墙ufw，docker-compose方式部署，network_mode方式是默认的bridge。
+出现getaddrinfo EAI_AGAIN的原因就是docker默认部署的应用都是network_mode:bridge，改成host模式就没问题了。</description>
+    </item>
+    
+  </channel>
+</rss>
