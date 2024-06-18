@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202406/</loc>
-    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
+    <lastmod>2024-06-18T20:11:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-06-18T20:11:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/uptime-kuma/</loc>
+    <lastmod>2024-06-18T20:11:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202406/uptime-kuma-error-solve/</loc>
+    <lastmod>2024-06-18T20:11:35+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-06-18T20:11:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/cloudflared/</loc>
     <lastmod>2024-06-05T13:25:24+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/openrwrt/</loc>
-    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-06-05T13:25:24+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202406/cloudflared-install-on-openwrt/</loc>
