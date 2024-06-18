@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>使用acme.sh获取Let&#39;s Encrypt免费数字证书 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用acme.sh获取Let&#39;s Encrypt免费数字证书"/>
+<meta name="twitter:description" content="前言 我之前用的ssl证书买阿里云域名送的免费证书，有效期一年，有效期还剩150天。
+但去年底很多云服务厂家调整了规则，新申请的免费证书有效期只有三个月，续费的话不清楚是否也是免费三个月，所谓未雨绸缪，我也要考虑下其它免费证书的方案，比如let&rsquo;s encrypt。
+申请let&rsquo;s encrypt证书，官方默认推荐certbot的进行证书的自动申请、安装，但使用certbot需要安装snapd，这个方法跳过。
+最后我选择了acme.sh，因为网上可以参考的方案比较多，出问题比较容易debug。
+参考文章 用acme.sh完成let&rsquo;s encrypt数字证书的申请、验证、安装，网上已经有非常完善的教程，我参考的主要是这几篇：
+【acmesh-official/acme.sh】 【How to install】 【如何使用acme.sh与阿里云DNS自动签发Let’s Encrypt的免费数字证书】 基本上按照以上三篇文章中记录的步骤操作，就可以成功搞定。
+我碰到的一些坑 网上的教程文章虽然很完善，但我在实际部署的过程中还是碰到了一些bug，这是我写这篇博客的主要原因，做个记录，方便日后debug。
+问题一：中国特色的网络问题
+在第一步获取acme.sh脚本的时候就碰到了问题，中国特色的网络问题，无论是默认的https://get.acme.sh还是备用的https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh都提示无法连接。
+这只是个小问题，自行解决即可。
+也可以在有代理的电脑上访问以上链接，下载脚本以后用scp上传到服务器，记得chmod &#43;x acme.sh授权，然后用以下命令执行脚本
+./acme.sh --install -m my@example.com 执行完成后记得敲source .bashrc命令让新建的alias生效。
+问题二：验证方式
+验证有两个方法，http或者dns。
+http方式需要指定网站根目录，我因为是用了一个跳板机（nginx转发请求到另一个机器），网站和nginx并不是在同一个服务器，尝试了许久都没有用http方式验证成功。
+后来换用dns验证，我的dns服务器上是aliyun，在获取到aliyun的access key并配置以后，执行以下命令
+acme.sh --issue --dns dns_ali -d ruohai.wang -d *.ruohai.wang 这个时候我又碰到了报错：can not find dns api hook for dns_ali
+这个报错要临时解决的话倒也简单，红字提醒部分已经给出了方案，就是自己手动增加两个dns解析记录就行了。
+验证成功以后，申请证书的流程就可以跑完了，最后成功的提示内容如下：
+问题三：证书配置
+根据上一张图，我们要用的证书文件是就是前两个，ruohai.wang.cer和ruohai.wang.key。可以在nginx目录下新建目录放这俩证书。
+我用的web服务器是nginx，直接贴出配置文件吧（只保留了ssl有关的部分）
+server { listen 443 ssl; server_name ruohai.wang; ssl_certificate /path/to/ruohai.wang.cer; ssl_certificate_key /path/to/ruohai.wang.key; ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!"/>
+
+    <meta property="og:title" content="使用acme.sh获取Let&#39;s Encrypt免费数字证书" />
+<meta property="og:description" content="前言 我之前用的ssl证书买阿里云域名送的免费证书，有效期一年，有效期还剩150天。
+但去年底很多云服务厂家调整了规则，新申请的免费证书有效期只有三个月，续费的话不清楚是否也是免费三个月，所谓未雨绸缪，我也要考虑下其它免费证书的方案，比如let&rsquo;s encrypt。
+申请let&rsquo;s encrypt证书，官方默认推荐certbot的进行证书的自动申请、安装，但使用certbot需要安装snapd，这个方法跳过。
+最后我选择了acme.sh，因为网上可以参考的方案比较多，出问题比较容易debug。
+参考文章 用acme.sh完成let&rsquo;s encrypt数字证书的申请、验证、安装，网上已经有非常完善的教程，我参考的主要是这几篇：
+【acmesh-official/acme.sh】 【How to install】 【如何使用acme.sh与阿里云DNS自动签发Let’s Encrypt的免费数字证书】 基本上按照以上三篇文章中记录的步骤操作，就可以成功搞定。
+我碰到的一些坑 网上的教程文章虽然很完善，但我在实际部署的过程中还是碰到了一些bug，这是我写这篇博客的主要原因，做个记录，方便日后debug。
+问题一：中国特色的网络问题
+在第一步获取acme.sh脚本的时候就碰到了问题，中国特色的网络问题，无论是默认的https://get.acme.sh还是备用的https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh都提示无法连接。
+这只是个小问题，自行解决即可。
+也可以在有代理的电脑上访问以上链接，下载脚本以后用scp上传到服务器，记得chmod &#43;x acme.sh授权，然后用以下命令执行脚本
+./acme.sh --install -m my@example.com 执行完成后记得敲source .bashrc命令让新建的alias生效。
+问题二：验证方式
+验证有两个方法，http或者dns。
+http方式需要指定网站根目录，我因为是用了一个跳板机（nginx转发请求到另一个机器），网站和nginx并不是在同一个服务器，尝试了许久都没有用http方式验证成功。
+后来换用dns验证，我的dns服务器上是aliyun，在获取到aliyun的access key并配置以后，执行以下命令
+acme.sh --issue --dns dns_ali -d ruohai.wang -d *.ruohai.wang 这个时候我又碰到了报错：can not find dns api hook for dns_ali
+这个报错要临时解决的话倒也简单，红字提醒部分已经给出了方案，就是自己手动增加两个dns解析记录就行了。
+验证成功以后，申请证书的流程就可以跑完了，最后成功的提示内容如下：
+问题三：证书配置
+根据上一张图，我们要用的证书文件是就是前两个，ruohai.wang.cer和ruohai.wang.key。可以在nginx目录下新建目录放这俩证书。
+我用的web服务器是nginx，直接贴出配置文件吧（只保留了ssl有关的部分）
+server { listen 443 ssl; server_name ruohai.wang; ssl_certificate /path/to/ruohai.wang.cer; ssl_certificate_key /path/to/ruohai.wang.key; ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202406/lets-encrypt-get-ssl-cert-by-bash/" /><meta property="article:section" content="202406" />
+<meta property="article:published_time" content="2024-06-19T04:09:02+08:00" />
+<meta property="article:modified_time" content="2024-06-19T04:09:02+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用acme.sh获取Let&#39;s Encrypt免费数字证书</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 19, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/letsencrypt/">LetsEncrypt</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>我之前用的ssl证书买阿里云域名送的免费证书，有效期一年，有效期还剩150天。</p>
+<p><img src="https://img.311803.xyz/2024/06/19/01.webp" alt=""></p>
+<p>但去年底很多云服务厂家调整了规则，新申请的免费证书有效期只有三个月，续费的话不清楚是否也是免费三个月，所谓未雨绸缪，我也要考虑下其它免费证书的方案，比如let&rsquo;s encrypt。</p>
+<p>申请let&rsquo;s encrypt证书，官方默认推荐certbot的进行证书的自动申请、安装，但使用certbot需要安装snapd，这个方法跳过。</p>
+<p>最后我选择了acme.sh，因为网上可以参考的方案比较多，出问题比较容易debug。</p>
+<p><img src="https://img.311803.xyz/2024/06/19/02.webp" alt=""></p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<p>用acme.sh完成let&rsquo;s encrypt数字证书的申请、验证、安装，网上已经有非常完善的教程，我参考的主要是这几篇：</p>
+<ul>
+<li>【<a href="https://github.com/acmesh-official/acme.sh/wiki/%E8%AF%B4%E6%98%8E">acmesh-official/acme.sh</a>】</li>
+<li>【<a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-install">How to install</a>】</li>
+<li>【<a href="https://www.orcy.net.cn/1337.html">如何使用acme.sh与阿里云DNS自动签发Let’s Encrypt的免费数字证书</a>】</li>
+</ul>
+<p>基本上按照以上三篇文章中记录的步骤操作，就可以成功搞定。</p>
+<hr>
+<h2 id="我碰到的一些坑">我碰到的一些坑</h2>
+<p>网上的教程文章虽然很完善，但我在实际部署的过程中还是碰到了一些bug，这是我写这篇博客的主要原因，做个记录，方便日后debug。</p>
+<blockquote>
+<p>问题一：中国特色的网络问题</p>
+</blockquote>
+<p>在第一步获取acme.sh脚本的时候就碰到了问题，中国特色的网络问题，无论是默认的<code>https://get.acme.sh</code>还是备用的<code>https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh</code>都提示无法连接。</p>
+<p>这只是个小问题，自行解决即可。</p>
+<p>也可以在有代理的电脑上访问以上链接，下载脚本以后用scp上传到服务器，记得<code>chmod +x acme.sh</code>授权，然后用以下命令执行脚本</p>
+<pre tabindex="0"><code>./acme.sh --install -m my@example.com
+</code></pre><p>执行完成后记得敲<code>source .bashrc</code>命令让新建的alias生效。</p>
+<blockquote>
+<p>问题二：验证方式</p>
+</blockquote>
+<p>验证有两个方法，http或者dns。</p>
+<p>http方式需要指定网站根目录，我因为是用了一个跳板机（nginx转发请求到另一个机器），网站和nginx并不是在同一个服务器，尝试了许久都没有用http方式验证成功。</p>
+<p>后来换用dns验证，我的dns服务器上是aliyun，在获取到aliyun的access key并配置以后，执行以下命令</p>
+<pre tabindex="0"><code>acme.sh --issue --dns dns_ali -d ruohai.wang -d *.ruohai.wang
+</code></pre><p>这个时候我又碰到了报错：<code>can not find dns api hook for dns_ali</code></p>
+<p><img src="https://img.311803.xyz/2024/06/19/03.webp" alt=""></p>
+<p>这个报错要临时解决的话倒也简单，红字提醒部分已经给出了方案，就是自己手动增加两个dns解析记录就行了。</p>
+<p><img src="https://img.311803.xyz/2024/06/19/04.webp" alt=""></p>
+<p>验证成功以后，申请证书的流程就可以跑完了，最后成功的提示内容如下：</p>
+<p><img src="https://img.311803.xyz/2024/06/19/05.webp" alt=""></p>
+<blockquote>
+<p>问题三：证书配置</p>
+</blockquote>
+<p>根据上一张图，我们要用的证书文件是就是前两个，<code>ruohai.wang.cer</code>和<code>ruohai.wang.key</code>。可以在nginx目录下新建目录放这俩证书。</p>
+<p>我用的web服务器是nginx，直接贴出配置文件吧（只保留了ssl有关的部分）</p>
+<pre tabindex="0"><code>server {
+        listen 443 ssl;
+
+        server_name ruohai.wang;
+
+        ssl_certificate         /path/to/ruohai.wang.cer;
+        ssl_certificate_key     /path/to/ruohai.wang.key;
+
+        ssl_session_cache shared:SSL:1m;
+        ssl_session_timeout 5m;
+
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+        ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+                # 这部分根据自己形况调整
+        }
+}
+</code></pre><p>然后先用<code>nginx -t</code>测试下配置信息有没有错误，没错误的话就可以重启nginx了。</p>
+<blockquote>
+<p>问题四：acme.sh的crontab定时任务</p>
+</blockquote>
+<p>在第一步<code>acme.sh install</code>的时候，它会自动添加一个crontab定时任务，用来查询证书是否有更新、自动申请。</p>
+<p>本来在完成首次的申请、验证以后就不需要管了，但我的情况是碰到了<code>can not find dns api hook for dns_ali</code>以后是手动配置dns解析记录的，所以自动任务可能没法成功。不过这事等三个月以后再操心就是，暂时不处理了。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

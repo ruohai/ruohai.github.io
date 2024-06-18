@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LetsEncrypt on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/letsencrypt/</link>
+    <description>Recent content in LetsEncrypt on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 19 Jun 2024 04:09:02 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/letsencrypt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用acme.sh获取Let&#39;s Encrypt免费数字证书</title>
+      <link>https://ruohai.wang/202406/lets-encrypt-get-ssl-cert-by-bash/</link>
+      <pubDate>Wed, 19 Jun 2024 04:09:02 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/lets-encrypt-get-ssl-cert-by-bash/</guid>
+      <description>前言 我之前用的ssl证书买阿里云域名送的免费证书，有效期一年，有效期还剩150天。
+但去年底很多云服务厂家调整了规则，新申请的免费证书有效期只有三个月，续费的话不清楚是否也是免费三个月，所谓未雨绸缪，我也要考虑下其它免费证书的方案，比如let&amp;rsquo;s encrypt。
+申请let&amp;rsquo;s encrypt证书，官方默认推荐certbot的进行证书的自动申请、安装，但使用certbot需要安装snapd，这个方法跳过。
+最后我选择了acme.sh，因为网上可以参考的方案比较多，出问题比较容易debug。
+参考文章 用acme.sh完成let&amp;rsquo;s encrypt数字证书的申请、验证、安装，网上已经有非常完善的教程，我参考的主要是这几篇：
+【acmesh-official/acme.sh】 【How to install】 【如何使用acme.sh与阿里云DNS自动签发Let’s Encrypt的免费数字证书】 基本上按照以上三篇文章中记录的步骤操作，就可以成功搞定。
+我碰到的一些坑 网上的教程文章虽然很完善，但我在实际部署的过程中还是碰到了一些bug，这是我写这篇博客的主要原因，做个记录，方便日后debug。
+问题一：中国特色的网络问题
+在第一步获取acme.sh脚本的时候就碰到了问题，中国特色的网络问题，无论是默认的https://get.acme.sh还是备用的https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh都提示无法连接。
+这只是个小问题，自行解决即可。
+也可以在有代理的电脑上访问以上链接，下载脚本以后用scp上传到服务器，记得chmod +x acme.sh授权，然后用以下命令执行脚本
+./acme.sh --install -m my@example.com 执行完成后记得敲source .bashrc命令让新建的alias生效。
+问题二：验证方式
+验证有两个方法，http或者dns。
+http方式需要指定网站根目录，我因为是用了一个跳板机（nginx转发请求到另一个机器），网站和nginx并不是在同一个服务器，尝试了许久都没有用http方式验证成功。
+后来换用dns验证，我的dns服务器上是aliyun，在获取到aliyun的access key并配置以后，执行以下命令
+acme.sh --issue --dns dns_ali -d ruohai.wang -d *.ruohai.wang 这个时候我又碰到了报错：can not find dns api hook for dns_ali
+这个报错要临时解决的话倒也简单，红字提醒部分已经给出了方案，就是自己手动增加两个dns解析记录就行了。
+验证成功以后，申请证书的流程就可以跑完了，最后成功的提示内容如下：
+问题三：证书配置
+根据上一张图，我们要用的证书文件是就是前两个，ruohai.wang.cer和ruohai.wang.key。可以在nginx目录下新建目录放这俩证书。
+我用的web服务器是nginx，直接贴出配置文件吧（只保留了ssl有关的部分）
+server { listen 443 ssl; server_name ruohai.wang; ssl_certificate /path/to/ruohai.wang.cer; ssl_certificate_key /path/to/ruohai.wang.key; ssl_session_cache shared:SSL:1m; ssl_session_timeout 5m; ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!</description>
+    </item>
+    
+  </channel>
+</rss>
