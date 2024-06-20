@@ -6,7 +6,24 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Jun 2024 04:09:02 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Jun 2024 12:14:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上安装和使用V2Ray</title>
+      <link>https://ruohai.wang/202406/v2ray-install-guide-on-armbian/</link>
+      <pubDate>Thu, 20 Jun 2024 12:14:28 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/v2ray-install-guide-on-armbian/</guid>
+      <description>最近因为国内彻底屏蔽了dockerhub以及各种国内镜像站，所以使用docker也成功加入了翻墙大礼包。我之前一直用过国内的一些镜像站，虽然也不太好用但我装的容器也就那么两三个，所以忍一下也能用，但至此只能另谋出路了。
+我在pc上一直用的v2rayn的客户端，所以可以通过配置局域网代理让docker正可以正常的拉去镜像
+# 首先新建目录和文件 mkdir -p /etc/systemd/system/docker.service.d vim /etc/systemd/system/docker.service.d/http-proxy.conf # 然后在文件中粘贴以下内容, 注意代理地址需要换成你自己服务器的内网 ip 和代理端口 [Service] Environment=&amp;#34;HTTP_PROXY=http://192.168.8.125:10819&amp;#34; Environment=&amp;#34;HTTPS_PROXY=http://192.168.8.125:10819&amp;#34; Environment=&amp;#34;NO_PROXY=your-registry.com,10.10.10.10,*.example.com&amp;#34; # 重启 docker systemctl daemon-reload systemctl restart docker # 检查环境变量是否生效 systemctl show --property=Environment docker 但我的pc并不是24小时开机，而且ip也不固定，所以想着把v2ray部署到arm小盒子上去。这个时候很多捡垃圾玩家可能就直接上openwrt了，但我不想折腾openwrt也不想增加局域网内的网络复杂度，只是想简单部署一个v2ray用作docker的代理，就像pc电脑上装一个v2rayn那样。
+经过一番搜索，最后确定使用v2ray core + v2raya web ui的方案。
+首先安装v2ray core，很巧，debian仓库里就有，可能版本会稍微旧一点，但好处是不折腾，直接apt即可。
+apt install v2ray 如果你能熟练的手动配置json文件，那就没必要装web ui了，后面的内容可以跳过。
+然后需要给v2ray core装一个直观易懂好看的web ui进行配置，我选了vraya。项目地址：【v2rayA/v2rayA】
+官网手册提供了很多中安装方法，我选择了直接添加软件源。
+# 添加公钥 wget -qO - https://apt.v2raya.org/key/public-key.asc | sudo tee /etc/apt/keyrings/v2raya.asc # 添加软件源 echo &amp;#34;deb [signed-by=/etc/apt/keyrings/v2raya.asc] https://apt.v2raya.org/ v2raya main&amp;#34; | sudo tee /etc/apt/sources.</description>
+    </item>
+    
     <item>
       <title>使用acme.sh获取Let&#39;s Encrypt免费数字证书</title>
       <link>https://ruohai.wang/202406/lets-encrypt-get-ssl-cert-by-bash/</link>
