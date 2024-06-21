@@ -6,7 +6,40 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Jun 2024 12:14:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Jun 2024 15:30:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在刷了OpenWrt的迅雷赚钱宝一代（WS1408）上安装和运行V2RayA</title>
+      <link>https://ruohai.wang/202406/v2raya-install-guide-on-openwrt/</link>
+      <pubDate>Fri, 21 Jun 2024 15:30:56 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/v2raya-install-guide-on-openwrt/</guid>
+      <description>前言 前两天在刷了armbian的迅雷赚钱宝二代（ws1508）上通过添加软件源的方式成功的运行了v2raya，这个15块钱的arm小盒子可以当作一个代理服务器用惹。
+但我手上不是还有好几个迅雷赚钱宝一代（ws1408）么，只能刷3.10内核的魔改openwrt固件，我想着能不能在这个10块钱的电子垃圾上跑v2raya，因为v2ray core和v2raya都提供了各种硬件架构的二进制包，理论上只要把二进制包下载到本地就行了。
+那废话不多多，开搞。
+安装 第一步：v2ray-core
+我用的是v2ray core，也可以用xray core替代。
+项目地址：【v2fly/v2ray-core】
+在release页面找到armv7的版本
+用wget或者curl命令下载到本地以后解压，解压以后的文件结构大致如下
+然后需要把v2ray-core添加到环境变量。赚钱宝一代这个openwrt添加环境变量需要编辑的文件是/etc/profile。
+# 没有nano可以用vim nano /etc/profile 在path一栏按照格式添加在末尾即可。
+编辑完成后保存推出，再用source /etc/profile让配置生效。
+第二步：v2raya
+项目地址：【v2rayA/v2rayA】。
+在项目的release页面找到armv7版本的二进制包。
+用wget或者curl下载到本地以后进行解压，记得用chmod +x命令授权。
+然后就可以试运行v2rays惹，直接敲命令
+./v2raya --config=/mnt/data/v2ray/config 在控制台可以看到日志信息，v2raya已经成功启动，web ui的访问地址也打印出来惹。
+经过我的实际测试，虽然从日志看有一个TPOROXY无法载入的报错，但配置好代理以后是可以正常使用的。
+那接下去就只需要把v2raya添加到系统服务并设置启动项就完成了。
+第三步：配置sysvinit
+v2raya自带了systemd的配置，官网的手册里也提供了openrc的脚本，理论上openrc应该兼容sysv，但我实测没法用，所以只能自己瞎写了。你如果要抄的话记得根据自己的情况修改文件路径。
+先创建sysv配置文件
+cd /etc/init.d touch v2raya chmod +x v2raya 然后编辑v2raya，粘贴以下代码：
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/v2ray/v2raya --config=/mnt/data/v2ray/config } stop() { kill $(pidof v2raya) } 然后启动服务 &amp;amp; 设置启动项
+service v2raya start service v2raya enable 好了，到这里就完成在刷了openwrt的迅雷赚钱宝一代（ws1408）上安装和使用v2raya了，之后就可以把它当作一个代理使用，让它继续发光发热。</description>
+    </item>
+    
     <item>
       <title>在Debian上安装和使用V2Ray</title>
       <link>https://ruohai.wang/202406/v2ray-install-guide-on-armbian/</link>
