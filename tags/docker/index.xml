@@ -6,7 +6,32 @@
     <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Oct 2023 19:35:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Jun 2024 19:57:04 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>拉不动镜像？给Docker配置代理服务器</title>
+      <link>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</link>
+      <pubDate>Fri, 21 Jun 2024 19:57:04 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</guid>
+      <description>已经写了两篇文章记录怎么在debian和openwrt上安装和使用v2raya，顺便再水一篇文章记录下怎么给docker配置代理服务器。
+docker官网提供了简单直白的英文文档，如果英文阅读无障碍的话可以直接看原文：【Configure the daemon with systemd】
+注意一下这个方法有个前提，就是docker的部署环境使用的是systemd，而不是sysv init或者openrc之类。
+方法一：编辑daemon.json
+注意使用这个方法需要自己的docker engine版本大于23.0，低于这个版本号只能用方法二。
+可以用docker version命令查看自己机器上的docker版本号。
+在/etc/docker目录下新建daemon.json文件，然后根据以下内容的格式录入自己的代理服务器信息。
+{ &amp;#34;proxies&amp;#34;: { &amp;#34;http-proxy&amp;#34;: &amp;#34;http://proxy.example.com:3128&amp;#34;, &amp;#34;https-proxy&amp;#34;: &amp;#34;https://proxy.example.com:3129&amp;#34;, &amp;#34;no-proxy&amp;#34;: &amp;#34;*.test.example.com,.example.org,127.0.0.0/8&amp;#34; } } 方法二：编辑docker.service
+如果docker engine版本低于23.0，或者上面的配置没有效果，可以用方法二。
+先创建目录和文件
+mkdir -p /etc/systemd/system/docker.service.d touch /etc/systemd/system/docker.service.d/http-proxy.conf 然后编辑http-proxy.conf文件，然后根据以下内容的格式录入自己的代理服务器信息。
+[Service] Environment=&amp;#34;HTTP_PROXY=http://proxy.example.com:3128&amp;#34; Environment=&amp;#34;HTTPS_PROXY=https://proxy.example.com:3129&amp;#34; Environment=&amp;#34;NO_PROXY=localhost,127.0.0.1,docker-registry.example.com,.corp&amp;#34; 最后一步
+完成了方法一或者方法二的编辑以后，重启docker。
+systemctl daemon-reload &amp;amp;&amp;amp; systemctl restart docker.service 查看变更是否生效，可以用命令docker info
+也可以用命令systemctl show --property=Environment docker
+好了，到这里给docker配置代理服务器就完成了，再也不用担心docker pull拉不动镜像惹。
+🎉</description>
+    </item>
+    
     <item>
       <title>UFW防火墙对Docker容器不生效的问题解决</title>
       <link>https://ruohai.wang/202310/ufw-solve-conflict-with-docker/</link>
