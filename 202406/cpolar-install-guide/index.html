@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Cpolar在Armbian和OpenWrt上的安装步骤分解 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cpolar在Armbian和OpenWrt上的安装步骤分解"/>
+<meta name="twitter:description" content="前言 看别人折腾电子垃圾盒子的视频知道了cpolar这个服务，免费账户可以薅一个1Mbps小水管、随机字符&amp;24小时有效的二级域名。
+在自己的arm小盒子上安装体验了会，单说这免费的羊毛，可以作为一个应急备用的内网穿透方案，没法重用。不管是想固定二级域名，还是绑定自定义域名，订阅的费用都已经超过了自己买一个gia cn2网络的海外vps了。
+cpolar官网提供了很多文档和手册，没啥阅读障碍的话跟着官网手册一步步操作就行了。
+但我为啥要多此一举写这篇文章呢，🤔，因为官方的手册在有一些步骤比较模糊，而且官方推荐使用的是一键脚本。我因为手上既有openwrt的盒子，也有armbian的盒子，在部署的过程中经常有一些需要自定义的地方，所以做个简单记录，方便以后回溯。
+安装 第一步：下载
+第一步肯定是找到适配自己硬件平台的安装包了。
+我手上的硬件已经是大家的老朋友，迅雷赚钱宝一代（ws1408），系统是3.10内核的openwrt。
+另一个是硬件是迅雷赚钱宝二代（ws1508），系统是armbian。
+这俩硬件的cpu都是arm32/armv7/armhf架构的amlogic s805，下载arm32版本的安装包即可。
+使用wget或者curl下载到本地，然后用unzip解压。如果提示unzip没有安装，openwrt的软件仓库里就有，debian的apt仓库里也有。
+# 下载 wget -O cpolar-stable-linux-arm.zip https://www.cpolar.com/static/downloads/releases/3.3.12/cpolar-stable-linux-arm.zip # 解压 unzip cpolar-stable-linux-arm.zip 解压以后得到一个已经有可执行权限的二进制包cpolar，如果没有权限可以chmod &#43;x cpolar授权。
+可以把cpolar添加到环境变量。这里以openwrt为例，编辑/etc/profile文件，在PATH一栏的最后，按照格式加上cpolar的文件路径即可。
+添加完成后，用命令source /etc/profile让配置生效。
+想要验证配置是否生效，直接敲命令cpolar version，查看终端是否正确输出cpolar的版本信息即可。
+第二步：验证
+这一步很简单，官网手册也写的很明白。在官网的控制台，复制自己的token，或者直接复制命令，然后在本地执行即可。如果你和我一样已经配置了cpolar的环境变量，这一步就不需要敲前面的./了。
+cpolar authtoken [token] 验证成功以后，默认的配置文件路径会保存在$home/.cpolar路径下。我这里是直接用的root账户，所以是/root/.cpolar。
+第三步：启动web ui
+这一步，不知道官方是有意还是无意，在手册和文档中都跳过了。根据官网提供的一键安装脚本方案，如果是systemd，只需要systemctl start/enable就行了，但我想装在openwrt上，sysv init脚本得自己写，所以在这一步就得自己琢磨。
+现在具体说说怎么启动cpolar的web ui。根据官网一键安装脚本中的代码，提取出systemd模式下启动cpolar daemon的命令如下
+cpolar start-all -dashboard=on -daemon=on -config=/usr/local/etc/cpolar/cpolar.yml -log=/var/log/cpolar/access.log 那我们只需要照葫芦画瓢，简单改动一下适配sysv init就行了，注意config参数指向的的cpolar.yml配置文件路径要根据自己的情况进行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/cpolar/cpolar start-all -dashboard=on -daemon=on -config=/root/.cpolar/cpolar.yml -log=/var/log/cpolar/access.log } stop() { kill $(pidof cpolar) } 把上面的代码保存到/etc/init."/>
+
+    <meta property="og:title" content="Cpolar在Armbian和OpenWrt上的安装步骤分解" />
+<meta property="og:description" content="前言 看别人折腾电子垃圾盒子的视频知道了cpolar这个服务，免费账户可以薅一个1Mbps小水管、随机字符&amp;24小时有效的二级域名。
+在自己的arm小盒子上安装体验了会，单说这免费的羊毛，可以作为一个应急备用的内网穿透方案，没法重用。不管是想固定二级域名，还是绑定自定义域名，订阅的费用都已经超过了自己买一个gia cn2网络的海外vps了。
+cpolar官网提供了很多文档和手册，没啥阅读障碍的话跟着官网手册一步步操作就行了。
+但我为啥要多此一举写这篇文章呢，🤔，因为官方的手册在有一些步骤比较模糊，而且官方推荐使用的是一键脚本。我因为手上既有openwrt的盒子，也有armbian的盒子，在部署的过程中经常有一些需要自定义的地方，所以做个简单记录，方便以后回溯。
+安装 第一步：下载
+第一步肯定是找到适配自己硬件平台的安装包了。
+我手上的硬件已经是大家的老朋友，迅雷赚钱宝一代（ws1408），系统是3.10内核的openwrt。
+另一个是硬件是迅雷赚钱宝二代（ws1508），系统是armbian。
+这俩硬件的cpu都是arm32/armv7/armhf架构的amlogic s805，下载arm32版本的安装包即可。
+使用wget或者curl下载到本地，然后用unzip解压。如果提示unzip没有安装，openwrt的软件仓库里就有，debian的apt仓库里也有。
+# 下载 wget -O cpolar-stable-linux-arm.zip https://www.cpolar.com/static/downloads/releases/3.3.12/cpolar-stable-linux-arm.zip # 解压 unzip cpolar-stable-linux-arm.zip 解压以后得到一个已经有可执行权限的二进制包cpolar，如果没有权限可以chmod &#43;x cpolar授权。
+可以把cpolar添加到环境变量。这里以openwrt为例，编辑/etc/profile文件，在PATH一栏的最后，按照格式加上cpolar的文件路径即可。
+添加完成后，用命令source /etc/profile让配置生效。
+想要验证配置是否生效，直接敲命令cpolar version，查看终端是否正确输出cpolar的版本信息即可。
+第二步：验证
+这一步很简单，官网手册也写的很明白。在官网的控制台，复制自己的token，或者直接复制命令，然后在本地执行即可。如果你和我一样已经配置了cpolar的环境变量，这一步就不需要敲前面的./了。
+cpolar authtoken [token] 验证成功以后，默认的配置文件路径会保存在$home/.cpolar路径下。我这里是直接用的root账户，所以是/root/.cpolar。
+第三步：启动web ui
+这一步，不知道官方是有意还是无意，在手册和文档中都跳过了。根据官网提供的一键安装脚本方案，如果是systemd，只需要systemctl start/enable就行了，但我想装在openwrt上，sysv init脚本得自己写，所以在这一步就得自己琢磨。
+现在具体说说怎么启动cpolar的web ui。根据官网一键安装脚本中的代码，提取出systemd模式下启动cpolar daemon的命令如下
+cpolar start-all -dashboard=on -daemon=on -config=/usr/local/etc/cpolar/cpolar.yml -log=/var/log/cpolar/access.log 那我们只需要照葫芦画瓢，简单改动一下适配sysv init就行了，注意config参数指向的的cpolar.yml配置文件路径要根据自己的情况进行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/cpolar/cpolar start-all -dashboard=on -daemon=on -config=/root/.cpolar/cpolar.yml -log=/var/log/cpolar/access.log } stop() { kill $(pidof cpolar) } 把上面的代码保存到/etc/init." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202406/cpolar-install-guide/" /><meta property="article:section" content="202406" />
+<meta property="article:published_time" content="2024-06-24T20:33:47+08:00" />
+<meta property="article:modified_time" content="2024-06-24T20:33:47+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Cpolar在Armbian和OpenWrt上的安装步骤分解</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 24, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/cpolar/">Cpolar</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>看别人折腾电子垃圾盒子的视频知道了cpolar这个服务，免费账户可以薅一个1Mbps小水管、随机字符&amp;24小时有效的二级域名。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/01.webp" alt=""></p>
+<p>在自己的arm小盒子上安装体验了会，单说这免费的羊毛，可以作为一个应急备用的内网穿透方案，没法重用。不管是想固定二级域名，还是绑定自定义域名，订阅的费用都已经超过了自己买一个gia cn2网络的海外vps了。</p>
+<p>cpolar官网提供了很多文档和手册，没啥阅读障碍的话跟着官网手册一步步操作就行了。</p>
+<p>但我为啥要多此一举写这篇文章呢，🤔，因为官方的手册在有一些步骤比较模糊，而且官方推荐使用的是一键脚本。我因为手上既有openwrt的盒子，也有armbian的盒子，在部署的过程中经常有一些需要自定义的地方，所以做个简单记录，方便以后回溯。</p>
+<hr>
+<h2 id="安装">安装</h2>
+<blockquote>
+<p>第一步：下载</p>
+</blockquote>
+<p>第一步肯定是找到适配自己硬件平台的安装包了。</p>
+<p>我手上的硬件已经是大家的老朋友，迅雷赚钱宝一代（ws1408），系统是3.10内核的openwrt。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/02.webp" alt=""></p>
+<p>另一个是硬件是迅雷赚钱宝二代（ws1508），系统是armbian。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/03.webp" alt=""></p>
+<p>这俩硬件的cpu都是arm32/armv7/armhf架构的amlogic s805，下载arm32版本的安装包即可。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/04.webp" alt=""></p>
+<p>使用wget或者curl下载到本地，然后用unzip解压。如果提示unzip没有安装，openwrt的软件仓库里就有，debian的apt仓库里也有。</p>
+<pre tabindex="0"><code># 下载
+wget -O cpolar-stable-linux-arm.zip https://www.cpolar.com/static/downloads/releases/3.3.12/cpolar-stable-linux-arm.zip
+
+# 解压
+unzip cpolar-stable-linux-arm.zip
+</code></pre><p>解压以后得到一个已经有可执行权限的二进制包<code>cpolar</code>，如果没有权限可以<code>chmod +x cpolar</code>授权。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/05.webp" alt=""></p>
+<p>可以把cpolar添加到环境变量。这里以openwrt为例，编辑<code>/etc/profile</code>文件，在<code>PATH</code>一栏的最后，按照格式加上cpolar的文件路径即可。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/07.webp" alt=""></p>
+<p>添加完成后，用命令<code>source /etc/profile</code>让配置生效。</p>
+<p>想要验证配置是否生效，直接敲命令<code>cpolar version</code>，查看终端是否正确输出cpolar的版本信息即可。</p>
+<blockquote>
+<p>第二步：验证</p>
+</blockquote>
+<p>这一步很简单，官网手册也写的很明白。在官网的控制台，复制自己的token，或者直接复制命令，然后在本地执行即可。如果你和我一样已经配置了cpolar的环境变量，这一步就不需要敲前面的<code>./</code>了。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/06.webp" alt=""></p>
+<pre tabindex="0"><code>cpolar authtoken [token]
+</code></pre><p>验证成功以后，默认的配置文件路径会保存在<code>$home/.cpolar</code>路径下。我这里是直接用的root账户，所以是<code>/root/.cpolar</code>。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/08.webp" alt=""></p>
+<blockquote>
+<p>第三步：启动web ui</p>
+</blockquote>
+<p>这一步，不知道官方是有意还是无意，在手册和文档中都跳过了。根据官网提供的一键安装脚本方案，如果是systemd，只需要<code>systemctl start/enable</code>就行了，但我想装在openwrt上，sysv init脚本得自己写，所以在这一步就得自己琢磨。</p>
+<p>现在具体说说怎么启动cpolar的web ui。根据官网一键安装脚本中的代码，提取出systemd模式下启动cpolar daemon的命令如下</p>
+<pre tabindex="0"><code>cpolar start-all -dashboard=on -daemon=on -config=/usr/local/etc/cpolar/cpolar.yml -log=/var/log/cpolar/access.log
+</code></pre><p>那我们只需要照葫芦画瓢，简单改动一下适配sysv init就行了，注意<code>config</code>参数指向的的<code>cpolar.yml</code>配置文件路径要根据自己的情况进行修改。</p>
+<pre tabindex="0"><code>#!/bin/sh /etc/rc.common
+
+START=99
+STOP=10
+
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+  service_start /mnt/data/cpolar/cpolar start-all -dashboard=on -daemon=on -config=/root/.cpolar/cpolar.yml -log=/var/log/cpolar/access.log
+}
+
+stop() {
+  kill $(pidof cpolar)
+}
+</code></pre><p>把上面的代码保存到<code>/etc/init.d/cpolar</code>即可，保存后执行<code>chmod +x cpolar</code>授权，然后添加启动项。</p>
+<pre tabindex="0"><code># 添加启动项
+service cpolar enable
+
+# 启动
+service cpolar start
+</code></pre><p>启动成功以后，就可以打开浏览器，访问<code>http://host-ip:9200</code>访问cpolar的web控制台惹。</p>
+<blockquote>
+<p>第四步：添加内网穿透隧道</p>
+</blockquote>
+<p>访问cpolar的web控制台，用cpolar官网注册的账户信息登录以后，可以看到默认是有两个示例隧道，建议直接删除。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/09.webp" alt=""></p>
+<p>创建自定义隧道就很简单了，有ui的操作就非常的直观易懂易上手。作为白嫖党，也不用看高级选项、二级子域名、自定义域名之类了，给隧道命名、设定端口号，设置好这俩然后点击<code>创建</code>就行了。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/10.webp" alt=""></p>
+<p>创建成功以后，可以在<code>隧道列表</code>看到自己创建的隧道，注意看状态已经是<code>active</code>表明已经启动，如果不是active，可以点击<code>启动</code>按钮。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/11.webp" alt=""></p>
+<p>到这里，隧道已经成功创建了，接下去到<code>在线隧道列表</code>就可以看到自己的网络服务对应的公网访问地址了。</p>
+<p><img src="https://img.311803.xyz/2024/06/24/12.webp" alt=""></p>
+<p>🎉</p>
+<blockquote>
+<p>第五步：适配systemd的服务脚本</p>
+</blockquote>
+<p>前面提供了适配sysv init的服务脚本，顺便也提供一下适配systemd的服务脚本。</p>
+<p>有两个版本，一个是cpolar.service，适合直接用root跑的玩家，另一个是cpolar@.service，适合指定非root账号跑的玩家。其中文件路径之类的请自行调整。</p>
+<p>cpolar.service</p>
+<pre tabindex="0"><code>[Unit]
+Description=Cpolar Service
+Documentation=https://www.cpolar.com/docs
+After=network.target nss-lookup.target
+
+[Service]
+User=nobody
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/cpolar start-all -dashboard=on -daemon=on -config=/usr/local/etc/cpolar/cpolar.yml -log=/var/log/cpolar/access.log
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><p>cpolar@.service</p>
+<pre tabindex="0"><code>[Unit]
+Description=Cpolar Service
+Documentation=https://www.cpolar.com/docs
+After=network.target nss-lookup.target
+
+[Service]
+User=nobody
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/cpolar start-all -daemon=on -dashboard=on -config=/usr/local/etc/cpolar/%i.yml -log=/var/log/cpolar/access.log
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

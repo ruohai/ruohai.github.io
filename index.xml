@@ -6,7 +6,37 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 21 Jun 2024 19:57:04 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jun 2024 20:33:47 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cpolar在Armbian和OpenWrt上的安装步骤分解</title>
+      <link>https://ruohai.wang/202406/cpolar-install-guide/</link>
+      <pubDate>Mon, 24 Jun 2024 20:33:47 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/cpolar-install-guide/</guid>
+      <description>前言 看别人折腾电子垃圾盒子的视频知道了cpolar这个服务，免费账户可以薅一个1Mbps小水管、随机字符&amp;amp;24小时有效的二级域名。
+在自己的arm小盒子上安装体验了会，单说这免费的羊毛，可以作为一个应急备用的内网穿透方案，没法重用。不管是想固定二级域名，还是绑定自定义域名，订阅的费用都已经超过了自己买一个gia cn2网络的海外vps了。
+cpolar官网提供了很多文档和手册，没啥阅读障碍的话跟着官网手册一步步操作就行了。
+但我为啥要多此一举写这篇文章呢，🤔，因为官方的手册在有一些步骤比较模糊，而且官方推荐使用的是一键脚本。我因为手上既有openwrt的盒子，也有armbian的盒子，在部署的过程中经常有一些需要自定义的地方，所以做个简单记录，方便以后回溯。
+安装 第一步：下载
+第一步肯定是找到适配自己硬件平台的安装包了。
+我手上的硬件已经是大家的老朋友，迅雷赚钱宝一代（ws1408），系统是3.10内核的openwrt。
+另一个是硬件是迅雷赚钱宝二代（ws1508），系统是armbian。
+这俩硬件的cpu都是arm32/armv7/armhf架构的amlogic s805，下载arm32版本的安装包即可。
+使用wget或者curl下载到本地，然后用unzip解压。如果提示unzip没有安装，openwrt的软件仓库里就有，debian的apt仓库里也有。
+# 下载 wget -O cpolar-stable-linux-arm.zip https://www.cpolar.com/static/downloads/releases/3.3.12/cpolar-stable-linux-arm.zip # 解压 unzip cpolar-stable-linux-arm.zip 解压以后得到一个已经有可执行权限的二进制包cpolar，如果没有权限可以chmod +x cpolar授权。
+可以把cpolar添加到环境变量。这里以openwrt为例，编辑/etc/profile文件，在PATH一栏的最后，按照格式加上cpolar的文件路径即可。
+添加完成后，用命令source /etc/profile让配置生效。
+想要验证配置是否生效，直接敲命令cpolar version，查看终端是否正确输出cpolar的版本信息即可。
+第二步：验证
+这一步很简单，官网手册也写的很明白。在官网的控制台，复制自己的token，或者直接复制命令，然后在本地执行即可。如果你和我一样已经配置了cpolar的环境变量，这一步就不需要敲前面的./了。
+cpolar authtoken [token] 验证成功以后，默认的配置文件路径会保存在$home/.cpolar路径下。我这里是直接用的root账户，所以是/root/.cpolar。
+第三步：启动web ui
+这一步，不知道官方是有意还是无意，在手册和文档中都跳过了。根据官网提供的一键安装脚本方案，如果是systemd，只需要systemctl start/enable就行了，但我想装在openwrt上，sysv init脚本得自己写，所以在这一步就得自己琢磨。
+现在具体说说怎么启动cpolar的web ui。根据官网一键安装脚本中的代码，提取出systemd模式下启动cpolar daemon的命令如下
+cpolar start-all -dashboard=on -daemon=on -config=/usr/local/etc/cpolar/cpolar.yml -log=/var/log/cpolar/access.log 那我们只需要照葫芦画瓢，简单改动一下适配sysv init就行了，注意config参数指向的的cpolar.yml配置文件路径要根据自己的情况进行修改。
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/cpolar/cpolar start-all -dashboard=on -daemon=on -config=/root/.cpolar/cpolar.yml -log=/var/log/cpolar/access.log } stop() { kill $(pidof cpolar) } 把上面的代码保存到/etc/init.</description>
+    </item>
+    
     <item>
       <title>拉不动镜像？给Docker配置代理服务器</title>
       <link>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</link>
