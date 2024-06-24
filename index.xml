@@ -59,7 +59,8 @@ mkdir -p /etc/systemd/system/docker.service.d touch /etc/systemd/system/docker.s
 systemctl daemon-reload &amp;amp;&amp;amp; systemctl restart docker.service 查看变更是否生效，可以用命令docker info
 也可以用命令systemctl show --property=Environment docker
 好了，到这里给docker配置代理服务器就完成了，再也不用担心docker pull拉不动镜像惹。
-🎉</description>
+🎉
+喝杯奶茶 </description>
     </item>
     
     <item>
@@ -2912,17 +2913,6 @@ systemctl restart apache2 第六步：如果没有开防火墙（firewalld/iptab
     </item>
     
     <item>
-      <title>关于</title>
-      <link>https://ruohai.wang/about/</link>
-      <pubDate>Sat, 15 Jul 2023 03:06:48 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/about/</guid>
-      <description>关于未来你总有周密的安排，然而剧情却总是被现实篡改。
-关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。
-博客备用地址：【😹ฅ^•ﻌ•^ฅ】</description>
-    </item>
-    
-    <item>
       <title>Linux下从0开始安装Typecho</title>
       <link>https://ruohai.wang/202307/install-typecho-step-by-step/</link>
       <pubDate>Sat, 15 Jul 2023 02:52:12 +0800</pubDate>
@@ -3296,6 +3286,18 @@ Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjia
       <description>2023/06/27，凌晨2:38，终于在armbian上手搓了typecho，两次。
 第一次主要是试错，手搓成功以后重新刷机按照刚刚实践成功的经验再搓一次，过程中因为有些配置调整，依然碰到了不少的问题。不过高兴的是，第二次又搓成功惹。
 搞定了，睡觉。😄</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://ruohai.wang/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/about/</guid>
+      <description>关于 关于未来你总有周密的安排，然而剧情却总是被现实篡改。
+关于现在你总是彷徨又无奈，任凭岁月黯然又憔悴地离开。
+博客备用地址：【😹ฅ^•ﻌ•^ฅ】
+联系方式 电报：Ruohai 邮箱：d2FuZ3J1b2hhaUBnbWFpbC5jb20= (base64加密) 微信 &amp;amp; 赞赏码 </description>
     </item>
     
   </channel>

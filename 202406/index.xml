@@ -59,7 +59,8 @@ mkdir -p /etc/systemd/system/docker.service.d touch /etc/systemd/system/docker.s
 systemctl daemon-reload &amp;amp;&amp;amp; systemctl restart docker.service 查看变更是否生效，可以用命令docker info
 也可以用命令systemctl show --property=Environment docker
 好了，到这里给docker配置代理服务器就完成了，再也不用担心docker pull拉不动镜像惹。
-🎉</description>
+🎉
+喝杯奶茶 </description>
     </item>
     
     <item>
