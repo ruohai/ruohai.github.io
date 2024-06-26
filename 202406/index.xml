@@ -6,7 +6,34 @@
     <description>Recent content in 202406s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Jun 2024 14:11:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202406/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jun 2024 21:20:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202406/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mergerfs的安装和配置</title>
+      <link>https://ruohai.wang/202406/mergerfs-install-and-config-guide/</link>
+      <pubDate>Wed, 26 Jun 2024 21:20:25 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/mergerfs-install-and-config-guide/</guid>
+      <description>前言 最近看到chiphell论坛一个网友分享的【基于Debian搭建的HomeNAS玩法】，文中提到了软raid、联合文件系统、snapraid三个方案。
+软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。
+那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。
+使用场景 联合文件系统有很多个软件方案，在debian的apt仓库里搜unionfs就有三个方案。
+因为我搜到的教程文档关于mergerfs比较多，而且casaos也用的mergrefs方案，所以我选择也是mergerfs。
+mergerfs有点类似unraid的存储池方案，把多个硬盘组合到一起成为一个大容量的存储池，那它和raid的区别是什么？
+最大的区别就是，raid阵列是一个整体，往raid中写入文件，是把文件碎成多个文件块分散存储到阵列中的每个硬盘上，单独抽出一块硬盘没法读取数据。mergerfs是把多个ext4（也可以是其它文件系统）的硬盘通过软件整合成一个虚拟盘，往这个虚拟盘保存文件，文件是完整的保存到其中一个硬盘上，单独抽取一块硬盘，这块硬盘也可以插到任何支持ext4的机器上继续使用和读取数据。 raid除了raid0，其它raid5/raid6/raid10一般都要求硬盘容量相同，但mergerfs没有这个限制，可以200GB硬盘和1TB的硬盘拼成一个1.2TB的存储池。mergerfs甚至支持将多个不同文件系统的硬盘整合，比如ext4/exfat/ntfs三种文件系统的硬盘拼成一个存储池。 mergerfs和raid0的区别，raid0没有数据冗余，一损俱损。mergerfs也没有数据冗余，但一损只损一，存储池中的其它硬盘不受影响。 mergerfs的扩容非常方便，只需要把新硬盘添加到mergerfs存储池即可。如果raid要扩容，🤔，比如raid5/6，每加一块硬盘就要整个阵列重建，比如把一个2TB * 4的阵列扩容成4TB * 4的阵列，至少需要重建5次才能完成（换盘4次 + resize一次），这对硬盘寿命和数据安全是一个非常严峻的考验。 组raid，或者往raid中加新硬盘，硬盘都需要先格式化清空数据。mergerfs不需要，可以把已经有数据的硬盘添加到mergerfs存储池中，文件依然存在。 mergerfs存储池的硬盘i/o性能就是单盘的性能，而raid是可以多盘的i/o性能叠加。 那mergerfs可不可以实现像raid一样的数据冗余？可以的，搭配snapraid就可以实现，后续有空的我再写，😂。
+安装 &amp;amp; 配置 第一步：安装
+这步没啥好说的，apt一把梭。
+apt install mergerfs 第二部：配置
+假定有三块硬盘，sdb1、sdc1、sdd1，现在准备用这三块硬盘组件mergerfs存储池。
+首先需要把三个硬盘挂载到系统，假定挂载信息如下
+/dev/sdb1 /mnt/disk1 /dev/sdc1 /mnt/disk2 /dev/sdd1 /mnt/disk3 然后用mergerfs把三个硬盘添加到一个存储池，假定新存储池的挂载点是/mnt/vpool。
+mergerfs -o defaults,minfreespace=100M /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool 参数释疑：
+defaults：挂载文件系统的默认参数 minfreespace=100M：存储池中剩余容量小于100MB的硬盘会跳过使用 /mnt/disk1:/mnt/disk2:/mnt/disk3：需要加入存储池的三块硬盘 /mnt/vpool：存储池的挂载点 网上的其它教程文章中，一般还会加上allow_other/use_ino/gnorepponrename=true/moveonenospc=true，这些参数的具体意思可以参考mergerfs的github仓库中的手册，根据自己的需求添加。其中allow_other从2.35.0版本之后已经是默认启用了，use_ino参数已经弃用。
+执行以上命令以后，就可以看到文件系统中多出了一个集合了三个硬盘容量的新的虚拟硬盘/mnt/vpool。
+也可以把挂载信息写到/etc/fstab中，这样开机就会自动挂载。
+# mergerfs /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool mergerfs defaults,minfreespace=100M 0 0 然后记得重载让配置生效
+# 重载配置 systemctl daemon-reload # 自动挂载 systemctl mount -a 读写文件 往/mnt/vpool中写入一个文件，默认规则是按照存储池中几个硬盘的剩余可用空间大小，按照从大往小的规则进行使用，也就是优先使用可用存储空间最大的那个硬盘。</description>
+    </item>
+    
     <item>
       <title>在Armbian上安装miniDLNA</title>
       <link>https://ruohai.wang/202406/minidlna-install-on-armbian/</link>

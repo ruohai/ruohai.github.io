@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202406/</loc>
-    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+    <lastmod>2024-06-26T21:20:25+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/minidlna/</loc>
-    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/mergerfs/</loc>
+    <lastmod>2024-06-26T21:20:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202406/mergerfs-install-and-config-guide/</loc>
+    <lastmod>2024-06-26T21:20:25+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+    <lastmod>2024-06-26T21:20:25+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-06-26T21:20:25+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/minidlna/</loc>
     <lastmod>2024-06-26T14:11:28+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202406/minidlna-install-on-armbian/</loc>

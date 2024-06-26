@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>mergerfs的安装和配置 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mergerfs的安装和配置"/>
+<meta name="twitter:description" content="前言 最近看到chiphell论坛一个网友分享的【基于Debian搭建的HomeNAS玩法】，文中提到了软raid、联合文件系统、snapraid三个方案。
+软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。
+那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。
+使用场景 联合文件系统有很多个软件方案，在debian的apt仓库里搜unionfs就有三个方案。
+因为我搜到的教程文档关于mergerfs比较多，而且casaos也用的mergrefs方案，所以我选择也是mergerfs。
+mergerfs有点类似unraid的存储池方案，把多个硬盘组合到一起成为一个大容量的存储池，那它和raid的区别是什么？
+最大的区别就是，raid阵列是一个整体，往raid中写入文件，是把文件碎成多个文件块分散存储到阵列中的每个硬盘上，单独抽出一块硬盘没法读取数据。mergerfs是把多个ext4（也可以是其它文件系统）的硬盘通过软件整合成一个虚拟盘，往这个虚拟盘保存文件，文件是完整的保存到其中一个硬盘上，单独抽取一块硬盘，这块硬盘也可以插到任何支持ext4的机器上继续使用和读取数据。 raid除了raid0，其它raid5/raid6/raid10一般都要求硬盘容量相同，但mergerfs没有这个限制，可以200GB硬盘和1TB的硬盘拼成一个1.2TB的存储池。mergerfs甚至支持将多个不同文件系统的硬盘整合，比如ext4/exfat/ntfs三种文件系统的硬盘拼成一个存储池。 mergerfs和raid0的区别，raid0没有数据冗余，一损俱损。mergerfs也没有数据冗余，但一损只损一，存储池中的其它硬盘不受影响。 mergerfs的扩容非常方便，只需要把新硬盘添加到mergerfs存储池即可。如果raid要扩容，🤔，比如raid5/6，每加一块硬盘就要整个阵列重建，比如把一个2TB * 4的阵列扩容成4TB * 4的阵列，至少需要重建5次才能完成（换盘4次 &#43; resize一次），这对硬盘寿命和数据安全是一个非常严峻的考验。 组raid，或者往raid中加新硬盘，硬盘都需要先格式化清空数据。mergerfs不需要，可以把已经有数据的硬盘添加到mergerfs存储池中，文件依然存在。 mergerfs存储池的硬盘i/o性能就是单盘的性能，而raid是可以多盘的i/o性能叠加。 那mergerfs可不可以实现像raid一样的数据冗余？可以的，搭配snapraid就可以实现，后续有空的我再写，😂。
+安装 &amp; 配置 第一步：安装
+这步没啥好说的，apt一把梭。
+apt install mergerfs 第二部：配置
+假定有三块硬盘，sdb1、sdc1、sdd1，现在准备用这三块硬盘组件mergerfs存储池。
+首先需要把三个硬盘挂载到系统，假定挂载信息如下
+/dev/sdb1 /mnt/disk1 /dev/sdc1 /mnt/disk2 /dev/sdd1 /mnt/disk3 然后用mergerfs把三个硬盘添加到一个存储池，假定新存储池的挂载点是/mnt/vpool。
+mergerfs -o defaults,minfreespace=100M /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool 参数释疑：
+defaults：挂载文件系统的默认参数 minfreespace=100M：存储池中剩余容量小于100MB的硬盘会跳过使用 /mnt/disk1:/mnt/disk2:/mnt/disk3：需要加入存储池的三块硬盘 /mnt/vpool：存储池的挂载点 网上的其它教程文章中，一般还会加上allow_other/use_ino/gnorepponrename=true/moveonenospc=true，这些参数的具体意思可以参考mergerfs的github仓库中的手册，根据自己的需求添加。其中allow_other从2.35.0版本之后已经是默认启用了，use_ino参数已经弃用。
+执行以上命令以后，就可以看到文件系统中多出了一个集合了三个硬盘容量的新的虚拟硬盘/mnt/vpool。
+也可以把挂载信息写到/etc/fstab中，这样开机就会自动挂载。
+# mergerfs /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool mergerfs defaults,minfreespace=100M 0 0 然后记得重载让配置生效
+# 重载配置 systemctl daemon-reload # 自动挂载 systemctl mount -a 读写文件 往/mnt/vpool中写入一个文件，默认规则是按照存储池中几个硬盘的剩余可用空间大小，按照从大往小的规则进行使用，也就是优先使用可用存储空间最大的那个硬盘。"/>
+
+    <meta property="og:title" content="mergerfs的安装和配置" />
+<meta property="og:description" content="前言 最近看到chiphell论坛一个网友分享的【基于Debian搭建的HomeNAS玩法】，文中提到了软raid、联合文件系统、snapraid三个方案。
+软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。
+那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。
+使用场景 联合文件系统有很多个软件方案，在debian的apt仓库里搜unionfs就有三个方案。
+因为我搜到的教程文档关于mergerfs比较多，而且casaos也用的mergrefs方案，所以我选择也是mergerfs。
+mergerfs有点类似unraid的存储池方案，把多个硬盘组合到一起成为一个大容量的存储池，那它和raid的区别是什么？
+最大的区别就是，raid阵列是一个整体，往raid中写入文件，是把文件碎成多个文件块分散存储到阵列中的每个硬盘上，单独抽出一块硬盘没法读取数据。mergerfs是把多个ext4（也可以是其它文件系统）的硬盘通过软件整合成一个虚拟盘，往这个虚拟盘保存文件，文件是完整的保存到其中一个硬盘上，单独抽取一块硬盘，这块硬盘也可以插到任何支持ext4的机器上继续使用和读取数据。 raid除了raid0，其它raid5/raid6/raid10一般都要求硬盘容量相同，但mergerfs没有这个限制，可以200GB硬盘和1TB的硬盘拼成一个1.2TB的存储池。mergerfs甚至支持将多个不同文件系统的硬盘整合，比如ext4/exfat/ntfs三种文件系统的硬盘拼成一个存储池。 mergerfs和raid0的区别，raid0没有数据冗余，一损俱损。mergerfs也没有数据冗余，但一损只损一，存储池中的其它硬盘不受影响。 mergerfs的扩容非常方便，只需要把新硬盘添加到mergerfs存储池即可。如果raid要扩容，🤔，比如raid5/6，每加一块硬盘就要整个阵列重建，比如把一个2TB * 4的阵列扩容成4TB * 4的阵列，至少需要重建5次才能完成（换盘4次 &#43; resize一次），这对硬盘寿命和数据安全是一个非常严峻的考验。 组raid，或者往raid中加新硬盘，硬盘都需要先格式化清空数据。mergerfs不需要，可以把已经有数据的硬盘添加到mergerfs存储池中，文件依然存在。 mergerfs存储池的硬盘i/o性能就是单盘的性能，而raid是可以多盘的i/o性能叠加。 那mergerfs可不可以实现像raid一样的数据冗余？可以的，搭配snapraid就可以实现，后续有空的我再写，😂。
+安装 &amp; 配置 第一步：安装
+这步没啥好说的，apt一把梭。
+apt install mergerfs 第二部：配置
+假定有三块硬盘，sdb1、sdc1、sdd1，现在准备用这三块硬盘组件mergerfs存储池。
+首先需要把三个硬盘挂载到系统，假定挂载信息如下
+/dev/sdb1 /mnt/disk1 /dev/sdc1 /mnt/disk2 /dev/sdd1 /mnt/disk3 然后用mergerfs把三个硬盘添加到一个存储池，假定新存储池的挂载点是/mnt/vpool。
+mergerfs -o defaults,minfreespace=100M /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool 参数释疑：
+defaults：挂载文件系统的默认参数 minfreespace=100M：存储池中剩余容量小于100MB的硬盘会跳过使用 /mnt/disk1:/mnt/disk2:/mnt/disk3：需要加入存储池的三块硬盘 /mnt/vpool：存储池的挂载点 网上的其它教程文章中，一般还会加上allow_other/use_ino/gnorepponrename=true/moveonenospc=true，这些参数的具体意思可以参考mergerfs的github仓库中的手册，根据自己的需求添加。其中allow_other从2.35.0版本之后已经是默认启用了，use_ino参数已经弃用。
+执行以上命令以后，就可以看到文件系统中多出了一个集合了三个硬盘容量的新的虚拟硬盘/mnt/vpool。
+也可以把挂载信息写到/etc/fstab中，这样开机就会自动挂载。
+# mergerfs /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool mergerfs defaults,minfreespace=100M 0 0 然后记得重载让配置生效
+# 重载配置 systemctl daemon-reload # 自动挂载 systemctl mount -a 读写文件 往/mnt/vpool中写入一个文件，默认规则是按照存储池中几个硬盘的剩余可用空间大小，按照从大往小的规则进行使用，也就是优先使用可用存储空间最大的那个硬盘。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202406/mergerfs-install-and-config-guide/" /><meta property="article:section" content="202406" />
+<meta property="article:published_time" content="2024-06-26T21:20:25+08:00" />
+<meta property="article:modified_time" content="2024-06-26T21:20:25+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">mergerfs的安装和配置</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 26, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/mergerfs/">mergerfs</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近看到chiphell论坛一个网友分享的【<a href="https://www.chiphell.com/thread-2609968-1-1.html">基于Debian搭建的HomeNAS玩法</a>】，文中提到了软raid、联合文件系统、snapraid三个方案。</p>
+<p><img src="https://img.311803.xyz/2024/06/27/01.webp" alt=""></p>
+<p>软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。</p>
+<p>那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。</p>
+<hr>
+<h2 id="使用场景">使用场景</h2>
+<p>联合文件系统有很多个软件方案，在debian的apt仓库里搜<code>unionfs</code>就有三个方案。</p>
+<p><img src="https://img.311803.xyz/2024/06/27/02.webp" alt=""></p>
+<p>因为我搜到的教程文档关于mergerfs比较多，而且casaos也用的mergrefs方案，所以我选择也是mergerfs。</p>
+<p>mergerfs有点类似unraid的存储池方案，把多个硬盘组合到一起成为一个大容量的存储池，那它和raid的区别是什么？</p>
+<ul>
+<li>最大的区别就是，raid阵列是一个整体，往raid中写入文件，是把文件碎成多个文件块分散存储到阵列中的每个硬盘上，单独抽出一块硬盘没法读取数据。mergerfs是把多个ext4（也可以是其它文件系统）的硬盘通过软件整合成一个虚拟盘，往这个虚拟盘保存文件，文件是完整的保存到其中一个硬盘上，单独抽取一块硬盘，这块硬盘也可以插到任何支持ext4的机器上继续使用和读取数据。</li>
+<li>raid除了raid0，其它raid5/raid6/raid10一般都要求硬盘容量相同，但mergerfs没有这个限制，可以200GB硬盘和1TB的硬盘拼成一个1.2TB的存储池。mergerfs甚至支持将多个不同文件系统的硬盘整合，比如ext4/exfat/ntfs三种文件系统的硬盘拼成一个存储池。</li>
+<li>mergerfs和raid0的区别，raid0没有数据冗余，一损俱损。mergerfs也没有数据冗余，但一损只损一，存储池中的其它硬盘不受影响。</li>
+<li>mergerfs的扩容非常方便，只需要把新硬盘添加到mergerfs存储池即可。如果raid要扩容，🤔，比如raid5/6，每加一块硬盘就要整个阵列重建，比如把一个2TB * 4的阵列扩容成4TB * 4的阵列，至少需要重建5次才能完成（换盘4次 + resize一次），这对硬盘寿命和数据安全是一个非常严峻的考验。</li>
+<li>组raid，或者往raid中加新硬盘，硬盘都需要先格式化清空数据。mergerfs不需要，可以把已经有数据的硬盘添加到mergerfs存储池中，文件依然存在。</li>
+<li>mergerfs存储池的硬盘i/o性能就是单盘的性能，而raid是可以多盘的i/o性能叠加。</li>
+</ul>
+<p>那mergerfs可不可以实现像raid一样的数据冗余？可以的，搭配snapraid就可以实现，后续有空的我再写，😂。</p>
+<hr>
+<h2 id="安装--配置">安装 &amp; 配置</h2>
+<blockquote>
+<p>第一步：安装</p>
+</blockquote>
+<p>这步没啥好说的，apt一把梭。</p>
+<pre tabindex="0"><code>apt install mergerfs
+</code></pre><blockquote>
+<p>第二部：配置</p>
+</blockquote>
+<p>假定有三块硬盘，sdb1、sdc1、sdd1，现在准备用这三块硬盘组件mergerfs存储池。</p>
+<p>首先需要把三个硬盘挂载到系统，假定挂载信息如下</p>
+<pre tabindex="0"><code>/dev/sdb1 /mnt/disk1
+/dev/sdc1 /mnt/disk2
+/dev/sdd1 /mnt/disk3
+</code></pre><p>然后用mergerfs把三个硬盘添加到一个存储池，假定新存储池的挂载点是<code>/mnt/vpool</code>。</p>
+<pre tabindex="0"><code>mergerfs -o defaults,minfreespace=100M /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool
+</code></pre><p>参数释疑：</p>
+<ul>
+<li>defaults：挂载文件系统的默认参数</li>
+<li>minfreespace=100M：存储池中剩余容量小于100MB的硬盘会跳过使用</li>
+<li>/mnt/disk1:/mnt/disk2:/mnt/disk3：需要加入存储池的三块硬盘</li>
+<li>/mnt/vpool：存储池的挂载点</li>
+</ul>
+<p>网上的其它教程文章中，一般还会加上<code>allow_other</code>/<code>use_ino</code>/<code>gnorepponrename=true</code>/<code>moveonenospc=true</code>，这些参数的具体意思可以参考mergerfs的github仓库中的手册，根据自己的需求添加。其中<code>allow_other</code>从2.35.0版本之后已经是默认启用了，<code>use_ino</code>参数已经弃用。</p>
+<p><img src="https://img.311803.xyz/2024/06/27/03.webp" alt=""></p>
+<p>执行以上命令以后，就可以看到文件系统中多出了一个集合了三个硬盘容量的新的虚拟硬盘<code>/mnt/vpool</code>。</p>
+<p>也可以把挂载信息写到<code>/etc/fstab</code>中，这样开机就会自动挂载。</p>
+<pre tabindex="0"><code># mergerfs
+/mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool mergerfs defaults,minfreespace=100M 0 0
+</code></pre><p>然后记得重载让配置生效</p>
+<pre tabindex="0"><code># 重载配置
+systemctl daemon-reload
+
+# 自动挂载
+systemctl mount -a
+</code></pre><hr>
+<h2 id="读写文件">读写文件</h2>
+<p>往<code>/mnt/vpool</code>中写入一个文件，默认规则是按照存储池中几个硬盘的剩余可用空间大小，按照从大往小的规则进行使用，也就是优先使用可用存储空间最大的那个硬盘。</p>
+<p>存储池的i/o性能就是单盘的性能。</p>
+<p>如果硬盘上已经有数据，依然可以加入mergerfs存储池，数据不会丢失，可以在<code>/mnt/vpool</code>中看到。</p>
+<p>如果要往存储池中添加、删除硬盘，只需要编辑<code>/etc/fstab</code>，修改挂载的硬盘信息即可。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://www.chiphell.com/thread-2609968-1-1.html">分享一个基于Debian搭建的HomeNAS玩法</a></li>
+<li><a href="https://wzyboy.im/post/1148.html">使用 mergerfs 合并多块硬盘的剩余空间</a></li>
+<li><a href="https://linux.cn/article-12207-1.html">使用 mergefs 增加虚拟存储</a></li>
+<li><a href="https://github.com/trapexit/mergerfs">trapexit/mergerfs</a></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
