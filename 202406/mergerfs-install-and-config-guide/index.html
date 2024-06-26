@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-cn">
   <head>
-    <title>mergerfs的安装和配置 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>联合文件系统mergerfs的安装和配置 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,7 +13,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="mergerfs的安装和配置"/>
+<meta name="twitter:title" content="联合文件系统mergerfs的安装和配置"/>
 <meta name="twitter:description" content="前言 最近看到chiphell论坛一个网友分享的【基于Debian搭建的HomeNAS玩法】，文中提到了软raid、联合文件系统、snapraid三个方案。
 软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。
 那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。
@@ -34,7 +34,7 @@ defaults：挂载文件系统的默认参数 minfreespace=100M：存储池中剩
 # mergerfs /mnt/disk1:/mnt/disk2:/mnt/disk3 /mnt/vpool mergerfs defaults,minfreespace=100M 0 0 然后记得重载让配置生效
 # 重载配置 systemctl daemon-reload # 自动挂载 systemctl mount -a 读写文件 往/mnt/vpool中写入一个文件，默认规则是按照存储池中几个硬盘的剩余可用空间大小，按照从大往小的规则进行使用，也就是优先使用可用存储空间最大的那个硬盘。"/>
 
-    <meta property="og:title" content="mergerfs的安装和配置" />
+    <meta property="og:title" content="联合文件系统mergerfs的安装和配置" />
 <meta property="og:description" content="前言 最近看到chiphell论坛一个网友分享的【基于Debian搭建的HomeNAS玩法】，文中提到了软raid、联合文件系统、snapraid三个方案。
 软raid我知道，就是mdadm，而且我已经用五盘位无raid硬盘柜搭配任意一个能刷armbian的小盒子当host来实现了raid5阵列。mergerfs我也知道，之前在玩客云上装casaos的时候用过这个功能，可以把多个存储空间合并成一个使用。但snapraid我完全不了解，看名称像是给raid阵列做快照用的。
 那看到了新的知识点，正好学习研究一下，看能不能应用到自己的使用场景里。这篇文章只记录联合文件系统的内容。
@@ -90,7 +90,7 @@ defaults：挂载文件系统的默认参数 minfreespace=100M：存储池中剩
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">mergerfs的安装和配置</h1>
+      <h1 class ="post-title">联合文件系统mergerfs的安装和配置</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
