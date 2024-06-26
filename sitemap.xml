@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202406/</loc>
-    <lastmod>2024-06-24T20:33:47+08:00</lastmod>
+    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/minidlna/</loc>
+    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202406/minidlna-install-on-armbian/</loc>
+    <lastmod>2024-06-26T14:11:28+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/cpolar/</loc>
     <lastmod>2024-06-24T20:33:47+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202406/cpolar-install-guide/</loc>
-    <lastmod>2024-06-24T20:33:47+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-06-24T20:33:47+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-06-24T20:33:47+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/docker/</loc>
@@ -156,9 +162,6 @@
     <lastmod>2024-04-05T22:30:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/</loc>
-    <lastmod>2024-03-30T06:02:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/minidlna/</loc>
     <lastmod>2024-03-30T06:02:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/minidlna-config-on-onecloud/</loc>

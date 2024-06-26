@@ -30,14 +30,13 @@
 用wget或者curl下载到本地以后进行解压，记得用chmod +x命令授权。
 然后就可以试运行v2rays惹，直接敲命令
 ./v2raya --config=/mnt/data/v2ray/config 在控制台可以看到日志信息，v2raya已经成功启动，web ui的访问地址也打印出来惹。
-经过我的实际测试，虽然从日志看有一个TPOROXY无法载入的报错，但配置好代理以后是可以正常使用的。
-那接下去就只需要把v2raya添加到系统服务并设置启动项就完成了。
+从日志看有一个TPOROXY无法载入的报错，有两个解决办法。方法一就是透明代理的模式使用redirect，这样就不需要用到tproxy模块了，方法二就是给openwrt安装tproxy模块，根据网上找到的内容，需要安装以下依赖
+opkg install kmod-ipt-tproxy iptables-mod-tproxy bind-dig 那接下去就只需要把v2raya添加到系统服务并设置启动项就完成了。
 第三步：配置sysvinit
 v2raya自带了systemd的配置，官网的手册里也提供了openrc的脚本，理论上openrc应该兼容sysv，但我实测没法用，所以只能自己瞎写了。你如果要抄的话记得根据自己的情况修改文件路径。
 先创建sysv配置文件
 cd /etc/init.d touch v2raya chmod +x v2raya 然后编辑v2raya，粘贴以下代码：
-#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/v2ray/v2raya --config=/mnt/data/v2ray/config } stop() { kill $(pidof v2raya) } 然后启动服务 &amp;amp; 设置启动项
-service v2raya start service v2raya enable 好了，到这里就完成在刷了openwrt的迅雷赚钱宝一代（ws1408）上安装和使用v2raya了，之后就可以把它当作一个代理使用，让它继续发光发热。</description>
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/v2ray/v2raya --config=/mnt/data/v2ray/config } stop() { kill $(pidof v2raya) } 然后启动服务 &amp;amp; 设置启动项</description>
     </item>
     
     <item>

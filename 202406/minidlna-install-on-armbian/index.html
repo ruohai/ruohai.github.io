@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在Armbian上安装miniDLNA // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Armbian上安装miniDLNA"/>
+<meta name="twitter:description" content="前言 之前已经写过一篇了，但也懒得在旧文上更新，所以重写一篇。
+局域网内影视资源的共享与播放，其实samba已经能够胜任。但minidlna也有好处，就是对移动端的支持会更好一些，很多app基本上是打开媒体库就能看到局域网内的minidlna，点击就能直接播放。很多移动设备对samba协议的支持都比较垃圾，而且如果samba没开启匿名访问的话，移动端对登录samba输入身份信息的支持会更烂。
+不过minidlna也不那么完美，比如对字幕的支持就不是很好。所以minidlna和samba可以作为互补。
+安装 第一步：安装
+armbian的apt仓库就有minidlna，所以直接apt一把梭就行了。不过要注意minidlna的安装大概需要占用100~200MB的存储空间，如果你的armbian小盒子存储空间比较紧张的话，请提前预留足够的存储空间。
+apt install minidlna 第二步：配置
+minidlna安装好以后默认是以minidlan:minidlna的用户&amp;组运行，这会有一些权限问题，比如没有权限扫描媒体文件库之类。
+所以首先要配置minidlna运行的用户&amp;组。
+nano /lib/systemd/system/minidlna.service 修改下图位置中的两个参数即可，比如我用的是ruohai这个普通账号。当然了你直接用root也行，能省去很多麻烦。
+然后要配置媒体库、端口号之类
+nano /etc/minidlna.conf 有以下几个参数需要调整：
+media_dir，媒体库，需要指向自己存放视频、音频的文件夹 db_dir，数据库，这个是minidlna用来存放扫描媒体库以后的数据信息，默认是/var/cache/minidlna，可以改成自己喜欢的目录。因为有些系统（比如openwrt）的/var目录实际指向的是/tmp，是一个临时目录，重启以后这个临时目录下的数据都会清空，导致每次系统重启以后minidlna媒体库信息丢失。 log_dir，日志文件目录，这个根据自己喜好，用默认的就行 port，端口号，如果系统装了防火墙的话记得放心这个端口，默认是8200 friendly_name，服务名称，局域网内看到的minidlna的名称，默认是hostname:username，可以根据自己喜好修改 这里有一点要注意，因为minidlna安装好以后是直接启用的，所以默认的db_dir和log_dir路径下都已经创建好了文件夹，而且所属用户&amp;组都是默认的minidlna。如果你和我一样把minidlna的服务运行用户修改成了非root普通账号，而且db_dir和log_dir用的还是默认路径，那需要自己手动修改这俩目录的所属用户&amp;组，要不然会报权限错误。比如我用的是非root的普通账户ruohai来跑minidlna，那就要如下进行修改。
+# 修改db_dir数据库目录的权限 chown -R ruohai:ruohai /var/cache/minidlna # 修改log_dir日志目录的权限 chown -R ruohai:ruohai /var/log/minidlna 完成以上几处修改以后，就可以重启服务让配置生效了。
+# 重载配置 systemctl daemon-relolad # 重启minidlna systemctl restat minidlna.service 重启成功以后，可以在浏览器中方位http://host-ip:8200查看minidlna的状态。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="在Armbian上安装miniDLNA" />
+<meta property="og:description" content="前言 之前已经写过一篇了，但也懒得在旧文上更新，所以重写一篇。
+局域网内影视资源的共享与播放，其实samba已经能够胜任。但minidlna也有好处，就是对移动端的支持会更好一些，很多app基本上是打开媒体库就能看到局域网内的minidlna，点击就能直接播放。很多移动设备对samba协议的支持都比较垃圾，而且如果samba没开启匿名访问的话，移动端对登录samba输入身份信息的支持会更烂。
+不过minidlna也不那么完美，比如对字幕的支持就不是很好。所以minidlna和samba可以作为互补。
+安装 第一步：安装
+armbian的apt仓库就有minidlna，所以直接apt一把梭就行了。不过要注意minidlna的安装大概需要占用100~200MB的存储空间，如果你的armbian小盒子存储空间比较紧张的话，请提前预留足够的存储空间。
+apt install minidlna 第二步：配置
+minidlna安装好以后默认是以minidlan:minidlna的用户&amp;组运行，这会有一些权限问题，比如没有权限扫描媒体文件库之类。
+所以首先要配置minidlna运行的用户&amp;组。
+nano /lib/systemd/system/minidlna.service 修改下图位置中的两个参数即可，比如我用的是ruohai这个普通账号。当然了你直接用root也行，能省去很多麻烦。
+然后要配置媒体库、端口号之类
+nano /etc/minidlna.conf 有以下几个参数需要调整：
+media_dir，媒体库，需要指向自己存放视频、音频的文件夹 db_dir，数据库，这个是minidlna用来存放扫描媒体库以后的数据信息，默认是/var/cache/minidlna，可以改成自己喜欢的目录。因为有些系统（比如openwrt）的/var目录实际指向的是/tmp，是一个临时目录，重启以后这个临时目录下的数据都会清空，导致每次系统重启以后minidlna媒体库信息丢失。 log_dir，日志文件目录，这个根据自己喜好，用默认的就行 port，端口号，如果系统装了防火墙的话记得放心这个端口，默认是8200 friendly_name，服务名称，局域网内看到的minidlna的名称，默认是hostname:username，可以根据自己喜好修改 这里有一点要注意，因为minidlna安装好以后是直接启用的，所以默认的db_dir和log_dir路径下都已经创建好了文件夹，而且所属用户&amp;组都是默认的minidlna。如果你和我一样把minidlna的服务运行用户修改成了非root普通账号，而且db_dir和log_dir用的还是默认路径，那需要自己手动修改这俩目录的所属用户&amp;组，要不然会报权限错误。比如我用的是非root的普通账户ruohai来跑minidlna，那就要如下进行修改。
+# 修改db_dir数据库目录的权限 chown -R ruohai:ruohai /var/cache/minidlna # 修改log_dir日志目录的权限 chown -R ruohai:ruohai /var/log/minidlna 完成以上几处修改以后，就可以重启服务让配置生效了。
+# 重载配置 systemctl daemon-relolad # 重启minidlna systemctl restat minidlna.service 重启成功以后，可以在浏览器中方位http://host-ip:8200查看minidlna的状态。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202406/minidlna-install-on-armbian/" /><meta property="article:section" content="202406" />
+<meta property="article:published_time" content="2024-06-26T14:11:28+08:00" />
+<meta property="article:modified_time" content="2024-06-26T14:11:28+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在Armbian上安装miniDLNA</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 26, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/minidlna/">MiniDLNA</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>之前已经写过一篇了，但也懒得在旧文上更新，所以重写一篇。</p>
+<p>局域网内影视资源的共享与播放，其实samba已经能够胜任。但minidlna也有好处，就是对移动端的支持会更好一些，很多app基本上是打开媒体库就能看到局域网内的minidlna，点击就能直接播放。很多移动设备对samba协议的支持都比较垃圾，而且如果samba没开启匿名访问的话，移动端对登录samba输入身份信息的支持会更烂。</p>
+<p>不过minidlna也不那么完美，比如对字幕的支持就不是很好。所以minidlna和samba可以作为互补。</p>
+<hr>
+<h2 id="安装">安装</h2>
+<blockquote>
+<p>第一步：安装</p>
+</blockquote>
+<p>armbian的apt仓库就有minidlna，所以直接apt一把梭就行了。不过要注意minidlna的安装大概需要占用100~200MB的存储空间，如果你的armbian小盒子存储空间比较紧张的话，请提前预留足够的存储空间。</p>
+<pre tabindex="0"><code>apt install minidlna
+</code></pre><blockquote>
+<p>第二步：配置</p>
+</blockquote>
+<p>minidlna安装好以后默认是以<code>minidlan:minidlna</code>的用户&amp;组运行，这会有一些权限问题，比如没有权限扫描媒体文件库之类。</p>
+<p>所以首先要配置minidlna运行的用户&amp;组。</p>
+<pre tabindex="0"><code>nano /lib/systemd/system/minidlna.service
+</code></pre><p>修改下图位置中的两个参数即可，比如我用的是ruohai这个普通账号。当然了你直接用root也行，能省去很多麻烦。</p>
+<p><img src="https://img.311803.xyz/2024/06/26/01.webp" alt=""></p>
+<p>然后要配置媒体库、端口号之类</p>
+<pre tabindex="0"><code>nano /etc/minidlna.conf
+</code></pre><p>有以下几个参数需要调整：</p>
+<ul>
+<li>media_dir，媒体库，需要指向自己存放视频、音频的文件夹</li>
+<li>db_dir，数据库，这个是minidlna用来存放扫描媒体库以后的数据信息，默认是<code>/var/cache/minidlna</code>，可以改成自己喜欢的目录。因为有些系统（比如openwrt）的<code>/var</code>目录实际指向的是<code>/tmp</code>，是一个临时目录，重启以后这个临时目录下的数据都会清空，导致每次系统重启以后minidlna媒体库信息丢失。</li>
+<li>log_dir，日志文件目录，这个根据自己喜好，用默认的就行</li>
+<li>port，端口号，如果系统装了防火墙的话记得放心这个端口，默认是8200</li>
+<li>friendly_name，服务名称，局域网内看到的minidlna的名称，默认是hostname:username，可以根据自己喜好修改</li>
+</ul>
+<p>这里有一点要注意，因为minidlna安装好以后是直接启用的，所以默认的<code>db_dir</code>和<code>log_dir</code>路径下都已经创建好了文件夹，而且所属用户&amp;组都是默认的<code>minidlna</code>。如果你和我一样把minidlna的服务运行用户修改成了非root普通账号，而且<code>db_dir</code>和<code>log_dir</code>用的还是默认路径，那需要自己手动修改这俩目录的所属用户&amp;组，要不然会报权限错误。比如我用的是非root的普通账户ruohai来跑minidlna，那就要如下进行修改。</p>
+<pre tabindex="0"><code># 修改db_dir数据库目录的权限
+chown -R ruohai:ruohai /var/cache/minidlna
+
+# 修改log_dir日志目录的权限
+chown -R ruohai:ruohai /var/log/minidlna
+</code></pre><p>完成以上几处修改以后，就可以重启服务让配置生效了。</p>
+<pre tabindex="0"><code># 重载配置
+systemctl daemon-relolad
+
+# 重启minidlna
+systemctl restat minidlna.service
+</code></pre><p>重启成功以后，可以在浏览器中方位<code>http://host-ip:8200</code>查看minidlna的状态。</p>
+<p><img src="https://img.311803.xyz/2024/06/26/02.webp" alt=""></p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

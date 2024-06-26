@@ -6,7 +6,30 @@
     <description>Recent content in 202406s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 24 Jun 2024 20:33:47 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202406/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Jun 2024 14:11:28 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202406/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Armbian上安装miniDLNA</title>
+      <link>https://ruohai.wang/202406/minidlna-install-on-armbian/</link>
+      <pubDate>Wed, 26 Jun 2024 14:11:28 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202406/minidlna-install-on-armbian/</guid>
+      <description>前言 之前已经写过一篇了，但也懒得在旧文上更新，所以重写一篇。
+局域网内影视资源的共享与播放，其实samba已经能够胜任。但minidlna也有好处，就是对移动端的支持会更好一些，很多app基本上是打开媒体库就能看到局域网内的minidlna，点击就能直接播放。很多移动设备对samba协议的支持都比较垃圾，而且如果samba没开启匿名访问的话，移动端对登录samba输入身份信息的支持会更烂。
+不过minidlna也不那么完美，比如对字幕的支持就不是很好。所以minidlna和samba可以作为互补。
+安装 第一步：安装
+armbian的apt仓库就有minidlna，所以直接apt一把梭就行了。不过要注意minidlna的安装大概需要占用100~200MB的存储空间，如果你的armbian小盒子存储空间比较紧张的话，请提前预留足够的存储空间。
+apt install minidlna 第二步：配置
+minidlna安装好以后默认是以minidlan:minidlna的用户&amp;amp;组运行，这会有一些权限问题，比如没有权限扫描媒体文件库之类。
+所以首先要配置minidlna运行的用户&amp;amp;组。
+nano /lib/systemd/system/minidlna.service 修改下图位置中的两个参数即可，比如我用的是ruohai这个普通账号。当然了你直接用root也行，能省去很多麻烦。
+然后要配置媒体库、端口号之类
+nano /etc/minidlna.conf 有以下几个参数需要调整：
+media_dir，媒体库，需要指向自己存放视频、音频的文件夹 db_dir，数据库，这个是minidlna用来存放扫描媒体库以后的数据信息，默认是/var/cache/minidlna，可以改成自己喜欢的目录。因为有些系统（比如openwrt）的/var目录实际指向的是/tmp，是一个临时目录，重启以后这个临时目录下的数据都会清空，导致每次系统重启以后minidlna媒体库信息丢失。 log_dir，日志文件目录，这个根据自己喜好，用默认的就行 port，端口号，如果系统装了防火墙的话记得放心这个端口，默认是8200 friendly_name，服务名称，局域网内看到的minidlna的名称，默认是hostname:username，可以根据自己喜好修改 这里有一点要注意，因为minidlna安装好以后是直接启用的，所以默认的db_dir和log_dir路径下都已经创建好了文件夹，而且所属用户&amp;amp;组都是默认的minidlna。如果你和我一样把minidlna的服务运行用户修改成了非root普通账号，而且db_dir和log_dir用的还是默认路径，那需要自己手动修改这俩目录的所属用户&amp;amp;组，要不然会报权限错误。比如我用的是非root的普通账户ruohai来跑minidlna，那就要如下进行修改。
+# 修改db_dir数据库目录的权限 chown -R ruohai:ruohai /var/cache/minidlna # 修改log_dir日志目录的权限 chown -R ruohai:ruohai /var/log/minidlna 完成以上几处修改以后，就可以重启服务让配置生效了。
+# 重载配置 systemctl daemon-relolad # 重启minidlna systemctl restat minidlna.service 重启成功以后，可以在浏览器中方位http://host-ip:8200查看minidlna的状态。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>Cpolar在Armbian和OpenWrt上的安装步骤分解</title>
       <link>https://ruohai.wang/202406/cpolar-install-guide/</link>
@@ -86,14 +109,13 @@ systemctl daemon-reload &amp;amp;&amp;amp; systemctl restart docker.service 查�
 用wget或者curl下载到本地以后进行解压，记得用chmod +x命令授权。
 然后就可以试运行v2rays惹，直接敲命令
 ./v2raya --config=/mnt/data/v2ray/config 在控制台可以看到日志信息，v2raya已经成功启动，web ui的访问地址也打印出来惹。
-经过我的实际测试，虽然从日志看有一个TPOROXY无法载入的报错，但配置好代理以后是可以正常使用的。
-那接下去就只需要把v2raya添加到系统服务并设置启动项就完成了。
+从日志看有一个TPOROXY无法载入的报错，有两个解决办法。方法一就是透明代理的模式使用redirect，这样就不需要用到tproxy模块了，方法二就是给openwrt安装tproxy模块，根据网上找到的内容，需要安装以下依赖
+opkg install kmod-ipt-tproxy iptables-mod-tproxy bind-dig 那接下去就只需要把v2raya添加到系统服务并设置启动项就完成了。
 第三步：配置sysvinit
 v2raya自带了systemd的配置，官网的手册里也提供了openrc的脚本，理论上openrc应该兼容sysv，但我实测没法用，所以只能自己瞎写了。你如果要抄的话记得根据自己的情况修改文件路径。
 先创建sysv配置文件
 cd /etc/init.d touch v2raya chmod +x v2raya 然后编辑v2raya，粘贴以下代码：
-#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/v2ray/v2raya --config=/mnt/data/v2ray/config } stop() { kill $(pidof v2raya) } 然后启动服务 &amp;amp; 设置启动项
-service v2raya start service v2raya enable 好了，到这里就完成在刷了openwrt的迅雷赚钱宝一代（ws1408）上安装和使用v2raya了，之后就可以把它当作一个代理使用，让它继续发光发热。</description>
+#!/bin/sh /etc/rc.common START=99 STOP=10 SERVICE_WRITE_PID=1 SERVICE_USE_PID=1 SERVICE_DAEMONIZE=1 start() { service_start /mnt/data/v2ray/v2raya --config=/mnt/data/v2ray/config } stop() { kill $(pidof v2raya) } 然后启动服务 &amp;amp; 设置启动项</description>
     </item>
     
     <item>
