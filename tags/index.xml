@@ -6,7 +6,25 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Jun 2024 21:20:25 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jul 2024 21:38:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Netplan</title>
+      <link>https://ruohai.wang/tags/netplan/</link>
+      <pubDate>Sat, 06 Jul 2024 21:38:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/netplan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>systemd-networkd</title>
+      <link>https://ruohai.wang/tags/systemd-networkd/</link>
+      <pubDate>Sat, 06 Jul 2024 21:38:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/systemd-networkd/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>mergerfs</title>
       <link>https://ruohai.wang/tags/mergerfs/</link>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Netplan on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/netplan/</link>
+    <description>Recent content in Netplan on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 06 Jul 2024 21:38:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/netplan/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Netplan和systemd-networkd的组合下配置静态IP</title>
+      <link>https://ruohai.wang/202407/netplan-systemd-networkd-set-static-ip/</link>
+      <pubDate>Sat, 06 Jul 2024 21:38:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202407/netplan-systemd-networkd-set-static-ip/</guid>
+      <description>前言 最近又翻出私家云二代（也叫比特米盒）准备刷机当下载机用，一番折腾以后成功的刷上khadas vim1的固件armbian-24.5.3-minimal，进行初始配置的时候发现这版固件用的网络管理方案是netplan + systemd-networkd，这让我一下子不知道要怎么配置静态ip。
+因为之前刷过的那么多盒子、那么多固件，网络管理方案都是单独的networkmanager，或者是netplan + networkmanager。而手上这个固件，它是networkd管理 + netplan配置的模式。
+真的是有点儿一头雾水，而且netplan配置文件yaml格式是按照缩进空格数来识别的，😫
+最后学习了一晚上网上的有关netplan + systemd-networkd的配置教程，加上自己的简单实践，还是成功配置了静态ip。写篇文章，做个简单记录。
+配置 首先确认下我用的固件的默认网络设备的管理方案是systemd-networkd，网络的配置工具是netplan。
+为了简化配置，我决定改成netplan只用来指定渲染器（renderer），把网络设备的管理和配置都用systemd-networkd搞定。绝对不是因为yaml这种依赖缩进格式的配置文件让我非常头大所以放弃了netplan。
+第一步：指定renderer
+首先进入目录/etc/netplan，目录下原来的yaml配置文件先备份，然后新建一个配置文件（注意netplan的配置文件的优先级是根据文件首字母顺序）。
+在新建的yaml配置文件中录入以下内容，指定renderer是networkd即可，其它内容都不需要。
+network: version: 2 renderer: networkd 最后保存退出。
+第二步：配置systemd-networkd
+networkd的配置目录是/etc/systemd/network，如果目录下有旧的配置文件话先备份，然后新建一个配置文件。
+在新建的配置文件中，录入以下内容
+[Match] Name=end0 # 网卡设备名称 [Network] Address=192.168.1.122/24 # 静态ip地址 Gateway=192.168.1.1 # 网关地址 DNS=192.168.1.1 # dns服务器地址 最后保存退出。
+第三步：网络配置生效
+完成以上的配置以后，最后一步当然就是应用了。
+先重启networkd
+sudo systemctl restart systemd-networkd.service 然后让netplan生效
+# 测试配置 sudo netplan try # 应用配置 sudo netplan apply 好了，到这里就大功告成了。🎉
+喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>
