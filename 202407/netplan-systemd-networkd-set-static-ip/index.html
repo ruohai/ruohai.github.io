@@ -33,7 +33,7 @@ networkd的配置目录是/etc/systemd/network，如果目录下有旧的配置�
 先重启networkd
 sudo systemctl restart systemd-networkd.service 然后让netplan生效
 # 测试配置 sudo netplan try # 应用配置 sudo netplan apply 好了，到这里就大功告成了。🎉
-喝杯奶茶 "/>
+参考文章 如何在 Linux 上使用网络配置工具 Netplan systemd设置静态IP 如何在 Linux 上从网络管理器切换到 systemd-networkd 喝杯奶茶 "/>
 
     <meta property="og:title" content="在Netplan和systemd-networkd的组合下配置静态IP" />
 <meta property="og:description" content="前言 最近又翻出私家云二代（也叫比特米盒）准备刷机当下载机用，一番折腾以后成功的刷上khadas vim1的固件armbian-24.5.3-minimal，进行初始配置的时候发现这版固件用的网络管理方案是netplan &#43; systemd-networkd，这让我一下子不知道要怎么配置静态ip。
@@ -55,7 +55,7 @@ networkd的配置目录是/etc/systemd/network，如果目录下有旧的配置�
 先重启networkd
 sudo systemctl restart systemd-networkd.service 然后让netplan生效
 # 测试配置 sudo netplan try # 应用配置 sudo netplan apply 好了，到这里就大功告成了。🎉
-喝杯奶茶 " />
+参考文章 如何在 Linux 上使用网络配置工具 Netplan systemd设置静态IP 如何在 Linux 上从网络管理器切换到 systemd-networkd 喝杯奶茶 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202407/netplan-systemd-networkd-set-static-ip/" /><meta property="article:section" content="202407" />
 <meta property="article:published_time" content="2024-07-06T21:38:33+08:00" />
@@ -166,6 +166,13 @@ sudo netplan try
 # 应用配置
 sudo netplan apply
 </code></pre><p>好了，到这里就大功告成了。🎉</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://linux.cn/article-10095-1.html">如何在 Linux 上使用网络配置工具 Netplan</a></li>
+<li><a href="https://www.cnblogs.com/zengjfgit/p/8444317.html">systemd设置静态IP</a></li>
+<li><a href="https://cn.linux-console.net/?p=8939">如何在 Linux 上从网络管理器切换到 systemd-networkd</a></li>
+</ol>
 <hr>
 <h2 id="喝杯奶茶">喝杯奶茶</h2>
 <p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>

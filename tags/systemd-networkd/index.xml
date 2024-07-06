@@ -32,7 +32,7 @@ networkd的配置目录是/etc/systemd/network，如果目录下有旧的配置�
 先重启networkd
 sudo systemctl restart systemd-networkd.service 然后让netplan生效
 # 测试配置 sudo netplan try # 应用配置 sudo netplan apply 好了，到这里就大功告成了。🎉
-喝杯奶茶 </description>
+参考文章 如何在 Linux 上使用网络配置工具 Netplan systemd设置静态IP 如何在 Linux 上从网络管理器切换到 systemd-networkd 喝杯奶茶 </description>
     </item>
     
   </channel>
