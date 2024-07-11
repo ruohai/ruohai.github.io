@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>魔兽世界使用CASCE Explorer把枪声替换为弓声 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="魔兽世界使用CASCE Explorer把枪声替换为弓声"/>
+<meta name="twitter:description" content="前言 首先庆祝一下魔兽世界国服在经历了漫长的停服以后终于又回归了，短暂的半个月wlk怀旧服公测以后，今天正式上线。🎉
+我在游戏里玩的角色的职业是猎人，副本刷了很久但一直没刷到弓/弩远程武器，目前使用的是一把枪。枪械的bangbang声音实在是吵的头疼，所以想着替换枪械的音效，最好是能直接用游戏内置的弓的原声替换掉枪的声音，如果实在不行的话直接把枪静音也行。
+在网上搜索了一番（包括nga），很多都是美化枪声的，并不满足我的需求。所以最后还是自己动手，想办法用软件提取wow安装文件夹内的原始音频。
+使用的软件 想要解压魔兽世界文件，古早时期网上有两款工具，一款是mpqeditor，另一款是winmpq。其中mpqeditor在十多年前我还用过一两次，提取了贫瘠之地十字路口的bgm。
+但现在时过境迁，mpqeditor和winmpq的软件资源不一定好找，需要在各种下载站里和大量的广告斗智斗勇，或者在一些邀请注册制的资源论坛里辛苦的回帖下载。
+不过还好，现在用了新的方案：WoW-Tools/CASCExplorer
+这个项目目前依然在更新，还提供了windows下的绿色安装包，实际使用体验非常好，强烈推荐。
+替换音效 这里以目前国服wlk怀旧服为例。
+第一步：提取音频文件
+首先下载CASCExplore的github项目的release页面下载软件到本地
+解压后双击CASCExplorer.exe运行。
+然后按照数字编号顺序，依次打开项目——选择wow安装目录——选择wow版本-打开目录进行操作，wow版本选择wow-classic即可。
+根据你电脑的算力，大概需要等待半分钟到几分钟的时间来读取魔兽世界的相关文件。
+等项目加载完成，可以在左侧栏看到文件目录。我们本次操作的目的是提取游戏内置的弓的声音去替换枪的声音，所以要选择sound目录。
+然后依次进入sound-item-weapons，可以看到很多武器的目录。在右侧栏选中我们需要的bow和gun目录，点击提取（extract）。
+然后指定提取文件存放的目录，最后点击ok即可。
+在提取文件的目录中，可以看到gun的音效一共是6个文件，开火1/2/3和装弹1/2/3。
+然后我们在弓/bow的目录下，找到6个类似动作的音效，比如bowpullback对应gunload，bowrelease对应gunfire。其中bowpullback有两款音效，可以根据自己喜好挑选。
+在bow目录下挑选出自己喜欢的音效，按照gun音效文件的名称进行重命名，然后复制到gun目录下进行覆盖。比如bowpullback01.ogg重命名为gunload01.ogg，然后替换掉gun目录下的gunload01.ogg。
+到这里就完成原始音频文件的提取惹。
+第二步：替换音效
+在魔兽世界的安装目录下，定位到_classic_目录，按照Sound/Item/Weapons/Gun的目录结构，依次新建文件夹。最后把自己提取并替换的ogg音频文件放到这个目录下。
+好了，重启游戏，上去试试打枪吧，不出意外的话现在枪械发出的应该是弓的音效。🤣
+不想要声音想直接静音 如果觉得弓的声音也吵，想直接静音，也可以。在游戏安装目录的/_classic_/Sound/Item/Weapons/Gun目录下新建6个空文本文件，然后按照原始音效的格式重命名，比如把新建文本文件.txt直接改名为gunfire01.ogg。
+因为这不是正经的ogg音频文件，系统无法播放这个文件，表现出来的就是在打枪的时候没有任何声音，也就变相的实现消音了。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="魔兽世界使用CASCE Explorer把枪声替换为弓声" />
+<meta property="og:description" content="前言 首先庆祝一下魔兽世界国服在经历了漫长的停服以后终于又回归了，短暂的半个月wlk怀旧服公测以后，今天正式上线。🎉
+我在游戏里玩的角色的职业是猎人，副本刷了很久但一直没刷到弓/弩远程武器，目前使用的是一把枪。枪械的bangbang声音实在是吵的头疼，所以想着替换枪械的音效，最好是能直接用游戏内置的弓的原声替换掉枪的声音，如果实在不行的话直接把枪静音也行。
+在网上搜索了一番（包括nga），很多都是美化枪声的，并不满足我的需求。所以最后还是自己动手，想办法用软件提取wow安装文件夹内的原始音频。
+使用的软件 想要解压魔兽世界文件，古早时期网上有两款工具，一款是mpqeditor，另一款是winmpq。其中mpqeditor在十多年前我还用过一两次，提取了贫瘠之地十字路口的bgm。
+但现在时过境迁，mpqeditor和winmpq的软件资源不一定好找，需要在各种下载站里和大量的广告斗智斗勇，或者在一些邀请注册制的资源论坛里辛苦的回帖下载。
+不过还好，现在用了新的方案：WoW-Tools/CASCExplorer
+这个项目目前依然在更新，还提供了windows下的绿色安装包，实际使用体验非常好，强烈推荐。
+替换音效 这里以目前国服wlk怀旧服为例。
+第一步：提取音频文件
+首先下载CASCExplore的github项目的release页面下载软件到本地
+解压后双击CASCExplorer.exe运行。
+然后按照数字编号顺序，依次打开项目——选择wow安装目录——选择wow版本-打开目录进行操作，wow版本选择wow-classic即可。
+根据你电脑的算力，大概需要等待半分钟到几分钟的时间来读取魔兽世界的相关文件。
+等项目加载完成，可以在左侧栏看到文件目录。我们本次操作的目的是提取游戏内置的弓的声音去替换枪的声音，所以要选择sound目录。
+然后依次进入sound-item-weapons，可以看到很多武器的目录。在右侧栏选中我们需要的bow和gun目录，点击提取（extract）。
+然后指定提取文件存放的目录，最后点击ok即可。
+在提取文件的目录中，可以看到gun的音效一共是6个文件，开火1/2/3和装弹1/2/3。
+然后我们在弓/bow的目录下，找到6个类似动作的音效，比如bowpullback对应gunload，bowrelease对应gunfire。其中bowpullback有两款音效，可以根据自己喜好挑选。
+在bow目录下挑选出自己喜欢的音效，按照gun音效文件的名称进行重命名，然后复制到gun目录下进行覆盖。比如bowpullback01.ogg重命名为gunload01.ogg，然后替换掉gun目录下的gunload01.ogg。
+到这里就完成原始音频文件的提取惹。
+第二步：替换音效
+在魔兽世界的安装目录下，定位到_classic_目录，按照Sound/Item/Weapons/Gun的目录结构，依次新建文件夹。最后把自己提取并替换的ogg音频文件放到这个目录下。
+好了，重启游戏，上去试试打枪吧，不出意外的话现在枪械发出的应该是弓的音效。🤣
+不想要声音想直接静音 如果觉得弓的声音也吵，想直接静音，也可以。在游戏安装目录的/_classic_/Sound/Item/Weapons/Gun目录下新建6个空文本文件，然后按照原始音效的格式重命名，比如把新建文本文件.txt直接改名为gunfire01.ogg。
+因为这不是正经的ogg音频文件，系统无法播放这个文件，表现出来的就是在打枪的时候没有任何声音，也就变相的实现消音了。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202407/wow-replache-sound-gun-fire-by-bow-release/" /><meta property="article:section" content="202407" />
+<meta property="article:published_time" content="2024-07-12T01:07:10+08:00" />
+<meta property="article:modified_time" content="2024-07-12T01:07:10+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">魔兽世界使用CASCE Explorer把枪声替换为弓声</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 12, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/wow/">WOW</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>首先庆祝一下魔兽世界国服在经历了漫长的停服以后终于又回归了，短暂的半个月wlk怀旧服公测以后，今天正式上线。🎉</p>
+<p>我在游戏里玩的角色的职业是猎人，副本刷了很久但一直没刷到弓/弩远程武器，目前使用的是一把枪。枪械的bangbang声音实在是吵的头疼，所以想着替换枪械的音效，最好是能直接用游戏内置的弓的原声替换掉枪的声音，如果实在不行的话直接把枪静音也行。</p>
+<p>在网上搜索了一番（包括nga），很多都是美化枪声的，并不满足我的需求。所以最后还是自己动手，想办法用软件提取wow安装文件夹内的原始音频。</p>
+<hr>
+<h2 id="使用的软件">使用的软件</h2>
+<p>想要解压魔兽世界文件，古早时期网上有两款工具，一款是mpqeditor，另一款是winmpq。其中mpqeditor在十多年前我还用过一两次，提取了贫瘠之地十字路口的bgm。</p>
+<p>但现在时过境迁，mpqeditor和winmpq的软件资源不一定好找，需要在各种下载站里和大量的广告斗智斗勇，或者在一些邀请注册制的资源论坛里辛苦的回帖下载。</p>
+<p>不过还好，现在用了新的方案：<a href="https://github.com/WoW-Tools/CASCExplorer">WoW-Tools/CASCExplorer</a></p>
+<p>这个项目目前依然在更新，还提供了windows下的绿色安装包，实际使用体验非常好，强烈推荐。</p>
+<hr>
+<h2 id="替换音效">替换音效</h2>
+<p>这里以目前国服wlk怀旧服为例。</p>
+<blockquote>
+<p>第一步：提取音频文件</p>
+</blockquote>
+<p>首先下载CASCExplore的<a href="https://github.com/WoW-Tools/CASCExplorer/releases">github项目的release页面</a>下载软件到本地</p>
+<p><img src="https://img.311803.xyz/2024/07/12/01.webp" alt=""></p>
+<p>解压后双击<code>CASCExplorer.exe</code>运行。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/02.webp" alt=""></p>
+<p>然后按照数字编号顺序，依次<code>打开项目——选择wow安装目录——选择wow版本-打开目录</code>进行操作，wow版本选择<code>wow-classic</code>即可。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/03.webp" alt=""></p>
+<p>根据你电脑的算力，大概需要等待半分钟到几分钟的时间来读取魔兽世界的相关文件。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/04.webp" alt=""></p>
+<p>等项目加载完成，可以在左侧栏看到文件目录。我们本次操作的目的是提取游戏内置的弓的声音去替换枪的声音，所以要选择sound目录。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/05.webp" alt=""></p>
+<p>然后依次进入<code>sound-item-weapons</code>，可以看到很多武器的目录。在右侧栏选中我们需要的<code>bow</code>和<code>gun</code>目录，点击提取（extract）。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/06.webp" alt=""></p>
+<p>然后指定提取文件存放的目录，最后点击ok即可。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/07.webp" alt=""></p>
+<p>在提取文件的目录中，可以看到<code>gun</code>的音效一共是6个文件，开火1/2/3和装弹1/2/3。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/08.webp" alt=""></p>
+<p>然后我们在<code>弓/bow</code>的目录下，找到6个类似动作的音效，比如<code>bowpullback</code>对应<code>gunload</code>，<code>bowrelease</code>对应<code>gunfire</code>。其中<code>bowpullback</code>有两款音效，可以根据自己喜好挑选。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/09.webp" alt=""></p>
+<p>在<code>bow</code>目录下挑选出自己喜欢的音效，按照<code>gun</code>音效文件的名称进行重命名，然后复制到<code>gun</code>目录下进行覆盖。比如<code>bowpullback01.ogg</code>重命名为<code>gunload01.ogg</code>，然后替换掉<code>gun</code>目录下的<code>gunload01.ogg</code>。</p>
+<p>到这里就完成原始音频文件的提取惹。</p>
+<blockquote>
+<p>第二步：替换音效</p>
+</blockquote>
+<p>在魔兽世界的安装目录下，定位到<code>_classic_</code>目录，按照<code>Sound/Item/Weapons/Gun</code>的目录结构，依次新建文件夹。最后把自己提取并替换的ogg音频文件放到这个目录下。</p>
+<p><img src="https://img.311803.xyz/2024/07/12/10.webp" alt=""></p>
+<p>好了，重启游戏，上去试试打枪吧，不出意外的话现在枪械发出的应该是弓的音效。🤣</p>
+<hr>
+<h2 id="不想要声音想直接静音">不想要声音想直接静音</h2>
+<p>如果觉得弓的声音也吵，想直接静音，也可以。在游戏安装目录的<code>/_classic_/Sound/Item/Weapons/Gun</code>目录下新建6个空文本文件，然后按照原始音效的格式重命名，比如把<code>新建文本文件.txt</code>直接改名为<code>gunfire01.ogg</code>。</p>
+<p>因为这不是正经的ogg音频文件，系统无法播放这个文件，表现出来的就是在打枪的时候没有任何声音，也就变相的实现消音了。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

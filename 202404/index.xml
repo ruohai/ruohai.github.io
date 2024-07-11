@@ -247,7 +247,8 @@ badblocks -sv /dev/sda &amp;amp; e2fsck -l $ /dev/sda 参考文章 ArchWiki:badb
 amlogic usb burning bools 切换卡载系统V1.0.apk atv6.img Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img 最新的khadas-vim1-armbian镜像，下载地址：【Khadas VIM1】 我用的是当下最新的版本，Armbian_24.2.1_Khadas-vim1_bookworm_current_6.6.16_minimal.img。
 打包好的软件工具在文章末尾有下载连接。
 硬件
-镊子（用来短接） typc数据线一根（用来线刷） 两个u盘（sd卡也可以） 开始刷机 这机器因的刷机过程分成三个阶段：
+镊子（用来短接） typc数据线一根（用来线刷） 两个u盘（sd卡也可以） 开始刷机 update@2024/07/06 简单来讲，这个盒子的刷机的步骤拆解是： 1-先给盒子线刷一个android tv固件 2-通电开机进入android tv，用文件管理器安装一个apk用来支持U盘引导 3-重启开机后进入U盘上的armbian系统 4-用dd命令把khadas-vim1的固件img写入emmc 另外，固件除了armbian官方的khadas-vim1，也可以用ophub-armbian项目的s905x的固件 ophub-armbian项目的s905x固件，默认是优先u盘引导 khadas-vim1固件不支持u盘引导，想要重新刷机必须从头开始刷android tv固件
+这机器因的刷机过程分成三个阶段：
 第一阶段：制作引导u盘
 准备【第一个u盘】，用rufus之类软件刷入Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img这个镜像。 u盘镜像写好以后，用disk genuis或者其它支持的软件访问u盘上的文件，修改boot目录下的uEnv.ini文件，修改其中内容，将dtb/meson-gxl-s905x-khadas-vim.dtb改成dtb/meson-gxl-s905x-p212.dtb，保存退出 好了，引导u盘道这里制作完成，下文称之为【第一个u盘】。
 第二阶段：准备卡刷apk和系统镜像
