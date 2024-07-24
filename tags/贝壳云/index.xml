@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>贝壳云 on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/%E8%B4%9D%E5%A3%B3%E4%BA%91/</link>
+    <description>Recent content in 贝壳云 on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 24 Jul 2024 02:08:08 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/%E8%B4%9D%E5%A3%B3%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>贝壳云P1刷入Armbian以后USB3.0接口速率不达标的问题解决</title>
+      <link>https://ruohai.wang/202407/beikeyun-enable-usb3/</link>
+      <pubDate>Wed, 24 Jul 2024 02:08:08 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202407/beikeyun-enable-usb3/</guid>
+      <description>前言 手上的几个贝壳云p1盒子入手已经很久了，但除了学会用电烙铁焊上usb2.0口并被烫了几次手指，这几个盒子并没有用起来。
+这几天重新折腾盒子，刷入ophub-armbian以后接上usb硬盘，用dd测速发现只能跑到usb2.0的带宽。
+我第一反应是usb3.0的驱动问题，上网查了一下资料以后，发现是贝壳云p1这个机器很奇怪的对usb3.0接口做了硬件限速。
+😫
+为什么啊，为什么，厂家是什么脑回路，明明是usb3.0的接口，为什么要加硬件限速限制成usb2.0，你直接做usb2.0不是更省成本吗？
+不过万能的网友已经破解了硬件限速，只需要抠掉主板上的24个电阻就行了。
+操作 拆外壳这一步就不上图了，卸掉背壳上的三颗螺丝，然后用撬棒撬开上壳即可，注意上壳又led灯的排线，不要大力拉扯。
+拆开外壳以后，首先要撕掉覆盖再usb接口外壳上的黑色胶布。
+撕掉黑色胶带以后，可以看到usb接口内测又一排密密麻麻的电阻。为了方便，这里根据接近hdmi接口的顺序进行编号。
+其中1、3、4号口的电阻布局相同，2号口布局不太一样。参考下图把红圈中的电阻都抠掉。
+抠电阻可以用刻刀、螺丝刀、镊子等等，但务必要精细操作，不要蛮力破坏主板，或者抠掉附近其它电器件。
+每个usb接口对应6个电阻，4个接口一共抠掉24个电阻，最后将主板清理干净即可。
+给机器重新通电开机，接上usb硬盘，再用dd测速，就可以跑满速了。
+参考文章 为下载而生的贝壳云P1如何玩转小钢炮系统 喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>

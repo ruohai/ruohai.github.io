@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>贝壳云P1刷入Armbian以后USB3.0接口速率不达标的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="贝壳云P1刷入Armbian以后USB3.0接口速率不达标的问题解决"/>
+<meta name="twitter:description" content="前言 手上的几个贝壳云p1盒子入手已经很久了，但除了学会用电烙铁焊上usb2.0口并被烫了几次手指，这几个盒子并没有用起来。
+这几天重新折腾盒子，刷入ophub-armbian以后接上usb硬盘，用dd测速发现只能跑到usb2.0的带宽。
+我第一反应是usb3.0的驱动问题，上网查了一下资料以后，发现是贝壳云p1这个机器很奇怪的对usb3.0接口做了硬件限速。
+😫
+为什么啊，为什么，厂家是什么脑回路，明明是usb3.0的接口，为什么要加硬件限速限制成usb2.0，你直接做usb2.0不是更省成本吗？
+不过万能的网友已经破解了硬件限速，只需要抠掉主板上的24个电阻就行了。
+操作 拆外壳这一步就不上图了，卸掉背壳上的三颗螺丝，然后用撬棒撬开上壳即可，注意上壳又led灯的排线，不要大力拉扯。
+拆开外壳以后，首先要撕掉覆盖再usb接口外壳上的黑色胶布。
+撕掉黑色胶带以后，可以看到usb接口内测又一排密密麻麻的电阻。为了方便，这里根据接近hdmi接口的顺序进行编号。
+其中1、3、4号口的电阻布局相同，2号口布局不太一样。参考下图把红圈中的电阻都抠掉。
+抠电阻可以用刻刀、螺丝刀、镊子等等，但务必要精细操作，不要蛮力破坏主板，或者抠掉附近其它电器件。
+每个usb接口对应6个电阻，4个接口一共抠掉24个电阻，最后将主板清理干净即可。
+给机器重新通电开机，接上usb硬盘，再用dd测速，就可以跑满速了。
+参考文章 为下载而生的贝壳云P1如何玩转小钢炮系统 喝杯奶茶 "/>
+
+    <meta property="og:title" content="贝壳云P1刷入Armbian以后USB3.0接口速率不达标的问题解决" />
+<meta property="og:description" content="前言 手上的几个贝壳云p1盒子入手已经很久了，但除了学会用电烙铁焊上usb2.0口并被烫了几次手指，这几个盒子并没有用起来。
+这几天重新折腾盒子，刷入ophub-armbian以后接上usb硬盘，用dd测速发现只能跑到usb2.0的带宽。
+我第一反应是usb3.0的驱动问题，上网查了一下资料以后，发现是贝壳云p1这个机器很奇怪的对usb3.0接口做了硬件限速。
+😫
+为什么啊，为什么，厂家是什么脑回路，明明是usb3.0的接口，为什么要加硬件限速限制成usb2.0，你直接做usb2.0不是更省成本吗？
+不过万能的网友已经破解了硬件限速，只需要抠掉主板上的24个电阻就行了。
+操作 拆外壳这一步就不上图了，卸掉背壳上的三颗螺丝，然后用撬棒撬开上壳即可，注意上壳又led灯的排线，不要大力拉扯。
+拆开外壳以后，首先要撕掉覆盖再usb接口外壳上的黑色胶布。
+撕掉黑色胶带以后，可以看到usb接口内测又一排密密麻麻的电阻。为了方便，这里根据接近hdmi接口的顺序进行编号。
+其中1、3、4号口的电阻布局相同，2号口布局不太一样。参考下图把红圈中的电阻都抠掉。
+抠电阻可以用刻刀、螺丝刀、镊子等等，但务必要精细操作，不要蛮力破坏主板，或者抠掉附近其它电器件。
+每个usb接口对应6个电阻，4个接口一共抠掉24个电阻，最后将主板清理干净即可。
+给机器重新通电开机，接上usb硬盘，再用dd测速，就可以跑满速了。
+参考文章 为下载而生的贝壳云P1如何玩转小钢炮系统 喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202407/beikeyun-enable-usb3/" /><meta property="article:section" content="202407" />
+<meta property="article:published_time" content="2024-07-24T02:08:08+08:00" />
+<meta property="article:modified_time" content="2024-07-24T02:08:08+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">贝壳云P1刷入Armbian以后USB3.0接口速率不达标的问题解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 24, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+              <a class="tag" href="https://ruohai.wang/tags/%E8%B4%9D%E5%A3%B3%E4%BA%91/">贝壳云</a>
+              <a class="tag" href="https://ruohai.wang/tags/armbian/">Armbian</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>手上的几个贝壳云p1盒子入手已经很久了，但除了学会用电烙铁焊上usb2.0口并被烫了几次手指，这几个盒子并没有用起来。</p>
+<p>这几天重新折腾盒子，刷入ophub-armbian以后接上usb硬盘，用dd测速发现只能跑到usb2.0的带宽。</p>
+<p><img src="https://img.311803.xyz/2024/07/24/01.webp" alt=""></p>
+<p>我第一反应是usb3.0的驱动问题，上网查了一下资料以后，发现是贝壳云p1这个机器很奇怪的对usb3.0接口做了硬件限速。</p>
+<p>😫</p>
+<p>为什么啊，为什么，厂家是什么脑回路，明明是usb3.0的接口，为什么要加硬件限速限制成usb2.0，你直接做usb2.0不是更省成本吗？</p>
+<p>不过万能的网友已经破解了硬件限速，只需要抠掉主板上的24个电阻就行了。</p>
+<hr>
+<h2 id="操作">操作</h2>
+<p>拆外壳这一步就不上图了，卸掉背壳上的三颗螺丝，然后用撬棒撬开上壳即可，注意上壳又led灯的排线，不要大力拉扯。</p>
+<p>拆开外壳以后，首先要撕掉覆盖再usb接口外壳上的黑色胶布。</p>
+<p><img src="https://img.311803.xyz/2024/07/24/02.webp" alt=""></p>
+<p>撕掉黑色胶带以后，可以看到usb接口内测又一排密密麻麻的电阻。为了方便，这里根据接近hdmi接口的顺序进行编号。</p>
+<p><img src="https://img.311803.xyz/2024/07/24/03.webp" alt=""></p>
+<p>其中1、3、4号口的电阻布局相同，2号口布局不太一样。参考下图把红圈中的电阻都抠掉。</p>
+<p><img src="https://img.311803.xyz/2024/07/24/04.webp" alt=""></p>
+<p>抠电阻可以用刻刀、螺丝刀、镊子等等，但务必要精细操作，不要蛮力破坏主板，或者抠掉附近其它电器件。</p>
+<p>每个usb接口对应6个电阻，4个接口一共抠掉24个电阻，最后将主板清理干净即可。</p>
+<p>给机器重新通电开机，接上usb硬盘，再用dd测速，就可以跑满速了。</p>
+<p><img src="https://img.311803.xyz/2024/07/24/05.webp" alt=""></p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://post.smzdm.com/p/a6ln5dr0/">为下载而生的贝壳云P1如何玩转小钢炮系统</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -3,15 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202407/</loc>
-    <lastmod>2024-07-12T01:07:10+08:00</lastmod>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/armbian/</loc>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-07-12T01:07:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/wow/</loc>
-    <lastmod>2024-07-12T01:07:10+08:00</lastmod>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/%E8%B4%9D%E5%A3%B3%E4%BA%91/</loc>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202407/beikeyun-enable-usb3/</loc>
+    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/wow/</loc>
     <lastmod>2024-07-12T01:07:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202407/wow-replache-sound-gun-fire-by-bow-release/</loc>
@@ -83,13 +95,7 @@
     <loc>https://ruohai.wang/202406/cloudflared-install-on-openwrt/</loc>
     <lastmod>2024-06-05T13:25:24+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
-    <lastmod>2024-06-05T13:25:24+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202405/</loc>
-    <lastmod>2024-05-30T16:22:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/armbian/</loc>
     <lastmod>2024-05-30T16:22:10+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/network-interface-change-on-debian/</loc>
