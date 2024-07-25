@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>让Samba共享支持软链接（symlink） // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="让Samba共享支持软链接（symlink）"/>
+<meta name="twitter:description" content="前言 昨天突发奇想，在samba共享的目录下新建了一个软链接指向了另外一个目录，试一下能否通过这种方式把多个目录整合到一个共享目录下，方便windows上进行访问。这样的话，windows只需要添加一个网络文件夹就行了，不需要每个共享目录都创建一个网络文件夹的入口。
+实际测试以后，在默认的samba配置下，可以在samba共享文件内创建软连接，但是在windows终端上挂载/访问这个目录是看不到目录内的软链接的。
+网上查了一下，只需要简单配置就可以支持，在此做个记录。
+配置 网上找到的配置教程里都说在smb.conf文件中添加三个配置即可，如下
+wide links = yes follow symlinks = yes unix extensions = no 直接加到global域然后重启smbd.service以后就行了。
+测试成功以后起了好奇心，顺便查了下samba官方wiki这仨参数都是什么意思，是不是可以优化、精简。
+以下就是参数释疑：
+wide links
+简单来讲就是【是否允许samba服务跟踪位于共享目录之外的链接】，默认是no。讲人话就是，假设指定共享data/目录，然后data/目录下有个软连接指向了data/之外的其它目录，这是否允许，默认是no。
+很明显要实现我想要的功能，这个配置要改成yes。
+然后这个参数和unix extensions同时启用的话会存在安全漏洞，所以要启动wide link就必须把unix extensions功能关闭。
+然后官网wiki对者的参数定义的作用域是section，所以按照wiki规范是应该配置在共享目录下而不是global域。
+unix extensions
+这个参数是smb1 unix extensions的同义词。
+这个参数是HP定义的用来支持unix smb1/cifs特性的参数，作用域是global，默认是yes。wiki中特别知道windows终端默认已经不支持这个特性（因为windows默认禁用smb1协议）
+考虑到smb1协议的漏洞、我访问samba共享文件夹的设备都是windows pc、和wide links参数冲突，所以这个参数要设定为no
+follow sysmlink
+这个参数用来设定是否允许samba支持软连接，看上去和wide link没区别。
+作用域section，默认是启用。
+总结 通过对官方wiki的查询，了解了这三个配置参数的明确定义。所以，合理、规范、精简的配置如下：
+[global] unix extensions = no [share folder] wide links = yes 喝杯奶茶 "/>
+
+    <meta property="og:title" content="让Samba共享支持软链接（symlink）" />
+<meta property="og:description" content="前言 昨天突发奇想，在samba共享的目录下新建了一个软链接指向了另外一个目录，试一下能否通过这种方式把多个目录整合到一个共享目录下，方便windows上进行访问。这样的话，windows只需要添加一个网络文件夹就行了，不需要每个共享目录都创建一个网络文件夹的入口。
+实际测试以后，在默认的samba配置下，可以在samba共享文件内创建软连接，但是在windows终端上挂载/访问这个目录是看不到目录内的软链接的。
+网上查了一下，只需要简单配置就可以支持，在此做个记录。
+配置 网上找到的配置教程里都说在smb.conf文件中添加三个配置即可，如下
+wide links = yes follow symlinks = yes unix extensions = no 直接加到global域然后重启smbd.service以后就行了。
+测试成功以后起了好奇心，顺便查了下samba官方wiki这仨参数都是什么意思，是不是可以优化、精简。
+以下就是参数释疑：
+wide links
+简单来讲就是【是否允许samba服务跟踪位于共享目录之外的链接】，默认是no。讲人话就是，假设指定共享data/目录，然后data/目录下有个软连接指向了data/之外的其它目录，这是否允许，默认是no。
+很明显要实现我想要的功能，这个配置要改成yes。
+然后这个参数和unix extensions同时启用的话会存在安全漏洞，所以要启动wide link就必须把unix extensions功能关闭。
+然后官网wiki对者的参数定义的作用域是section，所以按照wiki规范是应该配置在共享目录下而不是global域。
+unix extensions
+这个参数是smb1 unix extensions的同义词。
+这个参数是HP定义的用来支持unix smb1/cifs特性的参数，作用域是global，默认是yes。wiki中特别知道windows终端默认已经不支持这个特性（因为windows默认禁用smb1协议）
+考虑到smb1协议的漏洞、我访问samba共享文件夹的设备都是windows pc、和wide links参数冲突，所以这个参数要设定为no
+follow sysmlink
+这个参数用来设定是否允许samba支持软连接，看上去和wide link没区别。
+作用域section，默认是启用。
+总结 通过对官方wiki的查询，了解了这三个配置参数的明确定义。所以，合理、规范、精简的配置如下：
+[global] unix extensions = no [share folder] wide links = yes 喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202407/samba-enable-symlinks/" /><meta property="article:section" content="202407" />
+<meta property="article:published_time" content="2024-07-25T16:02:37+08:00" />
+<meta property="article:modified_time" content="2024-07-25T16:02:37+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">让Samba共享支持软链接（symlink）</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 25, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/samba/">Samba</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>昨天突发奇想，在samba共享的目录下新建了一个软链接指向了另外一个目录，试一下能否通过这种方式把多个目录整合到一个共享目录下，方便windows上进行访问。这样的话，windows只需要添加一个网络文件夹就行了，不需要每个共享目录都创建一个网络文件夹的入口。</p>
+<p>实际测试以后，在默认的samba配置下，可以在samba共享文件内创建软连接，但是在windows终端上挂载/访问这个目录是看不到目录内的软链接的。</p>
+<p>网上查了一下，只需要简单配置就可以支持，在此做个记录。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<p>网上找到的配置教程里都说在<code>smb.conf</code>文件中添加三个配置即可，如下</p>
+<pre tabindex="0"><code>wide links = yes
+follow symlinks = yes
+unix extensions = no
+</code></pre><p>直接加到<code>global</code>域然后重启<code>smbd.service</code>以后就行了。</p>
+<p>测试成功以后起了好奇心，顺便查了下samba官方wiki这仨参数都是什么意思，是不是可以优化、精简。</p>
+<p>以下就是参数释疑：</p>
+<blockquote>
+<p>wide links</p>
+</blockquote>
+<p><img src="https://img.311803.xyz/2024/07/25/01.webp" alt=""></p>
+<p>简单来讲就是【是否允许samba服务跟踪位于共享目录之外的链接】，默认是<code>no</code>。讲人话就是，假设指定共享<code>data/</code>目录，然后<code>data/</code>目录下有个软连接指向了<code>data/</code>之外的其它目录，这是否允许，<code>默认是no</code>。</p>
+<p>很明显要实现我想要的功能，这个配置要改成<code>yes</code>。</p>
+<p>然后这个参数和<code>unix extensions</code>同时启用的话会存在安全漏洞，所以要启动<code>wide link</code>就必须把<code>unix extensions</code>功能关闭。</p>
+<p>然后官网wiki对者的参数定义的作用域是<code>section</code>，所以按照wiki规范是应该配置在共享目录下而不是<code>global</code>域。</p>
+<blockquote>
+<p>unix extensions</p>
+</blockquote>
+<p><img src="https://img.311803.xyz/2024/07/25/02.webp" alt=""></p>
+<p>这个参数是<code>smb1 unix extensions</code>的同义词。</p>
+<p>这个参数是HP定义的用来支持unix smb1/cifs特性的参数，作用域是<code>global</code>，<code>默认是yes</code>。wiki中特别知道windows终端默认已经不支持这个特性（因为windows默认禁用smb1协议）</p>
+<p>考虑到smb1协议的漏洞、我访问samba共享文件夹的设备都是windows pc、和<code>wide links</code>参数冲突，所以这个参数要设定为<code>no</code></p>
+<blockquote>
+<p>follow sysmlink</p>
+</blockquote>
+<p><img src="https://img.311803.xyz/2024/07/25/03.webp" alt=""></p>
+<p>这个参数用来设定是否允许samba支持软连接，看上去和<code>wide link</code>没区别。</p>
+<p>作用域<code>section</code>，<code>默认是启用</code>。</p>
+<hr>
+<h2 id="总结">总结</h2>
+<p>通过对官方wiki的查询，了解了这三个配置参数的明确定义。所以，合理、规范、精简的配置如下：</p>
+<pre tabindex="0"><code>[global]
+unix extensions = no
+
+[share folder]
+wide links = yes
+</code></pre><hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

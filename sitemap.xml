@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202407/</loc>
-    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/armbian/</loc>
-    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/samba/</loc>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-07-24T02:08:08+08:00</lastmod>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202407/samba-enable-symlinks/</loc>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/armbian/</loc>
     <lastmod>2024-07-24T02:08:08+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/</loc>
@@ -459,9 +465,6 @@
     <lastmod>2023-08-17T10:27:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202308/macos-smb-folder-auto-mount/</loc>
-    <lastmod>2023-08-16T02:02:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/samba/</loc>
     <lastmod>2023-08-16T02:02:01+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202308/ws1508-use-parted-to-expand-storage/</loc>
