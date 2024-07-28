@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Memos从0.15升级到0.17新增评论功能 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Memos从0.15升级到0.17新增评论功能"/>
+<meta name="twitter:description" content="前言 我的memos部署在迅雷赚钱宝一代（ws1408）上，硬件架构是arm32/armv7，host系统是3.10内核的openwrt21，部署方式是预编译的后端二进制包 &#43; 自己编译的前端。
+最初是因为硬件架构限制，memos官方从0.15开始就不再维护针对arm32/armv7硬件的docker镜像，所以我一直停留在0.15.0这个版本。
+后来搞定了非docker方式的部署（后端的二进制包 &#43; 前端自己编译），但因为使用习惯 &#43; 新版本功能没有需求，所以一直都没有动力升级。
+自从我的twiter被炸号以后，我就迁移到了自建memos。之后一直有曾经的twitter好友以及现实里的朋友在关注我的memos更新，这份关注持续至今。非常感谢他们，他们的关注让我在这两年的潦草生活中依然感受到些许亮光。
+为了方便和他们互动，我准备把memos从0.15版本升级。
+memos在v0.16加入了评论功能
+在v0.17加入了通知中心（inbox收件箱）
+至此评论功能算是比较完善可用，所以我决定升级到v0.17.1。
+升级 memos在v0.16的changlog中提到需要数据迁移 &amp; 有表结构的变更。
+而且在最初体验memos时，我确实碰到了升级新版以后对旧数据库不兼容的问题，需要手动执行sql更新脚本。所以我对memos的升级感到一点担心，因为需要迁移数据。
+但是实际在测试升级的过程中发现是多虑了，从v0.15升级到0.17非常丝滑，不需要自己整理sql更新脚本，因为memos的作者已经内置了数据迁移脚本，在升级过程中会自动执行，整个过程非常丝滑，完全不需要人工干预。
+如果是docker方式升级，拉取指定版本的镜像以后直接运行即可。
+如果是非docker方式部署，前端需要自己编译，后端在【memospot/memos-builds】下载二进制包，覆盖原项目文件后重启memos即可。注意windows下载某几个版本的压缩包文件时windows defender会报毒，和项目作者反馈以后对方表示是windows defender误报，具体可以看这个【issue】。
+以下是升级过程中用到的sql代码（适用于sqlite），如果你对自己动手更有信息，可以参考。操作之前请先备份数据库。
+# 新加字段 ALTER TABLE resource ADD COLUMN memo_id INTEGER; # 更新数据 UPDATE resource SET memo_id = ( SELECT memo_id FROM memo_resource WHERE resource.id = memo_resource.resource_id LIMIT 1 ); # 建索引 CREATE INDEX idx_resource_memo_id ON resource (memo_id); # 删表 DROP TABLE IF EXISTS memo_resource; # 删表 DROP TABLE IF EXISTS shortcut; # 插入版本号（新版本号必须要加，要不然每次重启都会自动开始迁移数据） INSERT INTO migration_history (version, created_ts) VALUES (&#34;0."/>
+
+    <meta property="og:title" content="Memos从0.15升级到0.17新增评论功能" />
+<meta property="og:description" content="前言 我的memos部署在迅雷赚钱宝一代（ws1408）上，硬件架构是arm32/armv7，host系统是3.10内核的openwrt21，部署方式是预编译的后端二进制包 &#43; 自己编译的前端。
+最初是因为硬件架构限制，memos官方从0.15开始就不再维护针对arm32/armv7硬件的docker镜像，所以我一直停留在0.15.0这个版本。
+后来搞定了非docker方式的部署（后端的二进制包 &#43; 前端自己编译），但因为使用习惯 &#43; 新版本功能没有需求，所以一直都没有动力升级。
+自从我的twiter被炸号以后，我就迁移到了自建memos。之后一直有曾经的twitter好友以及现实里的朋友在关注我的memos更新，这份关注持续至今。非常感谢他们，他们的关注让我在这两年的潦草生活中依然感受到些许亮光。
+为了方便和他们互动，我准备把memos从0.15版本升级。
+memos在v0.16加入了评论功能
+在v0.17加入了通知中心（inbox收件箱）
+至此评论功能算是比较完善可用，所以我决定升级到v0.17.1。
+升级 memos在v0.16的changlog中提到需要数据迁移 &amp; 有表结构的变更。
+而且在最初体验memos时，我确实碰到了升级新版以后对旧数据库不兼容的问题，需要手动执行sql更新脚本。所以我对memos的升级感到一点担心，因为需要迁移数据。
+但是实际在测试升级的过程中发现是多虑了，从v0.15升级到0.17非常丝滑，不需要自己整理sql更新脚本，因为memos的作者已经内置了数据迁移脚本，在升级过程中会自动执行，整个过程非常丝滑，完全不需要人工干预。
+如果是docker方式升级，拉取指定版本的镜像以后直接运行即可。
+如果是非docker方式部署，前端需要自己编译，后端在【memospot/memos-builds】下载二进制包，覆盖原项目文件后重启memos即可。注意windows下载某几个版本的压缩包文件时windows defender会报毒，和项目作者反馈以后对方表示是windows defender误报，具体可以看这个【issue】。
+以下是升级过程中用到的sql代码（适用于sqlite），如果你对自己动手更有信息，可以参考。操作之前请先备份数据库。
+# 新加字段 ALTER TABLE resource ADD COLUMN memo_id INTEGER; # 更新数据 UPDATE resource SET memo_id = ( SELECT memo_id FROM memo_resource WHERE resource.id = memo_resource.resource_id LIMIT 1 ); # 建索引 CREATE INDEX idx_resource_memo_id ON resource (memo_id); # 删表 DROP TABLE IF EXISTS memo_resource; # 删表 DROP TABLE IF EXISTS shortcut; # 插入版本号（新版本号必须要加，要不然每次重启都会自动开始迁移数据） INSERT INTO migration_history (version, created_ts) VALUES (&#34;0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/" /><meta property="article:section" content="202407" />
+<meta property="article:published_time" content="2024-07-28T17:01:59+08:00" />
+<meta property="article:modified_time" content="2024-07-28T17:01:59+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Memos从0.15升级到0.17新增评论功能</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 28, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/memos/">memos</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>我的memos部署在迅雷赚钱宝一代（ws1408）上，硬件架构是arm32/armv7，host系统是3.10内核的openwrt21，部署方式是预编译的后端二进制包 + 自己编译的前端。</p>
+<p>最初是因为硬件架构限制，memos官方从0.15开始就不再维护针对arm32/armv7硬件的docker镜像，所以我一直停留在0.15.0这个版本。</p>
+<p>后来搞定了非docker方式的部署（后端的二进制包 + 前端自己编译），但因为使用习惯 + 新版本功能没有需求，所以一直都没有动力升级。</p>
+<p>自从我的twiter被炸号以后，我就迁移到了自建memos。之后一直有曾经的twitter好友以及现实里的朋友在关注我的memos更新，这份关注持续至今。非常感谢他们，他们的关注让我在这两年的潦草生活中依然感受到些许亮光。</p>
+<p>为了方便和他们互动，我准备把memos从0.15版本升级。</p>
+<p>memos在v0.16加入了评论功能</p>
+<p><img src="https://img.311803.xyz/2024/07/28/01.webp" alt=""></p>
+<p>在v0.17加入了通知中心（inbox收件箱）</p>
+<p><img src="https://img.311803.xyz/2024/07/28/02.webp" alt=""></p>
+<p>至此评论功能算是比较完善可用，所以我决定升级到v0.17.1。</p>
+<hr>
+<h2 id="升级">升级</h2>
+<p>memos在v0.16的changlog中提到需要数据迁移 &amp; 有表结构的变更。</p>
+<p><img src="https://img.311803.xyz/2024/07/28/03.webp" alt=""></p>
+<p>而且在最初体验memos时，我确实碰到了升级新版以后对旧数据库不兼容的问题，需要手动执行sql更新脚本。所以我对memos的升级感到一点担心，因为需要迁移数据。</p>
+<p>但是实际在测试升级的过程中发现是多虑了，从v0.15升级到0.17非常丝滑，不需要自己整理sql更新脚本，因为memos的作者已经内置了数据迁移脚本，在升级过程中会自动执行，整个过程非常丝滑，完全不需要人工干预。</p>
+<p>如果是docker方式升级，拉取指定版本的镜像以后直接运行即可。</p>
+<p>如果是非docker方式部署，前端需要自己编译，后端在【<a href="https://github.com/memospot/memos-builds">memospot/memos-builds</a>】下载二进制包，覆盖原项目文件后重启memos即可。注意windows下载某几个版本的压缩包文件时windows defender会报毒，和项目作者反馈以后对方表示是windows defender误报，具体可以看这个【<a href="https://github.com/memospot/memos-builds/issues/78">issue</a>】。</p>
+<p>以下是升级过程中用到的sql代码（适用于sqlite），如果你对自己动手更有信息，可以参考。操作之前请先备份数据库。</p>
+<pre tabindex="0"><code># 新加字段
+ALTER TABLE resource ADD COLUMN memo_id INTEGER;
+
+# 更新数据
+UPDATE resource
+SET memo_id = (
+  SELECT memo_id
+  FROM memo_resource
+  WHERE resource.id = memo_resource.resource_id
+  LIMIT 1
+);
+
+# 建索引
+CREATE INDEX idx_resource_memo_id ON resource (memo_id);
+
+# 删表
+DROP TABLE IF EXISTS memo_resource;
+
+# 删表
+DROP TABLE IF EXISTS shortcut;
+
+# 插入版本号（新版本号必须要加，要不然每次重启都会自动开始迁移数据）
+INSERT INTO migration_history (version, created_ts) VALUES (&#34;0.17.1&#34;,  strftime(&#39;%s&#39;, &#39;now&#39;));
+</code></pre><hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

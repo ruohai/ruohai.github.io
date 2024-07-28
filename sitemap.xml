@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202407/</loc>
-    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+    <lastmod>2024-07-28T17:01:59+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/samba/</loc>
-    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/memos/</loc>
+    <lastmod>2024-07-28T17:01:59+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</loc>
+    <lastmod>2024-07-28T17:01:59+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+    <lastmod>2024-07-28T17:01:59+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-07-28T17:01:59+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/samba/</loc>
     <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202407/samba-enable-symlinks/</loc>
@@ -112,9 +118,6 @@
   </url><url>
     <loc>https://ruohai.wang/202405/deduplicate-media-files/</loc>
     <lastmod>2024-05-24T19:39:46+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/memos/</loc>
-    <lastmod>2024-05-23T19:03:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</loc>
     <lastmod>2024-05-23T19:03:48+08:00</lastmod>

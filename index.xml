@@ -6,7 +6,30 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 25 Jul 2024 16:02:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Jul 2024 17:01:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Memos从0.15升级到0.17新增评论功能</title>
+      <link>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</link>
+      <pubDate>Sun, 28 Jul 2024 17:01:59 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</guid>
+      <description>前言 我的memos部署在迅雷赚钱宝一代（ws1408）上，硬件架构是arm32/armv7，host系统是3.10内核的openwrt21，部署方式是预编译的后端二进制包 + 自己编译的前端。
+最初是因为硬件架构限制，memos官方从0.15开始就不再维护针对arm32/armv7硬件的docker镜像，所以我一直停留在0.15.0这个版本。
+后来搞定了非docker方式的部署（后端的二进制包 + 前端自己编译），但因为使用习惯 + 新版本功能没有需求，所以一直都没有动力升级。
+自从我的twiter被炸号以后，我就迁移到了自建memos。之后一直有曾经的twitter好友以及现实里的朋友在关注我的memos更新，这份关注持续至今。非常感谢他们，他们的关注让我在这两年的潦草生活中依然感受到些许亮光。
+为了方便和他们互动，我准备把memos从0.15版本升级。
+memos在v0.16加入了评论功能
+在v0.17加入了通知中心（inbox收件箱）
+至此评论功能算是比较完善可用，所以我决定升级到v0.17.1。
+升级 memos在v0.16的changlog中提到需要数据迁移 &amp;amp; 有表结构的变更。
+而且在最初体验memos时，我确实碰到了升级新版以后对旧数据库不兼容的问题，需要手动执行sql更新脚本。所以我对memos的升级感到一点担心，因为需要迁移数据。
+但是实际在测试升级的过程中发现是多虑了，从v0.15升级到0.17非常丝滑，不需要自己整理sql更新脚本，因为memos的作者已经内置了数据迁移脚本，在升级过程中会自动执行，整个过程非常丝滑，完全不需要人工干预。
+如果是docker方式升级，拉取指定版本的镜像以后直接运行即可。
+如果是非docker方式部署，前端需要自己编译，后端在【memospot/memos-builds】下载二进制包，覆盖原项目文件后重启memos即可。注意windows下载某几个版本的压缩包文件时windows defender会报毒，和项目作者反馈以后对方表示是windows defender误报，具体可以看这个【issue】。
+以下是升级过程中用到的sql代码（适用于sqlite），如果你对自己动手更有信息，可以参考。操作之前请先备份数据库。
+# 新加字段 ALTER TABLE resource ADD COLUMN memo_id INTEGER; # 更新数据 UPDATE resource SET memo_id = ( SELECT memo_id FROM memo_resource WHERE resource.id = memo_resource.resource_id LIMIT 1 ); # 建索引 CREATE INDEX idx_resource_memo_id ON resource (memo_id); # 删表 DROP TABLE IF EXISTS memo_resource; # 删表 DROP TABLE IF EXISTS shortcut; # 插入版本号（新版本号必须要加，要不然每次重启都会自动开始迁移数据） INSERT INTO migration_history (version, created_ts) VALUES (&amp;#34;0.</description>
+    </item>
+    
     <item>
       <title>让Samba共享支持软链接（symlink）</title>
       <link>https://ruohai.wang/202407/samba-enable-symlinks/</link>
