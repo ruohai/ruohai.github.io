@@ -6,7 +6,37 @@
     <description>Recent content in 202407s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 28 Jul 2024 17:01:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202407/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 31 Jul 2024 14:16:22 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202407/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js在Windows下配置环境变量</title>
+      <link>https://ruohai.wang/202407/nodejs-env-config-on-windows/</link>
+      <pubDate>Wed, 31 Jul 2024 14:16:22 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202407/nodejs-env-config-on-windows/</guid>
+      <description>前言 前两天因为要在本地编译memos的前端项目需要nodejs环境，而我的电脑在重装系统以后又得重新配置一遍nodejs的环境变量。
+网上的教程内容啰嗦，设置方法也不统一，有的用NODE_HOME有的又用NODE_PATH，而且广告一堆，索性自己写一篇，做个简单记录。
+安装与配置 第一步：下载安装
+这一步没啥好说的，到官网找到下载链接，根据自己需要下载对应版本到本地，然后双击安装即可。
+现在nodejs的安装程序在安装时会自动配置环境变量
+安装完成后，打开windows下的terminal，测试是否安装成功。
+也可以在windows的环境变量配置中查看。
+到这一步，nodejs的本地安装与环境配置已经完成了，已经可以直接使用nodejs。
+只是在这种默认配置下，通过npm install下载的包（package）、模块（module）、缓存（cache）都在c盘。
+如果你的c盘足够大，或者你的硬盘没有分区，那就不需要再看第二步来自定义nodejs的全局目录了。
+第二步：指定全局目录与缓存目录
+先找地方新建两个文件夹，node_cache和node_global。
+然后打开windows terminal输入以下命令
+npm config set prefix &amp;#34;/path/to/my/node_global&amp;#34; npm config set cache &amp;#34;/path/to/my/node_cache&amp;#34; 执行了以上命令以后，可以通过npm config get来查看设置是否成效
+第三步：设置module变量
+在系统变量中新建一项NODE_PATH，指定moudule路径
+在用户变量中编辑Path，修改默认的%USERPROFILE%\AppData\Roaming\npm为指定的global路径
+修改以后保存退出。
+第四步：指定镜像源
+众所周知的原因，nodejs官方镜像在国内访问几乎不可用，一般都需要指定镜像源，比如阿里的镜像源
+npm config set registry https://registry.npm.taobao.org/ 执行以上命令以后，同样可以通过npm config get查看是否设置成功
+参考文章 【安装指南】nodejs下载、安装与配置详细教程 node.js安装及环境配置超详细教程【Windows系统安装包方式】 Node.js安装及环境配置之Windows篇 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>Memos从0.15升级到0.17新增评论功能</title>
       <link>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</link>
