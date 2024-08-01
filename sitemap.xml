@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202408/</loc>
+    <lastmod>2024-08-02T04:17:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-08-02T04:17:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/windows/</loc>
+    <lastmod>2024-08-02T04:17:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202408/windows-notification-malware-removal/</loc>
+    <lastmod>2024-08-02T04:17:19+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-08-02T04:17:19+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202407/</loc>
     <lastmod>2024-07-31T14:16:22+08:00</lastmod>
   </url><url>
@@ -9,12 +24,6 @@
     <lastmod>2024-07-31T14:16:22+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/nodejs/</loc>
-    <lastmod>2024-07-31T14:16:22+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-07-31T14:16:22+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-07-31T14:16:22+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/memos/</loc>
@@ -546,9 +555,6 @@
     <lastmod>2023-07-28T03:09:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/iperf3/</loc>
-    <lastmod>2023-07-28T00:48:48+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/windows/</loc>
     <lastmod>2023-07-28T00:48:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202307/iperf3-use-guide/</loc>

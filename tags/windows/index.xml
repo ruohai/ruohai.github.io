@@ -6,7 +6,32 @@
     <description>Recent content in Windows on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 28 Jul 2023 00:48:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Aug 2024 04:17:19 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows系统在“获取来自这些发送者的通知”中删除恶意软件添加的项目</title>
+      <link>https://ruohai.wang/202408/windows-notification-malware-removal/</link>
+      <pubDate>Fri, 02 Aug 2024 04:17:19 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202408/windows-notification-malware-removal/</guid>
+      <description>前言 在m0nkrus的【官网】下载了lightroom classic，下载的压缩包用windows defender扫描会报毒，但是我核对了镜像文件的md5和sha1，文件没问题，所以还是放心安装了。
+但很快就发现中了一个恶意病毒：通知中心开始给我弹赌博网站的广告。
+然后在windows设置的【通知与操作】页面，也可以看到多出来一个gazetanovostey.com的项目。当时我没有截图，所以这里用的网上找到的类似的图片。
+立刻用windows defender全盘扫描但是没有报异常，关掉这个恶意项目的通知权限似乎也确实不会再弹广告，看上去好像是个守规矩的恶意病毒。但我有点儿洁癖，碰到这种恶意软件以后一般都是直接全盘格式化然后重装系统。但冷静了一会，想试试怎么能够把这个恶意广告清理掉。
+清理 在windows的通知和操作设置页面，这个恶意项目只能设置开启或者关闭，不能右键删除。
+在网上搜索类似问题，傻屌的微软社区（Microsoft Community）里都是一些牛头不对马嘴的问答，对于解决这个问题毫无帮助。但最后还是找到解决办法了，而且实测以后确实也有效。
+第一步：注册表中删除记录
+定位到\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings，根据恶意弹窗的广告信息定位到项目。我的记录已经被删除了，所以截图无法展示，这里以telegram为例。
+比如我根据恶意弹窗的广告关键词可以定位到gazetanovostey.com，删除。如果你的恶意项目无法定位，可以反复开关通知权限，查看右侧栏中的enable字段的值的变化来定位，定位以后提取关键词或者UUID。
+第二步：数据库中删除记录
+打开windows资源管理器，定位到C:\Users\XXXX\AppData\Local\Microsoft\Windows\Notifications，文件夹下会有个wpndatabase.db的数据库文件。
+这个是sqlite3的数据库文件，可以用【SQLiteStudio】或者【sqlite3-cli】进行编辑。我用的带gui的SQLiteStudio。
+打开数据库以后，根据恶意广告的关键词进行搜索，比如我的sql如下
+select * from NotificationHandler where PrimaryId like &amp;#39;%gazetanovostey%&amp;#39;; 因为我的恶意广告的记录已经被删除，所以截图以telegram为例 根据搜索记录，确定RecordId是133，接下去就是删除它。
+delete from NotificationHandler where RecordId = 133; 好了，至此恶意广告的项目就清理完成，打开设置中心的通知与操作，可以看到gazetanovostey项目已经被删除。
+🎉
+参考文章 如何删除Win10中“获取来自这些发送者的通知”无效的项目 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>使用iPerf3进行局域网的简单测速</title>
       <link>https://ruohai.wang/202307/iperf3-use-guide/</link>
