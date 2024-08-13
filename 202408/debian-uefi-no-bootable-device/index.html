@@ -16,25 +16,25 @@
 <meta name="twitter:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决"/>
 <meta name="twitter:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
 这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
-在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found) 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
+在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备no bootable device found 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
 第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。
 但最近我往这台机器上装pve，在uefi模式下竟然可以正常关机，🤔，我觉得可以找找对应的解决方案了。
 功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。
-原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。
+原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割没有实现完整的efi功能），不兼容debian 12的bootloader。
 debian 12安装好以后的boot分区目录结构大致如下
-├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构如下
+├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构应该如下
 ├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64."/>
 
     <meta property="og:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决" />
 <meta property="og:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
 这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
-在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found) 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
+在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备no bootable device found 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
 第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。
 但最近我往这台机器上装pve，在uefi模式下竟然可以正常关机，🤔，我觉得可以找找对应的解决方案了。
 功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。
-原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。
+原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割没有实现完整的efi功能），不兼容debian 12的bootloader。
 debian 12安装好以后的boot分区目录结构大致如下
-├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构如下
+├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构应该如下
 ├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202408/debian-uefi-no-bootable-device/" /><meta property="article:section" content="202408" />
@@ -102,8 +102,8 @@ debian 12安装好以后的boot分区目录结构大致如下
 <p>最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。</p>
 <p>这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：</p>
 <ol>
-<li>在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found)</li>
-<li>在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源）</li>
+<li>在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备<code>no bootable device found</code></li>
+<li>在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示<code>watchdog did not stop</code>，只能硬关机（长按电源键或者直接拔电源）</li>
 </ol>
 <p>第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。</p>
 <p>第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。</p>
@@ -111,7 +111,7 @@ debian 12安装好以后的boot分区目录结构大致如下
 <p>功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。</p>
 <hr>
 <h2 id="原因">原因</h2>
-<p>简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。</p>
+<p>简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割没有实现完整的efi功能），不兼容debian 12的bootloader。</p>
 <p>debian 12安装好以后的boot分区目录结构大致如下</p>
 <pre tabindex="0"><code>├── boot
 │   ├── config-5.10.0-18-amd64
@@ -124,7 +124,7 @@ debian 12安装好以后的boot分区目录结构大致如下
 │   │           ├── grubx64.efi
 │   │           ├── mmx64.efi
 │   │           └── shimx64.efi
-</code></pre><p>但联想这个机器的uefi固件能识别的boot目录的结构如下</p>
+</code></pre><p>但联想这个机器的uefi固件能识别的boot目录的结构应该如下</p>
 <pre tabindex="0"><code>├── boot
 │   ├── config-5.15.53-1-pve
 │   ├── efi
@@ -152,7 +152,7 @@ debian 12安装好以后的boot分区目录结构大致如下
 <blockquote>
 <p>方法一：官方wiki的修复方法</p>
 </blockquote>
-<p>需要用debian系统引导盘，进入rescue mode，执行以下两组命令。</p>
+<p>需要用debian系统引导盘，进入rescue mode，执行以下命令。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /target
 </span></span><span style="display:flex;"><span>mount /dev/sda2 /target
 </span></span><span style="display:flex;"><span>mount /dev/sda1 /target/boot/efi
@@ -174,20 +174,21 @@ debian 12安装好以后的boot分区目录结构大致如下
 <p>方法二：手动复制文件</p>
 </blockquote>
 <p>从第一步的命令中可以看出只需要手动创建<code>BOOT</code>目录然后复制2个必须的启动文件即可</p>
-<pre tabindex="0"><code>cp debian/grubx64.efi boot/grubx64.efi
-cp debian/shimx64.efi boot/bootx64.efi
-</code></pre><p>复制以上文件以后如果成功进入debian系统，再手动执行以下命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp debian/grubx64.efi boot/grubx64.efi
+</span></span><span style="display:flex;"><span>cp debian/shimx64.efi boot/bootx64.efi
+</span></span></code></pre></div><p>复制以上文件以后如果成功进入debian系统，再手动执行以下命令</p>
 <pre tabindex="0"><code>debconf-set-selections &lt;&lt;&lt;&#34;grub-efi-amd64 grub2/force_efi_extra_removable boolean true&#34;
 </code></pre><blockquote>
-<p>方法三</p>
+<p>方法三：</p>
 </blockquote>
-<p>也要进入debian的rescue mode，执行以下命令即可。</p>
-<pre tabindex="0"><code>dpkg-reconfigure grub-efi-amd64
-</code></pre><hr>
+<p>也要用debian安装盘进入debian的rescue mode，执行以下命令即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dpkg-reconfigure grub-efi-amd64
+</span></span></code></pre></div><hr>
 <h2 id="参考文章">参考文章</h2>
 <ol>
 <li><a href="https://forums.debian.net/viewtopic.php?t=152832">No bootable devices found</a></li>
 <li><a href="https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader">Problem1: Weak EFI implementation only recognizes the fallback bootloader</a></li>
+<li><a href="https://mjg59.livejournal.com/138188.html">Booting with EFI</a></li>
 </ol>
 <hr>
 <h2 id="喝杯奶茶">喝杯奶茶</h2>
