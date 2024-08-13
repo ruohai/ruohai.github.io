@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Debian 12在UEFI模式下找不到启动设备问题的解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决"/>
+<meta name="twitter:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
+这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
+在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found) 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
+第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。
+但最近我往这台机器上装pve，在uefi模式下竟然可以正常关机，🤔，我觉得可以找找对应的解决方案了。
+功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。
+原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。
+debian 12安装好以后的boot分区目录结构大致如下
+├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构如下
+├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64."/>
+
+    <meta property="og:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决" />
+<meta property="og:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
+这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
+在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found) 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
+第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。
+但最近我往这台机器上装pve，在uefi模式下竟然可以正常关机，🤔，我觉得可以找找对应的解决方案了。
+功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。
+原因 简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。
+debian 12安装好以后的boot分区目录结构大致如下
+├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构如下
+├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202408/debian-uefi-no-bootable-device/" /><meta property="article:section" content="202408" />
+<meta property="article:published_time" content="2024-08-13T11:10:55+08:00" />
+<meta property="article:modified_time" content="2024-08-13T11:10:55+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Debian 12在UEFI模式下找不到启动设备问题的解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 13, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/debian/">Debian</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。</p>
+<p>这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：</p>
+<ol>
+<li>在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备(no bootable device found)</li>
+<li>在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源）</li>
+</ol>
+<p>第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。</p>
+<p>第二个问题反复尝试也无解，但凑合还能用，只要每次想重启/关机的时候手动长按电源开关就行了。</p>
+<p>但最近我往这台机器上装pve，在uefi模式下竟然可以正常关机，🤔，我觉得可以找找对应的解决方案了。</p>
+<p>功夫不负有心人，很快就找到了类似的问题而且成功解决了，在这里做个简单记录。</p>
+<hr>
+<h2 id="原因">原因</h2>
+<p>简单来讲就是联想这台古董机器的uefi固件版本太低了（或者做了阉割），不兼容debian/grubx65.efi的bootloader。</p>
+<p>debian 12安装好以后的boot分区目录结构大致如下</p>
+<pre tabindex="0"><code>├── boot
+│   ├── config-5.10.0-18-amd64
+│   ├── efi
+│   │   └── EFI
+│   │       └── debian
+│   │           ├── BOOTX64.CSV
+│   │           ├── fbx64.efi
+│   │           ├── grub.cfg
+│   │           ├── grubx64.efi
+│   │           ├── mmx64.efi
+│   │           └── shimx64.efi
+</code></pre><p>但联想这个机器的uefi固件能识别的boot目录的结构如下</p>
+<pre tabindex="0"><code>├── boot
+│   ├── config-5.15.53-1-pve
+│   ├── efi
+│   │   └── EFI
+│   │       ├── BOOT
+│   │       │   ├── BOOTX64.EFI
+│   │       │   ├── fbx64.efi
+│   │       │   └── grubx64.efi
+│   │       └── debian
+│   │           ├── BOOTX64.CSV
+│   │           ├── fbx64.efi
+│   │           ├── grub.cfg
+│   │           ├── grubx64.efi
+│   │           ├── mmx64.efi
+│   │           └── shimx64.efi
+</code></pre><p>两者对比以后可以发现，debian 12的boot分区少了一个<code>BOOT</code>目录，所以理论上我们只需要在装完系统以后把<code>BOOT</code>目录以及目录下的文件恢复就行了。</p>
+<hr>
+<h2 id="修复">修复</h2>
+<p>修复<code>BOOT</code>目录有三种方法，推荐使用debian官方wiki推荐的方法一。我实测方法一成功解决了问题，其它两个方法仅作收集记录，是否有效未知。</p>
+<p>uefi模式下，debian系统盘的默认分区，/dev/sda1是fat32格式的esp分区（boot分区），/dev/sda2是根分区，大致示意如下</p>
+<pre tabindex="0"><code>/dev/sda1 esp
+/dev/sda2 /
+/dev/sda3 swap
+</code></pre><p>下面的命令操作，都以此分区为例。</p>
+<blockquote>
+<p>方法一：官方wiki的修复方法</p>
+</blockquote>
+<p>需要用debian系统引导盘，进入rescue mode，执行以下两组命令。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /target
+</span></span><span style="display:flex;"><span>mount /dev/sda2 /target
+</span></span><span style="display:flex;"><span>mount /dev/sda1 /target/boot/efi
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in /sys /proc /dev; <span style="color:#66d9ef">do</span> mount --bind $i /target$i; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>chroot /target
+</span></span><span style="display:flex;"><span>cd /boot/efi/EFI
+</span></span><span style="display:flex;"><span>mkdir boot
+</span></span><span style="display:flex;"><span>cp debian/grubx64.efi boot/bootx64.efi
+</span></span><span style="display:flex;"><span>exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in /sys /proc /dev; <span style="color:#66d9ef">do</span> umount /target$i; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>umount /target/boot/efi
+</span></span><span style="display:flex;"><span>umount /target
+</span></span></code></pre></div><p>执行完以上命令以后，重启系统以后uefi即可正确识别系统盘并正常进入debian系统。</p>
+<p>进入debian系统以后，执行以下命令来固化grub信息。注意这步操作可能会影响双系统的启动。</p>
+<pre tabindex="0"><code>echo &#34;grub-efi-amd64 grub2/force_efi_extra_removable boolean true&#34; | sudo debconf-set-selections
+</code></pre><blockquote>
+<p>方法二：手动复制文件</p>
+</blockquote>
+<p>从第一步的命令中可以看出只需要手动创建<code>BOOT</code>目录然后复制2个必须的启动文件即可</p>
+<pre tabindex="0"><code>cp debian/grubx64.efi boot/grubx64.efi
+cp debian/shimx64.efi boot/bootx64.efi
+</code></pre><p>复制以上文件以后如果成功进入debian系统，再手动执行以下命令</p>
+<pre tabindex="0"><code>debconf-set-selections &lt;&lt;&lt;&#34;grub-efi-amd64 grub2/force_efi_extra_removable boolean true&#34;
+</code></pre><blockquote>
+<p>方法三</p>
+</blockquote>
+<p>也要进入debian的rescue mode，执行以下命令即可。</p>
+<pre tabindex="0"><code>dpkg-reconfigure grub-efi-amd64
+</code></pre><hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://forums.debian.net/viewtopic.php?t=152832">No bootable devices found</a></li>
+<li><a href="https://wiki.debian.org/GrubEFIReinstall#Problem1:_Weak_EFI_implementation_only_recognizes_the_fallback_bootloader">Problem1: Weak EFI implementation only recognizes the fallback bootloader</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
