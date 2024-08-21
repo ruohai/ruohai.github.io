@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-cn">
   <head>
-    <title>Debian 12在UEFI模式下找不到启动设备问题的解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>联想BIOS在UEFI模式下出现no bootable device found的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,7 +13,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决"/>
+<meta name="twitter:title" content="联想BIOS在UEFI模式下出现no bootable device found的问题解决"/>
 <meta name="twitter:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
 这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
 在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备no bootable device found 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
@@ -25,7 +25,7 @@ debian 12安装好以后的boot分区目录结构大致如下
 ├── boot │ ├── config-5.10.0-18-amd64 │ ├── efi │ │ └── EFI │ │ └── debian │ │ ├── BOOTX64.CSV │ │ ├── fbx64.efi │ │ ├── grub.cfg │ │ ├── grubx64.efi │ │ ├── mmx64.efi │ │ └── shimx64.efi 但联想这个机器的uefi固件能识别的boot目录的结构应该如下
 ├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64."/>
 
-    <meta property="og:title" content="Debian 12在UEFI模式下找不到启动设备问题的解决" />
+    <meta property="og:title" content="联想BIOS在UEFI模式下出现no bootable device found的问题解决" />
 <meta property="og:description" content="前言 最近一直在折腾一台别人淘汰的旧电脑，型号是联想c260，板载cpu是intel j1800。
 这机器到手以后我就直接开始重装debian了，但是碰到了2个问题：
 在uefi模式下，装好debian拔掉引导u盘以后重启，会提示找不到启动设备no bootable device found 在legacy模式下，装好debian以后能进入系统，但是无法软关机/软重启，在输入关机/重启命令以后一直提示watchdog did not stop，只能硬关机（长按电源键或者直接拔电源） 第一个问题反复尝试后无解，而且联想的bios也没有开放高级功能来修改配置。
@@ -72,7 +72,7 @@ debian 12安装好以后的boot分区目录结构大致如下
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Debian 12在UEFI模式下找不到启动设备问题的解决</h1>
+      <h1 class ="post-title">联想BIOS在UEFI模式下出现no bootable device found的问题解决</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">

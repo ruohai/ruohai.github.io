@@ -8,7 +8,7 @@
     <language>zh-cn</language>
     <lastBuildDate>Tue, 13 Aug 2024 11:10:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Debian 12在UEFI模式下找不到启动设备问题的解决</title>
+      <title>联想BIOS在UEFI模式下出现no bootable device found的问题解决</title>
       <link>https://ruohai.wang/202408/debian-uefi-no-bootable-device/</link>
       <pubDate>Tue, 13 Aug 2024 11:10:55 +0800</pubDate>
       

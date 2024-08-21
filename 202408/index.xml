@@ -8,7 +8,7 @@
     <language>zh-cn</language>
     <lastBuildDate>Tue, 13 Aug 2024 11:10:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202408/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Debian 12在UEFI模式下找不到启动设备问题的解决</title>
+      <title>联想BIOS在UEFI模式下出现no bootable device found的问题解决</title>
       <link>https://ruohai.wang/202408/debian-uefi-no-bootable-device/</link>
       <pubDate>Tue, 13 Aug 2024 11:10:55 +0800</pubDate>
       
@@ -26,7 +26,7 @@ debian 12安装好以后的boot分区目录结构大致如下
     </item>
     
     <item>
-      <title>Windows系统在“获取来自这些发送者的通知”中删除恶意软件添加的项目</title>
+      <title>Windows系统出现恶意通知的问题处理</title>
       <link>https://ruohai.wang/202408/windows-notification-malware-removal/</link>
       <pubDate>Fri, 02 Aug 2024 04:17:19 +0800</pubDate>
       
