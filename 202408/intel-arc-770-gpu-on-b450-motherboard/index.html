@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在AMD B450主板上使用Intel Arc显卡 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在AMD B450主板上使用Intel Arc显卡"/>
+<meta name="twitter:description" content="结论 amd b450主板能不能用intel arc系列显卡？ 能，但是有几个注意事项：
+bios请升级到最新版本以提高兼容性 b450主板的pcie插槽大概率只支持到pcie3.0，但现在的显卡都支持到pcie4.0，也许、可能会因为pcie带宽瓶颈影响显卡的性能发挥 如果是msi主板，要留意今年出了一个严重的安全漏洞CVE-2024-36877，msi肯定发布了修复安全漏洞的新版bios。这些新版bios可能反而会存在兼容性问题。具体可以看下面的流水账 intel arc显卡能不能跑黑神话悟空？ 能，不仅能跑，画质也还过得去。
+我的搭配是arc a770显卡 &#43; 1080p显示器，要求是战斗场景能稳定60fps（也就是用测试工具需要能跑80fps的平均帧）。这个要求下，可以实现tsr &#43; 80超采 &#43; 高画质（个别严重影响性能的项目调整为中画质）。
+一些流水账 为了玩《黑神话：悟空》所以预算2000rmb准备买一张显卡，一番挑选之后入手了intel arc a770，价格1800rmb。
+我用的主板是msi b450m mortar max，理论上是不支持intel arc显卡的，因为intel显卡的商家在产品页面都会表明使用条件，amd平台需要500系列的主板以上。
+话虽如此，但我还是愿意冒着损失1800rmb的代价来实际测试一下（因为显卡一次性贴纸撕毁后不接受7天无理由退货）。
+amd的am4/b450系列的主板，都知道成长性很好，刷了新bios以后就可以支持5000系列的锐龙cpu。为了保证兼容性，请先更新bios到最新。
+但是这里有个注意事项，msi b450m mortar max这个主板，请刷2023年10月26日的7B89v2K版bios，千万不要刷2024年发布的这两个新版。我是用2023年的7B89v2K版bios，插intel arc a770显卡，开启uefi模式，启用resize bar功能，在使用过程中没有任何问题。但是刷2024年这两个版本的bios会出现开机蓝屏提示系统文件损坏、开机黑屏没有画面输出等非常恶性的bug。
+更新了bios以后，记得在bios中启用uefi引导模式 &amp; 开启resize bar功能。
+之后正常装上windows系统并打上intel官方的驱动即可正常使用arc a770显卡。
+但是，这里又有一个注意事项，msi b450m mortar max这个显卡的pcie插槽只支持到3代标准，理论上带宽瓶颈会严重限制显卡的性能发挥。
+我没有用鲁大师、3dmark之类的跑分来做对比测试，而是直接跑跑黑神话悟空了。
+按照b站up远古时代装机猿推荐的1080p画质配置（其中超分技术从fsr改成了tsr），测试工具可以稳定80fps左右，实际游戏（我只玩到第一章）可以稳定75fps左右，在特效比较多的场景会掉到65fps左右。整体表现属于稳定、可玩、画质不错。
+比如下面这个击杀boss广谋的场景
+实时帧率是70fps。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="在AMD B450主板上使用Intel Arc显卡" />
+<meta property="og:description" content="结论 amd b450主板能不能用intel arc系列显卡？ 能，但是有几个注意事项：
+bios请升级到最新版本以提高兼容性 b450主板的pcie插槽大概率只支持到pcie3.0，但现在的显卡都支持到pcie4.0，也许、可能会因为pcie带宽瓶颈影响显卡的性能发挥 如果是msi主板，要留意今年出了一个严重的安全漏洞CVE-2024-36877，msi肯定发布了修复安全漏洞的新版bios。这些新版bios可能反而会存在兼容性问题。具体可以看下面的流水账 intel arc显卡能不能跑黑神话悟空？ 能，不仅能跑，画质也还过得去。
+我的搭配是arc a770显卡 &#43; 1080p显示器，要求是战斗场景能稳定60fps（也就是用测试工具需要能跑80fps的平均帧）。这个要求下，可以实现tsr &#43; 80超采 &#43; 高画质（个别严重影响性能的项目调整为中画质）。
+一些流水账 为了玩《黑神话：悟空》所以预算2000rmb准备买一张显卡，一番挑选之后入手了intel arc a770，价格1800rmb。
+我用的主板是msi b450m mortar max，理论上是不支持intel arc显卡的，因为intel显卡的商家在产品页面都会表明使用条件，amd平台需要500系列的主板以上。
+话虽如此，但我还是愿意冒着损失1800rmb的代价来实际测试一下（因为显卡一次性贴纸撕毁后不接受7天无理由退货）。
+amd的am4/b450系列的主板，都知道成长性很好，刷了新bios以后就可以支持5000系列的锐龙cpu。为了保证兼容性，请先更新bios到最新。
+但是这里有个注意事项，msi b450m mortar max这个主板，请刷2023年10月26日的7B89v2K版bios，千万不要刷2024年发布的这两个新版。我是用2023年的7B89v2K版bios，插intel arc a770显卡，开启uefi模式，启用resize bar功能，在使用过程中没有任何问题。但是刷2024年这两个版本的bios会出现开机蓝屏提示系统文件损坏、开机黑屏没有画面输出等非常恶性的bug。
+更新了bios以后，记得在bios中启用uefi引导模式 &amp; 开启resize bar功能。
+之后正常装上windows系统并打上intel官方的驱动即可正常使用arc a770显卡。
+但是，这里又有一个注意事项，msi b450m mortar max这个显卡的pcie插槽只支持到3代标准，理论上带宽瓶颈会严重限制显卡的性能发挥。
+我没有用鲁大师、3dmark之类的跑分来做对比测试，而是直接跑跑黑神话悟空了。
+按照b站up远古时代装机猿推荐的1080p画质配置（其中超分技术从fsr改成了tsr），测试工具可以稳定80fps左右，实际游戏（我只玩到第一章）可以稳定75fps左右，在特效比较多的场景会掉到65fps左右。整体表现属于稳定、可玩、画质不错。
+比如下面这个击杀boss广谋的场景
+实时帧率是70fps。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202408/intel-arc-770-gpu-on-b450-motherboard/" /><meta property="article:section" content="202408" />
+<meta property="article:published_time" content="2024-08-29T20:48:13+08:00" />
+<meta property="article:modified_time" content="2024-08-29T20:48:13+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在AMD B450主板上使用Intel Arc显卡</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Aug 29, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/%E6%8D%A1%E5%9E%83%E5%9C%BE/">捡垃圾</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="结论">结论</h2>
+<blockquote>
+<ol>
+<li>amd b450主板能不能用intel arc系列显卡？</li>
+</ol>
+</blockquote>
+<p>能，但是有几个注意事项：</p>
+<ul>
+<li>bios请升级到最新版本以提高兼容性</li>
+<li>b450主板的pcie插槽大概率只支持到pcie3.0，但现在的显卡都支持到pcie4.0，也许、可能会因为pcie带宽瓶颈影响显卡的性能发挥</li>
+<li>如果是msi主板，要留意今年出了一个严重的安全漏洞<code>CVE-2024-36877</code>，msi肯定发布了修复安全漏洞的新版bios。这些新版bios可能反而会存在兼容性问题。具体可以看下面的流水账</li>
+</ul>
+<blockquote>
+<ol start="2">
+<li>intel arc显卡能不能跑黑神话悟空？</li>
+</ol>
+</blockquote>
+<p>能，不仅能跑，画质也还过得去。</p>
+<p>我的搭配是arc a770显卡 + 1080p显示器，要求是战斗场景能稳定60fps（也就是用测试工具需要能跑80fps的平均帧）。这个要求下，可以实现tsr + 80超采 + 高画质（个别严重影响性能的项目调整为中画质）。</p>
+<hr>
+<h2 id="一些流水账">一些流水账</h2>
+<p>为了玩《黑神话：悟空》所以预算2000rmb准备买一张显卡，一番挑选之后入手了intel arc a770，价格1800rmb。</p>
+<p>我用的主板是msi b450m mortar max，理论上是不支持intel arc显卡的，因为intel显卡的商家在产品页面都会表明使用条件，amd平台需要500系列的主板以上。</p>
+<p><img src="https://img.311803.xyz/2024/08/29/01.webp" alt=""></p>
+<p>话虽如此，但我还是愿意冒着损失1800rmb的代价来实际测试一下（因为显卡一次性贴纸撕毁后不接受7天无理由退货）。</p>
+<p>amd的am4/b450系列的主板，都知道成长性很好，刷了新bios以后就可以支持5000系列的锐龙cpu。为了保证兼容性，请先更新bios到最新。</p>
+<p><img src="https://img.311803.xyz/2024/08/29/02.webp" alt=""></p>
+<p>但是这里有个注意事项，msi b450m mortar max这个主板，请刷2023年10月26日的<code>7B89v2K</code>版bios，千万不要刷2024年发布的这两个新版。我是用2023年的<code>7B89v2K</code>版bios，插intel arc a770显卡，开启uefi模式，启用resize bar功能，在使用过程中没有任何问题。但是刷2024年这两个版本的bios会出现开机蓝屏提示系统文件损坏、开机黑屏没有画面输出等非常恶性的bug。</p>
+<p>更新了bios以后，记得在bios中启用uefi引导模式 &amp; 开启resize bar功能。</p>
+<p>之后正常装上windows系统并打上intel官方的驱动即可正常使用arc a770显卡。</p>
+<p><img src="https://img.311803.xyz/2024/08/29/03.webp" alt=""></p>
+<p>但是，这里又有一个注意事项，msi b450m mortar max这个显卡的pcie插槽只支持到3代标准，理论上带宽瓶颈会严重限制显卡的性能发挥。</p>
+<p>我没有用鲁大师、3dmark之类的跑分来做对比测试，而是直接跑跑黑神话悟空了。</p>
+<p>按照b站up<code>远古时代装机猿</code>推荐的1080p画质配置（其中超分技术从fsr改成了tsr），测试工具可以稳定80fps左右，实际游戏（我只玩到第一章）可以稳定75fps左右，在特效比较多的场景会掉到65fps左右。整体表现属于稳定、可玩、画质不错。</p>
+<p><img src="https://img.311803.xyz/2024/08/29/04.webp" alt=""></p>
+<p>比如下面这个击杀boss广谋的场景</p>
+<p><img src="https://img.311803.xyz/2024/08/29/05.webp" alt=""></p>
+<p>实时帧率是70fps。</p>
+<p><img src="https://img.311803.xyz/2024/08/29/06.webp" alt=""></p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
