@@ -6,7 +6,34 @@
     <description>Recent content in Linux on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 10 Oct 2023 19:06:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Mar 2024 06:02:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上安装&amp;配置MiniDLNA</title>
+      <link>https://ruohai.wang/202403/minidlna-config-on-onecloud/</link>
+      <pubDate>Sat, 30 Mar 2024 06:02:16 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202403/minidlna-config-on-onecloud/</guid>
+      <description>前言 在看海纳思官方页面的一些功能介绍的时候发现了minidlna。之前我都是直接用的samba，对dlna协议还真没试过，这次正好了解下。
+实际在配置的过程中碰到了一些问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。
+安装 &amp;amp; 配置 我用来装minidlna的机器是玩客云，刷的是armbian系统。所以下文中的内容都以debian/apt为例。
+第一步：安装
+安装的话很简单，apt一把梭
+apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
+第二步：配置
+先列一下minidlna的三个配置文件：
+/etc/minidlna.conf 这个配置文件针对systemd /etc/defalut/minidlna 这个配置文件针对sysv init /lib/systemd/system/minidlna.service 这个是针对systemd的服务配置文件 玩客云armbian用的是systemd，所以第二个配置文件可以忽略。
+再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。
+首先编辑/etc/minidlna.conf文件，其中以下配置项请根据自己的需求进行调整
+media_dir=/var/lib/minidlna，这个指向用来存放媒体文件的目录。 db_dir=/var/cache/minidlna，这个目录用来保存minidlna扫描文件后的数据，根据自己需求调整。 port=8200，默认端口号，根据自己需求调整。如果有安装ufw或者firewalld，记得放行端口。 friendly_name=hostname: username，minidlna服务在其它设备上看到的名字，可以自行调整 然后编辑/lib/systemd/system/minidlna.service文件
+User=minidlna，这个指定运行minidlna的用户 Group=minidlna，这个指定运行minidlna的组 如果你的系统都用的root账户，那改成root即可，可以减少很多权限的问题。如果你用的是非root用户，可以在这里修改。
+最后，如果用的非root账户、非minidlna账户运行minidlna、用的默认的db目录，那还需要注意修改minidlna db目录的所属用户。
+minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:mididlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
+chown -R jack:jack /var/cache/minidlna 完成以上的全部配置以后，后记得重载systemd配置 &amp;amp; 重启minidlna服务
+systemctl daemon-reload systemctl restart minidlna.service 可选配置项：增加minidlna的文件监控数量
+如果你关注minidlna服务的运行日志，应该会看到log中一直出现的一个警告信息
+monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit.</description>
+    </item>
+    
     <item>
       <title>Immich相册服务照片视频文件的批量上传</title>
       <link>https://ruohai.wang/202310/immich-bulk-upload/</link>

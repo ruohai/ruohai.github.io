@@ -236,6 +236,9 @@
     <loc>https://ruohai.wang/202403/</loc>
     <lastmod>2024-03-30T06:02:16+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2024-03-30T06:02:16+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202403/minidlna-config-on-onecloud/</loc>
     <lastmod>2024-03-30T06:02:16+08:00</lastmod>
   </url><url>
@@ -435,9 +438,6 @@
     <lastmod>2023-10-12T18:48:49+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202310/immich-bulk-upload/</loc>
-    <lastmod>2023-10-10T19:06:29+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
     <lastmod>2023-10-10T19:06:29+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/ufw/</loc>

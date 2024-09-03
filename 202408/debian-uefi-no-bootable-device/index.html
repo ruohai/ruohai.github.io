@@ -171,7 +171,7 @@ debian 12安装好以后的boot分区目录结构大致如下
 </span></span></code></pre></div><p>执行完以上命令以后，重启系统以后uefi即可正确识别系统盘并正常进入debian系统。</p>
 <p>官方wiki还建议完成boot分区重建以后，用以下命令来固化启动信息。但是要注意，如果你是双系统，这一步操作会影响另一个系统的启动。</p>
 <pre tabindex="0"><code>echo &#34;grub-efi-amd64 grub2/force_efi_extra_removable boolean true&#34; | sudo debconf-set-selections
-</code></pre><p>而且我实测即使不执行这步操作，也不会印象系统的重启。所以是否执行请自行选择。</p>
+</code></pre><p>而且我实测即使不执行这步操作，也不会影响系统的重启。所以是否执行请自行选择。</p>
 <blockquote>
 <p>方法二：手动复制文件</p>
 </blockquote>

@@ -8,29 +8,30 @@
     <language>zh-cn</language>
     <lastBuildDate>Sat, 30 Mar 2024 06:02:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202403/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>在玩客云上安装&amp;配置MiniDLNA</title>
+      <title>在Debian上安装&amp;配置MiniDLNA</title>
       <link>https://ruohai.wang/202403/minidlna-config-on-onecloud/</link>
       <pubDate>Sat, 30 Mar 2024 06:02:16 +0800</pubDate>
       
       <guid>https://ruohai.wang/202403/minidlna-config-on-onecloud/</guid>
       <description>前言 在看海纳思官方页面的一些功能介绍的时候发现了minidlna。之前我都是直接用的samba，对dlna协议还真没试过，这次正好了解下。
-实际在配置的过程中碰到了不少问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。
-安装 玩客云刷的是armbian系统，安装minidlna很简单，一条命令。
-sudo apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
-配置 先列一下minidlna的三个配置文件：
-/etc/minidlna.conf /etc/defalut/minidlna /lib/systemd/system/minidlna.service 再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。其中第二个配置文件是针对sysv init，玩客云armbian用的是systemd，所以可以忽略这个文件。
-媒体文件目录
-修改/etc/minidlna.conf，把media_dir=/var/lib/minidlna调整为自己存放媒体文件的目录
-默认端口
-修改/etc/minidlna.conf，找到port=8200，可以用默认端口，也可以根据自己的喜好调整。如果有安装ufw或者firewalld，记得放行端口。
-默认用户/组
-默认用户/组都是minidlna，在指定媒体目录的时候注意权限问题，要不然会碰到扫描不到媒体文件的问题。图方便的话可以直接将媒体文件chmod 777，或者修改/lib/systemd/system/minidlna.service，调整User=minidlna和Group=minidlna两项，想省事可以可以都用root账户。
-如果改成其它用户/组，修改以后注意一起修改/var/cache/minidlna目录的权限。
-max_user_watches
-改完上面这些以后，启动minidlna依然会报错，查看/var/log/minidlna下的日志，发现有报错信息
-monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit. Please do so manually by writing a higher value into /proc/sys/fs/inotify/max_user_watches. 意思是默认设置的程序可监控的文件数量8638个太少了，程序无法运行，需要把这个值改的大一些
-修改方法
-sudo sysctl -w fs.</description>
+实际在配置的过程中碰到了一些问题，比如扫描不到媒体目录下的文件，花了一些时间debug，这里做一些记录。
+安装 &amp;amp; 配置 我用来装minidlna的机器是玩客云，刷的是armbian系统。所以下文中的内容都以debian/apt为例。
+第一步：安装
+安装的话很简单，apt一把梭
+apt install minidlna 需要注意minidlna服务需要安装的包会比较多，大概占用100~300MB的存储空间。玩客云的内置存储空间不多，请合理规划。
+第二步：配置
+先列一下minidlna的三个配置文件：
+/etc/minidlna.conf 这个配置文件针对systemd /etc/defalut/minidlna 这个配置文件针对sysv init /lib/systemd/system/minidlna.service 这个是针对systemd的服务配置文件 玩客云armbian用的是systemd，所以第二个配置文件可以忽略。
+再说一下要改的配置，以下各配置项修改后需要重启minidlna后生效。
+首先编辑/etc/minidlna.conf文件，其中以下配置项请根据自己的需求进行调整
+media_dir=/var/lib/minidlna，这个指向用来存放媒体文件的目录。 db_dir=/var/cache/minidlna，这个目录用来保存minidlna扫描文件后的数据，根据自己需求调整。 port=8200，默认端口号，根据自己需求调整。如果有安装ufw或者firewalld，记得放行端口。 friendly_name=hostname: username，minidlna服务在其它设备上看到的名字，可以自行调整 然后编辑/lib/systemd/system/minidlna.service文件
+User=minidlna，这个指定运行minidlna的用户 Group=minidlna，这个指定运行minidlna的组 如果你的系统都用的root账户，那改成root即可，可以减少很多权限的问题。如果你用的是非root用户，可以在这里修改。
+最后，如果用的非root账户、非minidlna账户运行minidlna、用的默认的db目录，那还需要注意修改minidlna db目录的所属用户。
+minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:mididlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
+chown -R jack:jack /var/cache/minidlna 完成以上的全部配置以后，后记得重载systemd配置 &amp;amp; 重启minidlna服务
+systemctl daemon-reload systemctl restart minidlna.service 可选配置项：增加minidlna的文件监控数量
+如果你关注minidlna服务的运行日志，应该会看到log中一直出现的一个警告信息
+monitor.c:222: warn: WARNING: Inotify max_user_watches [8638] is low or close to the number of used watches [2] and I do not have permission to increase this limit.</description>
     </item>
     
     <item>
