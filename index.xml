@@ -187,7 +187,7 @@ memos在v0.16加入了评论功能
       <pubDate>Thu, 25 Jul 2024 16:02:37 +0800</pubDate>
       
       <guid>https://ruohai.wang/202407/samba-enable-symlinks/</guid>
-      <description>前言 昨天突发奇想，在samba共享的目录下新建了一个软链接指向了另外一个目录，试一下能否通过这种方式把多个目录整合到一个共享目录下，方便windows上进行访问。这样的话，windows只需要添加一个网络文件夹就行了，不需要每个共享目录都创建一个网络文件夹的入口。
+      <description>前言 昨天想到在samba共享的目录下新建了一个软链接指向了另外一个目录，试一下能否通过这种方式把多个目录整合到一个共享目录下，方便windows上进行访问。这样的话，windows只需要添加一个网络文件夹就行了，不需要每个共享目录都创建一个网络文件夹的入口。
 实际测试以后，在默认的samba配置下，可以在samba共享文件内创建软连接，但是在windows终端上挂载/访问这个目录是看不到目录内的软链接的。
 网上查了一下，只需要简单配置就可以支持，在此做个记录。
 配置 网上找到的配置教程里都说在smb.conf文件中添加三个配置即可，如下
@@ -195,14 +195,14 @@ wide links = yes follow symlinks = yes unix extensions = no 直接加到global�
 测试成功以后起了好奇心，顺便查了下samba官方wiki这仨参数都是什么意思，是不是可以优化、精简。
 以下就是参数释疑：
 wide links
-简单来讲就是【是否允许samba服务跟踪位于共享目录之外的链接】，默认是no。讲人话就是，假设指定共享data/目录，然后data/目录下有个软连接指向了data/之外的其它目录，这是否允许，默认是no。
+简单来讲就是【是否允许samba服务跟踪位于共享目录之外的链接】，默认是no。讲人话就是，假设指定共享data目录，然后data目录下有个软连接指向了data之外的其它目录，这是否允许，默认是no。
 很明显要实现我想要的功能，这个配置要改成yes。
 然后这个参数和unix extensions同时启用的话会存在安全漏洞，所以要启动wide link就必须把unix extensions功能关闭。
-然后官网wiki对者的参数定义的作用域是section，所以按照wiki规范是应该配置在共享目录下而不是global域。
+然后官网wiki对这个参数定义的作用域是section，所以按照wiki规范是应该配置在共享目录下而不是global域。
 unix extensions
-这个参数是smb1 unix extensions的同义词。
-这个参数是HP定义的用来支持unix smb1/cifs特性的参数，作用域是global，默认是yes。wiki中特别知道windows终端默认已经不支持这个特性（因为windows默认禁用smb1协议）
-考虑到smb1协议的漏洞、我访问samba共享文件夹的设备都是windows pc、和wide links参数冲突，所以这个参数要设定为no
+这个参数是smb1 unix extensions的同义词，也就是仅对smb1协议有效，如果你在smb.conf中设定了最低协议是smb2或者更高版本，那这个参数可以忽略。
+这个参数是HP定义的用来支持unix smb1/cifs特性的参数，作用域是global，默认是yes。wiki中特别说明windows终端默认已经不支持这个特性（因为windows默认禁用smb1协议）
+考虑到smb1协议的漏洞、我访问samba共享文件夹的设备都是windows pc、和wide links参数冲突，所以这个参数要设定为no。
 follow sysmlink
 这个参数用来设定是否允许samba支持软连接，看上去和wide link没区别。
 作用域section，默认是启用。
@@ -1044,7 +1044,7 @@ apt install minidlna 需要注意minidlna服务需要安装的包会比较多，
 media_dir=/var/lib/minidlna，这个指向用来存放媒体文件的目录。 db_dir=/var/cache/minidlna，这个目录用来保存minidlna扫描文件后的数据，根据自己需求调整。 port=8200，默认端口号，根据自己需求调整。如果有安装ufw或者firewalld，记得放行端口。 friendly_name=hostname: username，minidlna服务在其它设备上看到的名字，可以自行调整 然后编辑/lib/systemd/system/minidlna.service文件
 User=minidlna，这个指定运行minidlna的用户 Group=minidlna，这个指定运行minidlna的组 如果你的系统都用的root账户，那改成root即可，可以减少很多权限的问题。如果你用的是非root用户，可以在这里修改。
 最后，如果用的非root账户、非minidlna账户运行minidlna、用的默认的db目录，那还需要注意修改minidlna db目录的所属用户。
-minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:mididlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
+minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:minidlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
 chown -R jack:jack /var/cache/minidlna 完成以上的全部配置以后，后记得重载systemd配置 &amp;amp; 重启minidlna服务
 systemctl daemon-reload systemctl restart minidlna.service 可选配置项：增加minidlna的文件监控数量
 如果你关注minidlna服务的运行日志，应该会看到log中一直出现的一个警告信息

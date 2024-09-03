@@ -56,6 +56,9 @@
     <loc>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</loc>
     <lastmod>2024-07-28T17:01:59+08:00</lastmod>
   </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/tags/samba/</loc>
     <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
@@ -234,9 +237,6 @@
     <lastmod>2024-04-05T22:30:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/</loc>
-    <lastmod>2024-03-30T06:02:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
     <lastmod>2024-03-30T06:02:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/minidlna-config-on-onecloud/</loc>

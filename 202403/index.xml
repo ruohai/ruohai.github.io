@@ -27,7 +27,7 @@ apt install minidlna 需要注意minidlna服务需要安装的包会比较多，
 media_dir=/var/lib/minidlna，这个指向用来存放媒体文件的目录。 db_dir=/var/cache/minidlna，这个目录用来保存minidlna扫描文件后的数据，根据自己需求调整。 port=8200，默认端口号，根据自己需求调整。如果有安装ufw或者firewalld，记得放行端口。 friendly_name=hostname: username，minidlna服务在其它设备上看到的名字，可以自行调整 然后编辑/lib/systemd/system/minidlna.service文件
 User=minidlna，这个指定运行minidlna的用户 Group=minidlna，这个指定运行minidlna的组 如果你的系统都用的root账户，那改成root即可，可以减少很多权限的问题。如果你用的是非root用户，可以在这里修改。
 最后，如果用的非root账户、非minidlna账户运行minidlna、用的默认的db目录，那还需要注意修改minidlna db目录的所属用户。
-minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:mididlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
+minidlna默认保存数据的目录是/var/cache/minidlna，归属用户&amp;amp;组的信息是minidlna:minidlna。如果我们指定了其它的非root账户，就需要重新指定这个目录的归属，假定是jack。
 chown -R jack:jack /var/cache/minidlna 完成以上的全部配置以后，后记得重载systemd配置 &amp;amp; 重启minidlna服务
 systemctl daemon-reload systemctl restart minidlna.service 可选配置项：增加minidlna的文件监控数量
 如果你关注minidlna服务的运行日志，应该会看到log中一直出现的一个警告信息
