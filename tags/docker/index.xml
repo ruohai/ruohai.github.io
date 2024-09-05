@@ -6,7 +6,25 @@
     <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 21 Jun 2024 19:57:04 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Sep 2024 00:33:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用Docker方式部署轻量rss阅读器Miniflux</title>
+      <link>https://ruohai.wang/202409/miniflux-install-guide/</link>
+      <pubDate>Fri, 06 Sep 2024 00:33:53 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/miniflux-install-guide/</guid>
+      <description>前言 最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。
+上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。
+回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【这篇博客】整理的表格。
+我最后选择的是miniflux有两个原因，其一是考虑到资源占用，因为我可能需要把服务部署到性能孱弱的arm盒子上，其二是前两个服务用的都是php方案，我对php不熟，虽然都支持docker一键部署，但考虑到如果原生部署，miniflux只需要一个预编译的go二进制包就行了。
+部署 miniflux官方的文档提供了部署教程，英语阅读没有障碍的话可以直接看官方文档。
+我选择了docker-compose部署，所以非常简单，只需要准备一份docker-compose.yml文件即可。miniflux官方文档里已经提供了docker-compose.yml的模板，只需要根据自己的需求调整一些配置即可。
+以下是官网模板在2024/09/06提供的模板，模板具有时效性，请留意官网模板可能会有更新变动。
+services: miniflux: image: miniflux/miniflux:latest ports: - &amp;#34;80:8080&amp;#34; depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable - RUN_MIGRATIONS=1 - CREATE_ADMIN=1 - ADMIN_USERNAME=admin - ADMIN_PASSWORD=test123 db: image: postgres:15 environment: - POSTGRES_USER=miniflux - POSTGRES_PASSWORD=secret - POSTGRES_DB=miniflux volumes: - miniflux-db:/var/lib/postgresql/data healthcheck: test: [&amp;#34;CMD&amp;#34;, &amp;#34;pg_isready&amp;#34;, &amp;#34;-U&amp;#34;, &amp;#34;miniflux&amp;#34;] interval: 10s start_period: 30s volumes: miniflux-db: 从yml文件中可以看到需要安装两个服务，一个是miniflux本体，另一个是数据库postgres。实测amd64版本的两个服务的镜像占用大概500MB的存储空间。
+根据自己的需求，我对配置模板做了简单调整，调整的内容做了注释
+services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # 指定容器名称 user: 1000:1000 # 这里指定用非root账户运行容器 restart: always # 增加重启策略 ports: - &amp;#34;80:8080&amp;#34; # 指定端口以后记得防火墙放行 depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:123456@db/miniflux?</description>
+    </item>
+    
     <item>
       <title>拉不动镜像？给Docker配置代理服务器</title>
       <link>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</link>

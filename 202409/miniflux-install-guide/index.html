@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>用Docker方式部署轻量rss阅读器Miniflux // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用Docker方式部署轻量rss阅读器Miniflux"/>
+<meta name="twitter:description" content="前言 最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。
+上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。
+回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【这篇博客】整理的表格。
+我最后选择的是miniflux有两个原因，其一是考虑到资源占用，因为我可能需要把服务部署到性能孱弱的arm盒子上，其二是前两个服务用的都是php方案，我对php不熟，虽然都支持docker一键部署，但考虑到如果原生部署，miniflux只需要一个预编译的go二进制包就行了。
+部署 miniflux官方的文档提供了部署教程，英语阅读没有障碍的话可以直接看官方文档。
+我选择了docker-compose部署，所以非常简单，只需要准备一份docker-compose.yml文件即可。miniflux官方文档里已经提供了docker-compose.yml的模板，只需要根据自己的需求调整一些配置即可。
+以下是官网模板在2024/09/06提供的模板，模板具有时效性，请留意官网模板可能会有更新变动。
+services: miniflux: image: miniflux/miniflux:latest ports: - &#34;80:8080&#34; depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable - RUN_MIGRATIONS=1 - CREATE_ADMIN=1 - ADMIN_USERNAME=admin - ADMIN_PASSWORD=test123 db: image: postgres:15 environment: - POSTGRES_USER=miniflux - POSTGRES_PASSWORD=secret - POSTGRES_DB=miniflux volumes: - miniflux-db:/var/lib/postgresql/data healthcheck: test: [&#34;CMD&#34;, &#34;pg_isready&#34;, &#34;-U&#34;, &#34;miniflux&#34;] interval: 10s start_period: 30s volumes: miniflux-db: 从yml文件中可以看到需要安装两个服务，一个是miniflux本体，另一个是数据库postgres。实测amd64版本的两个服务的镜像占用大概500MB的存储空间。
+根据自己的需求，我对配置模板做了简单调整，调整的内容做了注释
+services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # 指定容器名称 user: 1000:1000 # 这里指定用非root账户运行容器 restart: always # 增加重启策略 ports: - &#34;80:8080&#34; # 指定端口以后记得防火墙放行 depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:123456@db/miniflux?"/>
+
+    <meta property="og:title" content="用Docker方式部署轻量rss阅读器Miniflux" />
+<meta property="og:description" content="前言 最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。
+上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。
+回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【这篇博客】整理的表格。
+我最后选择的是miniflux有两个原因，其一是考虑到资源占用，因为我可能需要把服务部署到性能孱弱的arm盒子上，其二是前两个服务用的都是php方案，我对php不熟，虽然都支持docker一键部署，但考虑到如果原生部署，miniflux只需要一个预编译的go二进制包就行了。
+部署 miniflux官方的文档提供了部署教程，英语阅读没有障碍的话可以直接看官方文档。
+我选择了docker-compose部署，所以非常简单，只需要准备一份docker-compose.yml文件即可。miniflux官方文档里已经提供了docker-compose.yml的模板，只需要根据自己的需求调整一些配置即可。
+以下是官网模板在2024/09/06提供的模板，模板具有时效性，请留意官网模板可能会有更新变动。
+services: miniflux: image: miniflux/miniflux:latest ports: - &#34;80:8080&#34; depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable - RUN_MIGRATIONS=1 - CREATE_ADMIN=1 - ADMIN_USERNAME=admin - ADMIN_PASSWORD=test123 db: image: postgres:15 environment: - POSTGRES_USER=miniflux - POSTGRES_PASSWORD=secret - POSTGRES_DB=miniflux volumes: - miniflux-db:/var/lib/postgresql/data healthcheck: test: [&#34;CMD&#34;, &#34;pg_isready&#34;, &#34;-U&#34;, &#34;miniflux&#34;] interval: 10s start_period: 30s volumes: miniflux-db: 从yml文件中可以看到需要安装两个服务，一个是miniflux本体，另一个是数据库postgres。实测amd64版本的两个服务的镜像占用大概500MB的存储空间。
+根据自己的需求，我对配置模板做了简单调整，调整的内容做了注释
+services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # 指定容器名称 user: 1000:1000 # 这里指定用非root账户运行容器 restart: always # 增加重启策略 ports: - &#34;80:8080&#34; # 指定端口以后记得防火墙放行 depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:123456@db/miniflux?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202409/miniflux-install-guide/" /><meta property="article:section" content="202409" />
+<meta property="article:published_time" content="2024-09-06T00:33:53+08:00" />
+<meta property="article:modified_time" content="2024-09-06T00:33:53+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">用Docker方式部署轻量rss阅读器Miniflux</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 6, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/miniflus/">Miniflus</a>
+              <a class="tag" href="https://ruohai.wang/tags/docker/">Docker</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。</p>
+<p>上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。</p>
+<p>回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【<a href="https://yfi.moe/post/rsshub-miniflux/">这篇博客</a>】整理的表格。</p>
+<p><img src="https://img.311803.xyz/2024/09/06/01.webp" alt=""></p>
+<p>我最后选择的是miniflux有两个原因，其一是考虑到资源占用，因为我可能需要把服务部署到性能孱弱的arm盒子上，其二是前两个服务用的都是php方案，我对php不熟，虽然都支持docker一键部署，但考虑到如果原生部署，miniflux只需要一个预编译的go二进制包就行了。</p>
+<hr>
+<h2 id="部署">部署</h2>
+<p>miniflux官方的文档提供了部署教程，英语阅读没有障碍的话可以直接看官方文档。</p>
+<p>我选择了docker-compose部署，所以非常简单，只需要准备一份docker-compose.yml文件即可。miniflux官方文档里已经提供了<a href="https://miniflux.app/docs/docker.html">docker-compose.yml的模板</a>，只需要根据自己的需求调整一些配置即可。</p>
+<p>以下是官网模板在2024/09/06提供的模板，模板具有时效性，请留意官网模板可能会有更新变动。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">miniflux</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">miniflux/miniflux:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;80:8080&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">condition</span>: <span style="color:#ae81ff">service_healthy</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">RUN_MIGRATIONS=1</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">CREATE_ADMIN=1</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ADMIN_USERNAME=admin</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ADMIN_PASSWORD=test123</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">postgres:15</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_USER=miniflux</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_PASSWORD=secret</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_DB=miniflux</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">miniflux-db:/var/lib/postgresql/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;pg_isready&#34;</span>, <span style="color:#e6db74">&#34;-U&#34;</span>, <span style="color:#e6db74">&#34;miniflux&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">10s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">start_period</span>: <span style="color:#ae81ff">30s</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">miniflux-db</span>:
+</span></span></code></pre></div><p>从yml文件中可以看到需要安装两个服务，一个是miniflux本体，另一个是数据库postgres。实测amd64版本的两个服务的镜像占用大概500MB的存储空间。</p>
+<p><img src="https://img.311803.xyz/2024/09/06/02.webp" alt=""></p>
+<p>根据自己的需求，我对配置模板做了简单调整，调整的内容做了注释</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">miniflux</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">miniflux/miniflux:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">miniflux           </span> <span style="color:#75715e"># 指定容器名称</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">1000</span>:<span style="color:#ae81ff">1000</span>                     <span style="color:#75715e"># 这里指定用非root账户运行容器</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always                    </span> <span style="color:#75715e"># 增加重启策略</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;80:8080&#34;</span>                       <span style="color:#75715e"># 指定端口以后记得防火墙放行</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">condition</span>: <span style="color:#ae81ff">service_healthy</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">DATABASE_URL=postgres://miniflux:123456@db/miniflux?sslmode=disable</span> <span style="color:#75715e"># 注意修改数据库密码</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">RUN_MIGRATIONS=1</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">CREATE_ADMIN=1</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ADMIN_USERNAME=admin</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">ADMIN_PASSWORD=test123</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:                        <span style="color:#75715e"># 增加服务的健康检查</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;/usr/bin/miniflux&#34;</span>, <span style="color:#e6db74">&#34;-healthcheck&#34;</span>, <span style="color:#e6db74">&#34;auto&#34;</span>]
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">postgres:15</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">postgres           </span> <span style="color:#75715e"># 指定容器名称</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">1000</span>:<span style="color:#ae81ff">1000</span>                     <span style="color:#75715e"># 这里指定用非root账户运行容器</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always                    </span> <span style="color:#75715e"># 增加重启策略</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_USER=miniflux</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_PASSWORD=123456       </span> <span style="color:#75715e"># 注意修改数据库密码</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">POSTGRES_DB=miniflux</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/var/lib/postgresql/data</span> <span style="color:#75715e">#这里指定数据库保存位置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;pg_isready&#34;</span>, <span style="color:#e6db74">&#34;-U&#34;</span>, <span style="color:#e6db74">&#34;miniflux&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">10s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">start_period</span>: <span style="color:#ae81ff">30s</span>
+</span></span></code></pre></div><p>完成docker-compose.yml的编辑以后，就可以一键部署了</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
+</span></span></code></pre></div><p>部署成功以后，打开浏览器，输入<code>http://host_ip:80</code>就可以访问miniflx惹。</p>
+<hr>
+<h2 id="一些问题">一些问题</h2>
+<p>用docker方式部署好miniflux以后，我在添加订阅源的时候碰到了网络问题，无论添加任何订阅源，都会提示<code>dial tcp: lookup xxx.com: i/o timeout</code>，也就是网络异常，不管是添加的国内可以访问的网站源，还是国内无法访问的网站源，都弹这个错误提示。</p>
+<p>最后经过排查，是因为我禁止了docker调整防火墙，也就是在<code>/etc/docker/daemon.json</code>中设置了<code>iptables:false</code>，因为我希望由ufw来唯一控制网络端口的开放规则。最后删掉<code>daemon.json</code>中的<code>iptables:false</code>的配置，然后重启docker.service服务，miniflux的网络问题就解决了。</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://yfi.moe/post/rsshub-miniflux/">完整的 RSS 解决方案：自建 RSSHub 与 Miniflux</a></li>
+<li><a href="https://miniflux.app/docs/index.html">Miniflux Documentation</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

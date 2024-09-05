@@ -3,13 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202409/</loc>
-    <lastmod>2024-09-02T13:18:26+08:00</lastmod>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/docker/</loc>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/miniflus/</loc>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-09-02T13:18:26+08:00</lastmod>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/</loc>
-    <lastmod>2024-09-02T13:18:26+08:00</lastmod>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202409/miniflux-install-guide/</loc>
+    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202409/trip-to-yalu-drift/</loc>
     <lastmod>2024-09-02T13:18:26+08:00</lastmod>
@@ -109,9 +118,6 @@
   </url><url>
     <loc>https://ruohai.wang/202406/cpolar-install-guide/</loc>
     <lastmod>2024-06-24T20:33:47+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/docker/</loc>
-    <lastmod>2024-06-21T19:57:04+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</loc>
     <lastmod>2024-06-21T19:57:04+08:00</lastmod>
