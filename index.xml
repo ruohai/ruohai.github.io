@@ -6,7 +6,31 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Sep 2024 09:20:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Sep 2024 21:08:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Picgo上传文件到MinIO</title>
+      <link>https://ruohai.wang/202409/picgo-plugin-for-minio/</link>
+      <pubDate>Fri, 06 Sep 2024 21:08:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/picgo-plugin-for-minio/</guid>
+      <description>前言 上一篇文章中完成了minio的部署和存储桶的创建，接下来就简单记录下用picgo作为客户端往minio传文件吧。
+我这里用的词是【传文件】而不是【传图片】，因为minio是一个oss服务，它可以保存任何格式的文件。而picgo虽然定位是一个【图片上传】软件，但实际它并不会限制文件格式，因为文件格式的校验是由【服务端的图床程序】来完成的。
+所以picgo + minio的组合，就可以当作一个【文件上传客户端 + 文件存储服务器】来使用。
+配置 第一步：在minio中创建 access key
+要开启minio的api上传功能，首先要在minio配置一个access key。
+创建access key以后记得保存key和secret信息，因为minio只会展示一次secret。
+第二步：在picgo中安装minio插件
+picgo中安装插件需要本地有nodejs环境，自行安装即可，不在赘述。
+在picgo硬件内的插件设置中，搜索minio，安装红色icon的这个插件。
+插件安装号以后，在【图床设置】中进行配置
+第三步：图床配置
+每一个配置项的具体意思，可以查看插件【picgo-plugin-minio】在github项目主页的介绍。
+也可以参考网友Gzzz制作的图表
+完成配置后保存即可。
+到这里所有配置都完成了，🎉
+参考文章 使用 MinIO+PicGo 在服务器搭建图床 使用Minio与Picgo搭建个人图床 Herbertzz/picgo-plugin-minio 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>用MinIO自建OSS服务</title>
       <link>https://ruohai.wang/202409/minio-install-guide/</link>

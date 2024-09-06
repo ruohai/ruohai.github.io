@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>使用Picgo上传文件到MinIO // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用Picgo上传文件到MinIO"/>
+<meta name="twitter:description" content="前言 上一篇文章中完成了minio的部署和存储桶的创建，接下来就简单记录下用picgo作为客户端往minio传文件吧。
+我这里用的词是【传文件】而不是【传图片】，因为minio是一个oss服务，它可以保存任何格式的文件。而picgo虽然定位是一个【图片上传】软件，但实际它并不会限制文件格式，因为文件格式的校验是由【服务端的图床程序】来完成的。
+所以picgo &#43; minio的组合，就可以当作一个【文件上传客户端 &#43; 文件存储服务器】来使用。
+配置 第一步：在minio中创建 access key
+要开启minio的api上传功能，首先要在minio配置一个access key。
+创建access key以后记得保存key和secret信息，因为minio只会展示一次secret。
+第二步：在picgo中安装minio插件
+picgo中安装插件需要本地有nodejs环境，自行安装即可，不在赘述。
+在picgo硬件内的插件设置中，搜索minio，安装红色icon的这个插件。
+插件安装号以后，在【图床设置】中进行配置
+第三步：图床配置
+每一个配置项的具体意思，可以查看插件【picgo-plugin-minio】在github项目主页的介绍。
+也可以参考网友Gzzz制作的图表
+完成配置后保存即可。
+到这里所有配置都完成了，🎉
+参考文章 使用 MinIO&#43;PicGo 在服务器搭建图床 使用Minio与Picgo搭建个人图床 Herbertzz/picgo-plugin-minio 喝杯奶茶 "/>
+
+    <meta property="og:title" content="使用Picgo上传文件到MinIO" />
+<meta property="og:description" content="前言 上一篇文章中完成了minio的部署和存储桶的创建，接下来就简单记录下用picgo作为客户端往minio传文件吧。
+我这里用的词是【传文件】而不是【传图片】，因为minio是一个oss服务，它可以保存任何格式的文件。而picgo虽然定位是一个【图片上传】软件，但实际它并不会限制文件格式，因为文件格式的校验是由【服务端的图床程序】来完成的。
+所以picgo &#43; minio的组合，就可以当作一个【文件上传客户端 &#43; 文件存储服务器】来使用。
+配置 第一步：在minio中创建 access key
+要开启minio的api上传功能，首先要在minio配置一个access key。
+创建access key以后记得保存key和secret信息，因为minio只会展示一次secret。
+第二步：在picgo中安装minio插件
+picgo中安装插件需要本地有nodejs环境，自行安装即可，不在赘述。
+在picgo硬件内的插件设置中，搜索minio，安装红色icon的这个插件。
+插件安装号以后，在【图床设置】中进行配置
+第三步：图床配置
+每一个配置项的具体意思，可以查看插件【picgo-plugin-minio】在github项目主页的介绍。
+也可以参考网友Gzzz制作的图表
+完成配置后保存即可。
+到这里所有配置都完成了，🎉
+参考文章 使用 MinIO&#43;PicGo 在服务器搭建图床 使用Minio与Picgo搭建个人图床 Herbertzz/picgo-plugin-minio 喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202409/picgo-plugin-for-minio/" /><meta property="article:section" content="202409" />
+<meta property="article:published_time" content="2024-09-06T21:08:37+08:00" />
+<meta property="article:modified_time" content="2024-09-06T21:08:37+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用Picgo上传文件到MinIO</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 6, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/picgo/">PicGo</a>
+              <a class="tag" href="https://ruohai.wang/tags/minio/">MinIO</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>上一篇文章中完成了minio的部署和存储桶的创建，接下来就简单记录下用picgo作为客户端往minio传文件吧。</p>
+<p>我这里用的词是【传文件】而不是【传图片】，因为minio是一个oss服务，它可以保存任何格式的文件。而picgo虽然定位是一个【图片上传】软件，但实际它并不会限制文件格式，因为文件格式的校验是由【服务端的图床程序】来完成的。</p>
+<p>所以picgo + minio的组合，就可以当作一个【文件上传客户端 + 文件存储服务器】来使用。</p>
+<hr>
+<h2 id="配置">配置</h2>
+<blockquote>
+<p>第一步：在minio中创建 access key</p>
+</blockquote>
+<p>要开启minio的api上传功能，首先要在minio配置一个access key。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/212728.webp" alt=""></p>
+<p>创建access key以后记得保存key和secret信息，因为minio只会展示一次secret。</p>
+<blockquote>
+<p>第二步：在picgo中安装minio插件</p>
+</blockquote>
+<p>picgo中安装插件需要本地有nodejs环境，自行安装即可，不在赘述。</p>
+<p>在picgo硬件内的插件设置中，搜索minio，安装红色icon的这个插件。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/213401.webp" alt=""></p>
+<p>插件安装号以后，在【图床设置】中进行配置</p>
+<p><img src="https://img.311803.xyz/2024/09/07/213502.webp" alt=""></p>
+<blockquote>
+<p>第三步：图床配置</p>
+</blockquote>
+<p>每一个配置项的具体意思，可以查看插件【<a href="https://github.com/Herbertzz/picgo-plugin-minio">picgo-plugin-minio</a>】在github项目主页的介绍。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/2136.webp" alt=""></p>
+<p>也可以参考网友Gzzz制作的图表</p>
+<p><img src="https://img.311803.xyz/2024/09/07/2141.webp" alt=""></p>
+<p>完成配置后保存即可。</p>
+<p>到这里所有配置都完成了，🎉</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://blog.gzzz.pro/posts/e14931f5/index.html">使用 MinIO+PicGo 在服务器搭建图床</a></li>
+<li><a href="https://docs.kevin2li.top/Tutorial/%E4%BD%BF%E7%94%A8Minio%E4%B8%8EPicgo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A.html">使用Minio与Picgo搭建个人图床</a></li>
+<li><a href="https://github.com/Herbertzz/picgo-plugin-minio">Herbertzz/picgo-plugin-minio</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
