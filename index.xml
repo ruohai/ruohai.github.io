@@ -15,6 +15,9 @@
       <guid>https://ruohai.wang/202409/minio-install-guide/</guid>
       <description>前言 minio是一个对象存储方案（oss），一般都是公司企业之类的商业用途，个人用到的场景很少🤣，不过我还是找到了一个对我来说可以使用的场景，那就是用来做自建图床！
 话不多说，记录以下minio的部署。我用的部署方式是下载已经编译好的二进制包，没有选择docker部署是因为我用来做host的机器是迅雷赚钱宝一代，系统是3.10内核的openwrt，用不了docker。
+注意事项 minio从2022年开始，存储文件的方式就采用了纠删码格式，说人话就是上传的文件不再保留原格式，在文件系统里看到的是文件夹 + xl.meta文件。
+如果需要获取源文件，必需要通过api或者web后台下载。
+这个设计可以理解，minio毕竟是为了分布式存储设计的，纠删码可以理解为一种文件分片算法，类似raid但是比raid更先进，但缺点就是不适合个人用户。所以用minio来搭建图床服务就像杀鸡用牛刀，请根据自己的使用场景谨慎选择。
 部署 第一步：安装
 首先到【minio下载页面】找到对应自己硬件架构的二进制包，我的硬件是arm32/armv7，所以文件路径是/server/minio/release/linux-arm/minio。
 用wget下载到本地后记得添加可执行权限
@@ -36,8 +39,7 @@ export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存�
 点击Anonymous后点击add access rule添加规则
 在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
 第五步：编辑systemd/sysvint服务文件
-systemd的配置文件
-[Unit] Description=minio After=network.target [Service] User=jackma # 指定用户 Type=simple ExecStart=/path/to/minio server --address=:12345 --config-dir /path/to/config /path/to/data ExecStop=/bin/killall minio PrivateTmp=true [Install] WantedBy=multi-user.</description>
+systemd的配置文件</description>
     </item>
     
     <item>
