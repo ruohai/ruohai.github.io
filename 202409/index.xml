@@ -6,9 +6,41 @@
     <description>Recent content in 202409s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Sep 2024 00:33:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202409/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Sep 2024 09:20:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202409/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>用Docker方式部署轻量rss阅读器Miniflux</title>
+      <title>用MinIO自建OSS服务</title>
+      <link>https://ruohai.wang/202409/minio-install-guide/</link>
+      <pubDate>Fri, 06 Sep 2024 09:20:38 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/minio-install-guide/</guid>
+      <description>前言 minio是一个对象存储方案（oss），一般都是公司企业之类的商业用途，个人用到的场景很少🤣，不过我还是找到了一个对我来说可以使用的场景，那就是用来做自建图床！
+话不多说，记录以下minio的部署。我用的部署方式是下载已经编译好的二进制包，没有选择docker部署是因为我用来做host的机器是迅雷赚钱宝一代，系统是3.10内核的openwrt，用不了docker。
+部署 第一步：安装
+首先到【minio下载页面】找到对应自己硬件架构的二进制包，我的硬件是arm32/armv7，所以文件路径是/server/minio/release/linux-arm/minio。
+用wget下载到本地后记得添加可执行权限
+# 下载 wget -O minio https://dl.min.io/server/minio/release/linux-arm/minio # 添加可执行权限 chmod + x minio 第二步：启动
+作为一个oss服务，肯定需要指定用来保存文件的路径了，所以最简单的启动命令如下
+./minio server /path/to/save/data minio的默认监听端口是9000，启动成功以后可以打开浏览器访问http://host_ip:9000就进入minio的web控制台 了，默认账户名和密码都是minioadmin。
+如果要指定端口号，启动命令添加--address参数即可。
+./minio server --address=:12345 /path/to/save/data 这里有一个注意事项，minio区分了api的端口和web控制台的端口，默认的9000端口，或者在启动命令中指定的端口号，其实都是api端口。在浏览器中访问api端口时会自动跳转到webui的端口，如果装了防火墙的话记得放行端口。
+如果要指定配置文件目录，在启动命令中添加--config-dir参数
+./minio server --address=:12345 --config-dir /path/to/config /path/to/save/data 第三步：修改默认账户密码
+从服务的启动日志中可以看到默认的账户密码都是minioadmin，而且会有黄字提醒修改账户密码。
+修改密码的方式是在用户环境变量中添加两个参数MINIO_ROOT_USER和MINIO_ROOT_PASSWORD。根据自己的情况，在~/.bashrc或者/etc/profile中添加两行。
+export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存后，记得重新加载配置文件使配置生效
+# 根据自己情况二选一 source .bashrc source /etc/profile 第四步：创建存储桶并配置匿名权限
+创建存储桶
+命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。
+创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。
+点击要编辑权限的桶，这里以2024为例
+点击Anonymous后点击add access rule添加规则
+在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
+扩展用途 我只是把minio当作单服务在使用，文件通过web端进行上传，其实可以配置access keys配合picgo使用，暂时先不折腾了。
+喝杯奶茶 </description>
+    </item>
+    
+    <item>
+      <title>用Docker方式部署轻量RSS阅读器Miniflux</title>
       <link>https://ruohai.wang/202409/miniflux-install-guide/</link>
       <pubDate>Fri, 06 Sep 2024 00:33:53 +0800</pubDate>
       

@@ -3,7 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202409/</loc>
-    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
+    <lastmod>2024-09-06T09:20:38+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/minio/</loc>
+    <lastmod>2024-09-06T09:20:38+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-09-06T09:20:38+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-09-06T09:20:38+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202409/minio-install-guide/</loc>
+    <lastmod>2024-09-06T09:20:38+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/docker/</loc>
     <lastmod>2024-09-06T00:33:53+08:00</lastmod>
@@ -11,10 +23,7 @@
     <loc>https://ruohai.wang/tags/miniflux/</loc>
     <lastmod>2024-09-06T00:33:53+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-09-06T00:33:53+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
+    <loc>https://ruohai.wang/tags/rss/</loc>
     <lastmod>2024-09-06T00:33:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202409/miniflux-install-guide/</loc>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-cn">
   <head>
-    <title>用Docker方式部署轻量rss阅读器Miniflux // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>用Docker方式部署轻量RSS阅读器Miniflux // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta name="generator" content="Hugo 0.111.3">
@@ -13,7 +13,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="用Docker方式部署轻量rss阅读器Miniflux"/>
+<meta name="twitter:title" content="用Docker方式部署轻量RSS阅读器Miniflux"/>
 <meta name="twitter:description" content="前言 最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。
 上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。
 回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【这篇博客】整理的表格。
@@ -25,7 +25,7 @@ services: miniflux: image: miniflux/miniflux:latest ports: - &#34;80:8080&#34; d
 根据自己的需求，我对配置模板做了简单调整，调整的内容做了注释
 services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # 指定容器名称 user: 1000:1000 # 这里指定用非root账户运行容器 restart: always # 增加重启策略 ports: - &#34;80:8080&#34; # 指定端口以后记得防火墙放行 depends_on: db: condition: service_healthy environment: - DATABASE_URL=postgres://miniflux:123456@db/miniflux?"/>
 
-    <meta property="og:title" content="用Docker方式部署轻量rss阅读器Miniflux" />
+    <meta property="og:title" content="用Docker方式部署轻量RSS阅读器Miniflux" />
 <meta property="og:description" content="前言 最近准备自建一个rss阅读器（被互联网大厂的网络服务背刺过几次以后，我已经倾向于能自建的服务都自建）。
 上一次使用rss阅读器可能还得追溯到10多年前的google reader，自从google突然宣布关闭reader服务以后，我也就在没有用过rss阅读器。而且这些年的互联网发展趋势，确实是从开放走向封闭，博客由盛而衰，内容社区也是往往是限制必须注册登录后内容可见，更有甚者甚至都不对搜索引擎开放收录，大搞私域流量。
 回到正题，这次是要自建一个rss阅读器服务。首先是了解了以下现在可选的自建rss阅读起服务有哪些。这里看到【这篇博客】整理的表格。
@@ -72,7 +72,7 @@ services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # �
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">用Docker方式部署轻量rss阅读器Miniflux</h1>
+      <h1 class ="post-title">用Docker方式部署轻量RSS阅读器Miniflux</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -95,6 +95,7 @@ services: miniflux: image: miniflux/miniflux:latest container_name: miniflux # �
 </svg>
               <a class="tag" href="https://ruohai.wang/tags/miniflux/">Miniflux</a>
               <a class="tag" href="https://ruohai.wang/tags/docker/">Docker</a>
+              <a class="tag" href="https://ruohai.wang/tags/rss/">RSS</a>
         </div>
       </div>
     </header>

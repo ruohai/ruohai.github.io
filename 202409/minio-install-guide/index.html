@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>用MinIO自建OSS服务 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用MinIO自建OSS服务"/>
+<meta name="twitter:description" content="前言 minio是一个对象存储方案（oss），一般都是公司企业之类的商业用途，个人用到的场景很少🤣，不过我还是找到了一个对我来说可以使用的场景，那就是用来做自建图床！
+话不多说，记录以下minio的部署。我用的部署方式是下载已经编译好的二进制包，没有选择docker部署是因为我用来做host的机器是迅雷赚钱宝一代，系统是3.10内核的openwrt，用不了docker。
+部署 第一步：安装
+首先到【minio下载页面】找到对应自己硬件架构的二进制包，我的硬件是arm32/armv7，所以文件路径是/server/minio/release/linux-arm/minio。
+用wget下载到本地后记得添加可执行权限
+# 下载 wget -O minio https://dl.min.io/server/minio/release/linux-arm/minio # 添加可执行权限 chmod &#43; x minio 第二步：启动
+作为一个oss服务，肯定需要指定用来保存文件的路径了，所以最简单的启动命令如下
+./minio server /path/to/save/data minio的默认监听端口是9000，启动成功以后可以打开浏览器访问http://host_ip:9000就进入minio的web控制台 了，默认账户名和密码都是minioadmin。
+如果要指定端口号，启动命令添加--address参数即可。
+./minio server --address=:12345 /path/to/save/data 这里有一个注意事项，minio区分了api的端口和web控制台的端口，默认的9000端口，或者在启动命令中指定的端口号，其实都是api端口。在浏览器中访问api端口时会自动跳转到webui的端口，如果装了防火墙的话记得放行端口。
+如果要指定配置文件目录，在启动命令中添加--config-dir参数
+./minio server --address=:12345 --config-dir /path/to/config /path/to/save/data 第三步：修改默认账户密码
+从服务的启动日志中可以看到默认的账户密码都是minioadmin，而且会有黄字提醒修改账户密码。
+修改密码的方式是在用户环境变量中添加两个参数MINIO_ROOT_USER和MINIO_ROOT_PASSWORD。根据自己的情况，在~/.bashrc或者/etc/profile中添加两行。
+export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存后，记得重新加载配置文件使配置生效
+# 根据自己情况二选一 source .bashrc source /etc/profile 第四步：创建存储桶并配置匿名权限
+创建存储桶
+命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。
+创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。
+点击要编辑权限的桶，这里以2024为例
+点击Anonymous后点击add access rule添加规则
+在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
+扩展用途 我只是把minio当作单服务在使用，文件通过web端进行上传，其实可以配置access keys配合picgo使用，暂时先不折腾了。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="用MinIO自建OSS服务" />
+<meta property="og:description" content="前言 minio是一个对象存储方案（oss），一般都是公司企业之类的商业用途，个人用到的场景很少🤣，不过我还是找到了一个对我来说可以使用的场景，那就是用来做自建图床！
+话不多说，记录以下minio的部署。我用的部署方式是下载已经编译好的二进制包，没有选择docker部署是因为我用来做host的机器是迅雷赚钱宝一代，系统是3.10内核的openwrt，用不了docker。
+部署 第一步：安装
+首先到【minio下载页面】找到对应自己硬件架构的二进制包，我的硬件是arm32/armv7，所以文件路径是/server/minio/release/linux-arm/minio。
+用wget下载到本地后记得添加可执行权限
+# 下载 wget -O minio https://dl.min.io/server/minio/release/linux-arm/minio # 添加可执行权限 chmod &#43; x minio 第二步：启动
+作为一个oss服务，肯定需要指定用来保存文件的路径了，所以最简单的启动命令如下
+./minio server /path/to/save/data minio的默认监听端口是9000，启动成功以后可以打开浏览器访问http://host_ip:9000就进入minio的web控制台 了，默认账户名和密码都是minioadmin。
+如果要指定端口号，启动命令添加--address参数即可。
+./minio server --address=:12345 /path/to/save/data 这里有一个注意事项，minio区分了api的端口和web控制台的端口，默认的9000端口，或者在启动命令中指定的端口号，其实都是api端口。在浏览器中访问api端口时会自动跳转到webui的端口，如果装了防火墙的话记得放行端口。
+如果要指定配置文件目录，在启动命令中添加--config-dir参数
+./minio server --address=:12345 --config-dir /path/to/config /path/to/save/data 第三步：修改默认账户密码
+从服务的启动日志中可以看到默认的账户密码都是minioadmin，而且会有黄字提醒修改账户密码。
+修改密码的方式是在用户环境变量中添加两个参数MINIO_ROOT_USER和MINIO_ROOT_PASSWORD。根据自己的情况，在~/.bashrc或者/etc/profile中添加两行。
+export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存后，记得重新加载配置文件使配置生效
+# 根据自己情况二选一 source .bashrc source /etc/profile 第四步：创建存储桶并配置匿名权限
+创建存储桶
+命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。
+创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。
+点击要编辑权限的桶，这里以2024为例
+点击Anonymous后点击add access rule添加规则
+在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
+扩展用途 我只是把minio当作单服务在使用，文件通过web端进行上传，其实可以配置access keys配合picgo使用，暂时先不折腾了。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202409/minio-install-guide/" /><meta property="article:section" content="202409" />
+<meta property="article:published_time" content="2024-09-06T09:20:38+08:00" />
+<meta property="article:modified_time" content="2024-09-06T09:20:38+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">用MinIO自建OSS服务</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 6, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/minio/">MinIO</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>minio是一个对象存储方案（oss），一般都是公司企业之类的商业用途，个人用到的场景很少🤣，不过我还是找到了一个对我来说可以使用的场景，那就是用来做自建图床！</p>
+<p>话不多说，记录以下minio的部署。我用的部署方式是下载已经编译好的二进制包，没有选择docker部署是因为我用来做host的机器是迅雷赚钱宝一代，系统是3.10内核的openwrt，用不了docker。</p>
+<hr>
+<h2 id="部署">部署</h2>
+<blockquote>
+<p>第一步：安装</p>
+</blockquote>
+<p>首先到【<a href="https://dl.min.io/">minio下载页面</a>】找到对应自己硬件架构的二进制包，我的硬件是arm32/armv7，所以文件路径是<code>/server/minio/release/linux-arm/minio</code>。</p>
+<p>用wget下载到本地后记得添加可执行权限</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 下载</span>
+</span></span><span style="display:flex;"><span>wget -O minio https://dl.min.io/server/minio/release/linux-arm/minio
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加可执行权限</span>
+</span></span><span style="display:flex;"><span>chmod + x minio
+</span></span></code></pre></div><blockquote>
+<p>第二步：启动</p>
+</blockquote>
+<p>作为一个oss服务，肯定需要指定用来保存文件的路径了，所以最简单的启动命令如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./minio server /path/to/save/data
+</span></span></code></pre></div><p>minio的默认监听端口是9000，启动成功以后可以打开浏览器访问<code>http://host_ip:9000</code>就进入minio的web控制台
+了，默认账户名和密码都是<code>minioadmin</code>。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/094453.webp" alt=""></p>
+<p>如果要指定端口号，启动命令添加<code>--address</code>参数即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./minio server --address<span style="color:#f92672">=</span>:12345 /path/to/save/data
+</span></span></code></pre></div><p>这里有一个注意事项，minio区分了api的端口和web控制台的端口，默认的9000端口，或者在启动命令中指定的端口号，其实都是api端口。在浏览器中访问api端口时会自动跳转到webui的端口，如果装了防火墙的话记得放行端口。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/095621.webp" alt=""></p>
+<p>如果要指定配置文件目录，在启动命令中添加<code>--config-dir</code>参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./minio server --address<span style="color:#f92672">=</span>:12345 --config-dir /path/to/config /path/to/save/data
+</span></span></code></pre></div><blockquote>
+<p>第三步：修改默认账户密码</p>
+</blockquote>
+<p>从服务的启动日志中可以看到默认的账户密码都是<code>minioadmin</code>，而且会有黄字提醒修改账户密码。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/100148.webp" alt=""></p>
+<p>修改密码的方式是在用户环境变量中添加两个参数<code>MINIO_ROOT_USER</code>和<code>MINIO_ROOT_PASSWORD</code>。根据自己的情况，在<code>~/.bashrc</code>或者<code>/etc/profile</code>中添加两行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export MINIO_ACCESS_KEY<span style="color:#f92672">=</span>jackma
+</span></span><span style="display:flex;"><span>export MINIO_SECRET_KEY<span style="color:#f92672">=</span><span style="color:#ae81ff">1234567890</span>
+</span></span></code></pre></div><p>编辑保存后，记得重新加载配置文件使配置生效</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 根据自己情况二选一</span>
+</span></span><span style="display:flex;"><span>source .bashrc
+</span></span><span style="display:flex;"><span>source /etc/profile
+</span></span></code></pre></div><blockquote>
+<p>第四步：创建存储桶并配置匿名权限</p>
+</blockquote>
+<p>创建存储桶</p>
+<p><img src="https://img.311803.xyz/2024/09/07/101749.webp" alt=""></p>
+<p>命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/101905.webp" alt=""></p>
+<p>创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。</p>
+<p>点击要编辑权限的桶，这里以2024为例</p>
+<p><img src="https://img.311803.xyz/2024/09/07/102236.webp" alt=""></p>
+<p>点击<code>Anonymous</code>后点击<code>add access rule</code>添加规则</p>
+<p><img src="https://img.311803.xyz/2024/09/07/102414.webp" alt=""></p>
+<p>在prefix一栏输入<code>/</code>（斜杠的意思是所有规则中优先级最高），access一栏选择<code>readonly</code>即可，然后保存。</p>
+<p><img src="https://img.311803.xyz/2024/09/07/102441.webp" alt=""></p>
+<hr>
+<h2 id="扩展用途">扩展用途</h2>
+<p>我只是把minio当作单服务在使用，文件通过web端进行上传，其实可以配置access keys配合picgo使用，暂时先不折腾了。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

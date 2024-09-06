@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Miniflux on 喵ฅ^•ﻌ•^ฅ</title>
-    <link>https://ruohai.wang/tags/miniflux/</link>
-    <description>Recent content in Miniflux on 喵ฅ^•ﻌ•^ฅ</description>
+    <title>RSS on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/rss/</link>
+    <description>Recent content in RSS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Sep 2024 00:33:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/miniflux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Sep 2024 00:33:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/rss/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用Docker方式部署轻量RSS阅读器Miniflux</title>
       <link>https://ruohai.wang/202409/miniflux-install-guide/</link>
