@@ -36,7 +36,7 @@ export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存�
 创建存储桶
 命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。
 创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。
-点击要编辑权限的桶，这里以2024为例
+点击要编辑权限的桶，这里以2024为例。这里千万要注意，不是直接把bucket从private改成public，而是在Anonymous/匿名用户标签页进行修改。
 点击Anonymous后点击add access rule添加规则
 在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
 第五步：编辑systemd/sysvint服务文件
@@ -65,7 +65,7 @@ export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存�
 创建存储桶
 命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。
 创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。
-点击要编辑权限的桶，这里以2024为例
+点击要编辑权限的桶，这里以2024为例。这里千万要注意，不是直接把bucket从private改成public，而是在Anonymous/匿名用户标签页进行修改。
 点击Anonymous后点击add access rule添加规则
 在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
 第五步：编辑systemd/sysvint服务文件
@@ -187,7 +187,7 @@ systemd的配置文件" />
 <p>命名后确定即可。下面三个开关分别指版本控制、文件锁定、数量限制，根据自己需求选择是否启用。</p>
 <p><img src="https://img.311803.xyz/2024/09/07/101905.webp" alt=""></p>
 <p>创建的存储桶默认是私有private权限。如果要用作图床，也就意味着匿名访客需要有只读权限。</p>
-<p>点击要编辑权限的桶，这里以2024为例</p>
+<p>点击要编辑权限的桶，这里以2024为例。这里千万要注意，不是直接把bucket从private改成public，而是在<code>Anonymous/匿名用户</code>标签页进行修改。</p>
 <p><img src="https://img.311803.xyz/2024/09/07/102236.webp" alt=""></p>
 <p>点击<code>Anonymous</code>后点击<code>add access rule</code>添加规则</p>
 <p><img src="https://img.311803.xyz/2024/09/07/102414.webp" alt=""></p>
