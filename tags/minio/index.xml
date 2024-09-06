@@ -35,8 +35,9 @@ export MINIO_ACCESS_KEY=jackma export MINIO_SECRET_KEY=1234567890 编辑保存�
 点击要编辑权限的桶，这里以2024为例
 点击Anonymous后点击add access rule添加规则
 在prefix一栏输入/（斜杠的意思是所有规则中优先级最高），access一栏选择readonly即可，然后保存。
-扩展用途 我只是把minio当作单服务在使用，文件通过web端进行上传，其实可以配置access keys配合picgo使用，暂时先不折腾了。
-喝杯奶茶 </description>
+第五步：编辑systemd/sysvint服务文件
+systemd的配置文件
+[Unit] Description=minio After=network.target [Service] User=jackma # 指定用户 Type=simple ExecStart=/path/to/minio server --address=:12345 --config-dir /path/to/config /path/to/data ExecStop=/bin/killall minio PrivateTmp=true [Install] WantedBy=multi-user.</description>
     </item>
     
   </channel>
