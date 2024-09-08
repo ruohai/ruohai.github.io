@@ -6,7 +6,21 @@
     <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Sep 2024 00:33:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 08 Sep 2024 18:16:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用Docker方式部署rss feed生成器RSSHub</title>
+      <link>https://ruohai.wang/202409/rsshub-install-docker-guide/</link>
+      <pubDate>Sun, 08 Sep 2024 18:16:16 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/rsshub-install-docker-guide/</guid>
+      <description>前言 rsshub是一个rss feed生成器，这点首先要理解，它不是rss feed订阅器或者rss阅读器，它是一个用来生成rss feed的工具。现在很多网站、社区、博客之类都已经不支持rss订阅，或者很多想订阅的自定义的内容（比如某个twitter用户），这时候就可以使用rsshub来生成rss feed，然后用rss订阅器来订阅这个feed就可以了。
+在部署之前的一点个人经验和建议：最好弄个海外的vps或者能实现全局代理的机器来部署rsshub，因为要用rsshub来生成rss feed，首先rsshub能访问到那个网站吧，要不然一直报dial tcp io timeout就很尴尬。
+部署 rsshub原生部署需要用到nodejs，我讨厌nodejs，所以选择用docker-compose方式部署。
+用docker-compose方式部署，只需要搞定docker-compose.yml这个配置文件就行了。rsshub的【官方文档】也给出了配置模板，直接下载模板即可。
+这是rsshub官方提供的docker-compose.yml文件（2024/09/08）。
+services: rsshub: # two ways to enable puppeteer: # * comment out marked lines, then use this image instead: diygod/rsshub:chromium-bundled # * (consumes more disk space and memory) leave everything unchanged image: diygod/rsshub restart: always ports: - &amp;#34;1200:1200&amp;#34; environment: NODE_ENV: production CACHE_TYPE: redis REDIS_URL: &amp;#34;redis://redis:6379/&amp;#34; PUPPETEER_WS_ENDPOINT: &amp;#34;ws://browserless:3000&amp;#34; # marked healthcheck: test: [&amp;#34;CMD&amp;#34;, &amp;#34;curl&amp;#34;, &amp;#34;-f&amp;#34;, &amp;#34;http://localhost:1200/healthz&amp;#34;] interval: 30s timeout: 10s retries: 3 depends_on: - redis - browserless # marked browserless: # marked image: browserless/chrome # marked restart: always # marked ulimits: # marked core: # marked hard: 0 # marked soft: 0 # marked healthcheck: test: [&amp;#34;CMD&amp;#34;, &amp;#34;curl&amp;#34;, &amp;#34;-f&amp;#34;, &amp;#34;http://localhost:3000/pressure&amp;#34;] interval: 30s timeout: 10s retries: 3 redis: image: redis:alpine restart: always volumes: - redis-data:/data healthcheck: test: [&amp;#34;CMD&amp;#34;, &amp;#34;redis-cli&amp;#34;, &amp;#34;ping&amp;#34;] interval: 30s timeout: 10s retries: 5 start_period: 5s volumes: redis-data: 根据文档可以确定rsshub需要用到3个镜像：rsshub本体 + redis + 浏览器，其中chrome镜像大概需要占用4GB的存储空间，请提前规划。其实整个模板里基本已经没有需要修改的地方了，直接docker-compose up -d就可以把服务拉起来使用。唯二需要修改的地方，一个可能是rsshub的port根据自己需求调整，另一个是redis-data这个数据保存路径，也是根据自己需求调整。</description>
+    </item>
+    
     <item>
       <title>用Docker方式部署轻量RSS阅读器Miniflux</title>
       <link>https://ruohai.wang/202409/miniflux-install-guide/</link>
