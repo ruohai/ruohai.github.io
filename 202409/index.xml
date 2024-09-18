@@ -6,7 +6,23 @@
     <description>Recent content in 202409s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 08 Sep 2024 18:16:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202409/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Sep 2024 02:03:35 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202409/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows下删除桌面右键菜单中的AMD Software: Adrenalin Edition选项</title>
+      <link>https://ruohai.wang/202409/windows-remove-amd-software-from-right-click-context-menu/</link>
+      <pubDate>Thu, 19 Sep 2024 02:03:35 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/windows-remove-amd-software-from-right-click-context-menu/</guid>
+      <description>前言 最近从使用的pc从intel换成了amd，发现桌面右键菜单中多出了一个AMD Software: Adrenalin Edition选项。
+这个选项如果只是名字很长的话我也不会太在意，但是它会导致windows系统启动进入桌面以后，首次点出右键菜单时大大增加弹出时间，也就是点击右键以后要等好几秒才弹出菜单，这是我忍不了的，所以就想着找找方法把这个选项从右键菜单里删掉。
+一开始尝试用ccleaner软件来管理右键菜单，发现ccleaner的右键菜单管理中压根就没有这个amd的选项。
+所以最后用了网上找到的编辑注册表的方法，实测有效。
+删除方法 打开注册表，定位到\HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\ACE
+将右边栏中的默认项目直接右键删除。
+删除后回到桌面，再次右键单击，可以看到amd software的选项已经删除。
+参考文章 Win10怎么删除右键菜单AMD显卡选项？删除鼠标右键菜单AMD选项方法 remove amd software from right click context menu Win10 移除右键菜单 AMD Software 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>用Docker方式部署rss feed生成器RSSHub</title>
       <link>https://ruohai.wang/202409/rsshub-install-docker-guide/</link>
