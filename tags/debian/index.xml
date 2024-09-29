@@ -6,7 +6,29 @@
     <description>Recent content in Debian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 13 Aug 2024 11:10:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Sep 2024 11:43:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上部署和使用v2rayA &amp; 一些注意事项</title>
+      <link>https://ruohai.wang/202409/v2raya-install-on-debian/</link>
+      <pubDate>Sun, 29 Sep 2024 11:43:53 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202409/v2raya-install-on-debian/</guid>
+      <description>前言 v2raya是一个使用web gui来配置v2ray的客户端，方便好用，特别适合没有图形界面的linux server系统。
+之前已经写过一篇在debian上部署和配置的文章，但时间久远也懒得修修补补，直接重新写一篇。
+安装 在debian系linux上安装，个人建议使用apt软件源安装。
+# 添加公钥 wget -qO - https://apt.v2raya.org/key/public-key.asc | sudo tee /etc/apt/keyrings/v2raya.asc # 添加软件源 echo &amp;#34;deb [signed-by=/etc/apt/keyrings/v2raya.asc] https://apt.v2raya.org/ v2raya main&amp;#34; | sudo tee /etc/apt/sources.list.d/v2raya.list # 更新 sudo apt update # 安装 sudo apt install v2raya v2ray 到这里就完成了v2raya的安装，🎉
+配置 v2raya服务配置
+如果不需要做自定义调整，用默认配置启动v2raya，执行以下命令
+## 启动 &amp;amp; 设置开机自启 sudo systemctl enable --now v2raya.service 启动成功后，默认端口是2017，打开浏览器，访问http://host_ip:2017。首次登录需要创建用户。
+添加节点 &amp;amp; 导入订阅这些不再赘述，想必对于这些基本操作你已经具有丰富的经验。
+v2raya服务的配置文件路径在/etc/default/v2raya，可以调整web ui的默认端口、log目录、bin目录等各项内容。
+注意事项 v2ray-core VS xray-core
+推荐使用v2ray而不是xray，apt软件仓库的xray至今（2024年9月）还不支持负载均衡，也就是基于最小ping值择优选取线路的功能只有v2ray-core支持。
+本机代理 VS 局域网路由
+【透明代理/系统代理】这个配置是用来对【本机】的网络进行代理，而【规则端口的分流模式】这个选项是用来当作局域网的路由。
+搞清楚以上这点，就不会和我犯一样的错，开启了【系统代理】的同时还在同一台机器上装qbittorrent挂下载，导致所有bt流量都走代理让v2raya的资源占用飙升。</description>
+    </item>
+    
     <item>
       <title>联想BIOS在UEFI模式下出现no bootable device found的问题解决</title>
       <link>https://ruohai.wang/202408/debian-uefi-no-bootable-device/</link>

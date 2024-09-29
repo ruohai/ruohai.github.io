@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202409/</loc>
-    <lastmod>2024-09-19T02:03:35+08:00</lastmod>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/amd/</loc>
-    <lastmod>2024-09-19T02:03:35+08:00</lastmod>
+    <loc>https://ruohai.wang/tags/debian/</loc>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/v2ray/</loc>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202409/v2raya-install-on-debian/</loc>
+    <lastmod>2024-09-29T11:43:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/amd/</loc>
     <lastmod>2024-09-19T02:03:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202409/windows-remove-amd-software-from-right-click-context-menu/</loc>
     <lastmod>2024-09-19T02:03:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/windwos/</loc>
-    <lastmod>2024-09-19T02:03:35+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-09-19T02:03:35+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/docker/</loc>
@@ -67,9 +76,6 @@
   </url><url>
     <loc>https://ruohai.wang/202408/trip-to-malingtianguan/</loc>
     <lastmod>2024-08-27T14:31:50+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/debian/</loc>
-    <lastmod>2024-08-13T11:10:55+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202408/debian-uefi-no-bootable-device/</loc>
     <lastmod>2024-08-13T11:10:55+08:00</lastmod>
@@ -151,9 +157,6 @@
   </url><url>
     <loc>https://ruohai.wang/202406/docker-config-to-use-proxy-server/</loc>
     <lastmod>2024-06-21T19:57:04+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/v2ray/</loc>
-    <lastmod>2024-06-21T15:30:56+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202406/v2raya-install-guide-on-openwrt/</loc>
     <lastmod>2024-06-21T15:30:56+08:00</lastmod>
