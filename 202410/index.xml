@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>202410s on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/202410/</link>
+    <description>Recent content in 202410s on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 01 Oct 2024 19:10:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202410/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上用Docker方式部署aria2/aria2Ng</title>
+      <link>https://ruohai.wang/202410/aria2-install-on-debian/</link>
+      <pubDate>Tue, 01 Oct 2024 19:10:55 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/aria2-install-on-debian/</guid>
+      <description>前言 开篇直言，个人建议使用docker方式部署aria2/aria2ng，不要去折腾原生安装，因为原生安装和配置aria2的话实在是太麻烦了。
+开箱即用的docker版aria2才是正解。
+部署 选择用docker方式部署aria2，那接下去只要挑选一个合适的docker镜像版本就行了。
+根据dockerhub的下载数量和star数量，这里推荐【superng6/aria2】，weiui用的是aria2ng。
+这版镜像的overview页面有详细的安装步骤，这次摘录部分。我是用docker-compose方式部署，docker-compose.yml文件如下
+version: &amp;#34;3.1&amp;#34; services: aria2: image: superng6/aria2:latest container_name: aria2 network_mode: host environment: - PUID=1000 - PGID=1000 - TZ=Asia/Shanghai - SECRET=&amp;lt;your-secret&amp;gt; - CACHE=512M - PORT=6800 - WEBUI=true - WEBUI_PORT=8080 - BTPORT=32516 - UT=true - QUIET=true - SMD=true volumes: - ./config:/config - ./downloads:/downloads restart: unless-stopped 参数释疑：
+PORT=6800：aria2的rpc端口 WEBUI_PORT=8080：aria2ng web ui的访问端口 BTPORT=32516：DHT和BT监听端口，如果用防火墙记得放行这个端口 更多配置项参考dockerhub页面即可。
+最后就是一键安装惹
+sudo docker-compose up -d 部署成功以后，打开浏览器访问http://host_ip:8080即可。
+参考文章 superng6/aria2: overview 喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>
