@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Netdata on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/netdata/</link>
+    <description>Recent content in Netdata on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 02 Oct 2024 20:57:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/netdata/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上部署硬件性能监控面板Netdata</title>
+      <link>https://ruohai.wang/202410/netdata-install-guide/</link>
+      <pubDate>Wed, 02 Oct 2024 20:57:34 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/netdata-install-guide/</guid>
+      <description>前言 平时使用linux的时候，需要查看实时硬件性能占用时，我都是在终端里直接敲htop，最近想着部署一个支持web端的监控面板。
+支持的web面板的硬件性能监控方案有很多，glances、zabbix、netdata、cockpit、1panel等等，从轻量级的监控面板到比较中的全功能panel应有尽有。
+最后就部署的简单程度 &amp;amp; 性能资源占用两方面考虑，选择了netdata。
+部署 在debian上安装netdata非常简单，直接apt即可
+sudo apt install netdata 安装好以后，编辑配置文件/etc/netdata/netdata.conf
+默认的配置文件中需要修改绑定IP和默认端口即可。
+# 默认只监听127.0.0.1本机的请求 bind socket to IP = 0.0.0.0 # 根据自己需求调整端口号 default port = 19999 以上调整完以后，重启netdata服务
+sudo systemctl restart netdata.service 在浏览器中访问http://host_ip:19999就可以访问了。如果服务器上安装了防火墙，记得放行端口。
+汉化 netdata默认语言英文，如果英文阅读有障碍想，或者想要汉化，可以参考这个项目【DX-Kevin/Netdata-chinese-patch】,替换4个js/html文件即可，非常方便。
+喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>
