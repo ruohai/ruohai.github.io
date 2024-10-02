@@ -6,7 +6,34 @@
     <description>Recent content in Debian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 01 Oct 2024 19:10:55 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Oct 2024 13:11:11 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上部署NFS网络文件系统</title>
+      <link>https://ruohai.wang/202410/nfs-install-guide/</link>
+      <pubDate>Wed, 02 Oct 2024 13:11:11 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/nfs-install-guide/</guid>
+      <description>前言 玩nas的对各种网络共享文件协议肯定不陌生，比如smb/samba、nfs、afp、webdav等等。
+之前我一直用的smb/samba，也用过几次webdav，这次尝试下nfs，水篇文章做个简单记录。
+部署 nfs的部署分为服务端和客户端，两端的部署方式些微不同。
+服务端（server）
+首先是安装必须的软件包，nfs-common作为依赖包必定会安装，所以在命令中不需要体现
+sudo apt install nfs-kernel-server 然后编辑nfs的配置文件/etc/exports，设定共享目录。
+sudo nano /etc/exports 添加共享目录的配置信息
+/path/to/share/folder 192.168.1.111(rw,async) tips：
+/path/to/share/folder：共享目录的路径 192.168.1.111：指定共享客户端的ip，也可以用子网掩码来指定网段，或许还有其它指定方式可以自行研究 (rw,async)：指定共享目录的权限，常用的rw（可读可写）、同步异步（sync/async），其它参数可以等需要调优了再翻阅文档 配置完成以后，可以直接重启nfs服务生效
+sudo systemctl restart nfs-server.service 也可以不重启nfs服务依然让配置生效
+sudo exportfs -arv tips:
+-a：全部挂载或全部卸载 -r：重新挂载 -v：显示详细信息 如果电脑上启用了防火墙，需要放行两个端口
+2049,111/tcp 2049,111/udp 好了，到这里nfs的服务端配置就完成惹。🎉
+客户端（client）
+首先是安装必须的软件包
+sudo apt install nfs-common 然后直接mount看下能不能挂载成功，假定挂载到本地的/mnt/nfs，命令中的-t nfs这部分指定协议的内容可以省略。
+mount -t nfs 192.168.1.111:/path/to/share/folder /mnt/nfs 不出意外的话就挂载成功了。如果需要把nfs文件夹设置成开机启动挂载，可以通过编辑/etc/fstab，也可以用systemd-mount来实现，这里以后者为例。在/etc/systemd/system目录下新建一个mnt-nfs.mount文件（注意这个文件名mnt-nfs需要和挂载点/mnt/nfs路径对应），然后录入以下内容
+[Unit] Description=nfs auto mount After=network.target [Mount] What=192.168.1.111:/path/to/share/folder Where=/mnt/nfs Type=nfs [Install] WantedBy=multi-user.target 保存文件，然后执行命令添加为系统服务
+# 重载 sudo systemctl daemon-reload # 添加服务 &amp;amp; 开机自启 sudo systemctl enable --now mnt-nfs.</description>
+    </item>
+    
     <item>
       <title>在Debian上用Docker方式部署aria2/aria2Ng</title>
       <link>https://ruohai.wang/202410/aria2-install-on-debian/</link>

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在Debian上部署NFS网络文件系统 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Debian上部署NFS网络文件系统"/>
+<meta name="twitter:description" content="前言 玩nas的对各种网络共享文件协议肯定不陌生，比如smb/samba、nfs、afp、webdav等等。
+之前我一直用的smb/samba，也用过几次webdav，这次尝试下nfs，水篇文章做个简单记录。
+部署 nfs的部署分为服务端和客户端，两端的部署方式些微不同。
+服务端（server）
+首先是安装必须的软件包，nfs-common作为依赖包必定会安装，所以在命令中不需要体现
+sudo apt install nfs-kernel-server 然后编辑nfs的配置文件/etc/exports，设定共享目录。
+sudo nano /etc/exports 添加共享目录的配置信息
+/path/to/share/folder 192.168.1.111(rw,async) tips：
+/path/to/share/folder：共享目录的路径 192.168.1.111：指定共享客户端的ip，也可以用子网掩码来指定网段，或许还有其它指定方式可以自行研究 (rw,async)：指定共享目录的权限，常用的rw（可读可写）、同步异步（sync/async），其它参数可以等需要调优了再翻阅文档 配置完成以后，可以直接重启nfs服务生效
+sudo systemctl restart nfs-server.service 也可以不重启nfs服务依然让配置生效
+sudo exportfs -arv tips:
+-a：全部挂载或全部卸载 -r：重新挂载 -v：显示详细信息 如果电脑上启用了防火墙，需要放行两个端口
+2049,111/tcp 2049,111/udp 好了，到这里nfs的服务端配置就完成惹。🎉
+客户端（client）
+首先是安装必须的软件包
+sudo apt install nfs-common 然后直接mount看下能不能挂载成功，假定挂载到本地的/mnt/nfs，命令中的-t nfs这部分指定协议的内容可以省略。
+mount -t nfs 192.168.1.111:/path/to/share/folder /mnt/nfs 不出意外的话就挂载成功了。如果需要把nfs文件夹设置成开机启动挂载，可以通过编辑/etc/fstab，也可以用systemd-mount来实现，这里以后者为例。在/etc/systemd/system目录下新建一个mnt-nfs.mount文件（注意这个文件名mnt-nfs需要和挂载点/mnt/nfs路径对应），然后录入以下内容
+[Unit] Description=nfs auto mount After=network.target [Mount] What=192.168.1.111:/path/to/share/folder Where=/mnt/nfs Type=nfs [Install] WantedBy=multi-user.target 保存文件，然后执行命令添加为系统服务
+# 重载 sudo systemctl daemon-reload # 添加服务 &amp; 开机自启 sudo systemctl enable --now mnt-nfs."/>
+
+    <meta property="og:title" content="在Debian上部署NFS网络文件系统" />
+<meta property="og:description" content="前言 玩nas的对各种网络共享文件协议肯定不陌生，比如smb/samba、nfs、afp、webdav等等。
+之前我一直用的smb/samba，也用过几次webdav，这次尝试下nfs，水篇文章做个简单记录。
+部署 nfs的部署分为服务端和客户端，两端的部署方式些微不同。
+服务端（server）
+首先是安装必须的软件包，nfs-common作为依赖包必定会安装，所以在命令中不需要体现
+sudo apt install nfs-kernel-server 然后编辑nfs的配置文件/etc/exports，设定共享目录。
+sudo nano /etc/exports 添加共享目录的配置信息
+/path/to/share/folder 192.168.1.111(rw,async) tips：
+/path/to/share/folder：共享目录的路径 192.168.1.111：指定共享客户端的ip，也可以用子网掩码来指定网段，或许还有其它指定方式可以自行研究 (rw,async)：指定共享目录的权限，常用的rw（可读可写）、同步异步（sync/async），其它参数可以等需要调优了再翻阅文档 配置完成以后，可以直接重启nfs服务生效
+sudo systemctl restart nfs-server.service 也可以不重启nfs服务依然让配置生效
+sudo exportfs -arv tips:
+-a：全部挂载或全部卸载 -r：重新挂载 -v：显示详细信息 如果电脑上启用了防火墙，需要放行两个端口
+2049,111/tcp 2049,111/udp 好了，到这里nfs的服务端配置就完成惹。🎉
+客户端（client）
+首先是安装必须的软件包
+sudo apt install nfs-common 然后直接mount看下能不能挂载成功，假定挂载到本地的/mnt/nfs，命令中的-t nfs这部分指定协议的内容可以省略。
+mount -t nfs 192.168.1.111:/path/to/share/folder /mnt/nfs 不出意外的话就挂载成功了。如果需要把nfs文件夹设置成开机启动挂载，可以通过编辑/etc/fstab，也可以用systemd-mount来实现，这里以后者为例。在/etc/systemd/system目录下新建一个mnt-nfs.mount文件（注意这个文件名mnt-nfs需要和挂载点/mnt/nfs路径对应），然后录入以下内容
+[Unit] Description=nfs auto mount After=network.target [Mount] What=192.168.1.111:/path/to/share/folder Where=/mnt/nfs Type=nfs [Install] WantedBy=multi-user.target 保存文件，然后执行命令添加为系统服务
+# 重载 sudo systemctl daemon-reload # 添加服务 &amp; 开机自启 sudo systemctl enable --now mnt-nfs." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202410/nfs-install-guide/" /><meta property="article:section" content="202410" />
+<meta property="article:published_time" content="2024-10-02T13:11:11+08:00" />
+<meta property="article:modified_time" content="2024-10-02T13:11:11+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在Debian上部署NFS网络文件系统</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 2, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/debian/">Debian</a>
+              <a class="tag" href="https://ruohai.wang/tags/nfs/">NFS</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>玩nas的对各种网络共享文件协议肯定不陌生，比如smb/samba、nfs、afp、webdav等等。</p>
+<p>之前我一直用的smb/samba，也用过几次webdav，这次尝试下nfs，水篇文章做个简单记录。</p>
+<hr>
+<h2 id="部署">部署</h2>
+<p>nfs的部署分为<code>服务端</code>和<code>客户端</code>，两端的部署方式些微不同。</p>
+<blockquote>
+<p>服务端（server）</p>
+</blockquote>
+<p>首先是安装必须的软件包，<code>nfs-common</code>作为依赖包必定会安装，所以在命令中不需要体现</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install nfs-kernel-server
+</span></span></code></pre></div><p>然后编辑nfs的配置文件<code>/etc/exports</code>，设定共享目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nano /etc/exports
+</span></span></code></pre></div><p>添加共享目录的配置信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/path/to/share/folder 192.168.1.111<span style="color:#f92672">(</span>rw,async<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>tips：</p>
+<ul>
+<li>/path/to/share/folder：共享目录的路径</li>
+<li>192.168.1.111：指定共享客户端的ip，也可以用子网掩码来指定网段，或许还有其它指定方式可以自行研究</li>
+<li>(rw,async)：指定共享目录的权限，常用的rw（可读可写）、同步异步（sync/async），其它参数可以等需要调优了再翻阅文档</li>
+</ul>
+<p>配置完成以后，可以直接重启nfs服务生效</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart nfs-server.service
+</span></span></code></pre></div><p>也可以不重启nfs服务依然让配置生效</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo exportfs -arv
+</span></span></code></pre></div><p>tips:</p>
+<ul>
+<li>-a：全部挂载或全部卸载</li>
+<li>-r：重新挂载</li>
+<li>-v：显示详细信息</li>
+</ul>
+<p>如果电脑上启用了防火墙，需要放行两个端口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>2049,111/tcp
+</span></span><span style="display:flex;"><span>2049,111/udp
+</span></span></code></pre></div><p>好了，到这里nfs的服务端配置就完成惹。🎉</p>
+<hr>
+<blockquote>
+<p>客户端（client）</p>
+</blockquote>
+<p>首先是安装必须的软件包</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install nfs-common
+</span></span></code></pre></div><p>然后直接mount看下能不能挂载成功，假定挂载到本地的/mnt/nfs，命令中的<code>-t nfs</code>这部分指定协议的内容可以省略。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs 192.168.1.111:/path/to/share/folder /mnt/nfs
+</span></span></code></pre></div><p>不出意外的话就挂载成功了。如果需要把nfs文件夹设置成开机启动挂载，可以通过编辑<code>/etc/fstab</code>，也可以用systemd-mount来实现，这里以后者为例。在<code>/etc/systemd/system</code>目录下新建一个<code>mnt-nfs.mount</code>文件（注意这个文件名mnt-nfs需要和挂载点/mnt/nfs路径对应），然后录入以下内容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>Unit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Description<span style="color:#f92672">=</span>nfs auto mount
+</span></span><span style="display:flex;"><span>After<span style="color:#f92672">=</span>network.target
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>Mount<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>What<span style="color:#f92672">=</span>192.168.1.111:/path/to/share/folder
+</span></span><span style="display:flex;"><span>Where<span style="color:#f92672">=</span>/mnt/nfs
+</span></span><span style="display:flex;"><span>Type<span style="color:#f92672">=</span>nfs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>Install<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>WantedBy<span style="color:#f92672">=</span>multi-user.target
+</span></span></code></pre></div><p>保存文件，然后执行命令添加为系统服务</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 重载</span>
+</span></span><span style="display:flex;"><span>sudo systemctl daemon-reload
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加服务 &amp; 开机自启</span>
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now mnt-nfs.mount
+</span></span></code></pre></div><p>到这里，客户端的配置也全部完成惹。🎉</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+<p><img src="https://img.311803.xyz/2024/10/02/01.webp" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
