@@ -6,7 +6,32 @@
     <description>Recent content in Debian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 02 Oct 2024 20:57:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Oct 2024 17:44:14 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上设置静态IP（固定IP）</title>
+      <link>https://ruohai.wang/202410/debian-config-static-ip/</link>
+      <pubDate>Sat, 05 Oct 2024 17:44:14 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/debian-config-static-ip/</guid>
+      <description>前言 我目前接触到的debian用到的网络管理工具有两个，一个是传统的networkmanager，另一个是netplan。
+两种网络管理工具下配置静态ip的方法不太一样，这里汇总做个记录。
+区分networkmanager和netplan 首先要搞清楚自己的debian系统用的网络管理工具是哪个，chatgpt的回答如下
+但实际判断networkmanager的方法不太对，有效的方法只需要看/etc/network目录下是不是有interfaces文件即可。
+判断netplan，只需要看是否有/etc/netplan这个目录，并查看这个目录下是否有配置文件。
+获取网卡设备名称 使用命令ip addr查看网卡的名称，后面配置的时候需要用到
+如果所示，网卡名称即为enp2s0
+networkmanager 编辑/etc/network/interfaces文件，根据自己需求录入静态ip参数即可
+allow-hotplug enp2s0 # 支持热插拔 auto enp2s0 # 开机自动启用eth0 iface enp2s0 inet static # 使用静态ip address 192.168.1.4 # ip地址 netmask 255.255.255.0 # 子网掩码 gateway 192.168.1.1 # 网关地址 dns-nameservers 192.168.1.1 # dns服务器 编辑后保存退出，然后重启网络服务
+sudo systemctl restart networking.service netplan netplan的情况稍微复杂一些，因为netplan是一个配置工具，需要搭配底层来实现网络管理，那底层管理工具可以是networkmanager，也可以是systemd-networkd。
+我碰到的情况都是netplan + networkd的组合，查看/etc/netplan目录下的yaml配置文件即可。注意每个系统的netplan的yaml配置文件名称不一定相同，根据自己情况调整。
+在配置文件中可以看到，管理网络的工具是networkd。
+那接下去就有两种修改方法，netplan指定网络工具 + netplan生成配置，或者netplan只指定网络工具 + networkd配置。出于配置的难易程度 &amp;amp; 可阅读性考虑，我推荐使用后一个方案。
+首先修改/etc/netplan目录下的yaml配置文件，只需要指定renderer是networkd即可，下面关于dhcp的配置都注释。
+然后到/etc/systemd/network目录，可以看到有个network配置文件，原始配置是将网络配置功能托管给了netplan。
+我们需要根据自己需求修改配置
+[Match] Name=eth0	# 网卡名称 [Network] Address=192.168.1.123/24	# 静态ip Gateway=192.</description>
+    </item>
+    
     <item>
       <title>在Debian上部署硬件性能监控面板Netdata</title>
       <link>https://ruohai.wang/202410/netdata-install-guide/</link>
