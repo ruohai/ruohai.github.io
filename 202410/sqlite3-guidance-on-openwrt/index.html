@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护"/>
+<meta name="twitter:description" content="前言 我使用的memos默认用的数据库是sqlite，在长期使用memos的过程中，偶尔需要直接操作数据库进行一些冗余数据清理、错误数据debug。
+在windows上维护sqlite数据库时，我用的工具是免费 &amp; 开源的【sqlite studio】，带gui操作界面，非常好用，值得推荐。
+但很多时候我希望ssh连上linux服务器以后，直接在终端中维护sqlite数据库，这就需要用到sqlite-cli工具。写篇文章做个记录。
+安装 &amp; 使用 首先是安装sqlite3-cli工具。
+在openwrt上，只需要在软件仓库中根据关键字搜索然后点击安装即可。
+在debian上直接apt一把梭。
+sudo apt install sqlite3 然后是一些简单的数据库维护。
+使用sqlite3-cli工具打开sqlite的db文件
+sqlite3 /path/to/sqlite3/dbfile.db 然后就会进入sqlite&gt;的命令符界面，表明已经可以对sqlite数据库文件进行操作了。
+最后列举几个常用的sqlite3-cli的命令
+# 显示数据库 .databases # 显示数据库表 .tables # 退出 .quit 参考文章 SQLite 命令 pawelsalawa/sqlitestudio 喝杯奶茶 "/>
+
+    <meta property="og:title" content="在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护" />
+<meta property="og:description" content="前言 我使用的memos默认用的数据库是sqlite，在长期使用memos的过程中，偶尔需要直接操作数据库进行一些冗余数据清理、错误数据debug。
+在windows上维护sqlite数据库时，我用的工具是免费 &amp; 开源的【sqlite studio】，带gui操作界面，非常好用，值得推荐。
+但很多时候我希望ssh连上linux服务器以后，直接在终端中维护sqlite数据库，这就需要用到sqlite-cli工具。写篇文章做个记录。
+安装 &amp; 使用 首先是安装sqlite3-cli工具。
+在openwrt上，只需要在软件仓库中根据关键字搜索然后点击安装即可。
+在debian上直接apt一把梭。
+sudo apt install sqlite3 然后是一些简单的数据库维护。
+使用sqlite3-cli工具打开sqlite的db文件
+sqlite3 /path/to/sqlite3/dbfile.db 然后就会进入sqlite&gt;的命令符界面，表明已经可以对sqlite数据库文件进行操作了。
+最后列举几个常用的sqlite3-cli的命令
+# 显示数据库 .databases # 显示数据库表 .tables # 退出 .quit 参考文章 SQLite 命令 pawelsalawa/sqlitestudio 喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/" /><meta property="article:section" content="202410" />
+<meta property="article:published_time" content="2024-10-07T19:38:32+08:00" />
+<meta property="article:modified_time" content="2024-10-07T19:38:32+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 7, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/debian/">Debian</a>
+              <a class="tag" href="https://ruohai.wang/tags/sqlite/">SQLite</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>我使用的memos默认用的数据库是sqlite，在长期使用memos的过程中，偶尔需要直接操作数据库进行一些冗余数据清理、错误数据debug。</p>
+<p>在windows上维护sqlite数据库时，我用的工具是免费 &amp; 开源的【<a href="https://sqlitestudio.pl/">sqlite studio</a>】，带gui操作界面，非常好用，值得推荐。</p>
+<p>但很多时候我希望ssh连上linux服务器以后，直接在终端中维护sqlite数据库，这就需要用到sqlite-cli工具。写篇文章做个记录。</p>
+<hr>
+<h2 id="安装--使用">安装 &amp; 使用</h2>
+<p>首先是安装sqlite3-cli工具。</p>
+<p>在openwrt上，只需要在软件仓库中根据关键字搜索然后点击安装即可。</p>
+<p><img src="https://img.311803.xyz/2024/10/07/2250.jpg" alt=""></p>
+<p>在debian上直接apt一把梭。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install sqlite3 
+</span></span></code></pre></div><p>然后是一些简单的数据库维护。</p>
+<p>使用sqlite3-cli工具打开sqlite的db文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlite3 /path/to/sqlite3/dbfile.db
+</span></span></code></pre></div><p>然后就会进入<code>sqlite&gt;</code>的命令符界面，表明已经可以对sqlite数据库文件进行操作了。</p>
+<p><img src="https://img.311803.xyz/2024/10/07/2255.jpg" alt=""></p>
+<p>最后列举几个常用的sqlite3-cli的命令</p>
+<pre tabindex="0"><code># 显示数据库
+.databases
+
+# 显示数据库表
+.tables
+
+# 退出
+.quit
+</code></pre><hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://www.runoob.com/sqlite/sqlite-commands.html">SQLite 命令</a></li>
+<li><a href="https://github.com/pawelsalawa/sqlitestudio">pawelsalawa/sqlitestudio</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -6,7 +6,26 @@
     <description>Recent content in OpenWrt on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 21 May 2024 20:47:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/openwrt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Oct 2024 19:38:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/openwrt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护</title>
+      <link>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</link>
+      <pubDate>Mon, 07 Oct 2024 19:38:32 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</guid>
+      <description>前言 我使用的memos默认用的数据库是sqlite，在长期使用memos的过程中，偶尔需要直接操作数据库进行一些冗余数据清理、错误数据debug。
+在windows上维护sqlite数据库时，我用的工具是免费 &amp;amp; 开源的【sqlite studio】，带gui操作界面，非常好用，值得推荐。
+但很多时候我希望ssh连上linux服务器以后，直接在终端中维护sqlite数据库，这就需要用到sqlite-cli工具。写篇文章做个记录。
+安装 &amp;amp; 使用 首先是安装sqlite3-cli工具。
+在openwrt上，只需要在软件仓库中根据关键字搜索然后点击安装即可。
+在debian上直接apt一把梭。
+sudo apt install sqlite3 然后是一些简单的数据库维护。
+使用sqlite3-cli工具打开sqlite的db文件
+sqlite3 /path/to/sqlite3/dbfile.db 然后就会进入sqlite&amp;gt;的命令符界面，表明已经可以对sqlite数据库文件进行操作了。
+最后列举几个常用的sqlite3-cli的命令
+# 显示数据库 .databases # 显示数据库表 .tables # 退出 .quit 参考文章 SQLite 命令 pawelsalawa/sqlitestudio 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>在OpenWrt上安装ttyd</title>
       <link>https://ruohai.wang/202405/ttyd-install-one-openwrt/</link>

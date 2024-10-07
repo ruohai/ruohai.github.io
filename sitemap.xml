@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202410/</loc>
-    <lastmod>2024-10-05T17:44:14+08:00</lastmod>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/debian/</loc>
-    <lastmod>2024-10-05T17:44:14+08:00</lastmod>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/openwrt/</loc>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/sqlite/</loc>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</loc>
+    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/netplan/</loc>
     <lastmod>2024-10-05T17:44:14+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/networkmanager/</loc>
-    <lastmod>2024-10-05T17:44:14+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-10-05T17:44:14+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-10-05T17:44:14+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202410/debian-config-static-ip/</loc>
@@ -224,9 +233,6 @@
     <loc>https://ruohai.wang/202405/memos-frontend-compile-on-windows/</loc>
     <lastmod>2024-05-23T19:03:48+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/openwrt/</loc>
-    <lastmod>2024-05-21T20:47:37+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/ttyd/</loc>
     <lastmod>2024-05-21T20:47:37+08:00</lastmod>
   </url><url>
@@ -385,9 +391,6 @@
   </url><url>
     <loc>https://ruohai.wang/202312/ddns-go-choose-the-last-ipv6/</loc>
     <lastmod>2023-12-26T20:20:10+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/sqlite/</loc>
-    <lastmod>2023-12-25T00:31:59+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202312/memos-turn-off-wal-log/</loc>
     <lastmod>2023-12-25T00:31:59+08:00</lastmod>
