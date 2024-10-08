@@ -3,7 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202410/</loc>
-    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/docker/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/flatnotes/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/markdown/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202410/flatnots-installation/</loc>
+    <lastmod>2024-10-08T15:31:53+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/debian/</loc>
     <lastmod>2024-10-07T19:38:32+08:00</lastmod>
@@ -12,12 +30,6 @@
     <lastmod>2024-10-07T19:38:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/sqlite/</loc>
-    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-10-07T19:38:32+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-10-07T19:38:32+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</loc>
@@ -67,9 +79,6 @@
   </url><url>
     <loc>https://ruohai.wang/tags/windwos/</loc>
     <lastmod>2024-09-19T02:03:35+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/docker/</loc>
-    <lastmod>2024-09-08T18:16:16+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/rsshub/</loc>
     <lastmod>2024-09-08T18:16:16+08:00</lastmod>

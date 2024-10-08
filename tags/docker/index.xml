@@ -6,7 +6,28 @@
     <description>Recent content in Docker on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 08 Sep 2024 18:16:16 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Oct 2024 15:31:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用Docker方式部署在线Markdown编辑器flatnotes</title>
+      <link>https://ruohai.wang/202410/flatnots-installation/</link>
+      <pubDate>Tue, 08 Oct 2024 15:31:53 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/flatnots-installation/</guid>
+      <description>前言 一直在找一个支持自建（self-host）而且轻量的web端markdown编辑器，能支持html样式预览，如果ui能好看又简洁的话就最棒了，但始终没找到合适的，所以之前我写博客那些文字的时候都是在filebrowser里直接编辑，效果如图。
+虽然能用，但是不够好用。
+今天在刷github上【awesome-selfhosted/awesome-selfhosted】项目的时候发现了flatnots，简单试用以后几乎完美满足我的需求。所以写篇文章做个简单记录。
+部署 &amp;amp; 使用 部署
+【dullage / flatnotes】项目主页提供了docker部署的命令，所以这一步没啥难度，复制官方提供的命令然后简单自定义修改即可。我喜欢用docker-compose方式部署，这里贴出官方的yaml模板。
+# 官方docker-compose.yml模板 version: &amp;#34;3&amp;#34; services: flatnotes: container_name: flatnotes image: dullage/flatnotes:latest environment: PUID: 1000 PGID: 1000 FLATNOTES_AUTH_TYPE: &amp;#34;password&amp;#34; FLATNOTES_USERNAME: &amp;#34;user&amp;#34; FLATNOTES_PASSWORD: &amp;#34;changeMe!&amp;#34; FLATNOTES_SECRET_KEY: &amp;#34;aLongRandomSeriesOfCharacters&amp;#34; volumes: - &amp;#34;./data:/data&amp;#34; # Optional. Allows you to save the search index in a different location: # - &amp;#34;./index:/data/.flatnotes&amp;#34; ports: - &amp;#34;8080:8080&amp;#34; restart: unless-stopped 官方只提供了arm64/amd64两个硬件平台的docker镜像，如果想在arm32平台（比如玩客云）上部署，只能找第三方打包的镜像，目前在dockerhub能搜到的只有这个版本【codeotto/flatnotes-arm32】，比官方落后一个版本，但能用。
+使用
+使用docker-compose方式一键部署成功之后，打开浏览器访问http://host_ip:8080即可。
+用自己配置的账户密码登陆后，界面超级精简，功能也超级精简，只有查找、切换主题、新建、显示全部笔记四个功能。
+markdown编辑器的界面好看而且好用。
+笔记以markdown形式保存，目录结构清晰，不需要数据库，非常方便。
+官方提供了demo可以直接在线体验：demo site
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>用Docker方式部署rss feed生成器RSSHub</title>
       <link>https://ruohai.wang/202409/rsshub-install-docker-guide/</link>
