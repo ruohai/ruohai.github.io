@@ -6,7 +6,27 @@
     <description>Recent content in 202410s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 08 Oct 2024 15:31:53 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202410/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Oct 2024 22:48:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202410/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Gmeek &#43; Github Pages部署个人博客</title>
+      <link>https://ruohai.wang/202410/gmeek-github-pages-blog/</link>
+      <pubDate>Thu, 10 Oct 2024 22:48:05 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/gmeek-github-pages-blog/</guid>
+      <description>白嫖github pages来搭建个人博客已经有海量的教程和应用，但这次的gmeek有点不太一样，非常不一样，值得写篇博客推荐一下。
+简单列举一下gmeek这个博客框架和常用的hexo/hugo这些博客框架的区别：
+发布方式不同。hexo/hugo这些常用的框架，都是在本地或者vps上写好markdown文本，然后编译成静态网页资源，最后把静态资源push到github repo完成发布。而gmeek是在github repo的issues页面创建新的issue来编写文章，编写完以后保存，然后github action通过设定的workflow脚本自动把issues中的内容编译成静态资源发布到github pages。
+搜索引擎的亲和度不同。这里点名百度（其它搜索引擎我没用过所以不太清楚），百度不会收录未备案的国内个人博客站，也不会收录部署在github pages网站。但是用gmeek框架会不一样，因为gmeek的【博客原文】其实是发布在github issues的，各大搜索引擎（尤其是各种内容农场、机翻搬运站）对github issues的内容收录的非常勤快而且搜索的权重很高，甚至是全文收录而不是只收录一个标题。
+gmeek框架集成了utteranc.es项目用github issues来实现评论功能，比hego/hexo之类博客框架的整合度更高（需要找支持评论的主题，或者通过插件来外挂评论），而且做到了博客正文和博客评论都聚合在一个issue帖子内，不会出现正文和评论的割裂感。
+简单总结，核心就是3点：
+不需要在本地部署编译环境 搜索引擎会全文收录你的博客 评论系统好用 &amp;amp; 方便 不知道这两点是否对你有吸引力，于我是一眼就被吸引，而且gmeek的默认主题也非常简洁清爽。
+强烈推荐这个博客框架。
+这是项目主页：Meekdai / Gmeek
+这是官方的快速上手教程：Gmeek快速上手
+这是博客demo：Meekdai
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>用Docker方式部署在线Markdown编辑器flatnotes</title>
       <link>https://ruohai.wang/202410/flatnots-installation/</link>
