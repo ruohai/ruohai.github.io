@@ -6,7 +6,21 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 10 Oct 2024 22:48:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Oct 2024 13:43:18 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>海鲜市场捡垃圾买玩客云的一些注意事项</title>
+      <link>https://ruohai.wang/202410/onecloud-buy-tips/</link>
+      <pubDate>Wed, 16 Oct 2024 13:43:18 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/onecloud-buy-tips/</guid>
+      <description>长话短说，直接说注意事项：
+玩客云的硬件有两个版本，v1.0和v1.3，网上的刷机教程里提到这两版的区别时只会说短接点不一样，但实际这俩版本对armbian主线固件的兼容性也不一样。这里提到的armbian主线固件是【hzyitc/armbian-onecloud】。如果是v1.3那就没啥问题，如果是v1.0，那有一部分机器的网卡和hdmi无法驱动，刷机以后根本无法使用（无法进入系统、无法获取ip、接hdmi没有信息输出）。注意是有一部分，也就是并不是v1.0就全都不兼容。如果在海鲜市场淘玩客云捡垃圾的时候注意区别，最好挑v1.3版本。如果不小心买到v1.0版的不兼容主线armbian固件的机器，可以去恩山论坛找找修改版的固件，或者试试刷openwrt。
+玩客云的sd卡槽io性能很差，大概只能跑到3~5MB/s。
+玩客云的s805芯片是arm32的架构，虽然debian12以及接下去的debian13依然支持该硬件架构，但很多的软件和docker镜像都已经不提供arm32的版本，这时候要么找其它人打包的版本凑合，要么自己动手，总之就是用起来会比较麻烦。
+玩客云的usb接口的io性能大概能跑到30MB/s，但是如果通过usb口挂硬盘 + samba共享，因为算力限制、协议开销，实际的io大概25MB/s。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>使用Gmeek &#43; Github Pages部署个人博客</title>
       <link>https://ruohai.wang/202410/gmeek-github-pages-blog/</link>
