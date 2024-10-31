@@ -6,7 +6,22 @@
     <description>Recent content in 202410s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 16 Oct 2024 13:43:18 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202410/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 31 Oct 2024 09:34:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202410/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用fdisk对分区进行扩容操作</title>
+      <link>https://ruohai.wang/202410/fdisk-extend-partition/</link>
+      <pubDate>Thu, 31 Oct 2024 09:34:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202410/fdisk-extend-partition/</guid>
+      <description>前言 之前写过一篇【Linux下操作分区扩容】，那篇文章中操作分区扩容的工具是parted，这次换fdisk试试。
+操作 第一步：确认当前分区结构
+首先要确认想要扩容分区需要是连续的扇区，如下示意图，在根区分之后有空闲空间，就可以扩容根分区。
+|------------------------------------11GB-----------------------------------------| |---512MB启动分区---|---954MB缓存（swap）分区---|---8.6GB根（/）分区---|---空闲空间---| 分区结构如下
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 11G 0 disk ├─sda1 8:1 0 512M 0 part /boot/efi ├─sda2 8:2 0 954M 0 part [SWAP] └─sda3 8:3 0 8.6G 0 part / 最后使用fdisk命令查看分区信息
+sudo fdisk /dev/sda 分区信息如下
+Disk /dev/sda: 11 GiB, 11811160064 bytes, 23068672 sectors Disk model: Virtual Disk Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 4096 bytes I/O size (minimum/optimal): 4096 bytes / 4096 bytes Disklabel type: gpt Disk identifier: E73B5228-BBA7-453F-AD2D-0D97322BC45B Device Start End Sectors Size Type /dev/sda1 2048 1050623 1048576 512M EFI System /dev/sda2 1050624 3004415 1953792 954M Linux swap /dev/sda3 3004416 20971486 17967071 8.</description>
+    </item>
+    
     <item>
       <title>海鲜市场捡垃圾买玩客云的一些注意事项</title>
       <link>https://ruohai.wang/202410/onecloud-buy-tips/</link>
