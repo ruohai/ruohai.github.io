@@ -8,15 +8,17 @@
     <language>zh-cn</language>
     <lastBuildDate>Thu, 31 Oct 2024 09:34:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fdisk/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>使用fdisk对分区进行扩容操作</title>
+      <title>Linux使用fdisk对分区进行扩容操作</title>
       <link>https://ruohai.wang/202410/fdisk-extend-partition/</link>
       <pubDate>Thu, 31 Oct 2024 09:34:48 +0800</pubDate>
       
       <guid>https://ruohai.wang/202410/fdisk-extend-partition/</guid>
-      <description>前言 之前写过一篇【Linux下操作分区扩容】，那篇文章中操作分区扩容的工具是parted，这次换fdisk试试。
+      <description>前言 之前写过一篇【Linux下操作分区扩容】，那篇文章中操作分区扩容的工具是parted，这次换fdisk。
+一般linux各发行版都自带fdisk，而parted都需要另外安装。
+对于分区扩容这个操作，parted用起来会让人简单 &amp;amp; 放心，因为它是直接resizepart，而fdisk是先删除旧分区再建新分区，虽然两种操作都是变更分区表信息、都不会丢失数据，但fdisk那种删旧建新的过程确实会让人更胆战心惊一些。
 操作 第一步：确认当前分区结构
 首先要确认想要扩容分区需要是连续的扇区，如下示意图，在根区分之后有空闲空间，就可以扩容根分区。
-|------------------------------------11GB-----------------------------------------| |---512MB启动分区---|---954MB缓存（swap）分区---|---8.6GB根（/）分区---|---空闲空间---| 分区结构如下
+|-------------------------------------11GB-----------------------------------------| |---512MB启动分区---|---954MB缓存（swap）分区---|---8.6GB根（/）分区---|---空闲空间---| 分区结构如下
 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS sda 8:0 0 11G 0 disk ├─sda1 8:1 0 512M 0 part /boot/efi ├─sda2 8:2 0 954M 0 part [SWAP] └─sda3 8:3 0 8.6G 0 part / 最后使用fdisk命令查看分区信息
 sudo fdisk /dev/sda 分区信息如下
 Disk /dev/sda: 11 GiB, 11811160064 bytes, 23068672 sectors Disk model: Virtual Disk Units: sectors of 1 * 512 = 512 bytes Sector size (logical/physical): 512 bytes / 4096 bytes I/O size (minimum/optimal): 4096 bytes / 4096 bytes Disklabel type: gpt Disk identifier: E73B5228-BBA7-453F-AD2D-0D97322BC45B Device Start End Sectors Size Type /dev/sda1 2048 1050623 1048576 512M EFI System /dev/sda2 1050624 3004415 1953792 954M Linux swap /dev/sda3 3004416 20971486 17967071 8.</description>
