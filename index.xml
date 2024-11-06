@@ -6,7 +6,34 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 06 Nov 2024 05:07:39 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Nov 2024 10:01:46 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syncthing增量备份的设置</title>
+      <link>https://ruohai.wang/202411/syncthing-incremental-backup-config-guide/</link>
+      <pubDate>Wed, 06 Nov 2024 10:01:46 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/syncthing-incremental-backup-config-guide/</guid>
+      <description>前言 syncthing一般情况我们都用做两个文件夹的双向同步，也就是A设备上的a文件夹和B设备上的b文件夹保持双向完全同步，无论是B设备上的文件发生了变化，还是A设备上的文件发生了变化，都会立刻同步到另一个设备上。
+但有时候我们只想要单向同步，也就是增量备份。
+场景区分 &amp;amp; 配置 单向同步的增量备份模式下，两个设备就有了主从之分，主动发起备份的主设备和被动接收备份的从设备。而且单向备份的场景也可以分为两种情况：
+场景一：完全单向同步——主设备增删改，从设备同步增删改，反向不同步。
+实际应用场景：一个主nas多个备份nas，主nas所有操作同步到备份nas。
+配置操作如下：
+先在主设备的同步文件夹点击编辑
+然后在弹窗的高级标签页中，文件夹类型选择仅发送，然后保存。
+接着在从设备的同步文件夹点击选项
+在弹窗的高级标签页中，文件夹类型选择仅接收，然后保存。
+到这里就完成了完全单向同步的配置。
+场景二：无视删除操作——主设备增删改，从设备同步增改，不删，反向不同步。
+实际应用场景：把手机相册里的照片视频用syncthing同步到nas以后就清空手机相册，但nas里需要保留这些照片视频。
+配置操作的前面4步和场景一中完全一致，以下是需要增加的配置。
+因为是从设备需要忽略主设备上的删除操作，所以需要在从设备的webui页面，依次点击操作——高级
+在弹窗中点击文件夹，然后选择需要配置的文件夹。
+在出现的一大堆配置项中，找到Ignore Delete，打勾，然后保存。
+到这里就完成无视删除操作的配置。
+参考文章： Syncthging WiKi: ignoreDelete 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>Syncthing的安装配置与使用的简单教程</title>
       <link>https://ruohai.wang/202411/syncthing-install-and-config-guide/</link>
