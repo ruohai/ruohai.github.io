@@ -6,7 +6,45 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 31 Oct 2024 09:34:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Nov 2024 05:07:39 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syncthing的安装配置与使用的简单教程</title>
+      <link>https://ruohai.wang/202411/syncthing-install-and-config-guide/</link>
+      <pubDate>Wed, 06 Nov 2024 05:07:39 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/syncthing-install-and-config-guide/</guid>
+      <description>前言 之前已经写过几篇syncthing的安装配置文章，但是时间久远，而且当时用的图床也都挂了 &amp;amp; 图片没有备份所以没法恢复，索性重新写一篇。
+安装&amp;amp;启动 我用的系统是debian，软件仓库里就有syncthing，可能版本稍微旧了一点但不影响使用
+sudo apt install synchting 安装好以后启动syncthing时需要指定是哪个用户来跑syncthing，如果你是root一把梭玩家，那指定root即可，否则就指定一个non-root用户。我这里以ruohai为例。
+#以ruohai用户运行syncthing并设置开机启动 sudo systemctl --enable syncthing@ruohai.service 初始化配置 syncthing默认的webui的访问端口是8384，默认的通信监听端口是22000（和其它syncthing之间进行通信），所以如果有防火墙的话记得放行端口，我的防火墙管理程序是ufw，设置如下。
+# 对192.168.1.0/24这个网段内的所有设备开放访问 sudo ufw allow proto tcp from 192.168.1.0/24 to any port 8384,22000 但是放行端口以后暂时还不能访问synchting的webui，因为syncthing默认只监听本机的网络请求，也就是127.0.0.1，需要手动修改配置文件，配置文件的默认路径~/.config/syncthing/config.xml。
+# 用nano或者vim编辑配置文件 nano /home/ruohai/.config/syncthing/config.xml 找到gui的配置部分，修改address中的127.0.0.1为0.0.0.0，就可以监听来自所有网络的请求了。
+修改完以后记得重启synchting服务
+sudo systemctl restart syncthing@ruohai.service 到这里就完成syncthing的所有初始化配置了，接下去就可以访问syncthing的webui开始使用。
+webui配置 在浏览器中访问http://host_ip:8384就可以打开syncthing的webui了。
+首先弹窗出来的信息就是是否允许发送匿名使用报告，根据自己喜好选择即可。
+点掉弹窗以后看到红色危险提醒，因为默认没有设置webui的访问账户，所以可以匿名访问blabla之类，所以需要设置一下访问账户信息。
+点击设置，在【图形用户界面/GUI】标签页设置账户密码。
+保存后浏览器会弹窗要求账户验证，输入刚刚设置的账户信息即可。
+添加远程设备 多个设备之间想通过synchting来同步文件夹，首先要互相添加远程设备。
+假定在LMDE设备上的syncthing上查看设备id。
+获取到设备ID串号和一个二维码
+假定在另一个Photo的机器上的【远程设备】设置区域，点击【添加远程设备】
+在窗口中输入设备ID、设备名称后保存。
+然后在LMDE设备上会弹窗显示新设备添加请求，选择添加设备即完成两个设备的绑定。
+弹窗显示详细的设备信息和简单的配置项，无须修改，直接点击【保存】即可。
+到此就完成了两个设备的绑定。
+文件夹同步 完成两个设备的syncthing绑定以后，默认的同步文件夹是Default Folder，路径是~/Sync。
+以此为例，我们将LMDE设备的Default Folder共享给设备Photo并进行同步。
+第一步：在LMDE设备中将文件夹共享给Photo
+点击选项
+在共享标签中选择共享的设备Photo
+在高级标签中设定两个设备之间的同步策略
+完成设置后直接保存即可。
+第二步：在Photo中接受共享
+出现弹窗提示有文件夹共享请求，点击添加</description>
+    </item>
+    
     <item>
       <title>Linux使用fdisk对分区进行扩容操作</title>
       <link>https://ruohai.wang/202410/fdisk-extend-partition/</link>

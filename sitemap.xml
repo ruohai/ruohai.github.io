@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202411/</loc>
+    <lastmod>2024-11-06T05:07:39+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/syncthing/</loc>
+    <lastmod>2024-11-06T05:07:39+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202411/syncthing-install-and-config-guide/</loc>
+    <lastmod>2024-11-06T05:07:39+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-11-06T05:07:39+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-11-06T05:07:39+00:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202410/</loc>
     <lastmod>2024-10-31T09:34:48+08:00</lastmod>
   </url><url>
@@ -9,12 +24,6 @@
     <lastmod>2024-10-31T09:34:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202410/fdisk-extend-partition/</loc>
-    <lastmod>2024-10-31T09:34:48+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-10-31T09:34:48+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-10-31T09:34:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/onecloud/</loc>
@@ -598,9 +607,6 @@
   </url><url>
     <loc>https://ruohai.wang/202308/ws1508-use-parted-to-expand-storage/</loc>
     <lastmod>2023-08-10T04:01:36+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/syncthing/</loc>
-    <lastmod>2023-08-08T22:41:34+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202308/syncthing-sync-media-files-only/</loc>
     <lastmod>2023-08-08T22:41:34+08:00</lastmod>
