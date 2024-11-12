@@ -6,9 +6,32 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 06 Nov 2024 10:01:46 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Nov 2024 09:02:22 +0000</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Syncthing增量备份的设置</title>
+      <title>PVE系统完成装机后的优化/初始化设置</title>
+      <link>https://ruohai.wang/202411/pve-initial-config-guide/</link>
+      <pubDate>Tue, 12 Nov 2024 09:02:22 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/pve-initial-config-guide/</guid>
+      <description>前言 pve系统的装机没什么难度，和普通debian装机没什么区别，按照默认设置一路下一步就行了，就算有不懂的地方网上也有一大堆教程。
+pve装完系统之后可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：
+删除local-lvm分区 换源 关闭订阅弹窗提醒 很多次装完pve以后我都要上网找教程，缩写写篇博客做个记录。
+删除local-lvm分区 pve装完一系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是本意是好的，但实际体验反而很不好，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：
+第一步：在webui上通过shell访问pve，然后输入以下命令
+# 删除分区 lvremove /dev/pve/data # 提示是否删除，敲y Do you really want to remove active logical volume pve/data? [y/n]: y # 重新分配空间 lvextend -rl +100%FREE /dev/pve/root 第二步：在webui中删除local-lvm分区
+网图，我的pve系统这个分区已经删除了，所有这里借用alay.cc的图片 第三步：调整local分区的用途
+如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能加上。
+在内容一栏中，把所有功能都加上即可。
+换源 pve默认源是proxmox收费源，不订阅的话无法更新，所以需要更换其它的免费源。
+pve需要替换的源一共有三个：
+debian proxmox ve ceph 第一步：debian换源。
+依然是webui界面通过shell访问pve主机
+# 编辑debian源的文件 nano /etc/apt/sources.list 将默认的内容全部注释
+#deb http://ftp.debian.org/debian bookworm main contrib #deb http://ftp.debian.org/debian bookworm-updates main contrib # security updates #deb http://security.debian.org bookworm-security main contrib 然后粘贴国内的源，我这里选择用清华的源</description>
+    </item>
+    
+    <item>
+      <title>Syncthing增量备份模式的设置</title>
       <link>https://ruohai.wang/202411/syncthing-incremental-backup-config-guide/</link>
       <pubDate>Wed, 06 Nov 2024 10:01:46 +0000</pubDate>
       
