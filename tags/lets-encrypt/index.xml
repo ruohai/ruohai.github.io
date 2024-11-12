@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Let&#39;s Encrypt on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/lets-encrypt/</link>
+    <description>Recent content in Let&#39;s Encrypt on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 12 Nov 2024 11:24:07 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/lets-encrypt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用acme.sh通过dns验证方式获取Let&#39;s Encrypt证书</title>
+      <link>https://ruohai.wang/202411/acmesh-get-lets-encrypt-cert/</link>
+      <pubDate>Tue, 12 Nov 2024 11:24:07 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/acmesh-get-lets-encrypt-cert/</guid>
+      <description>前言 之前已经写过一篇相关主题的文章，但那片文章主要内容都是如何debug，最后搞得自己想要重新部署acme.sh的时候依然一头雾水，所以重写一篇。
+acme.sh通过认证的方式有两种
+http：需要在网站更目录放置文件来验证域名的所有权 dns：需要有权限在dns解析中添加记录来验证域名的所有权 我这里选择的是第2种验证方式。
+操作过程 通过acme.sh通过dns验证的方式获取let&amp;rsquo;s encrypt证书的方式可以分为以下几步：
+获取和安装acme.sh 通过dns验证 更新证书 以下分步骤讲解。
+第一步：获取和安装acme.sh
+通过以下命令自动获取 &amp;amp; 安装，root或者non-root用户都可以。
+curl https://get.acme.sh | sh -s email=my@example.com # 或者 wget -O - https://get.acme.sh | sh -s email=my@example.com tips： 因为网络原因大概率会提示网络链接错误，需要自己解决网络问题 脚本执行完成后，默认会把acme.sh添加为alias，但需要手动重载一下用户配置文件才会生效 第二步：通过dns验证
+我用的是阿里云的dns解析服务，所以需要先配置阿里云api key信息。其它dns服务商的配置参数可以翻阅参考文章中的第二篇文章。
+export Ali_Key=&amp;#34;&amp;lt;key&amp;gt;&amp;#34; export Ali_Secret=&amp;#34;&amp;lt;secret&amp;gt;&amp;#34; 然后执行dns验证
+acme.sh --issue --dns dns_ali -d example.com -d *.example.com tips: dns_ali显而易见是指阿里云dns服务，其它dns服务商的api名字可以通过查询参考文章二获得 -d example.com生成单域名证书，-d *.example.com生成泛域名证书，但泛域名证书容易滥用，需要注意网络安全防护 第三步：更新证书
+完成dns验证以后，就可以更新证书了。
+acme.sh --renew -d example.com -d *.example.com 更新成功之后，把fullchain.cer和example.com.key两个文件复制到web服务器的指定证书目录并完成配置即可。
+参考文章 acme.sh wiki中文版 How to use DNS API 喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>

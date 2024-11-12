@@ -6,7 +6,25 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 12 Nov 2024 09:02:22 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Nov 2024 11:24:07 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>acme.sh</title>
+      <link>https://ruohai.wang/tags/acme.sh/</link>
+      <pubDate>Tue, 12 Nov 2024 11:24:07 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/tags/acme.sh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Let&#39;s Encrypt</title>
+      <link>https://ruohai.wang/tags/lets-encrypt/</link>
+      <pubDate>Tue, 12 Nov 2024 11:24:07 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/tags/lets-encrypt/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>PVE</title>
       <link>https://ruohai.wang/tags/pve/</link>
