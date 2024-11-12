@@ -16,14 +16,15 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PVE系统完成装机后的优化/初始化设置"/>
 <meta name="twitter:description" content="前言 pve系统的装机没什么难度，和普通debian装机没什么区别，按照默认设置一路下一步就行了，就算有不懂的地方网上也有一大堆教程。
-pve装完系统之后可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：
-删除local-lvm分区 换源 关闭订阅弹窗提醒 很多次装完pve以后我都要上网找教程，缩写写篇博客做个记录。
-删除local-lvm分区 pve装完一系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是本意是好的，但实际体验反而很不好，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：
+pve装完系统之后就可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：
+删除local-lvm分区 换源 关闭订阅弹窗提醒 很多次装完pve以后我都要上网找教程，所以自己写篇博客做个记录。
+删除local-lvm分区 pve装完系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是本意是好的，但实际体验反而很不好，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：
 第一步：在webui上通过shell访问pve，然后输入以下命令
 # 删除分区 lvremove /dev/pve/data # 提示是否删除，敲y Do you really want to remove active logical volume pve/data? [y/n]: y # 重新分配空间 lvextend -rl &#43;100%FREE /dev/pve/root 第二步：在webui中删除local-lvm分区
 网图，我的pve系统这个分区已经删除了，所有这里借用alay.cc的图片 第三步：调整local分区的用途
-如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能加上。
+如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能添加到local分区。
 在内容一栏中，把所有功能都加上即可。
+到此就完成了分区空间的合并。
 换源 pve默认源是proxmox收费源，不订阅的话无法更新，所以需要更换其它的免费源。
 pve需要替换的源一共有三个：
 debian proxmox ve ceph 第一步：debian换源。
@@ -33,14 +34,15 @@ debian proxmox ve ceph 第一步：debian换源。
 
     <meta property="og:title" content="PVE系统完成装机后的优化/初始化设置" />
 <meta property="og:description" content="前言 pve系统的装机没什么难度，和普通debian装机没什么区别，按照默认设置一路下一步就行了，就算有不懂的地方网上也有一大堆教程。
-pve装完系统之后可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：
-删除local-lvm分区 换源 关闭订阅弹窗提醒 很多次装完pve以后我都要上网找教程，缩写写篇博客做个记录。
-删除local-lvm分区 pve装完一系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是本意是好的，但实际体验反而很不好，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：
+pve装完系统之后就可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：
+删除local-lvm分区 换源 关闭订阅弹窗提醒 很多次装完pve以后我都要上网找教程，所以自己写篇博客做个记录。
+删除local-lvm分区 pve装完系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是本意是好的，但实际体验反而很不好，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：
 第一步：在webui上通过shell访问pve，然后输入以下命令
 # 删除分区 lvremove /dev/pve/data # 提示是否删除，敲y Do you really want to remove active logical volume pve/data? [y/n]: y # 重新分配空间 lvextend -rl &#43;100%FREE /dev/pve/root 第二步：在webui中删除local-lvm分区
 网图，我的pve系统这个分区已经删除了，所有这里借用alay.cc的图片 第三步：调整local分区的用途
-如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能加上。
+如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能添加到local分区。
 在内容一栏中，把所有功能都加上即可。
+到此就完成了分区空间的合并。
 换源 pve默认源是proxmox收费源，不订阅的话无法更新，所以需要更换其它的免费源。
 pve需要替换的源一共有三个：
 debian proxmox ve ceph 第一步：debian换源。
@@ -111,16 +113,16 @@ debian proxmox ve ceph 第一步：debian换源。
     <div class="post-content">
       <h2 id="前言">前言</h2>
 <p>pve系统的装机没什么难度，和普通debian装机没什么区别，按照默认设置一路下一步就行了，就算有不懂的地方网上也有一大堆教程。</p>
-<p>pve装完系统之后可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：</p>
+<p>pve装完系统之后就可以登陆webui了，到这一步还有许多设置需要优化，或者叫初始化：</p>
 <ol>
 <li>删除local-lvm分区</li>
 <li>换源</li>
 <li>关闭订阅弹窗提醒</li>
 </ol>
-<p>很多次装完pve以后我都要上网找教程，缩写写篇博客做个记录。</p>
+<p>很多次装完pve以后我都要上网找教程，所以自己写篇博客做个记录。</p>
 <hr>
 <h2 id="删除local-lvm分区">删除local-lvm分区</h2>
-<p>pve装完一系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是<code>本意是好的，但实际体验反而很不好</code>，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：</p>
+<p>pve装完系统以后默认会有一个local分区和一个local-lvm分区，默认这俩分区各司其职，比如local用来存镜像文件（iso）、local-lvm用来存磁盘镜像，但这样的结果就是<code>本意是好的，但实际体验反而很不好</code>，比如导致一个分区不够用但另一个分区空荡荡。所以第一步就是删除local-lvm分区。操作分成三步：</p>
 <blockquote>
 <p>第一步：在webui上通过shell访问pve，然后输入以下命令</p>
 </blockquote>
@@ -142,10 +144,11 @@ debian proxmox ve ceph 第一步：debian换源。
 <blockquote>
 <p>第三步：调整local分区的用途</p>
 </blockquote>
-<p>如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能加上。</p>
+<p>如果你的pve只有一个local分区（或者叫local目录），默认这个分区是不能存放磁盘镜像（也就是虚拟机要用到虚拟磁盘）的，在删除local-lvm分区以后，需要把这个功能添加到local分区。</p>
 <p><img src="https://img.311803.xyz/2024/11/12/1734.jpg" alt=""></p>
 <p>在<code>内容</code>一栏中，把所有功能都加上即可。</p>
 <p><img src="https://img.311803.xyz/2024/11/12/1735.jpg" alt=""></p>
+<p>到此就完成了分区空间的合并。</p>
 <hr>
 <h2 id="换源">换源</h2>
 <p>pve默认源是proxmox收费源，不订阅的话无法更新，所以需要更换其它的免费源。</p>
@@ -194,7 +197,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main 
 <blockquote>
 <p>第三步：ceph换源</p>
 </blockquote>
-<p>这一步可以根据自己是否会用ceph来决定是否要换源，我因为用不到ceph，所以跳过了这一步。</p>
+<p>这一步可以根据自己是否会用到ceph来决定是否要换源，我因为用不到ceph，所以跳过了这一步。</p>
 <p>换源操作直接抄录清华镜像站的文档内容</p>
 <pre tabindex="0"><code>请参考Ceph 官方安装教程，只需要把文档中出现的 download.ceph.com 替换为以下链接即可。
 
@@ -202,12 +205,12 @@ https://mirrors.tuna.tsinghua.edu.cn/ceph
 </code></pre><blockquote>
 <p>最后一步：更新</p>
 </blockquote>
-<p>pve会有计划任务每天更新软件包数据，不需要自己手动更新。但如果确实想自己手动更新，操作如下图</p>
+<p>pve会有计划任务每天更新软件包数据，所以换源之后不需要自己手动更新。但如果确实想自己手动更新，操作如下图</p>
 <p><img src="https://img.311803.xyz/2024/11/12/1830.jpg" alt=""></p>
 <hr>
 <h2 id="关闭订阅弹窗">关闭订阅弹窗</h2>
 <p>pve的订阅弹窗通过<code>/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js</code>中的代码判断，需要手动修改对应的代码片段即可。</p>
-<p>通过webui界面通过shell访问pve主机</p>
+<p>在webui界面通过shell访问pve主机</p>
 <pre tabindex="0"><code># 用文本编辑器打开js文件
 nano /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 </code></pre><p>定位到560行附近，有如下一段代码</p>
