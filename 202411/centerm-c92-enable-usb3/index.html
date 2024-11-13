@@ -16,13 +16,17 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="升腾C92开启USB3.0的设置"/>
 <meta name="twitter:description" content="前言 手上的升腾c92/J1900刷pve跑虚拟机都有两周了才发现自带的usb3.0接口竟然一直工作在usb2.0模式下，所以赶紧网上搜下一下怎么开启usb3.0，写篇文章做个记录。
-设置 开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
+设置 首先确认自己的机器usb3.0功能是否已经开启
+lsusb -t 如下图，如果是5000M则表明已经开启usb3.0功能，如果都是480M或者更低的数字则说明没有开启。
+开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
 Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;USB2.0(EHCI&gt; Support 修改为Disabled Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;XHCI Mode 修改为Enabled 在参考文章中，作者还提供了开启cpu睿频、来电自启的设置方式，有需要的可以到原文中查看。
 参考文章 升腾C92: BIOS开启USB3.0方法 喝杯奶茶 "/>
 
     <meta property="og:title" content="升腾C92开启USB3.0的设置" />
 <meta property="og:description" content="前言 手上的升腾c92/J1900刷pve跑虚拟机都有两周了才发现自带的usb3.0接口竟然一直工作在usb2.0模式下，所以赶紧网上搜下一下怎么开启usb3.0，写篇文章做个记录。
-设置 开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
+设置 首先确认自己的机器usb3.0功能是否已经开启
+lsusb -t 如下图，如果是5000M则表明已经开启usb3.0功能，如果都是480M或者更低的数字则说明没有开启。
+开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
 Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;USB2.0(EHCI&gt; Support 修改为Disabled Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;XHCI Mode 修改为Enabled 在参考文章中，作者还提供了开启cpu睿频、来电自启的设置方式，有需要的可以到原文中查看。
 参考文章 升腾C92: BIOS开启USB3.0方法 喝杯奶茶 " />
 <meta property="og:type" content="article" />
@@ -91,6 +95,10 @@ Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;USB2.0(EHCI&gt; Support 修�
 <p>手上的升腾c92/J1900刷pve跑虚拟机都有两周了才发现自带的usb3.0接口竟然一直工作在usb2.0模式下，所以赶紧网上搜下一下怎么开启usb3.0，写篇文章做个记录。</p>
 <hr>
 <h2 id="设置">设置</h2>
+<p>首先确认自己的机器usb3.0功能是否已经开启</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lsusb -t
+</span></span></code></pre></div><p>如下图，如果是5000M则表明已经开启usb3.0功能，如果都是480M或者更低的数字则说明没有开启。</p>
+<p><img src="https://img.311803.xyz/2024/11/13/0043.jpg" alt=""></p>
 <p>开机按F2进入bios界面，调整以下设置项来开启usb3.0支持</p>
 <pre tabindex="0"><code>Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;USB2.0(EHCI&gt; Support 修改为Disabled
 Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;XHCI Mode 修改为Enabled
@@ -103,7 +111,6 @@ Chipset-&gt;South Bridge-&gt;USB Configuration-&gt;XHCI Mode 修改为Enabled
 <hr>
 <h2 id="喝杯奶茶">喝杯奶茶</h2>
 <p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
-<p><img src="https://img.311803.xyz/2024/11/13/01.jpg" alt=""></p>
 
     </div>
     <div class="post-footer">
