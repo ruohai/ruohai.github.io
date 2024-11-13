@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Centerm on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/centerm/</link>
+    <description>Recent content in Centerm on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 13 Nov 2024 12:30:48 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/centerm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>升腾C92开启USB3.0的设置</title>
+      <link>https://ruohai.wang/202411/centerm-c92-enable-usb3/</link>
+      <pubDate>Wed, 13 Nov 2024 12:30:48 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/centerm-c92-enable-usb3/</guid>
+      <description>前言 手上的升腾c92/J1900刷pve跑虚拟机都有两周了才发现自带的usb3.0接口竟然一直工作在usb2.0模式下，所以赶紧网上搜下一下怎么开启usb3.0，写篇文章做个记录。
+设置 开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
+Chipset-&amp;gt;South Bridge-&amp;gt;USB Configuration-&amp;gt;USB2.0(EHCI&amp;gt; Support 修改为Disabled Chipset-&amp;gt;South Bridge-&amp;gt;USB Configuration-&amp;gt;XHCI Mode 修改为Enabled 在参考文章中，作者还提供了开启cpu睿频、来电自启的设置方式，有需要的可以到原文中查看。
+参考文章 升腾C92: BIOS开启USB3.0方法 喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>
