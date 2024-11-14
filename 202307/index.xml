@@ -511,25 +511,25 @@ git config --system user.</description>
     </item>
     
     <item>
-      <title>在玩客云上安装ttyd</title>
+      <title>ttyd基础使用之：在debian上安装ttyd</title>
       <link>https://ruohai.wang/202307/install-ttyd/</link>
       <pubDate>Sat, 15 Jul 2023 16:38:06 +0800</pubDate>
       
       <guid>https://ruohai.wang/202307/install-ttyd/</guid>
-      <description>前言 ttyd，web版本的终端，和本地终端功能一致，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
+      <description>前言 ttyd，轻量好用的一个web terminal，特别适合出门在外没有带自己电脑但又需要访问自己vps进行操作的场景，只需要打开浏览器，访问配置好的ttyd就OK。
 github项目指路：【ttyd - Share your terminal over the web】
-安装 第一步：下载安装包
-第一步就是创建安装目录、下载安装包基础操作，不赘述。玩客云的硬件是arm32/armv7，选择armhf版本。
-sudo mkdir -p /op/ttyd ; cd $_ sudo wget https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.armhf 第二步：添加可执行权限
+简单记录下安装过程。
+安装 这次安装ttyd的机器是刷了armbian的玩客云（ws1608），硬件架构是arm32/armv7l/armhf。
+第一步：下载安装包
+第一步就是创建安装目录、下载安装包基础操作。注意下载二进制包的时候选择适配自己硬件架构的版本，这里玩客云需要选择ttyd.armhf。
+sudo mkdir -p /op/ttyd ; cd $_ sudo wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.armhf 第二步：添加可执行权限
 下载的二进制包默认没有执行权限，需要授权
 sudo chmod +x ttyd.armhf 第三步：查看学习手册
 先学习一下ttyd的手册，有几个参数后面需要用到
--p，指定端口 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6，如果通过ipv6 + ddns进行访问的家宽用户可以添加这个参数 第四步：创建systemd配置文件
-要把ttyd添加到系统服务，设置开机自启。
-先创建systemd配置文件
-sudo nano ttyd.service 添加以下内容。如果不是用root用户运行，记得修改User参数。其中-p和-c参数的值根据自己的喜好调整。
-[Unit] Description=TTYD After=syslog.target After=network.target [Service] User=[user] ExecStart=/opt/ttyd/ttyd.armhf -p 123456 -c jack:123456 -W -6 bash Type=simple Restart=always [Install] WantedBy=multi-user.target 然后进/system/目录创建软链接
-cd /etc/systemd/system sudo ln -s /opt/ttyd/ttyd.service ttyd.service 第六步：启动ttyd</description>
+-p，指定端口，默认是7681 -c，设定认证信息，也就是账户和密码，格式是username:password -W，设定写权限。默认只读，如果要写权限需要加上这个参数 -6，开启支持ipv6，如果通过ipv6 + ddns进行访问的家宽用户可以添加这个参数 第四步：创建systemd服务配置文件
+要把ttyd添加到systemd服务，在/etc/systemd/system目录下创建ttyd.service的配置文件，粘贴以下内容
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] ExecStart=/opt/ttyd/ttyd.armhf login Type=simple Restart=always User=root Group=root [Install] WantedBy=multi-user.target 以上是ttyd官方wiki中提供的模板，可以根据自己个性需求进行调整。比如自定义端口号、开启ipv6支持、添加用户认证、增加写权限、指定bash shell、以non-root用户运行，举例如下：
+[Unit] Description=TTYD After=syslog.target After=network.target [Service] ExecStart=/opt/ttyd/ttyd.armhf -p 54321 -c jack:123456 -W -6 bash Type=simple Restart=always User=jack Group=jack [Install] WantedBy=multi-user.</description>
     </item>
     
     <item>
