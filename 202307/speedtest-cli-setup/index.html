@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-cn">
   <head>
-    <title>在玩客云上用Speedtest CLI进行网络测速 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>在Debian上用Speedtest CLI进行网络测速 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
@@ -14,38 +14,40 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在玩客云上用Speedtest CLI进行网络测速"/>
-<meta name="twitter:description" content="前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
-注意：
-debian仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
-安装 一键安装脚本
+<meta name="twitter:title" content="在Debian上用Speedtest CLI进行网络测速"/>
+<meta name="twitter:description" content="前言 想要在debian下测一下公网网速，机器是赚钱宝二代（ws1508），系统是armbian/bookworm，硬件是32位armv7l。
+tips：
+debian apt仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
+安装 两种安装方式：
+一键安装脚本
 ubunt/debian系linux的一键脚本
-# 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 二进制包安装
+# 如果系统已经有curl可以跳过 sudo apt install curl # 下载脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 sudo apt install speedtest 二进制包安装
 创建目录、下载、解压。根据自己的硬件和系统下载对应版本。
-mkdir /opt/speedtest-cli ; cd $_ wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
+# 创建目录 mkdir /opt/speedtest ; cd $_ # 下载二进制包，注意选择正确的硬件版本 wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz # 解压 tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
 ./speedtest 或者添加环境变量
 nano ~/.bashrc 在末尾添加一行
 export PATH=$PATH:/opt/speedtest-cli 然后重载生效，就可以直接使用speectest命令
 source ~/.bashrc 使用 第一步：查看附近可用的测速服务器
-使用命令查看附近可用过的测速服务器
-speedtest -L 可用服务器列表
+使用命令查看附近可用的测速服务器
+speedtest -L 显示附近的可用服务器列表
 Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjiang China 26352 China Telecom JiangSu 5G Nanjing China 5317 江苏电信5G Yangzhou China 17145 China Telecom AnHui 5G Hefei China 也可以限定自己所在的城市，比如杭州"/>
 
-    <meta property="og:title" content="在玩客云上用Speedtest CLI进行网络测速" />
-<meta property="og:description" content="前言 想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。
-注意：
-debian仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
-安装 一键安装脚本
+    <meta property="og:title" content="在Debian上用Speedtest CLI进行网络测速" />
+<meta property="og:description" content="前言 想要在debian下测一下公网网速，机器是赚钱宝二代（ws1508），系统是armbian/bookworm，硬件是32位armv7l。
+tips：
+debian apt仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
+安装 两种安装方式：
+一键安装脚本
 ubunt/debian系linux的一键脚本
-# 下载sh脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 apt install speedtest 二进制包安装
+# 如果系统已经有curl可以跳过 sudo apt install curl # 下载脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 sudo apt install speedtest 二进制包安装
 创建目录、下载、解压。根据自己的硬件和系统下载对应版本。
-mkdir /opt/speedtest-cli ; cd $_ wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
+# 创建目录 mkdir /opt/speedtest ; cd $_ # 下载二进制包，注意选择正确的硬件版本 wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz # 解压 tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
 ./speedtest 或者添加环境变量
 nano ~/.bashrc 在末尾添加一行
 export PATH=$PATH:/opt/speedtest-cli 然后重载生效，就可以直接使用speectest命令
 source ~/.bashrc 使用 第一步：查看附近可用的测速服务器
-使用命令查看附近可用过的测速服务器
-speedtest -L 可用服务器列表
+使用命令查看附近可用的测速服务器
+speedtest -L 显示附近的可用服务器列表
 Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjiang China 26352 China Telecom JiangSu 5G Nanjing China 5317 江苏电信5G Yangzhou China 17145 China Telecom AnHui 5G Hefei China 也可以限定自己所在的城市，比如杭州" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ruohai.wang/202307/speedtest-cli-setup/" /><meta property="article:section" content="202307" />
@@ -83,7 +85,7 @@ Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjia
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">在玩客云上用Speedtest CLI进行网络测速</h1>
+      <h1 class ="post-title">在Debian上用Speedtest CLI进行网络测速</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -104,99 +106,109 @@ Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjia
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
 </svg>
-              <a class="tag" href="https://ruohai.wang/tags/%E7%8E%A9%E5%AE%A2%E4%BA%91/">玩客云</a>
+              <a class="tag" href="https://ruohai.wang/tags/debian/">Debian</a>
               <a class="tag" href="https://ruohai.wang/tags/speedtest/">Speedtest</a>
         </div>
       </div>
     </header>
     <div class="post-content">
       <h2 id="前言">前言</h2>
-<p>想要linux下测一下网速，机器是赚钱宝二代（ws1508），硬件是32位armv7，系统是armbian-bookworm。</p>
-<p>注意：</p>
+<p>想要在debian下测一下公网网速，机器是赚钱宝二代（ws1508），系统是armbian/bookworm，硬件是32位armv7l。</p>
+<p>tips：</p>
 <ul>
-<li>debian仓库里有一个<code>speedtest-cli</code>的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器</li>
+<li>debian apt仓库里有一个<code>speedtest-cli</code>的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器</li>
 <li>请用speedtest官方的包，官网指路：(<a href="https://www.speedtest.net/apps/cli">https://www.speedtest.net/apps/cli</a>)</li>
 </ul>
 <p>speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。</p>
 <hr>
 <h2 id="安装">安装</h2>
+<p>两种安装方式：</p>
 <blockquote>
 <p>一键安装脚本</p>
 </blockquote>
 <p>ubunt/debian系linux的一键脚本</p>
-<pre tabindex="0"><code># 下载sh脚本
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
-
-# 安装
-apt install speedtest
-</code></pre><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 如果系统已经有curl可以跳过</span>
+</span></span><span style="display:flex;"><span>sudo apt install curl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载脚本</span>
+</span></span><span style="display:flex;"><span>curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装</span>
+</span></span><span style="display:flex;"><span>sudo apt install speedtest
+</span></span></code></pre></div><blockquote>
 <p>二进制包安装</p>
 </blockquote>
 <p>创建目录、下载、解压。根据自己的硬件和系统下载对应版本。</p>
-<pre tabindex="0"><code>mkdir /opt/speedtest-cli ; cd $_
-
-wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
-
-tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz
-</code></pre><p>解压以后就可以直接运行了</p>
-<pre tabindex="0"><code>./speedtest
-</code></pre><p>或者添加环境变量</p>
-<pre tabindex="0"><code>nano ~/.bashrc
-</code></pre><p>在末尾添加一行</p>
-<pre tabindex="0"><code>export PATH=$PATH:/opt/speedtest-cli
-</code></pre><p>然后重载生效，就可以直接使用<code>speectest</code>命令</p>
-<pre tabindex="0"><code>source ~/.bashrc
-</code></pre><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建目录</span>
+</span></span><span style="display:flex;"><span>mkdir /opt/speedtest ; cd $_
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载二进制包，注意选择正确的硬件版本</span>
+</span></span><span style="display:flex;"><span>wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>
+</span></span><span style="display:flex;"><span>tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz
+</span></span></code></pre></div><p>解压以后就可以直接运行了</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./speedtest
+</span></span></code></pre></div><p>或者添加环境变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nano ~/.bashrc
+</span></span></code></pre></div><p>在末尾添加一行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$PATH:/opt/speedtest-cli
+</span></span></code></pre></div><p>然后重载生效，就可以直接使用<code>speectest</code>命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>source ~/.bashrc
+</span></span></code></pre></div><hr>
 <h2 id="使用">使用</h2>
 <blockquote>
 <p>第一步：查看附近可用的测速服务器</p>
 </blockquote>
-<p>使用命令查看附近可用过的测速服务器</p>
-<pre tabindex="0"><code>speedtest -L
-</code></pre><p>可用服务器列表</p>
-<pre tabindex="0"><code>Closest servers:
-
-    ID  Name                           Location             Country
- 36663  China Telecom JiangSu 5G       Zhenjiang            China
- 26352  China Telecom JiangSu 5G       Nanjing              China
-  5317  江苏电信5G                 Yangzhou             China
- 17145  China Telecom AnHui 5G         Hefei                China
-</code></pre><p>也可以限定自己所在的城市，比如杭州</p>
-<pre tabindex="0"><code>speedtest -L | grep Hangzhou
-</code></pre><p>杭州可用服务器列表</p>
-<pre tabindex="0"><code> 54312  China Mobile Zhejiang 5G       Hangzhou             China
-</code></pre><blockquote>
+<p>使用命令查看附近可用的测速服务器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>speedtest -L
+</span></span></code></pre></div><p>显示附近的可用服务器列表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Closest servers:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ID  Name                           Location             Country
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">36663</span>  China Telecom JiangSu 5G       Zhenjiang            China
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">26352</span>  China Telecom JiangSu 5G       Nanjing              China
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">5317</span>  江苏电信5G                 Yangzhou             China
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">17145</span>  China Telecom AnHui 5G         Hefei                China
+</span></span></code></pre></div><p>也可以限定自己所在的城市，比如杭州</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>speedtest -L | grep Hangzhou
+</span></span></code></pre></div><p>杭州可用服务器列表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> <span style="color:#ae81ff">54312</span>  China Mobile Zhejiang 5G       Hangzhou             China
+</span></span></code></pre></div><blockquote>
 <p>第二步：测速</p>
 </blockquote>
 <p>选择一个离自己最近的测速服务器，比如杭州的测速服务器编号是<code>54312</code></p>
 <p>开始测速</p>
-<pre tabindex="0"><code>speedtest -s 54312
-</code></pre><p>如果是第一次使用speedtest，这时候会出现一个用户协议，需要输入<code>yes</code>来确认。</p>
-<pre tabindex="0"><code>==============================================================================
-
-You may only use this Speedtest software and information generated
-from it for personal, non-commercial use, through a command line
-interface on a personal computer. Your use of this software is subject
-to the End User License Agreement, Terms of Use and Privacy Policy at
-these URLs:
-
-        https://www.speedtest.net/about/eula
-        https://www.speedtest.net/about/terms
-        https://www.speedtest.net/about/privacy
-
-==============================================================================
-
-Do you accept the license? [type YES to accept]:
-</code></pre><p>测速结束以后会显示结果</p>
-<pre tabindex="0"><code>      Server: China Mobile Zhejiang 5G - Hangzhou (id: 54312)
-         ISP: China Mobile
-Idle Latency:     3.17 ms   (jitter: 0.08ms, low: 3.06ms, high: 3.26ms)
-    Download:    94.71 Mbps (data used: 45.0 MB)
-                 13.59 ms   (jitter: 1.43ms, low: 6.14ms, high: 20.92ms)
-      Upload:    64.80 Mbps (data used: 110.5 MB)
-                 40.08 ms   (jitter: 43.70ms, low: 2.07ms, high: 872.28ms)
- Packet Loss:     0.0%
-</code></pre><p>展示的信息中除了测速结果之外，还会提供一个查看网址。因为根据用户协议，测速信息都会上传到speedtest官方，浏览器中打开网址可以看到图文并茂的测速信息。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>speedtest -s <span style="color:#ae81ff">54312</span>
+</span></span></code></pre></div><p>如果是第一次使用speedtest，这时候会出现一个用户协议，需要输入<code>yes</code>来确认。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">==============================================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You may only use this Speedtest software and information generated
+</span></span><span style="display:flex;"><span>from it <span style="color:#66d9ef">for</span> personal, non-commercial use, through a command line
+</span></span><span style="display:flex;"><span>interface on a personal computer. Your use of this software is subject
+</span></span><span style="display:flex;"><span>to the End User License Agreement, Terms of Use and Privacy Policy at
+</span></span><span style="display:flex;"><span>these URLs:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        https://www.speedtest.net/about/eula
+</span></span><span style="display:flex;"><span>        https://www.speedtest.net/about/terms
+</span></span><span style="display:flex;"><span>        https://www.speedtest.net/about/privacy
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">==============================================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do you accept the license? <span style="color:#f92672">[</span>type YES to accept<span style="color:#f92672">]</span>:
+</span></span></code></pre></div><p>测速结束以后会显示结果</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>      Server: China Mobile Zhejiang 5G - Hangzhou <span style="color:#f92672">(</span>id: 54312<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>         ISP: China Mobile
+</span></span><span style="display:flex;"><span>Idle Latency:     3.17 ms   <span style="color:#f92672">(</span>jitter: 0.08ms, low: 3.06ms, high: 3.26ms<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    Download:    94.71 Mbps <span style="color:#f92672">(</span>data used: 45.0 MB<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                 13.59 ms   <span style="color:#f92672">(</span>jitter: 1.43ms, low: 6.14ms, high: 20.92ms<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      Upload:    64.80 Mbps <span style="color:#f92672">(</span>data used: 110.5 MB<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                 40.08 ms   <span style="color:#f92672">(</span>jitter: 43.70ms, low: 2.07ms, high: 872.28ms<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> Packet Loss:     0.0%
+</span></span></code></pre></div><p>展示的信息中除了测速结果之外，还会提供一个查看网址。因为根据用户协议，测速信息都会上传到speedtest官方，浏览器中打开网址可以看到图文并茂的测速信息。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
 
     </div>
     <div class="post-footer">

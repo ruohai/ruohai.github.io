@@ -154,5 +154,29 @@ debian 12安装好以后的boot分区目录结构大致如下
 ├── boot │ ├── config-5.15.53-1-pve │ ├── efi │ │ └── EFI │ │ ├── BOOT │ │ │ ├── BOOTX64.</description>
     </item>
     
+    <item>
+      <title>在Debian上用Speedtest CLI进行网络测速</title>
+      <link>https://ruohai.wang/202307/speedtest-cli-setup/</link>
+      <pubDate>Fri, 14 Jul 2023 14:57:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202307/speedtest-cli-setup/</guid>
+      <description>前言 想要在debian下测一下公网网速，机器是赚钱宝二代（ws1508），系统是armbian/bookworm，硬件是32位armv7l。
+tips：
+debian apt仓库里有一个speedtest-cli的包，但这个包不是speedtest官方在维护，没有可用的中国境内的测速服务器 请用speedtest官方的包，官网指路：(https://www.speedtest.net/apps/cli) speedtest官方除了一键安装脚本，也提供了二进制包可以直接使用，根据自己喜好选择吧。
+安装 两种安装方式：
+一键安装脚本
+ubunt/debian系linux的一键脚本
+# 如果系统已经有curl可以跳过 sudo apt install curl # 下载脚本 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash # 安装 sudo apt install speedtest 二进制包安装
+创建目录、下载、解压。根据自己的硬件和系统下载对应版本。
+# 创建目录 mkdir /opt/speedtest ; cd $_ # 下载二进制包，注意选择正确的硬件版本 wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz # 解压 tar -zxvf ookla-speedtest-1.2.0-linux-armhf.tgz 解压以后就可以直接运行了
+./speedtest 或者添加环境变量
+nano ~/.bashrc 在末尾添加一行
+export PATH=$PATH:/opt/speedtest-cli 然后重载生效，就可以直接使用speectest命令
+source ~/.bashrc 使用 第一步：查看附近可用的测速服务器
+使用命令查看附近可用的测速服务器
+speedtest -L 显示附近的可用服务器列表
+Closest servers: ID Name Location Country 36663 China Telecom JiangSu 5G Zhenjiang China 26352 China Telecom JiangSu 5G Nanjing China 5317 江苏电信5G Yangzhou China 17145 China Telecom AnHui 5G Hefei China 也可以限定自己所在的城市，比如杭州</description>
+    </item>
+    
   </channel>
 </rss>
