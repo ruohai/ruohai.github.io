@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202411/</loc>
-    <lastmod>2024-11-13T12:30:48+00:00</lastmod>
+    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/pve/</loc>
+    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202411/pve-backup-and-restore-virt-machine/</loc>
+    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/centerm/</loc>
     <lastmod>2024-11-13T12:30:48+00:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-11-13T12:30:48+00:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202411/centerm-c92-enable-usb3/</loc>
-    <lastmod>2024-11-13T12:30:48+00:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-11-13T12:30:48+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/acme.sh/</loc>
@@ -25,9 +31,6 @@
   </url><url>
     <loc>https://ruohai.wang/202411/acmesh-get-lets-encrypt-cert/</loc>
     <lastmod>2024-11-12T11:24:07+00:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/pve/</loc>
-    <lastmod>2024-11-12T09:02:22+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202411/pve-initial-config-guide/</loc>
     <lastmod>2024-11-12T09:02:22+00:00</lastmod>

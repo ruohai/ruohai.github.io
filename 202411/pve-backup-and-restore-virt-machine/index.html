@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>PVE基础操作之：虚拟机的备份和还原 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PVE基础操作之：虚拟机的备份和还原"/>
+<meta name="twitter:description" content="前言 pve上操作虚拟机的备份与还原都可以通过web ui进行操作，非常的简单方便。
+备份 在pve的webui中点击需要备份的虚拟机，依次点击备份——立即备份
+在弹窗中进行备份的自定义设置。基本上啥都不需要改，全部用默认参数即可。
+点击立即备份，会有新弹窗显示备份进度，耐心等待知道出现TASK OK就表示备份完成。
+在虚拟机的备份一栏中可以看到本机的备份文件。
+在本地存储的备份一栏中也可以看到所有虚拟机的备份文件。
+到此就完成了虚拟机的备份。
+还原 在pve的webui中，可以通过虚拟机的备份入口，或者从pve目录的备份入口，找到需要还原的虚拟机备份文件，点击还原。
+在弹出的窗口中设定还原虚拟机时的参数。
+存储：指定虚拟机虚拟磁盘文件的存放位置，留空默认就是和备份虚拟机的存储位置相同 VM：指定虚拟机的vmid，默认即可 唯一：如果用同一个备份文件部署多个虚拟机，需要勾选此项用来生成唯一mac信息，避免局域网内mac地址冲突 其它参数都用默认即可 点击还原后会弹窗显示任务进度，依然是等到出现TASK OK就表明还原成功。
+到此就完成了虚拟机的还原。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="PVE基础操作之：虚拟机的备份和还原" />
+<meta property="og:description" content="前言 pve上操作虚拟机的备份与还原都可以通过web ui进行操作，非常的简单方便。
+备份 在pve的webui中点击需要备份的虚拟机，依次点击备份——立即备份
+在弹窗中进行备份的自定义设置。基本上啥都不需要改，全部用默认参数即可。
+点击立即备份，会有新弹窗显示备份进度，耐心等待知道出现TASK OK就表示备份完成。
+在虚拟机的备份一栏中可以看到本机的备份文件。
+在本地存储的备份一栏中也可以看到所有虚拟机的备份文件。
+到此就完成了虚拟机的备份。
+还原 在pve的webui中，可以通过虚拟机的备份入口，或者从pve目录的备份入口，找到需要还原的虚拟机备份文件，点击还原。
+在弹出的窗口中设定还原虚拟机时的参数。
+存储：指定虚拟机虚拟磁盘文件的存放位置，留空默认就是和备份虚拟机的存储位置相同 VM：指定虚拟机的vmid，默认即可 唯一：如果用同一个备份文件部署多个虚拟机，需要勾选此项用来生成唯一mac信息，避免局域网内mac地址冲突 其它参数都用默认即可 点击还原后会弹窗显示任务进度，依然是等到出现TASK OK就表明还原成功。
+到此就完成了虚拟机的还原。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202411/pve-backup-and-restore-virt-machine/" /><meta property="article:section" content="202411" />
+<meta property="article:published_time" content="2024-11-14T05:12:34+00:00" />
+<meta property="article:modified_time" content="2024-11-14T05:12:34+00:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PVE基础操作之：虚拟机的备份和还原</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 14, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/pve/">PVE</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>pve上操作虚拟机的备份与还原都可以通过web ui进行操作，非常的简单方便。</p>
+<hr>
+<h2 id="备份">备份</h2>
+<p>在pve的webui中点击需要备份的虚拟机，依次点击<code>备份——立即备份</code></p>
+<p><img src="https://img.311803.xyz/2024/11/14/1538.jpg" alt=""></p>
+<p>在弹窗中进行备份的自定义设置。基本上啥都不需要改，全部用默认参数即可。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1542.jpg" alt=""></p>
+<p>点击<code>立即备份</code>，会有新弹窗显示备份进度，耐心等待知道出现<code>TASK OK</code>就表示备份完成。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1547.jpg" alt=""></p>
+<p>在虚拟机的<code>备份</code>一栏中可以看到本机的备份文件。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1549.jpg" alt=""></p>
+<p>在本地存储的<code>备份</code>一栏中也可以看到所有虚拟机的备份文件。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1548.jpg" alt=""></p>
+<p>到此就完成了虚拟机的备份。</p>
+<hr>
+<h2 id="还原">还原</h2>
+<p>在pve的webui中，可以通过虚拟机的<code>备份</code>入口，或者从pve目录的<code>备份</code>入口，找到需要还原的虚拟机备份文件，点击<code>还原</code>。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1553.jpg" alt=""></p>
+<p>在弹出的窗口中设定还原虚拟机时的参数。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1555.jpg" alt=""></p>
+<ol>
+<li>存储：指定虚拟机虚拟磁盘文件的存放位置，留空默认就是和备份虚拟机的存储位置相同</li>
+<li>VM：指定虚拟机的vmid，默认即可</li>
+<li>唯一：如果用同一个备份文件部署多个虚拟机，需要勾选此项用来生成唯一mac信息，避免局域网内mac地址冲突</li>
+<li>其它参数都用默认即可</li>
+</ol>
+<p>点击<code>还原</code>后会弹窗显示任务进度，依然是等到出现<code>TASK OK</code>就表明还原成功。</p>
+<p><img src="https://img.311803.xyz/2024/11/14/1558.jpg" alt=""></p>
+<p>到此就完成了虚拟机的还原。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -6,7 +6,27 @@
     <description>Recent content in 202411s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 13 Nov 2024 12:30:48 +0000</lastBuildDate><atom:link href="https://ruohai.wang/202411/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Nov 2024 05:12:34 +0000</lastBuildDate><atom:link href="https://ruohai.wang/202411/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE基础操作之：虚拟机的备份和还原</title>
+      <link>https://ruohai.wang/202411/pve-backup-and-restore-virt-machine/</link>
+      <pubDate>Thu, 14 Nov 2024 05:12:34 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/pve-backup-and-restore-virt-machine/</guid>
+      <description>前言 pve上操作虚拟机的备份与还原都可以通过web ui进行操作，非常的简单方便。
+备份 在pve的webui中点击需要备份的虚拟机，依次点击备份——立即备份
+在弹窗中进行备份的自定义设置。基本上啥都不需要改，全部用默认参数即可。
+点击立即备份，会有新弹窗显示备份进度，耐心等待知道出现TASK OK就表示备份完成。
+在虚拟机的备份一栏中可以看到本机的备份文件。
+在本地存储的备份一栏中也可以看到所有虚拟机的备份文件。
+到此就完成了虚拟机的备份。
+还原 在pve的webui中，可以通过虚拟机的备份入口，或者从pve目录的备份入口，找到需要还原的虚拟机备份文件，点击还原。
+在弹出的窗口中设定还原虚拟机时的参数。
+存储：指定虚拟机虚拟磁盘文件的存放位置，留空默认就是和备份虚拟机的存储位置相同 VM：指定虚拟机的vmid，默认即可 唯一：如果用同一个备份文件部署多个虚拟机，需要勾选此项用来生成唯一mac信息，避免局域网内mac地址冲突 其它参数都用默认即可 点击还原后会弹窗显示任务进度，依然是等到出现TASK OK就表明还原成功。
+到此就完成了虚拟机的还原。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>升腾C92开启USB3.0的设置</title>
       <link>https://ruohai.wang/202411/centerm-c92-enable-usb3/</link>
