@@ -44,7 +44,7 @@ acme.sh --renew -d example.com -d *.example.com 更新成功之后，把fullchai
     </item>
     
     <item>
-      <title>PVE系统完成装机后的优化/初始化设置</title>
+      <title>PVE基础操作之：完成装机后的优化/初始化设置</title>
       <link>https://ruohai.wang/202411/pve-initial-config-guide/</link>
       <pubDate>Tue, 12 Nov 2024 09:02:22 +0000</pubDate>
       
