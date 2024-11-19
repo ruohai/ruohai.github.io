@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LVM on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/lvm/</link>
+    <description>Recent content in LVM on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 19 Nov 2024 12:11:48 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/lvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Linux上挂载LVM分区 &amp; LVM VG name重复的问题解决</title>
+      <link>https://ruohai.wang/202411/lvm-mount-on-linux/</link>
+      <pubDate>Tue, 19 Nov 2024 12:11:48 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/lvm-mount-on-linux/</guid>
+      <description>前言 最近重装pve系统，把系统盘从32G的硬盘换成了120GB的硬盘。
+因为旧的pve系统盘上还有一个虚拟机备份，所以准备直接把旧pve系统盘插到新pve主机上，然后挂载旧硬盘上的分区把备份文件复制到新硬盘的分区上。
+但实际操作中碰到了两个问题：
+pve系统盘是lvm分区而不是传统分区，无法直接挂载 新旧两个pve系统盘下的lvm volume group的名字都叫做pve，出现了volume group重名的问题 在网上找了一些资料和文章，最后当然成功解决的问题，顺便在此做个简单记录。
+tips: volume group以下都简称vg 准备工作 把旧的系统盘插到pve主机上之后，先通过lsblk查看硬盘信息
+# 输入命令 root@pve:~# lsblk # 显示硬盘信息 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS ## sda是现在的系统盘 sda 8:0 0 119.2G 0 disk ├─sda1 8:1 0 1007K 0 part ├─sda2 8:2 0 1G 0 part └─sda3 8:3 0 118.2G 0 part ├─pve-swap 252:0 0 7.6G 0 lvm [SWAP] └─pve-root 252:1 0 110.6G 0 lvm / # 这是老的pve系统盘，有三个分区 sdd 8:48 0 29.</description>
+    </item>
+    
+  </channel>
+</rss>
