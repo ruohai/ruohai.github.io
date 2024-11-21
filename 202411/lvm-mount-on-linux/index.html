@@ -125,15 +125,15 @@ tips: volume group以下都简称vg 准备工作 把旧的系统盘插到pve主�
 </span></span><span style="display:flex;"><span>├─sdd1         8:49   <span style="color:#ae81ff">0</span>  1007K  <span style="color:#ae81ff">0</span> part 
 </span></span><span style="display:flex;"><span>├─sdd2         8:50   <span style="color:#ae81ff">0</span>   512M  <span style="color:#ae81ff">0</span> part 
 </span></span><span style="display:flex;"><span>└─sdd3         8:51   <span style="color:#ae81ff">0</span>  29.3G  <span style="color:#ae81ff">0</span> part 
-</span></span></code></pre></div><p>按理<code>/dev/sdd3</code>就是根分区了，但如果直接挂载<code>/dev/sdd3</code>分区，系统提示错误信息：无法识别lvm分区。</p>
+</span></span></code></pre></div><p>如果是传统分区模式，只需要挂载<code>/dev/sdd3</code>就行了，但如果直接挂载<code>/dev/sdd3</code>分区，系统提示错误信息：无法识别lvm分区。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>root@pve:/mnt# mount /dev/sdd3 /mnt/tmp/
 </span></span><span style="display:flex;"><span>mount: /mnt/tmp: unknown filesystem type <span style="color:#e6db74">&#39;LVM2_member&#39;</span>.
 </span></span><span style="display:flex;"><span>       dmesg<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> may have more information after failed mount system call.
-</span></span></code></pre></div><p>接下去就是如何在linux上正确挂载lvm分区。</p>
+</span></span></code></pre></div><p>lvm分区模式正确挂载语法路径应该是<code>/dev/volume_group_name/logic_volume_name</code>，所以接下去就是要搞清楚lvm分区的<code>volume group name</code>和<code>logic volume name</code>。</p>
 <hr>
 <h2 id="挂载lvm">挂载lvm</h2>
 <blockquote>
-<p>第一步：查看当前存在的volume group</p>
+<p>第一步：查看volume group的名字</p>
 </blockquote>
 <p>输入命令<code>pvs</code>查看</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>root@pve:~# pvs
@@ -142,7 +142,8 @@ tips: volume group以下都简称vg 准备工作 把旧的系统盘插到pve主�
 </span></span><span style="display:flex;"><span>  PV         VG  Fmt  Attr PSize    PFree
 </span></span><span style="display:flex;"><span>  /dev/sda3  pve lvm2 a--  &lt;118.24g    <span style="color:#ae81ff">0</span> 
 </span></span><span style="display:flex;"><span>  /dev/sdd3  pve lvm2 a--    29.31g    <span style="color:#ae81ff">0</span>
-</span></span></code></pre></div><ul>
+</span></span></code></pre></div><p>其中<code>VG</code>一栏对应的就是<code>volume group名字</code>。</p>
+<ul>
 <li>注意：</li>
 <li>这里会有一个衍生问题，<code>新旧两个pve系统盘中的volume group的名称都叫做pve</code>。</li>
 <li>系统提示两个vg重名，并显示两个uuid，要求你对vg进行重命名以做区分。</li>
@@ -169,7 +170,7 @@ tips: volume group以下都简称vg 准备工作 把旧的系统盘插到pve主�
 </blockquote>
 <p>这一步需要用到命令<code>lvdisplay</code>，语法如下：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lvdisplay &lt;vg name&gt;
-</span></span></code></pre></div><p>可以看到在<code>pve_old</code>这个vg下，存在两个逻辑分区，一个是swap，另一个是root。</p>
+</span></span></code></pre></div><p>可以看到在<code>pve_old</code>这个vg下，存在两个逻辑分区（logic volume），一个名字是swap，另一个名字是root。</p>
 <p><img src="https://img.311803.xyz/2024/11/20/2051.jpg" alt=""></p>
 <p>我们需要的是root分区，复制它的<code>LV Path</code>，也就是<code>/dev/pve_old/root</code>，这就是它的挂载路径了。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount /dev/pve_old/root /mnt/tmp

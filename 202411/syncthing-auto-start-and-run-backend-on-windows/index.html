@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Syncthing基础使用：在Windows下设置开机自启 &amp; 后台运行 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Syncthing基础使用：在Windows下设置开机自启 &amp; 后台运行"/>
+<meta name="twitter:description" content="前言 syncthing官方提供的windows版本在运行时需要保持一个命令行窗口并通过浏览器进行配置的方式进行使用。
+但我想要把syncthing设置为跟随windows系统开机自动启动并保持后台运行，最好是作为一个windows服务存在，尽量做到无感使用。
+在网上搜了一些解决方案，有的是添加到开机启动文件夹，官方wiki是添加到windows服务。
+最后经过实践，找到了一个比较方便快捷的设置方式，再次做个简单记录。
+设置 第一步：下载文件 &amp; 解压
+从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到D:\Program Files\Syncthing目录。
+第二步：创建脚本
+然后在该目录下新建一个bat文件，文件内容如下：
+@echo off if &#34;%1&#34;==&#34;h&#34; goto begin start mshta vbscript:createobject(&#34;wscript.shell&#34;).run(&#34;&#34;&#34;%~nx0&#34;&#34; h&#34;,0)(window.close)&amp;&amp;exit :begin cd /d D:\Program Files\Syncthing &amp;&amp; syncthing.exe serve --no-browser --no-restart --logflags=0 注意bat脚本中最后一行中的文件路径D:\Program Files\Syncthing要根据自己的实际情况调整。
+第三步：创建快捷方式并复制到启动文件夹
+右键点击刚刚创建的bat脚本，选择创建快捷方式。
+然后将生成的快捷方式剪切到windows启动文件夹，路径C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp。
+好了，到这里就完成了syncthing在windows系统下的开机自启 &amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。
+🎉
+参考文章 使用syncthing多终端数据同步，并设置随系统自动启动 Starting Syncthing Automatically 喝杯奶茶 "/>
+
+    <meta property="og:title" content="Syncthing基础使用：在Windows下设置开机自启 &amp; 后台运行" />
+<meta property="og:description" content="前言 syncthing官方提供的windows版本在运行时需要保持一个命令行窗口并通过浏览器进行配置的方式进行使用。
+但我想要把syncthing设置为跟随windows系统开机自动启动并保持后台运行，最好是作为一个windows服务存在，尽量做到无感使用。
+在网上搜了一些解决方案，有的是添加到开机启动文件夹，官方wiki是添加到windows服务。
+最后经过实践，找到了一个比较方便快捷的设置方式，再次做个简单记录。
+设置 第一步：下载文件 &amp; 解压
+从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到D:\Program Files\Syncthing目录。
+第二步：创建脚本
+然后在该目录下新建一个bat文件，文件内容如下：
+@echo off if &#34;%1&#34;==&#34;h&#34; goto begin start mshta vbscript:createobject(&#34;wscript.shell&#34;).run(&#34;&#34;&#34;%~nx0&#34;&#34; h&#34;,0)(window.close)&amp;&amp;exit :begin cd /d D:\Program Files\Syncthing &amp;&amp; syncthing.exe serve --no-browser --no-restart --logflags=0 注意bat脚本中最后一行中的文件路径D:\Program Files\Syncthing要根据自己的实际情况调整。
+第三步：创建快捷方式并复制到启动文件夹
+右键点击刚刚创建的bat脚本，选择创建快捷方式。
+然后将生成的快捷方式剪切到windows启动文件夹，路径C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp。
+好了，到这里就完成了syncthing在windows系统下的开机自启 &amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。
+🎉
+参考文章 使用syncthing多终端数据同步，并设置随系统自动启动 Starting Syncthing Automatically 喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202411/syncthing-auto-start-and-run-backend-on-windows/" /><meta property="article:section" content="202411" />
+<meta property="article:published_time" content="2024-11-21T02:18:10+00:00" />
+<meta property="article:modified_time" content="2024-11-21T02:18:10+00:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Syncthing基础使用：在Windows下设置开机自启 &amp; 后台运行</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 21, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/syncthing/">Syncthing</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>syncthing官方提供的windows版本在运行时需要保持一个命令行窗口并通过浏览器进行配置的方式进行使用。</p>
+<p>但我想要把syncthing设置为跟随windows系统开机自动启动并保持后台运行，最好是作为一个windows服务存在，尽量做到无感使用。</p>
+<p>在网上搜了一些解决方案，有的是添加到开机启动文件夹，官方wiki是添加到windows服务。</p>
+<p>最后经过实践，找到了一个比较方便快捷的设置方式，再次做个简单记录。</p>
+<hr>
+<h2 id="设置">设置</h2>
+<blockquote>
+<p>第一步：下载文件 &amp; 解压</p>
+</blockquote>
+<p>从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到<code>D:\Program Files\Syncthing</code>目录。</p>
+<blockquote>
+<p>第二步：创建脚本</p>
+</blockquote>
+<p>然后在该目录下新建一个bat文件，文件内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;</span>%1<span style="color:#e6db74">&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;h&#34;</span> <span style="color:#66d9ef">goto</span> begin
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> mshta vbscript:createobject(<span style="color:#e6db74">&#34;wscript.shell&#34;</span>).run(<span style="color:#e6db74">&#34;&#34;&#34;</span>%~nx0<span style="color:#e6db74">&#34;&#34; h&#34;</span>,0)(window.close)&amp;&amp;<span style="color:#66d9ef">exit</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>:begin
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> /d D:\Program Files\Syncthing &amp;&amp; syncthing.exe serve --no-browser --no-restart --logflags=0
+</span></span></code></pre></div><p>注意bat脚本中最后一行中的文件路径<code>D:\Program Files\Syncthing</code>要根据自己的实际情况调整。</p>
+<blockquote>
+<p>第三步：创建快捷方式并复制到启动文件夹</p>
+</blockquote>
+<p>右键点击刚刚创建的bat脚本，选择<code>创建快捷方式</code>。</p>
+<p><img src="https://img.311803.xyz/2024/11/21/1024.jpg" alt=""></p>
+<p>然后将生成的快捷方式剪切到windows启动文件夹，路径<code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</code>。</p>
+<p><img src="https://img.311803.xyz/2024/11/21/1026.jpg" alt=""></p>
+<p>好了，到这里就完成了syncthing在windows系统下的开机自启 &amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。</p>
+<p>🎉</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/672260003">使用syncthing多终端数据同步，并设置随系统自动启动</a></li>
+<li><a href="https://docs.syncthing.net/users/autostart.html">Starting Syncthing Automatically</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

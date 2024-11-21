@@ -6,7 +6,30 @@
     <description>Recent content in 202411s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 19 Nov 2024 12:11:48 +0000</lastBuildDate><atom:link href="https://ruohai.wang/202411/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Nov 2024 02:18:10 +0000</lastBuildDate><atom:link href="https://ruohai.wang/202411/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syncthing基础使用：在Windows下设置开机自启 &amp; 后台运行</title>
+      <link>https://ruohai.wang/202411/syncthing-auto-start-and-run-backend-on-windows/</link>
+      <pubDate>Thu, 21 Nov 2024 02:18:10 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/syncthing-auto-start-and-run-backend-on-windows/</guid>
+      <description>前言 syncthing官方提供的windows版本在运行时需要保持一个命令行窗口并通过浏览器进行配置的方式进行使用。
+但我想要把syncthing设置为跟随windows系统开机自动启动并保持后台运行，最好是作为一个windows服务存在，尽量做到无感使用。
+在网上搜了一些解决方案，有的是添加到开机启动文件夹，官方wiki是添加到windows服务。
+最后经过实践，找到了一个比较方便快捷的设置方式，再次做个简单记录。
+设置 第一步：下载文件 &amp;amp; 解压
+从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到D:\Program Files\Syncthing目录。
+第二步：创建脚本
+然后在该目录下新建一个bat文件，文件内容如下：
+@echo off if &amp;#34;%1&amp;#34;==&amp;#34;h&amp;#34; goto begin start mshta vbscript:createobject(&amp;#34;wscript.shell&amp;#34;).run(&amp;#34;&amp;#34;&amp;#34;%~nx0&amp;#34;&amp;#34; h&amp;#34;,0)(window.close)&amp;amp;&amp;amp;exit :begin cd /d D:\Program Files\Syncthing &amp;amp;&amp;amp; syncthing.exe serve --no-browser --no-restart --logflags=0 注意bat脚本中最后一行中的文件路径D:\Program Files\Syncthing要根据自己的实际情况调整。
+第三步：创建快捷方式并复制到启动文件夹
+右键点击刚刚创建的bat脚本，选择创建快捷方式。
+然后将生成的快捷方式剪切到windows启动文件夹，路径C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp。
+好了，到这里就完成了syncthing在windows系统下的开机自启 &amp;amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。
+🎉
+参考文章 使用syncthing多终端数据同步，并设置随系统自动启动 Starting Syncthing Automatically 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>在Linux上挂载LVM分区 &amp; LVM VG name重复的问题解决</title>
       <link>https://ruohai.wang/202411/lvm-mount-on-linux/</link>
@@ -152,7 +175,7 @@ debian proxmox ve ceph 第一步：debian换源。
 接着在从设备的同步文件夹点击选项
 在弹窗的高级标签页中，文件夹类型选择仅接收，然后保存。
 到这里就完成了完全单向同步的配置。
-场景二：无视删除操作——主设备增删改，从设备同步增改，不删，反向不同步。
+场景二：无视一方删除操作——主设备增删改，从设备同步增改，不删，反向不同步。
 实际应用场景：把手机相册里的照片视频用syncthing同步到nas以后就清空手机相册，但nas里需要保留这些照片视频。
 配置操作的前面4步和场景一中完全一致，以下是需要增加的配置。
 因为是从设备需要忽略主设备上的删除操作，所以需要在从设备的webui页面，依次点击操作——高级
