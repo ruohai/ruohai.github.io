@@ -31,33 +31,6 @@ syncthing官方提供了两种方案，第一种是把syncthing添加到windows�
     </item>
     
     <item>
-      <title>Syncthing增量备份模式的设置</title>
-      <link>https://ruohai.wang/202411/syncthing-incremental-backup-config-guide/</link>
-      <pubDate>Wed, 06 Nov 2024 10:01:46 +0000</pubDate>
-      
-      <guid>https://ruohai.wang/202411/syncthing-incremental-backup-config-guide/</guid>
-      <description>前言 syncthing一般情况我们都用做两个文件夹的双向同步，也就是A设备上的a文件夹和B设备上的b文件夹保持双向完全同步，无论是B设备上的文件发生了变化，还是A设备上的文件发生了变化，都会立刻同步到另一个设备上。
-但有时候我们只想要单向同步，也就是增量备份。
-场景区分 &amp;amp; 配置 单向同步的增量备份模式下，两个设备就有了主从之分，主动发起备份的主设备和被动接收备份的从设备。而且单向备份的场景也可以分为两种情况：
-场景一：完全单向同步——主设备增删改，从设备同步增删改，反向不同步。
-实际应用场景：一个主nas多个备份nas，主nas所有操作同步到备份nas。
-配置操作如下：
-先在主设备的同步文件夹点击编辑
-然后在弹窗的高级标签页中，文件夹类型选择仅发送，然后保存。
-接着在从设备的同步文件夹点击选项
-在弹窗的高级标签页中，文件夹类型选择仅接收，然后保存。
-到这里就完成了完全单向同步的配置。
-场景二：无视一方删除操作——主设备增删改，从设备同步增改，不删，反向不同步。
-实际应用场景：把手机相册里的照片视频用syncthing同步到nas以后就清空手机相册，但nas里需要保留这些照片视频。
-配置操作的前面4步和场景一中完全一致，以下是需要增加的配置。
-因为是从设备需要忽略主设备上的删除操作，所以需要在从设备的webui页面，依次点击操作——高级
-在弹窗中点击文件夹，然后选择需要配置的文件夹。
-在出现的一大堆配置项中，找到Ignore Delete，打勾，然后保存。
-到这里就完成无视删除操作的配置。
-参考文章： Syncthging WiKi: ignoreDelete 喝杯奶茶 </description>
-    </item>
-    
-    <item>
       <title>Syncthing的安装配置与使用的简单教程</title>
       <link>https://ruohai.wang/202411/syncthing-install-and-config-guide/</link>
       <pubDate>Wed, 06 Nov 2024 05:07:39 +0000</pubDate>
@@ -109,24 +82,25 @@ webui配置 在浏览器中访问http://host_ip:8384就可以打开syncthing的w
     </item>
     
     <item>
-      <title>Syncthing实现增量备份/增量同步</title>
+      <title>Syncthing基础使用：实现增量备份/增量同步</title>
       <link>https://ruohai.wang/202308/syncthing-set-ignore-delete/</link>
       <pubDate>Wed, 02 Aug 2023 03:13:25 +0800</pubDate>
       
       <guid>https://ruohai.wang/202308/syncthing-set-ignore-delete/</guid>
       <description>脱水精简结论 Q：syncthing是否支持增量备份（增量同步）？
-A：支持。把ignoreDelete参数从false改成true即可。
-以下就是水内容 syncthing服务用来多个设备之间对某个文件夹进行内容的完全同步，从这个目的来说，增量备份这个功能就显得有点冲突。
-所以syncthing虽然支持这个功能，但是把这个设置的入口隐藏在配置文件之中，在webui上并没有入口可以修改。官方甚至还有专门一个页面用来阐述这个功能开启以后，会出现的冲突场景。指路 → ignoreDelete
+A：支持。被动接收一方在设置中把ignoreDelete勾选启用即可。
+以下就是水内容 syncthing官方对这个参数的建议是不建议使用支持。
+因为syncthing官方团队的意图是用它实现多个设备之间对某个文件夹的完全同步，如果syncthing匹配中的一方开启了ignoreDelete，容易出现无法理解的同步冲突场景。
 简单来讲，假定有A和B两个设备，B设备开始了ignoreDelete，那如果A设备上删除了某文件以后，B设备上并不会同步删除，此后如果B修改了这个文件，那是否需要同步到A设备上。这里就出现了一个违背【完全同步】设计初衷的冲突场景。
-但我不一样啊！我是想实现增量备份功能，这个冲突的使用场景，然而正是我需要的！我的使用模式，就是一个服务端（server）只接收，加多个客户端（client）只发送。
-服务端安装并启用syncthing可以看我之前写的这篇文章：Linux下Syncthing的安装和配置
-现在需要在服务端开启ignoreDelete，修改syncthing的配置文件
-nano /home/jack/.config/syncthing/config.xml 在folder标签内找到ignoreDelete，把false改成true，然后重启syncthing服务即可。
-update@20230808 今天发现在syncthing网页端有设置ignoreDelete的入口。
-第一步：
-第二步：
-第三步：</description>
+具体设置 如果你确定自己需要用syncthing来实现增量备份的功能，那现在就开始设置吧。
+简单来讲，ignoreDelete的逻辑是：
+如果a设备会进行删除操作，但b设备不需要同步a的删除操作，那b设备需要开启ignoreDelete。
+在webui上依次点击操作——高级
+在文件夹选项中选择需要实现增量备份的文件夹
+找到ignoreDelete参数，勾选以后保存。
+到这里就实现增量备份的设置惹。
+🎉
+喝杯奶茶 </description>
     </item>
     
     <item>
