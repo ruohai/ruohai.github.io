@@ -15,19 +15,19 @@
       <guid>https://ruohai.wang/202411/syncthing-auto-start-and-run-backend-on-windows/</guid>
       <description>前言 syncthing官方提供的windows版本在运行时需要保持一个命令行窗口并通过浏览器进行配置的方式进行使用。
 但我想要把syncthing设置为跟随windows系统开机自动启动并保持后台运行，最好是作为一个windows服务存在，尽量做到无感使用。
-在网上搜了一些解决方案，有的是添加到开机启动文件夹，官方wiki是添加到windows服务。
-最后经过实践，找到了一个比较方便快捷的设置方式，再次做个简单记录。
+syncthing官方提供了两种方案，第一种是把syncthing添加到windows系统服务（比较麻烦），第二种是通过把快捷方式添加到启动目录（有bug，&amp;ndash;no-console参数在windows下无效）
+最后经过实践，找到了一个比较方便快捷的设置方式，在此做个简单记录。
 设置 第一步：下载文件 &amp;amp; 解压
 从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到D:\Program Files\Syncthing目录。
 第二步：创建脚本
-然后在该目录下新建一个bat文件，文件内容如下：
+在windows资源管理器中打开启动目录，可以在地址栏中访问%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup，或者用win+r呼出运行窗口以后输入shell:startup。
+在打开的启动目录下创建一个bat脚本，脚本内容如下：
 @echo off if &amp;#34;%1&amp;#34;==&amp;#34;h&amp;#34; goto begin start mshta vbscript:createobject(&amp;#34;wscript.shell&amp;#34;).run(&amp;#34;&amp;#34;&amp;#34;%~nx0&amp;#34;&amp;#34; h&amp;#34;,0)(window.close)&amp;amp;&amp;amp;exit :begin cd /d D:\Program Files\Syncthing &amp;amp;&amp;amp; syncthing.exe serve --no-browser --no-restart --logflags=0 注意bat脚本中最后一行中的文件路径D:\Program Files\Syncthing要根据自己的实际情况调整。
-第三步：创建快捷方式并复制到启动文件夹
-右键点击刚刚创建的bat脚本，选择创建快捷方式。
-然后将生成的快捷方式剪切到windows启动文件夹，路径C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp。
 好了，到这里就完成了syncthing在windows系统下的开机自启 &amp;amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。
 🎉
-参考文章 使用syncthing多终端数据同步，并设置随系统自动启动 Starting Syncthing Automatically 喝杯奶茶 </description>
+官方方案bug的修复 官方方案提到的第二种方式，创建一个快捷方式并在快捷方式中添加--no-console --no-browser参数，我实测在windows10下--no-console参数是无效的，但可以通过修改设置来实现。
+在自己创建的快捷方式上右键——属性——选项，勾选使用旧版控制台，然后重启系统即可。
+参考文章 使用syncthing多终端数据同步，并设置随系统自动启动 Starting Syncthing Automatically -no-console option does not work when Windows Terminal is set as Default Terminal application 喝杯奶茶 </description>
     </item>
     
     <item>
