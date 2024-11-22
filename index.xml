@@ -20,9 +20,12 @@ syncthing官方提供了两种方案，第一种是把syncthing添加到windows�
 设置 第一步：下载文件 &amp;amp; 解压
 从synchting官方下载windows版本的压缩包，解压到本地目录，我把它解压到D:\Program Files\Syncthing目录。
 第二步：创建脚本
-在windows资源管理器中打开启动目录，可以在地址栏中访问%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup，或者用win+r呼出运行窗口以后输入shell:startup。
-在打开的启动目录下创建一个bat脚本，脚本内容如下：
+在syncthing的安装目录下新建一个bat文件，录入以下内容后保存。
 @echo off if &amp;#34;%1&amp;#34;==&amp;#34;h&amp;#34; goto begin start mshta vbscript:createobject(&amp;#34;wscript.shell&amp;#34;).run(&amp;#34;&amp;#34;&amp;#34;%~nx0&amp;#34;&amp;#34; h&amp;#34;,0)(window.close)&amp;amp;&amp;amp;exit :begin cd /d D:\Program Files\Syncthing &amp;amp;&amp;amp; syncthing.exe serve --no-browser --no-restart --logflags=0 注意bat脚本中最后一行中的文件路径D:\Program Files\Syncthing要根据自己的实际情况调整。
+第三步：创建快捷方式
+将上一步中创建的bat脚本创建快捷方式。
+然后在地址栏中访问%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup，或者用win+r呼出运行窗口以后输入shell:startup，打开widows启动目录。
+最后把bat脚本的快捷方式粘贴到这个启动目录即可。
 好了，到这里就完成了syncthing在windows系统下的开机自启 &amp;amp; 后台运行了，开机的时候cmd窗口会一闪而过，但syncthing的进程依然在后台运行。
 🎉
 官方方案bug的修复 官方方案提到的第二种方式，创建一个快捷方式并在快捷方式中添加--no-console --no-browser参数，我实测在windows10下--no-console参数是无效的，但可以通过修改设置来实现。
