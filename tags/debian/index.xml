@@ -6,7 +6,38 @@
     <description>Recent content in Debian on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 07 Oct 2024 19:38:32 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Nov 2024 11:31:50 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Debian上编译Memos的前端工程</title>
+      <link>https://ruohai.wang/202411/memos-frontend-build-on-debian/</link>
+      <pubDate>Fri, 29 Nov 2024 11:31:50 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/202411/memos-frontend-build-on-debian/</guid>
+      <description>前言 【usememos/memos】是这一年多来我高频使用的一个开源、自托管的网络服务，每天都会在自建的memos上更新好几条，已经被我当作一个自建的微博在使用。
+因为我部署memos的机器是迅雷出品的赚钱宝一代（ws1408），硬件非常老（armv7l） + 适配的系统也很老（3.10内核的openwrt，不支持docker），所以我一直用的原生部署。
+原生部署的好处是可以脱离docker，缺点就是前后端都需要自己编译。
+memos的后端工程，github上已经有热心网友编译了适配各硬件平台的二进制包，开箱可用，就不需要自己动手了。指路：【memospot/memos-builds】
+memos的前端工程，我没有找到现成的，但是前端项目的优点是真正【一次编译处处可用】，随便弄个电脑编译出来以后在任何机器上都可以用。所以决定自己动手编译。
+之前我已经写过一篇【在Windows上编译Memos的前端项目】。这次准备把memos从0.17.1更新到0.18.2，所以又要自己编译一份memos的前端工程，正好试着在debian上编译试试。
+关于memos的吐槽 memos这个项目的用户对开发者的怨念都挺大的，🤣，因为ui/ux和功能经常变化，旧功能bug不fix的情况下不断引入新的功能。
+我停在0.17.1这个版本大半年的时间，因为它暂时符合了我的需求：
+有评论功能，而且评论的入口非常显眼 有首页热力图 每日回顾的入口可以很方便的进行日期跳转 但随着我高频使用memos以及数据量的上升，这个版本出现了越来越严重的性能瓶颈：
+首页热力图的api设计非常弱智，是从后端获取全部memo记录以后在前台根据每条memo的时间戳进行按日统计，导致页面响应迟钝 每日回顾中跳转日期查看当天的memos的api设计的非常弱智，是从当前时间开始每次往前获取20条，直到爬到所选日期的memos为止。 搜索功能的api设计也非常弱智，也是根据时间倒序每次获取20条然后在前端进行查询条件匹配 上面这三个设计的及其弱智的api导致memos在数据量上去以后，首页加载、搜索功能、每日回顾显示指定日期memos这三个功能完全无法使用。
+这个api设计的bug直到0.18.2版本才fix，但0.18.2版本又有了新的问题，比如评论入口及其隐蔽、首页热力图取消、时间线功能无法跳转到过往日期。
+0.18.2不完美，之后的版本不仅没解决已有的问题，而且界面又开始变动 + 引入了不稳定的新功能，所以暂时还是选择停留在0.18.2。
+编译 第一步：编译环境准备
+编译memos前端项目需要node.js和npm，所以先安装这俩。我用的apt仓库中的nodejs和npm，虽然版本老了一点，但不影响这个项目的编译。
+注意：安装大概需要1GB的存储空间。 sudo apt install nodejs npm 安装完以后通过-v命令确认安装成功
+然后，因为众所周知的网络原因，需要设置一下npm的国内镜像，我这里用的是taobao的镜像
+sudo npm config set registry https://registry.npmmirror.com apt仓库安装的nodejs/npm是不带corepack模块的，但编译memos需要用到corepack，所以安装一下
+sudo npm install -g corepack 然后又双叒叕因为众所周知的网络原因，需要给corepack指定国内镜像地址
+export COREPACK_NPM_REGISTRY=https://registry.npmmirror.com 好了，到这里就完成编译环境的准备工作了。
+第二步：下载源码
+这次编译我选择的是0.18.2版本，到项目的github仓库release页面找到对应版本的源码，下载到本地即可
+# 下载 wget https://github.com/usememos/memos/archive/refs/tags/v0.18.2.tar.gz # 解压 tar -zxvf v0.18.2.tar.gz 下载以后查看Dockerfile文件，确认编译的步骤
+# Build frontend dist. FROM node:20-alpine AS frontend WORKDIR /frontend-build COPY .</description>
+    </item>
+    
     <item>
       <title>在Debian和OpenWrt上使用sqlite3-cli进行简单数据维护</title>
       <link>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</link>

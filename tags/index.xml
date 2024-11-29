@@ -6,7 +6,25 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 21 Nov 2024 02:18:10 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Nov 2024 11:31:50 +0000</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian</title>
+      <link>https://ruohai.wang/tags/debian/</link>
+      <pubDate>Fri, 29 Nov 2024 11:31:50 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/tags/debian/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memos</title>
+      <link>https://ruohai.wang/tags/memos/</link>
+      <pubDate>Fri, 29 Nov 2024 11:31:50 +0000</pubDate>
+      
+      <guid>https://ruohai.wang/tags/memos/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Syncthing</title>
       <link>https://ruohai.wang/tags/syncthing/</link>
@@ -130,15 +148,6 @@
       <pubDate>Tue, 08 Oct 2024 15:31:53 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/markdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Debian</title>
-      <link>https://ruohai.wang/tags/debian/</link>
-      <pubDate>Mon, 07 Oct 2024 19:38:32 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/debian/</guid>
       <description></description>
     </item>
     
@@ -301,15 +310,6 @@
       <pubDate>Wed, 31 Jul 2024 14:16:22 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/nodejs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>memos</title>
-      <link>https://ruohai.wang/tags/memos/</link>
-      <pubDate>Sun, 28 Jul 2024 17:01:59 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/memos/</guid>
       <description></description>
     </item>
     
