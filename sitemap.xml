@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202412/</loc>
+    <lastmod>2024-12-05T15:18:39+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/photoprism/</loc>
+    <lastmod>2024-12-05T15:18:39+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202412/photoprism-complains/</loc>
+    <lastmod>2024-12-05T15:18:39+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-12-05T15:18:39+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-12-05T15:18:39+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202411/</loc>
     <lastmod>2024-11-29T11:31:50+00:00</lastmod>
   </url><url>
@@ -9,12 +24,6 @@
     <lastmod>2024-11-29T11:31:50+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/memos/</loc>
-    <lastmod>2024-11-29T11:31:50+00:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-11-29T11:31:50+00:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-11-29T11:31:50+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202411/memos-frontend-build-on-debian/</loc>
@@ -394,9 +403,6 @@
   </url><url>
     <loc>https://ruohai.wang/202403/minidlna-config-on-onecloud/</loc>
     <lastmod>2024-03-30T06:02:16+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/photoprism/</loc>
-    <lastmod>2024-03-28T22:56:25+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202403/photoprism-geocoding-api-limit/</loc>
     <lastmod>2024-03-28T22:56:25+08:00</lastmod>
