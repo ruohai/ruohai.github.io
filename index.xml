@@ -6,7 +6,23 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 Dec 2024 15:18:39 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Dec 2024 18:14:51 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI开始替代个人博客</title>
+      <link>https://ruohai.wang/202412/ai-starts-replace-blog/</link>
+      <pubDate>Tue, 17 Dec 2024 18:14:51 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/ai-starts-replace-blog/</guid>
+      <description>最近俩月开始使用chatgpt和copilot来帮助解决一些日常中我会碰到的问题，大部分是折腾linux时候的一些常见的技术小问题，小部分是比如杭州周边游的推荐、一些头痛脑热生病、心理健康类的问题。
+这其中的大部分问题，也就是折腾linux、arm盒子，如果是以前，我在通过搜索引擎找解决方案 + 自己实践解决以后，大概率会根据自己的实际处理过程，花点时间写一篇博客出来做记录。但是自打从【搜索引擎搜解决方案】转向【直接问chatgpt】以后，写篇博客记录一下自己解决问题的过程已经变得没有意义了。
+为什么用搜索引擎找解决方案的时候有必要自己写一篇博客做记录？
+因为搜索引擎搜出来的内容乱七八糟，质量参差不齐，而且中文互联网上的内容很多都是内容农场抄来抄去，很多不要脸的社区搬了别人的内容以后还加上各种查看限制，比如注册可见、登录可复制、下载附件收费甚至挂马。如果是个人网站，可能域名过期、网站关闭、内容已删除。所以最后在找到真正有用的方案以后，有必要自己做个归纳整理，记录成文，方便自己后期回溯。当然如果能帮到别人就更好了。
+但是有了ai以后，用搜索引擎会碰到的问题就完全不存在了，虽然ai给出的答案正确率大概也就80~90%，但是对比搜索引擎里一堆良莠不齐的结果 + 自己一个一个打开查看的体验好太多了。而且ai给出的答案排版也非常的漂亮，比自己辛辛苦苦敲markdown发布的博客在可读性上简直是吊打。
+这就导致了大部分的it技术类的博客已经完全没有必要记录了，直接问ai即可，也省去了自己敲markdown码字的过程。
+剩下的依然有必要更新发布的博客内容，大概也就那种原创性的、和自己有关的内容，比如记录生活、记录想法、输出观点之类。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>PhotoPrism缺点大吐槽：哪哪都不行，建议弃用</title>
       <link>https://ruohai.wang/202412/photoprism-complains/</link>
