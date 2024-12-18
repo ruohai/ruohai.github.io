@@ -6,7 +6,29 @@
     <description>Recent content in Windows on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 02 Aug 2024 04:17:19 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Dec 2024 18:12:24 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows下将Samba共享映射为本地文件夹</title>
+      <link>https://ruohai.wang/202412/windows-mklink-soft-link/</link>
+      <pubDate>Wed, 18 Dec 2024 18:12:24 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/windows-mklink-soft-link/</guid>
+      <description>前言 开篇TIPS：本文基于chatgpt内容进行整理。
+正文 在Windows上，Samba共享通常会被映射为网络驱动器（如Z盘），而不是本地磁盘。
+Windows本身并没有直接提供将Samba共享映射为本地磁盘的功能，因为Samba共享本质上仍然是通过网络协议（如SMB/CIFS）进行访问的。
+然而，可以使用一些替代方法实现类似的效果：
+方法一：使用符号链接（Symbolic Link）:
+你可以在Windows上创建符号链接，将某个目录链接到Samba共享目录。这样，虽然共享仍然通过网络访问，但可以像本地目录一样使用。
+在cmd命令行中，使用mklink命令，注意使用管理员权限启动cmd，否则会报权限不足：
+mklink /D E:\samba \\192.168.1.111\movie 其中/d或者/D指的是软链接，对应的硬链接参数是/J或者/j。
+使用以上命令即可将192.168.1.111服务器上共享的movie目录映射到本地E盘的samba文件夹。
+我用的这个方法。
+方法二：利用第三方软件（如Rclone、WinFsp等）:
+有些第三方工具如Rclone（一个开源工具）允许你将远程共享（包括Samba）挂载为本地磁盘（类似于网络驱动器，但更加灵活）。 使用Rclone时，你可以通过设置挂载命令把Samba共享挂载到Windows的本地磁盘上，表现得更像本地磁盘。 例如：
+rclone mount remote:/path/to/share X: --vfs-cache-mode writes 这里的 remote:/path/to/share 代表Samba共享，X: 是你希望它映射为的本地驱动器字母。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>Windows系统通知中心出现恶意通知的问题处理</title>
       <link>https://ruohai.wang/202408/windows-notification-malware-removal/</link>
