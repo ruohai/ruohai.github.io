@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>使用smartmontools查看usb外接硬盘时显示Unknown USB bridge的问题处理 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用smartmontools查看usb外接硬盘时显示Unknown USB bridge的问题处理"/>
+<meta name="twitter:description" content="前言 开篇Tips: 本文根据chatgpt的回答进行整理。
+问题描述 在debian下用smartmontools工具查看usb外接硬盘的smart信息是，根据经验，敲入以下命令
+smartctl -a /dev/sdx 此时会出现错误提示
+/dev/sda: Unknown USB bridge [0x152d:0x0578 (0x204)] Please specify device type with the -d option. Use smartctl -h to get a usage summary 问题解决 这个问题通常出现在smartmontools无法自动识别通过USB接口连接的硬盘。USB桥接器的控制器可能与smartctl无法兼容，因此提示&quot;Unknown USB bridge&quot;。为了解决这个问题，你需要手动指定硬盘设备的类型。
+你可以通过添加-d选项来强制指定设备类型，具体步骤如下：
+通过-d选项指定设备类型：你可以尝试用-d usb来指定USB设备类型。命令如下：
+smartctl -d usb -a /dev/sda 尝试不同的设备类型：如果-d usb不工作，可以尝试其他的设备类型。常见的选项包括：
+-d sat：适用于SATA硬盘。 -d scsi：适用于SCSI硬盘。 -d ata：适用于传统ATA硬盘。 例如，如果你使用的是SATA硬盘，通过USB桥接，你可以尝试：
+smartctl -d sat -a /dev/sda Tips：实测用-d sat可以识别通过usb连接的外接sata硬盘。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="使用smartmontools查看usb外接硬盘时显示Unknown USB bridge的问题处理" />
+<meta property="og:description" content="前言 开篇Tips: 本文根据chatgpt的回答进行整理。
+问题描述 在debian下用smartmontools工具查看usb外接硬盘的smart信息是，根据经验，敲入以下命令
+smartctl -a /dev/sdx 此时会出现错误提示
+/dev/sda: Unknown USB bridge [0x152d:0x0578 (0x204)] Please specify device type with the -d option. Use smartctl -h to get a usage summary 问题解决 这个问题通常出现在smartmontools无法自动识别通过USB接口连接的硬盘。USB桥接器的控制器可能与smartctl无法兼容，因此提示&quot;Unknown USB bridge&quot;。为了解决这个问题，你需要手动指定硬盘设备的类型。
+你可以通过添加-d选项来强制指定设备类型，具体步骤如下：
+通过-d选项指定设备类型：你可以尝试用-d usb来指定USB设备类型。命令如下：
+smartctl -d usb -a /dev/sda 尝试不同的设备类型：如果-d usb不工作，可以尝试其他的设备类型。常见的选项包括：
+-d sat：适用于SATA硬盘。 -d scsi：适用于SCSI硬盘。 -d ata：适用于传统ATA硬盘。 例如，如果你使用的是SATA硬盘，通过USB桥接，你可以尝试：
+smartctl -d sat -a /dev/sda Tips：实测用-d sat可以识别通过usb连接的外接sata硬盘。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202412/smartmontools-unknow-usb-bridge/" /><meta property="article:section" content="202412" />
+<meta property="article:published_time" content="2024-12-18T22:07:59+08:00" />
+<meta property="article:modified_time" content="2024-12-18T22:07:59+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用smartmontools查看usb外接硬盘时显示Unknown USB bridge的问题处理</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 18, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/smartmontools/">smartmontools</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>开篇Tips: 本文根据chatgpt的回答进行整理。</p>
+<p><img src="https://img.311803.xyz/2024/12/18/2211.jpg" alt=""></p>
+<hr>
+<h2 id="问题描述">问题描述</h2>
+<p>在debian下用smartmontools工具查看usb外接硬盘的smart信息是，根据经验，敲入以下命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>smartctl -a /dev/sdx
+</span></span></code></pre></div><p>此时会出现错误提示</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/dev/sda: Unknown USB bridge <span style="color:#f92672">[</span>0x152d:0x0578 <span style="color:#f92672">(</span>0x204<span style="color:#f92672">)]</span>
+</span></span><span style="display:flex;"><span>Please specify device type with the -d option.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Use smartctl -h to get a usage summary
+</span></span></code></pre></div><hr>
+<h2 id="问题解决">问题解决</h2>
+<p>这个问题通常出现在smartmontools无法自动识别通过USB接口连接的硬盘。USB桥接器的控制器可能与smartctl无法兼容，因此提示&quot;Unknown USB bridge&quot;。为了解决这个问题，你需要手动指定硬盘设备的类型。</p>
+<p>你可以通过添加<code>-d</code>选项来强制指定设备类型，具体步骤如下：</p>
+<p>通过<code>-d</code>选项指定设备类型：你可以尝试用<code>-d usb</code>来指定USB设备类型。命令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smartctl -d usb -a /dev/sda
+</span></span></code></pre></div><p>尝试不同的设备类型：如果<code>-d usb</code>不工作，可以尝试其他的设备类型。常见的选项包括：</p>
+<ul>
+<li>-d sat：适用于SATA硬盘。</li>
+<li>-d scsi：适用于SCSI硬盘。</li>
+<li>-d ata：适用于传统ATA硬盘。</li>
+</ul>
+<p>例如，如果你使用的是SATA硬盘，通过USB桥接，你可以尝试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smartctl -d sat -a /dev/sda
+</span></span></code></pre></div><p>Tips：实测用<code>-d sat</code>可以识别通过usb连接的外接sata硬盘。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

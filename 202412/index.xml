@@ -6,7 +6,25 @@
     <description>Recent content in 202412s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 18 Dec 2024 18:45:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Dec 2024 22:07:59 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用smartmontools查看usb外接硬盘时显示Unknown USB bridge的问题处理</title>
+      <link>https://ruohai.wang/202412/smartmontools-unknow-usb-bridge/</link>
+      <pubDate>Wed, 18 Dec 2024 22:07:59 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/smartmontools-unknow-usb-bridge/</guid>
+      <description>前言 开篇Tips: 本文根据chatgpt的回答进行整理。
+问题描述 在debian下用smartmontools工具查看usb外接硬盘的smart信息是，根据经验，敲入以下命令
+smartctl -a /dev/sdx 此时会出现错误提示
+/dev/sda: Unknown USB bridge [0x152d:0x0578 (0x204)] Please specify device type with the -d option. Use smartctl -h to get a usage summary 问题解决 这个问题通常出现在smartmontools无法自动识别通过USB接口连接的硬盘。USB桥接器的控制器可能与smartctl无法兼容，因此提示&amp;quot;Unknown USB bridge&amp;quot;。为了解决这个问题，你需要手动指定硬盘设备的类型。
+你可以通过添加-d选项来强制指定设备类型，具体步骤如下：
+通过-d选项指定设备类型：你可以尝试用-d usb来指定USB设备类型。命令如下：
+smartctl -d usb -a /dev/sda 尝试不同的设备类型：如果-d usb不工作，可以尝试其他的设备类型。常见的选项包括：
+-d sat：适用于SATA硬盘。 -d scsi：适用于SCSI硬盘。 -d ata：适用于传统ATA硬盘。 例如，如果你使用的是SATA硬盘，通过USB桥接，你可以尝试：
+smartctl -d sat -a /dev/sda Tips：实测用-d sat可以识别通过usb连接的外接sata硬盘。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>Debian下Crontab中的Java任务不执行的问题排除</title>
       <link>https://ruohai.wang/202412/crontab-java-not-run/</link>
