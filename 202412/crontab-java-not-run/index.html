@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Debian下Crontab中的Java任务不执行的问题排除 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Debian下Crontab中的Java任务不执行的问题排除"/>
+<meta name="twitter:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 使用的azulJDK官方下载的jre17，在debian下解压到自定义目录以后，在~/.bashrc下配置了java的环境变量
+export JAVA_HOME=/opt/jre export PATH=$JAVA_HOME/bin:$PATH 执行java -version可以正常输出版本信息。
+但是在crontab中配置了定时任务【30 6 * * * java -jar /path/to/my/jarfile.jr】的定时任务不执行。与此对比的是，在另一台debian机器上，直接用apt方式安装default-openjre以后（apt仓库里的jre版本也是17），同样的cron任务可以正确执行。
+问题原因 crontab任务没有正确识别这些变量的原因可能是cron执行时使用的是不同的环境，它不会加载~/.bashrc或其他shell配置文件。
+说人话就是crontab没有读取到我配置在~/.bashrc中的java环境变量
+解决方法 方法一：在 crontab 中显式设置环境变量
+在 crontab 中直接设置 JAVA_HOME 和 PATH 环境变量，确保 cron 执行时能够找到 java。
+打开 crontab 编辑器：
+crontab -e 然后在 crontab 文件中添加环境变量的配置，例如：
+# 显式设置环境变量 JAVA_HOME=/opt/jre PATH=$JAVA_HOME/bin:$PATH # 定时任务 30 6 * * * java -jar /path/to/my/jarfile.jar 这样，每次 cron 执行任务时，都会加载这些环境变量。
+方法二：在 crontab 中定义完整的 java 路径
+如果不想设置环境变量，也可以直接在 crontab 中使用 java 的完整路径。"/>
+
+    <meta property="og:title" content="Debian下Crontab中的Java任务不执行的问题排除" />
+<meta property="og:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 使用的azulJDK官方下载的jre17，在debian下解压到自定义目录以后，在~/.bashrc下配置了java的环境变量
+export JAVA_HOME=/opt/jre export PATH=$JAVA_HOME/bin:$PATH 执行java -version可以正常输出版本信息。
+但是在crontab中配置了定时任务【30 6 * * * java -jar /path/to/my/jarfile.jr】的定时任务不执行。与此对比的是，在另一台debian机器上，直接用apt方式安装default-openjre以后（apt仓库里的jre版本也是17），同样的cron任务可以正确执行。
+问题原因 crontab任务没有正确识别这些变量的原因可能是cron执行时使用的是不同的环境，它不会加载~/.bashrc或其他shell配置文件。
+说人话就是crontab没有读取到我配置在~/.bashrc中的java环境变量
+解决方法 方法一：在 crontab 中显式设置环境变量
+在 crontab 中直接设置 JAVA_HOME 和 PATH 环境变量，确保 cron 执行时能够找到 java。
+打开 crontab 编辑器：
+crontab -e 然后在 crontab 文件中添加环境变量的配置，例如：
+# 显式设置环境变量 JAVA_HOME=/opt/jre PATH=$JAVA_HOME/bin:$PATH # 定时任务 30 6 * * * java -jar /path/to/my/jarfile.jar 这样，每次 cron 执行任务时，都会加载这些环境变量。
+方法二：在 crontab 中定义完整的 java 路径
+如果不想设置环境变量，也可以直接在 crontab 中使用 java 的完整路径。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202412/crontab-java-not-run/" /><meta property="article:section" content="202412" />
+<meta property="article:published_time" content="2024-12-18T18:45:56+08:00" />
+<meta property="article:modified_time" content="2024-12-18T18:45:56+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Debian下Crontab中的Java任务不执行的问题排除</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 18, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/debian/">Debian</a>
+              <a class="tag" href="https://ruohai.wang/tags/crontab/">crontab</a>
+              <a class="tag" href="https://ruohai.wang/tags/java/">Java</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>开篇Tips：本文根据chatgpt的回答进行整理。</p>
+<p><img src="https://img.311803.xyz/2024/12/18/1844.jpg" alt=""></p>
+<hr>
+<h2 id="问题描述">问题描述</h2>
+<p>使用的azulJDK官方下载的jre17，在debian下解压到自定义目录以后，在<code>~/.bashrc</code>下配置了java的环境变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export JAVA_HOME<span style="color:#f92672">=</span>/opt/jre
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$JAVA_HOME/bin:$PATH
+</span></span></code></pre></div><p>执行<code>java -version</code>可以正常输出版本信息。</p>
+<p>但是在crontab中配置了定时任务【<code>30 6 * * * java -jar /path/to/my/jarfile.jr</code>】的定时任务不执行。与此对比的是，在另一台debian机器上，直接用apt方式安装<code>default-openjre</code>以后（apt仓库里的jre版本也是17），同样的cron任务可以正确执行。</p>
+<hr>
+<h2 id="问题原因">问题原因</h2>
+<p><code>crontab</code>任务没有正确识别这些变量的原因可能是<code>cron</code>执行时使用的是不同的环境，它不会加载<code>~/.bashrc</code>或其他shell配置文件。</p>
+<p>说人话就是crontab没有读取到我配置在<code>~/.bashrc</code>中的java环境变量</p>
+<hr>
+<h2 id="解决方法">解决方法</h2>
+<blockquote>
+<p>方法一：在 crontab 中显式设置环境变量</p>
+</blockquote>
+<p>在 crontab 中直接设置 JAVA_HOME 和 PATH 环境变量，确保 cron 执行时能够找到 java。</p>
+<p>打开 crontab 编辑器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>crontab -e
+</span></span></code></pre></div><p>然后在 crontab 文件中添加环境变量的配置，例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 显式设置环境变量</span>
+</span></span><span style="display:flex;"><span>JAVA_HOME<span style="color:#f92672">=</span>/opt/jre
+</span></span><span style="display:flex;"><span>PATH<span style="color:#f92672">=</span>$JAVA_HOME/bin:$PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定时任务</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">30</span> <span style="color:#ae81ff">6</span> * * * java -jar /path/to/my/jarfile.jar
+</span></span></code></pre></div><p>这样，每次 cron 执行任务时，都会加载这些环境变量。</p>
+<blockquote>
+<p>方法二：在 crontab 中定义完整的 java 路径</p>
+</blockquote>
+<p>如果不想设置环境变量，也可以直接在 crontab 中使用 java 的完整路径。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ae81ff">30</span> <span style="color:#ae81ff">6</span> * * * /opt/jre/bin/java -jar /path/to/my/jarfile.jar
+</span></span></code></pre></div><p>Tips：我用的这个方法，实测有效。</p>
+<blockquote>
+<p>方法三：加载 ~/.bashrc（或其他环境配置文件）</p>
+</blockquote>
+<p>如果您希望 cron 加载 ~/.bashrc 中的配置，您可以在 crontab 中明确调用 ~/.bashrc 文件。您可以使用如下方式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ae81ff">30</span> <span style="color:#ae81ff">6</span> * * * . ~/.bashrc <span style="color:#f92672">&amp;&amp;</span> java -jar /path/to/my/jarfile.jar
+</span></span></code></pre></div><hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

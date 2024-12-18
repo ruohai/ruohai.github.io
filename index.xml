@@ -6,7 +6,28 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 18 Dec 2024 18:32:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Dec 2024 18:45:56 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian下Crontab中的Java任务不执行的问题排除</title>
+      <link>https://ruohai.wang/202412/crontab-java-not-run/</link>
+      <pubDate>Wed, 18 Dec 2024 18:45:56 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/crontab-java-not-run/</guid>
+      <description>前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 使用的azulJDK官方下载的jre17，在debian下解压到自定义目录以后，在~/.bashrc下配置了java的环境变量
+export JAVA_HOME=/opt/jre export PATH=$JAVA_HOME/bin:$PATH 执行java -version可以正常输出版本信息。
+但是在crontab中配置了定时任务【30 6 * * * java -jar /path/to/my/jarfile.jr】的定时任务不执行。与此对比的是，在另一台debian机器上，直接用apt方式安装default-openjre以后（apt仓库里的jre版本也是17），同样的cron任务可以正确执行。
+问题原因 crontab任务没有正确识别这些变量的原因可能是cron执行时使用的是不同的环境，它不会加载~/.bashrc或其他shell配置文件。
+说人话就是crontab没有读取到我配置在~/.bashrc中的java环境变量
+解决方法 方法一：在 crontab 中显式设置环境变量
+在 crontab 中直接设置 JAVA_HOME 和 PATH 环境变量，确保 cron 执行时能够找到 java。
+打开 crontab 编辑器：
+crontab -e 然后在 crontab 文件中添加环境变量的配置，例如：
+# 显式设置环境变量 JAVA_HOME=/opt/jre PATH=$JAVA_HOME/bin:$PATH # 定时任务 30 6 * * * java -jar /path/to/my/jarfile.jar 这样，每次 cron 执行任务时，都会加载这些环境变量。
+方法二：在 crontab 中定义完整的 java 路径
+如果不想设置环境变量，也可以直接在 crontab 中使用 java 的完整路径。</description>
+    </item>
+    
     <item>
       <title>在Windows 10 LTSC上安装appxbundle文件</title>
       <link>https://ruohai.wang/202412/windows-ltsc-install-appxbundle/</link>
@@ -41,7 +62,7 @@ Windows本身并没有直接提供将Samba共享映射为本地磁盘的功能�
 在cmd命令行中，使用mklink命令，注意使用管理员权限启动cmd，否则会报权限不足：
 mklink /D E:\samba \\192.168.1.111\movie 其中/d或者/D指的是软链接，对应的硬链接参数是/J或者/j。
 使用以上命令即可将192.168.1.111服务器上共享的movie目录映射到本地E盘的samba文件夹。
-我用的这个方法。
+Tips：我用的这个方法，实测有效。缺点是只能映射成一个本地文件夹。
 方法二：利用第三方软件（如Rclone、WinFsp等）:
 有些第三方工具如Rclone（一个开源工具）允许你将远程共享（包括Samba）挂载为本地磁盘（类似于网络驱动器，但更加灵活）。 使用Rclone时，你可以通过设置挂载命令把Samba共享挂载到Windows的本地磁盘上，表现得更像本地磁盘。 例如：
 rclone mount remote:/path/to/share X: --vfs-cache-mode writes 这里的 remote:/path/to/share 代表Samba共享，X: 是你希望它映射为的本地驱动器字母。
