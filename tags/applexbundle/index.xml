@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>applexbundle on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/tags/applexbundle/</link>
+    <description>Recent content in applexbundle on 喵ฅ^•ﻌ•^ฅ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 18 Dec 2024 18:32:37 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/applexbundle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Windows 10 LTSC上安装appxbundle文件</title>
+      <link>https://ruohai.wang/202412/windows-ltsc-install-appxbundle/</link>
+      <pubDate>Wed, 18 Dec 2024 18:32:37 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/windows-ltsc-install-appxbundle/</guid>
+      <description>前言 开篇tips：本文基于chatgpt的回答进行整理修改。
+正文 在 Windows LTSC（长期服务通道）版本上安装 .appxbundle 文件的步骤和其他 Windows 版本类似，可以通过 PowerShell 或者通过双击文件进行安装。以下是详细步骤：
+方法 1：使用 PowerShell 安装
+在 PowerShell 中输入以下命令来安装 .appxbundle 文件：
+Add-AppxPackage -Path &amp;#34;C:\path\to\your\appxbundlefile.appxbundle&amp;#34; 安装过程可能会需要一些时间，完成后你应该能够在开始菜单找到应用程序。
+Tips：我用的是这个方法，实测有效。
+方法 2：直接通过双击文件安装
+找到.appxbundle文件
+在文件资源管理器中找到.appxbundle文件，双击.appxbundle文件，Windows 应该会自动开始安装该应用。如果文件关联正确，它会直接启动 Microsoft Store 或应用安装界面，然后按照屏幕上的提示完成安装。
+Tips：这个方法在windows 10 ltsc上肯定是行不通的。
+喝杯奶茶 </description>
+    </item>
+    
+  </channel>
+</rss>
