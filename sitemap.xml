@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202412/</loc>
-    <lastmod>2024-12-18T23:17:20+08:00</lastmod>
+    <lastmod>2024-12-20T01:03:30+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/pve/</loc>
+    <lastmod>2024-12-20T01:03:30+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202412/pve-i440fx-vs-q35/</loc>
+    <lastmod>2024-12-20T01:03:30+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-12-20T01:03:30+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-12-20T01:03:30+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/smartmontools/</loc>
     <lastmod>2024-12-18T23:17:20+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-12-18T23:17:20+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202412/smartmontools-long-test-interrupted/</loc>
-    <lastmod>2024-12-18T23:17:20+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-12-18T23:17:20+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202412/smartmontools-unknow-usb-bridge/</loc>
@@ -100,9 +106,6 @@
   </url><url>
     <loc>https://ruohai.wang/202411/baoshishan-hike/</loc>
     <lastmod>2024-11-18T12:39:36+00:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/pve/</loc>
-    <lastmod>2024-11-14T05:12:34+00:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202411/pve-backup-and-restore-virt-machine/</loc>
     <lastmod>2024-11-14T05:12:34+00:00</lastmod>

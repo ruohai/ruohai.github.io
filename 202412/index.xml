@@ -6,7 +6,22 @@
     <description>Recent content in 202412s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 18 Dec 2024 23:17:20 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 20 Dec 2024 01:03:30 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE基础使用：创建虚拟机硬件平台时，i440fx和q35如何选择</title>
+      <link>https://ruohai.wang/202412/pve-i440fx-vs-q35/</link>
+      <pubDate>Fri, 20 Dec 2024 01:03:30 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/pve-i440fx-vs-q35/</guid>
+      <description>前言 开篇Tips：本文根据chatgpt的回答进行整理。
+正文 在pve系统下创建虚拟机时，有一个机型的选项，默认是i440fx，还有另外一个可选项q35。这两选项有何区别，它俩孰优孰劣，该如何选择呢？
+在 Proxmox VE (PVE) 中创建虚拟机时，i440fx和q35是两种不同的虚拟机硬件平台，它们主要的区别在于芯片组的模拟。
+i440fx：
+老旧平台，类似于早期的 Intel 440FX 芯片组。 它支持较老的硬件和设备模型，兼容性较强，适合运行较旧的操作系统或软件（比如 Windows XP、Windows 7 等）。 适合需要较低兼容性要求的系统。 q35：
+较新的平台，模拟的是 Intel 的 Q35 芯片组，支持更多现代特性。 提供更好的硬件虚拟化支持，例如更好的 PCIe 设备支持、SATA 和更高效的内存管理。 支持 UEFI 启动，适合运行现代操作系统，尤其是 Windows 10、Windows 11 或 Linux 现代发行版。 选择哪个？
+如果你要运行较旧的操作系统或不需要特殊硬件支持，i440fx 是一个更安全的选择，因为它兼容性更好。 如果你要运行较新的操作系统或需要现代硬件特性（如 PCIe 支持、UEFI 启动等），q35 更适合。 一般来说，现代的虚拟化需求推荐选择 q35，尤其是在需要支持 64 位 UEFI 引导或现代硬件功能时。 结论 默认i440fx适合绝大部分情况，兼容性更好 如果硬件比较新，推荐q35 如果有特殊需求，比如uefi启动（win8之后的windows系统）、硬件直通，选q35 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>使用smartmontools对硬盘进行long test任务显示interrupted的问题处理</title>
       <link>https://ruohai.wang/202412/smartmontools-long-test-interrupted/</link>
