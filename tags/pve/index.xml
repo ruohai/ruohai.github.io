@@ -8,7 +8,7 @@
     <language>zh-cn</language>
     <lastBuildDate>Fri, 20 Dec 2024 01:03:30 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/pve/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>PVE基础使用：创建虚拟机硬件平台时，i440fx和q35如何选择</title>
+      <title>PVE基础使用：创建虚拟机时机型i440fx和q35如何选择</title>
       <link>https://ruohai.wang/202412/pve-i440fx-vs-q35/</link>
       <pubDate>Fri, 20 Dec 2024 01:03:30 +0800</pubDate>
       
