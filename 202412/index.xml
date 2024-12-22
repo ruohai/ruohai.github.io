@@ -6,7 +6,26 @@
     <description>Recent content in 202412s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 20 Dec 2024 01:03:30 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Dec 2024 21:56:12 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE基础使用：This host key is known by other names的问题处理</title>
+      <link>https://ruohai.wang/202412/pve-virt-machine-duplicated-key-fingerprint/</link>
+      <pubDate>Sun, 22 Dec 2024 21:56:12 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/pve-virt-machine-duplicated-key-fingerprint/</guid>
+      <description>前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
+The authenticity of host &amp;#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&amp;#39; can&amp;#39;t be established. ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This host key is known by the following other names/addresses: C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345 Are you sure you want to continue connecting (yes/no/[fingerprint])? 从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。
+我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。
+问题解决 在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。
+解决方法：清空旧的SSH密钥，强制系统重新生成密钥。
+操作：删除/etc/ssh目录下的ssh_host_*_key文件并重启服务。
+sudo rm /etc/ssh/ssh_host_* sudo dpkg-reconfigure openssh-server 在执行dpkg-reconfigure命令时，会弹出蓝色窗口进行选择
+选择第二项keep the local version currently installed，即保持当前的/etc/sshs/sshd_config配置文件，不要覆盖。
+然后系统会重新生成不同加密模式的密钥对，提示信息如下
+ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server Creating SSH2 RSA key; this may take some time .</description>
+    </item>
+    
     <item>
       <title>PVE基础使用：创建虚拟机时机型i440fx和q35如何选择</title>
       <link>https://ruohai.wang/202412/pve-i440fx-vs-q35/</link>

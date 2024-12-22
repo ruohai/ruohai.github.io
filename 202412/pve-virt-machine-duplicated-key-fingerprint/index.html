@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>PVE基础使用：This host key is known by other names的问题处理 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PVE基础使用：This host key is known by other names的问题处理"/>
+<meta name="twitter:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
+The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established. ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This host key is known by the following other names/addresses: C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345 Are you sure you want to continue connecting (yes/no/[fingerprint])? 从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。
+我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。
+问题解决 在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。
+解决方法：清空旧的SSH密钥，强制系统重新生成密钥。
+操作：删除/etc/ssh目录下的ssh_host_*_key文件并重启服务。
+sudo rm /etc/ssh/ssh_host_* sudo dpkg-reconfigure openssh-server 在执行dpkg-reconfigure命令时，会弹出蓝色窗口进行选择
+选择第二项keep the local version currently installed，即保持当前的/etc/sshs/sshd_config配置文件，不要覆盖。
+然后系统会重新生成不同加密模式的密钥对，提示信息如下
+ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server Creating SSH2 RSA key; this may take some time ."/>
+
+    <meta property="og:title" content="PVE基础使用：This host key is known by other names的问题处理" />
+<meta property="og:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
+问题描述 在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
+The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established. ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This host key is known by the following other names/addresses: C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345 Are you sure you want to continue connecting (yes/no/[fingerprint])? 从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。
+我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。
+问题解决 在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。
+解决方法：清空旧的SSH密钥，强制系统重新生成密钥。
+操作：删除/etc/ssh目录下的ssh_host_*_key文件并重启服务。
+sudo rm /etc/ssh/ssh_host_* sudo dpkg-reconfigure openssh-server 在执行dpkg-reconfigure命令时，会弹出蓝色窗口进行选择
+选择第二项keep the local version currently installed，即保持当前的/etc/sshs/sshd_config配置文件，不要覆盖。
+然后系统会重新生成不同加密模式的密钥对，提示信息如下
+ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server Creating SSH2 RSA key; this may take some time ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202412/pve-virt-machine-duplicated-key-fingerprint/" /><meta property="article:section" content="202412" />
+<meta property="article:published_time" content="2024-12-22T21:56:12+08:00" />
+<meta property="article:modified_time" content="2024-12-22T21:56:12+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">PVE基础使用：This host key is known by other names的问题处理</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 22, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/pve/">PVE</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>开篇Tips：本文根据chatgpt的回答进行整理。</p>
+<p><img src="https://img.311803.xyz/2024/12/22/2154.jpg" alt=""></p>
+<hr>
+<h2 id="问题描述">问题描述</h2>
+<p>在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用<code>ssh-keygen -t xxx</code>生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established.
+</span></span><span style="display:flex;"><span>ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+</span></span><span style="display:flex;"><span>This host key is known by the following other names/addresses:
+</span></span><span style="display:flex;"><span>    C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345
+</span></span><span style="display:flex;"><span>Are you sure you want to continue connecting (yes/no/[fingerprint])?
+</span></span></code></pre></div><p>从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。</p>
+<p>我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。</p>
+<hr>
+<h2 id="问题解决">问题解决</h2>
+<p>在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。</p>
+<p>解决方法：清空旧的SSH密钥，强制系统重新生成密钥。</p>
+<p>操作：删除<code>/etc/ssh</code>目录下的<code>ssh_host_*_key</code>文件并重启服务。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo rm /etc/ssh/ssh_host_*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo dpkg-reconfigure openssh-server
+</span></span></code></pre></div><p>在执行<code>dpkg-reconfigure</code>命令时，会弹出蓝色窗口进行选择</p>
+<p><img src="https://img.311803.xyz/2024/12/22/2212.jpg" alt=""></p>
+<p>选择第二项<code>keep the local version currently installed</code>，即保持当前的<code>/etc/sshs/sshd_config</code>配置文件，不要覆盖。</p>
+<p>然后系统会重新生成不同加密模式的密钥对，提示信息如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server
+</span></span><span style="display:flex;"><span>Creating SSH2 RSA key; this may take some time ...
+</span></span><span style="display:flex;"><span>3072 SHA256:xxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxx root@debian (RSA)
+</span></span><span style="display:flex;"><span>Creating SSH2 ECDSA key; this may take some time ...
+</span></span><span style="display:flex;"><span>256 SHA256:xxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxx root@debian (ECDSA)
+</span></span><span style="display:flex;"><span>Creating SSH2 ED25519 key; this may take some time ...
+</span></span><span style="display:flex;"><span>256 SHA256:xxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxx root@debian (ED25519)
+</span></span><span style="display:flex;"><span>rescue-ssh.target is a disabled or a static unit not running, not starting it.
+</span></span><span style="display:flex;"><span>ssh.socket is a disabled or a static unit not running, not starting it.
+</span></span></code></pre></div><p>最后，再用<code>ssh-keygen -t xxx</code>重新生成用于ssh登录的密钥即可。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
