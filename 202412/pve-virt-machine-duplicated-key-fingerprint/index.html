@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PVE基础使用：This host key is known by other names的问题处理"/>
 <meta name="twitter:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
-问题描述 在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
+问题描述 在pve上使用同一个备份还原出多个虚拟机，还原成功后，每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
 The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established. ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This host key is known by the following other names/addresses: C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345 Are you sure you want to continue connecting (yes/no/[fingerprint])? 从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。
 我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。
 问题解决 在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。
@@ -29,7 +29,7 @@ ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server Creating SSH2 RSA k
 
     <meta property="og:title" content="PVE基础使用：This host key is known by other names的问题处理" />
 <meta property="og:description" content="前言 开篇Tips：本文根据chatgpt的回答进行整理。
-问题描述 在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
+问题描述 在pve上使用同一个备份还原出多个虚拟机，还原成功后，每个虚拟机都各自生用ssh-keygen -t xxx生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示
 The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established. ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. This host key is known by the following other names/addresses: C:\Users\Ruohai/.ssh/known_hosts:11: [192.168.1.209]:12345 Are you sure you want to continue connecting (yes/no/[fingerprint])? 从提示内容来看，就是用同一个备份还原出的两个虚拟机，虽然各自生成了密钥，但密钥的指纹（fingerprint）相同。
 我尝试在两个虚拟机中删除旧ssh-key然后重新生成，但本地终端依旧会出现以上提示。
 问题解决 在Proxmox VE（PVE）系统中，当你使用相同的虚拟机备份（即还原同一个虚拟机的镜像）来创建多个虚拟机时，每个虚拟机会有一个相同的SSH密钥对。如果这些虚拟机在同一个网络中并且它们的SSH密钥相同，那么它们的SSH指纹也会相同。当你尝试通过SSH连接到这些虚拟机时，系统会提示“key指纹重复”，因为它发现多个主机具有相同的SSH指纹。
@@ -106,7 +106,7 @@ ruohai@debian:/etc/ssh$ sudo dpkg-reconfigure openssh-server Creating SSH2 RSA k
 <p><img src="https://img.311803.xyz/2024/12/22/2154.jpg" alt=""></p>
 <hr>
 <h2 id="问题描述">问题描述</h2>
-<p>在pve上使用同一个备份还原出多个虚拟机，然后每个虚拟机都各自生用<code>ssh-keygen -t xxx</code>生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示</p>
+<p>在pve上使用同一个备份还原出多个虚拟机，还原成功后，每个虚拟机都各自生用<code>ssh-keygen -t xxx</code>生成一对密钥，然后用此密钥作为登录凭证进行ssh登录认证时，本地的终端出现以下提示</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>The authenticity of host &#39;[192.168.1.207]:12345 ([192.168.1.207]:12345)&#39; can&#39;t be established.
 </span></span><span style="display:flex;"><span>ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
 </span></span><span style="display:flex;"><span>This host key is known by the following other names/addresses:
