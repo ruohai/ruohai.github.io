@@ -6,7 +6,31 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 22 Dec 2024 21:56:12 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Dec 2024 22:32:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用systemd-mount配置nfs和samba共享的开机自动挂载</title>
+      <link>https://ruohai.wang/202412/systemd-mount-nfs-and-samba/</link>
+      <pubDate>Sun, 22 Dec 2024 22:32:26 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/systemd-mount-nfs-and-samba/</guid>
+      <description>前言 本文根据chatgpt的回答进行整理。
+正文 在linux上给额外的硬盘配置开机自动挂载一般都是通过编辑/etc/fstab来完成，很方便，但这种方式下，如果硬盘丢失，开机的时候就需要进入恢复模式重置/etc/fstab才能正常进入系统。
+systemd-mount模块也能完成开机自动挂载（它设计出来就是替代/etc/fstab），而且在丢失硬盘的情况下不会影响正常开机，所以尤其适合用它来挂载nfs或者samba共享的目录（因为共享目录很可能会掉线）。
+所以记录以下用systemd-mount挂载nfs和samba的模板和步骤。
+NFS
+假定要把nfs共享目录挂载到本地/mnt/nfs。
+在/etc/systemd/system目录下新建mnt-nfs.mount文件，注意mnt-nfs对应挂载点/mnt/nfs，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount NFS share Wants=network-online.target After=network-online.target [Mount] What=remote_server_ip:/remote/path Where=/mnt/nfs Type=nfs Options=_netdev,auto TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：NFS 服务器和共享路径。将 remote_server_ip:/remote/path 替换为你实际的 NFS 服务器 IP 地址和共享路径。 Where：挂载点的本地路径，即 /mnt/nfs。 Type：文件系统类型，这里是 nfs。 Options：挂载选项，_netdev 表示网络设备挂载，auto 表示在启动时自动挂载。 TimeoutSec：如果挂载操作在指定时间内没有完成，将终止挂载尝试。 WantedBy=multi-user.target：使挂载在系统进入多用户目标（即正常运行级别）时进行。 Samba
+假定要把samba共享目录挂载到本地/mnt/smb。
+在/etc/systemd/system目录下新建mnt-smb.mount文件，注意mnt-smb对应挂载点/mnt/smb，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount Samba Share After=network.target [Mount] What=//samba-server/share Where=/mnt/smb Type=cifs Options=credentials=/home/username/.smbcredentials,iocharset=utf8,vers=3.0,uid=1000,gid=1000 TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：Samba 共享的地址（//samba-server/share）。 Where：挂载点（/mnt/smb）。 Options：挂载选项，可以根据需要调整。比如 credentials 是指一个包含用户名和密码的文件（/home/username/.smbcredentials）。 TimeoutSec：挂载操作的超时设置（可根据需要调整）。 最后一步：启用服务
+完成以上配置后，启动服务 &amp;amp; 设置开机启动</description>
+    </item>
+    
     <item>
       <title>PVE基础使用：This host key is known by other names的问题处理</title>
       <link>https://ruohai.wang/202412/pve-virt-machine-duplicated-key-fingerprint/</link>

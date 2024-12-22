@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>使用systemd-mount配置nfs和samba共享的开机自动挂载 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用systemd-mount配置nfs和samba共享的开机自动挂载"/>
+<meta name="twitter:description" content="前言 本文根据chatgpt的回答进行整理。
+正文 在linux上给额外的硬盘配置开机自动挂载一般都是通过编辑/etc/fstab来完成，很方便，但这种方式下，如果硬盘丢失，开机的时候就需要进入恢复模式重置/etc/fstab才能正常进入系统。
+systemd-mount模块也能完成开机自动挂载（它设计出来就是替代/etc/fstab），而且在丢失硬盘的情况下不会影响正常开机，所以尤其适合用它来挂载nfs或者samba共享的目录（因为共享目录很可能会掉线）。
+所以记录以下用systemd-mount挂载nfs和samba的模板和步骤。
+NFS
+假定要把nfs共享目录挂载到本地/mnt/nfs。
+在/etc/systemd/system目录下新建mnt-nfs.mount文件，注意mnt-nfs对应挂载点/mnt/nfs，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount NFS share Wants=network-online.target After=network-online.target [Mount] What=remote_server_ip:/remote/path Where=/mnt/nfs Type=nfs Options=_netdev,auto TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：NFS 服务器和共享路径。将 remote_server_ip:/remote/path 替换为你实际的 NFS 服务器 IP 地址和共享路径。 Where：挂载点的本地路径，即 /mnt/nfs。 Type：文件系统类型，这里是 nfs。 Options：挂载选项，_netdev 表示网络设备挂载，auto 表示在启动时自动挂载。 TimeoutSec：如果挂载操作在指定时间内没有完成，将终止挂载尝试。 WantedBy=multi-user.target：使挂载在系统进入多用户目标（即正常运行级别）时进行。 Samba
+假定要把samba共享目录挂载到本地/mnt/smb。
+在/etc/systemd/system目录下新建mnt-smb.mount文件，注意mnt-smb对应挂载点/mnt/smb，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount Samba Share After=network.target [Mount] What=//samba-server/share Where=/mnt/smb Type=cifs Options=credentials=/home/username/.smbcredentials,iocharset=utf8,vers=3.0,uid=1000,gid=1000 TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：Samba 共享的地址（//samba-server/share）。 Where：挂载点（/mnt/smb）。 Options：挂载选项，可以根据需要调整。比如 credentials 是指一个包含用户名和密码的文件（/home/username/.smbcredentials）。 TimeoutSec：挂载操作的超时设置（可根据需要调整）。 最后一步：启用服务
+完成以上配置后，启动服务 &amp; 设置开机启动"/>
+
+    <meta property="og:title" content="使用systemd-mount配置nfs和samba共享的开机自动挂载" />
+<meta property="og:description" content="前言 本文根据chatgpt的回答进行整理。
+正文 在linux上给额外的硬盘配置开机自动挂载一般都是通过编辑/etc/fstab来完成，很方便，但这种方式下，如果硬盘丢失，开机的时候就需要进入恢复模式重置/etc/fstab才能正常进入系统。
+systemd-mount模块也能完成开机自动挂载（它设计出来就是替代/etc/fstab），而且在丢失硬盘的情况下不会影响正常开机，所以尤其适合用它来挂载nfs或者samba共享的目录（因为共享目录很可能会掉线）。
+所以记录以下用systemd-mount挂载nfs和samba的模板和步骤。
+NFS
+假定要把nfs共享目录挂载到本地/mnt/nfs。
+在/etc/systemd/system目录下新建mnt-nfs.mount文件，注意mnt-nfs对应挂载点/mnt/nfs，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount NFS share Wants=network-online.target After=network-online.target [Mount] What=remote_server_ip:/remote/path Where=/mnt/nfs Type=nfs Options=_netdev,auto TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：NFS 服务器和共享路径。将 remote_server_ip:/remote/path 替换为你实际的 NFS 服务器 IP 地址和共享路径。 Where：挂载点的本地路径，即 /mnt/nfs。 Type：文件系统类型，这里是 nfs。 Options：挂载选项，_netdev 表示网络设备挂载，auto 表示在启动时自动挂载。 TimeoutSec：如果挂载操作在指定时间内没有完成，将终止挂载尝试。 WantedBy=multi-user.target：使挂载在系统进入多用户目标（即正常运行级别）时进行。 Samba
+假定要把samba共享目录挂载到本地/mnt/smb。
+在/etc/systemd/system目录下新建mnt-smb.mount文件，注意mnt-smb对应挂载点/mnt/smb，名字必须要对应。
+配置文件内容如下
+[Unit] Description=Mount Samba Share After=network.target [Mount] What=//samba-server/share Where=/mnt/smb Type=cifs Options=credentials=/home/username/.smbcredentials,iocharset=utf8,vers=3.0,uid=1000,gid=1000 TimeoutSec=30 [Install] WantedBy=multi-user.target 参数释义：
+What：Samba 共享的地址（//samba-server/share）。 Where：挂载点（/mnt/smb）。 Options：挂载选项，可以根据需要调整。比如 credentials 是指一个包含用户名和密码的文件（/home/username/.smbcredentials）。 TimeoutSec：挂载操作的超时设置（可根据需要调整）。 最后一步：启用服务
+完成以上配置后，启动服务 &amp; 设置开机启动" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202412/systemd-mount-nfs-and-samba/" /><meta property="article:section" content="202412" />
+<meta property="article:published_time" content="2024-12-22T22:32:26+08:00" />
+<meta property="article:modified_time" content="2024-12-22T22:32:26+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用systemd-mount配置nfs和samba共享的开机自动挂载</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 22, 2024
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/systemd/">systemd</a>
+              <a class="tag" href="https://ruohai.wang/tags/nfs/">NFS</a>
+              <a class="tag" href="https://ruohai.wang/tags/samba/">Samba</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>本文根据chatgpt的回答进行整理。</p>
+<p><img src="https://img.311803.xyz/2024/12/22/34.jpg" alt=""></p>
+<hr>
+<h2 id="正文">正文</h2>
+<p>在linux上给额外的硬盘配置开机自动挂载一般都是通过编辑<code>/etc/fstab</code>来完成，很方便，但这种方式下，如果硬盘丢失，开机的时候就需要进入恢复模式重置<code>/etc/fstab</code>才能正常进入系统。</p>
+<p><code>systemd-mount</code>模块也能完成开机自动挂载（它设计出来就是替代<code>/etc/fstab</code>），而且在丢失硬盘的情况下不会影响正常开机，所以尤其适合用它来挂载nfs或者samba共享的目录（因为共享目录很可能会掉线）。</p>
+<p>所以记录以下用<code>systemd-mount</code>挂载nfs和samba的模板和步骤。</p>
+<blockquote>
+<p>NFS</p>
+</blockquote>
+<p>假定要把nfs共享目录挂载到本地<code>/mnt/nfs</code>。</p>
+<p>在<code>/etc/systemd/system</code>目录下新建<code>mnt-nfs.mount</code>文件，注意<code>mnt-nfs</code>对应挂载点<code>/mnt/nfs</code>，名字必须要对应。</p>
+<p>配置文件内容如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[Unit]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Description</span><span style="color:#f92672">=</span><span style="color:#e6db74">Mount NFS share</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Wants</span><span style="color:#f92672">=</span><span style="color:#e6db74">network-online.target</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">After</span><span style="color:#f92672">=</span><span style="color:#e6db74">network-online.target</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Mount]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">What</span><span style="color:#f92672">=</span><span style="color:#e6db74">remote_server_ip:/remote/path</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Where</span><span style="color:#f92672">=</span><span style="color:#e6db74">/mnt/nfs</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#e6db74">nfs</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Options</span><span style="color:#f92672">=</span><span style="color:#e6db74">_netdev,auto</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">TimeoutSec</span><span style="color:#f92672">=</span><span style="color:#e6db74">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Install]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WantedBy</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-user.target</span>
+</span></span></code></pre></div><p>参数释义：</p>
+<ul>
+<li>What：NFS 服务器和共享路径。将 remote_server_ip:/remote/path 替换为你实际的 NFS 服务器 IP 地址和共享路径。</li>
+<li>Where：挂载点的本地路径，即 /mnt/nfs。</li>
+<li>Type：文件系统类型，这里是 nfs。</li>
+<li>Options：挂载选项，_netdev 表示网络设备挂载，auto 表示在启动时自动挂载。</li>
+<li>TimeoutSec：如果挂载操作在指定时间内没有完成，将终止挂载尝试。</li>
+<li>WantedBy=multi-user.target：使挂载在系统进入多用户目标（即正常运行级别）时进行。</li>
+</ul>
+<blockquote>
+<p>Samba</p>
+</blockquote>
+<p>假定要把samba共享目录挂载到本地<code>/mnt/smb</code>。</p>
+<p>在<code>/etc/systemd/system</code>目录下新建<code>mnt-smb.mount</code>文件，注意<code>mnt-smb</code>对应挂载点<code>/mnt/smb</code>，名字必须要对应。</p>
+<p>配置文件内容如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[Unit]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Description</span><span style="color:#f92672">=</span><span style="color:#e6db74">Mount Samba Share</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">After</span><span style="color:#f92672">=</span><span style="color:#e6db74">network.target</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Mount]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">What</span><span style="color:#f92672">=</span><span style="color:#e6db74">//samba-server/share</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Where</span><span style="color:#f92672">=</span><span style="color:#e6db74">/mnt/smb</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Type</span><span style="color:#f92672">=</span><span style="color:#e6db74">cifs</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Options</span><span style="color:#f92672">=</span><span style="color:#e6db74">credentials=/home/username/.smbcredentials,iocharset=utf8,vers=3.0,uid=1000,gid=1000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">TimeoutSec</span><span style="color:#f92672">=</span><span style="color:#e6db74">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[Install]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WantedBy</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-user.target</span>
+</span></span></code></pre></div><p>参数释义：</p>
+<ul>
+<li>What：Samba 共享的地址（//samba-server/share）。</li>
+<li>Where：挂载点（/mnt/smb）。</li>
+<li>Options：挂载选项，可以根据需要调整。比如 credentials 是指一个包含用户名和密码的文件（/home/username/.smbcredentials）。</li>
+<li>TimeoutSec：挂载操作的超时设置（可根据需要调整）。</li>
+</ul>
+<blockquote>
+<p>最后一步：启用服务</p>
+</blockquote>
+<p>完成以上配置后，启动服务 &amp; 设置开机启动</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl daemon-reload
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now mnt-nfs.mount
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now mnt-smb.mount
+</span></span></code></pre></div><p>🎉</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
