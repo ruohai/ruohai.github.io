@@ -8,7 +8,7 @@
     <language>zh-cn</language>
     <lastBuildDate>Sun, 29 Dec 2024 16:48:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Debian下设置qBittorrent在系统获取到IPv6公网地址以后再启动</title>
+      <title>qBittorrent跟随系统开机启动但无法匹配到IPv6用户的问题解决</title>
       <link>https://ruohai.wang/202412/qbit-start-after-ipv6-address/</link>
       <pubDate>Sun, 29 Dec 2024 16:48:48 +0800</pubDate>
       
