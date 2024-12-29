@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202412/</loc>
-    <lastmod>2024-12-22T22:32:26+08:00</lastmod>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/debian/</loc>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202412/qbit-start-after-ipv6-address/</loc>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/qbittorrent/</loc>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/nfs/</loc>
     <lastmod>2024-12-22T22:32:26+08:00</lastmod>
@@ -14,13 +29,7 @@
     <loc>https://ruohai.wang/tags/systemd/</loc>
     <lastmod>2024-12-22T22:32:26+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2024-12-22T22:32:26+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202412/systemd-mount-nfs-and-samba/</loc>
-    <lastmod>2024-12-22T22:32:26+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2024-12-22T22:32:26+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/pve/</loc>
@@ -42,9 +51,6 @@
     <lastmod>2024-12-18T22:07:59+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/crontab/</loc>
-    <lastmod>2024-12-18T18:45:56+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/debian/</loc>
     <lastmod>2024-12-18T18:45:56+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202412/crontab-java-not-run/</loc>
@@ -427,9 +433,6 @@
   </url><url>
     <loc>https://ruohai.wang/202404/ddns-go-use-shell-command-to-get-valid-ipv6-addr/</loc>
     <lastmod>2024-04-29T23:55:45+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/qbittorrent/</loc>
-    <lastmod>2024-04-27T07:46:15+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202404/qbittorrent-install-on-ws1408-and-openwrt/</loc>
     <lastmod>2024-04-27T07:46:15+08:00</lastmod>

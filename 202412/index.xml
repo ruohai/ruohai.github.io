@@ -6,7 +6,24 @@
     <description>Recent content in 202412s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 22 Dec 2024 22:32:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Dec 2024 16:48:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202412/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian下设置qBittorrent在系统获取到IPv6公网地址以后再启动</title>
+      <link>https://ruohai.wang/202412/qbit-start-after-ipv6-address/</link>
+      <pubDate>Sun, 29 Dec 2024 16:48:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202412/qbit-start-after-ipv6-address/</guid>
+      <description>前言 本文根据chatgpt的答案进行整理发布。
+问题描述 在无头debian系统上装了qbittorrent-nox并设置了开机启动，启动脚本如下：
+[Unit] Description=qBittorrent-nox service for user %I Documentation=man:qbittorrent-nox(1) Wants=network-online.target After=local-fs.target network-online.target nss-lookup.target [Service] Type=simple PrivateTmp=false User=%i ExecStart=/usr/bin/qbittorrent-nox TimeoutStopSec=1800 [Install] WantedBy=multi-user.target 在防火墙中也放行了ipv6的端口（有ipv6的公网地址）。
+[ 6] 12345 (v6) ALLOW IN Anywhere (v6) 但发现在系统重启之后，qbit中的下载任务无法匹配到ipv6的用户，如果此时手动重启qbit，下载任务就可以立即匹配到ipv6用户。
+初步判断是系统重启之后，在获取到网络和获取到ipv6公网地址之间存在一个时间差，但qbit在这个时间差中间启动了，导致qbit无法获取到ipv6公网地址。
+问题解决 修改qbit的systemd启动脚本，增加对host是否获取到ipv6公网地址的判断逻辑。
+首先用ip addr命令获取系统网卡设备的名称
+然后在qbit的启动脚本中添加一段ExecStartPre代码，其它部分不需要修改。
+[Unit] Description=qBittorrent-nox service for user %I Documentation=man:qbittorrent-nox(1) Wants=network-online.target After=local-fs.target network-online.target nss-lookup.target ExecStartPre=/bin/bash -c &amp;#39;until ip -6 addr show dev enp6s18 | grep &amp;#34;inet6 .*global&amp;#34;; do sleep 1; done&amp;#39; [Service] Type=simple PrivateTmp=false User=%i ExecStart=/usr/bin/qbittorrent-nox TimeoutStopSec=1800 [Install] WantedBy=multi-user.</description>
+    </item>
+    
     <item>
       <title>使用systemd-mount配置nfs和samba共享的开机自动挂载</title>
       <link>https://ruohai.wang/202412/systemd-mount-nfs-and-samba/</link>
