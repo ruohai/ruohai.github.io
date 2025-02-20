@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>NAS的CPU该如何选择？算力换时间 VS 时间换算力 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NAS的CPU该如何选择？算力换时间 VS 时间换算力"/>
+<meta name="twitter:description" content="前言 本文根据grok3 ai的回答进行整理
+分析 对于家用NAS（网络附加存储），在选择是用“算力换时间”还是“时间换算力”时，确实需要根据你的使用场景和对功耗、电费的关注来权衡。以下是一些分析和建议：
+算力换时间（高性能硬件，快速完成任务） 优点： 任务处理速度快，比如文件传输、数据备份、转码（如果你用NAS看视频）等都能迅速完成。 适合需要高性能的场景，例如4K视频转码、虚拟机运行或多用户并发访问。 缺点： 高性能硬件（如更强的CPU、更多内存）通常功耗较高。 即便在空闲时，高端NAS的待机功耗也可能比低功耗设备高。 硬件成本和电费开支会增加。 功耗影响： 以常见的家用NAS为例，低端设备（如双盘位Synology DS223j）待机功耗约10-15W，而高端型号（带Intel/AMD CPU的DS923&#43;）可能达到30-50W甚至更高，负载时功耗还会显著上升。 如果每天运行24小时，按中国平均电费0.6元/度计算，低端NAS一年电费约50-80元，而高端NAS可能翻倍甚至更多。 适用场景：如果你对速度要求高（比如频繁处理大文件或需要实时服务），且不在意稍高的电费，算力换时间更适合。
+时间换算力（低功耗硬件，慢点无所谓） 优点： 低功耗硬件（比如ARM架构的CPU）能极大减少电费开支。 对于普通家用需求（如文件存储、轻量备份、照片管理），性能通常够用。 待机功耗低，长期运行成本更可控。 缺点： 处理复杂任务时速度慢，比如转码视频、运行Docker容器或大数据迁移会明显拖时间。 不适合高负载或多任务并发的场景。 功耗影响： 以低功耗NAS（如Realtek RTD1619B芯片的型号）为例，待机功耗可能仅5-10W，即使满载也很少超过20W。 按同样电费计算，一年电费可能仅30-50元，非常省电。 适用场景：如果你主要用NAS存文件、做简单备份，不常跑重负载任务，且特别在意功耗和电费，时间换算力是更好的选择。
+你的需求：功耗和电费优先 既然你明确提到在意功耗和电费，建议优先选择“时间换算力”的方案，也就是选用低功耗的NAS设备。以下是一些具体建议：
+硬件选择： 推荐入门级或低功耗NAS，比如Synology DS223j（Realtek RTD1619B芯片）、QNAP TS-233等，功耗低且满足基础存储需求。 硬盘选择节能型（如WD Red或Seagate IronWolf的低转速型号），避免高功耗的企业级硬盘。 优化设置： 启用硬盘休眠功能，闲置时降低功耗。 避免常开不必要的服务（如媒体服务器、虚拟机）。 性能权衡： 如果偶尔需要高算力任务（比如视频转码），可以考虑用PC临时处理，而不是让NAS长期承担高负载。 折中方案 如果你既想要低功耗，又偶尔需要高性能，可以选择中端NAS（如Synology DS723&#43;），搭配节能设置：
+平时低功耗运行基本任务。 需要算力时临时提升性能，任务完成后进入休眠。 不过这种方案硬件成本稍高，适合预算宽裕的用户。 结论 综合来看，既然你更在意功耗和电费，时间换算力（低功耗硬件）是目前最适合你的选择。推荐从低功耗设备入手，满足日常需求的同时把电费控制在最低。如果未来需求增加，再考虑升级硬件或优化方案。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="NAS的CPU该如何选择？算力换时间 VS 时间换算力" />
+<meta property="og:description" content="前言 本文根据grok3 ai的回答进行整理
+分析 对于家用NAS（网络附加存储），在选择是用“算力换时间”还是“时间换算力”时，确实需要根据你的使用场景和对功耗、电费的关注来权衡。以下是一些分析和建议：
+算力换时间（高性能硬件，快速完成任务） 优点： 任务处理速度快，比如文件传输、数据备份、转码（如果你用NAS看视频）等都能迅速完成。 适合需要高性能的场景，例如4K视频转码、虚拟机运行或多用户并发访问。 缺点： 高性能硬件（如更强的CPU、更多内存）通常功耗较高。 即便在空闲时，高端NAS的待机功耗也可能比低功耗设备高。 硬件成本和电费开支会增加。 功耗影响： 以常见的家用NAS为例，低端设备（如双盘位Synology DS223j）待机功耗约10-15W，而高端型号（带Intel/AMD CPU的DS923&#43;）可能达到30-50W甚至更高，负载时功耗还会显著上升。 如果每天运行24小时，按中国平均电费0.6元/度计算，低端NAS一年电费约50-80元，而高端NAS可能翻倍甚至更多。 适用场景：如果你对速度要求高（比如频繁处理大文件或需要实时服务），且不在意稍高的电费，算力换时间更适合。
+时间换算力（低功耗硬件，慢点无所谓） 优点： 低功耗硬件（比如ARM架构的CPU）能极大减少电费开支。 对于普通家用需求（如文件存储、轻量备份、照片管理），性能通常够用。 待机功耗低，长期运行成本更可控。 缺点： 处理复杂任务时速度慢，比如转码视频、运行Docker容器或大数据迁移会明显拖时间。 不适合高负载或多任务并发的场景。 功耗影响： 以低功耗NAS（如Realtek RTD1619B芯片的型号）为例，待机功耗可能仅5-10W，即使满载也很少超过20W。 按同样电费计算，一年电费可能仅30-50元，非常省电。 适用场景：如果你主要用NAS存文件、做简单备份，不常跑重负载任务，且特别在意功耗和电费，时间换算力是更好的选择。
+你的需求：功耗和电费优先 既然你明确提到在意功耗和电费，建议优先选择“时间换算力”的方案，也就是选用低功耗的NAS设备。以下是一些具体建议：
+硬件选择： 推荐入门级或低功耗NAS，比如Synology DS223j（Realtek RTD1619B芯片）、QNAP TS-233等，功耗低且满足基础存储需求。 硬盘选择节能型（如WD Red或Seagate IronWolf的低转速型号），避免高功耗的企业级硬盘。 优化设置： 启用硬盘休眠功能，闲置时降低功耗。 避免常开不必要的服务（如媒体服务器、虚拟机）。 性能权衡： 如果偶尔需要高算力任务（比如视频转码），可以考虑用PC临时处理，而不是让NAS长期承担高负载。 折中方案 如果你既想要低功耗，又偶尔需要高性能，可以选择中端NAS（如Synology DS723&#43;），搭配节能设置：
+平时低功耗运行基本任务。 需要算力时临时提升性能，任务完成后进入休眠。 不过这种方案硬件成本稍高，适合预算宽裕的用户。 结论 综合来看，既然你更在意功耗和电费，时间换算力（低功耗硬件）是目前最适合你的选择。推荐从低功耗设备入手，满足日常需求的同时把电费控制在最低。如果未来需求增加，再考虑升级硬件或优化方案。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202502/how-to-select-nas-cpu/" /><meta property="article:section" content="202502" />
+<meta property="article:published_time" content="2025-02-20T14:43:33+08:00" />
+<meta property="article:modified_time" content="2025-02-20T14:43:33+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">NAS的CPU该如何选择？算力换时间 VS 时间换算力</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 20, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/nas/">NAS</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>本文根据grok3 ai的回答进行整理</p>
+<p><img src="https://img.311803.xyz/2025/02/20/01.jpg" alt=""></p>
+<hr>
+<h2 id="分析">分析</h2>
+<p>对于家用NAS（网络附加存储），在选择是用“算力换时间”还是“时间换算力”时，确实需要根据你的使用场景和对功耗、电费的关注来权衡。以下是一些分析和建议：</p>
+<blockquote>
+<ol>
+<li><strong>算力换时间（高性能硬件，快速完成任务）</strong></li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>任务处理速度快，比如文件传输、数据备份、转码（如果你用NAS看视频）等都能迅速完成。</li>
+<li>适合需要高性能的场景，例如4K视频转码、虚拟机运行或多用户并发访问。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>高性能硬件（如更强的CPU、更多内存）通常功耗较高。</li>
+<li>即便在空闲时，高端NAS的待机功耗也可能比低功耗设备高。</li>
+<li>硬件成本和电费开支会增加。</li>
+</ul>
+</li>
+<li><strong>功耗影响</strong>：
+<ul>
+<li>以常见的家用NAS为例，低端设备（如双盘位Synology DS223j）待机功耗约10-15W，而高端型号（带Intel/AMD CPU的DS923+）可能达到30-50W甚至更高，负载时功耗还会显著上升。</li>
+<li>如果每天运行24小时，按中国平均电费0.6元/度计算，低端NAS一年电费约50-80元，而高端NAS可能翻倍甚至更多。</li>
+</ul>
+</li>
+</ul>
+<p><strong>适用场景</strong>：如果你对速度要求高（比如频繁处理大文件或需要实时服务），且不在意稍高的电费，算力换时间更适合。</p>
+<blockquote>
+<ol start="2">
+<li><strong>时间换算力（低功耗硬件，慢点无所谓）</strong></li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>低功耗硬件（比如ARM架构的CPU）能极大减少电费开支。</li>
+<li>对于普通家用需求（如文件存储、轻量备份、照片管理），性能通常够用。</li>
+<li>待机功耗低，长期运行成本更可控。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>处理复杂任务时速度慢，比如转码视频、运行Docker容器或大数据迁移会明显拖时间。</li>
+<li>不适合高负载或多任务并发的场景。</li>
+</ul>
+</li>
+<li><strong>功耗影响</strong>：
+<ul>
+<li>以低功耗NAS（如Realtek RTD1619B芯片的型号）为例，待机功耗可能仅5-10W，即使满载也很少超过20W。</li>
+<li>按同样电费计算，一年电费可能仅30-50元，非常省电。</li>
+</ul>
+</li>
+</ul>
+<p><strong>适用场景</strong>：如果你主要用NAS存文件、做简单备份，不常跑重负载任务，且特别在意功耗和电费，时间换算力是更好的选择。</p>
+<blockquote>
+<ol start="3">
+<li><strong>你的需求：功耗和电费优先</strong></li>
+</ol>
+</blockquote>
+<p>既然你明确提到在意功耗和电费，建议优先选择“时间换算力”的方案，也就是选用低功耗的NAS设备。以下是一些具体建议：</p>
+<ul>
+<li><strong>硬件选择</strong>：
+<ul>
+<li>推荐入门级或低功耗NAS，比如Synology DS223j（Realtek RTD1619B芯片）、QNAP TS-233等，功耗低且满足基础存储需求。</li>
+<li>硬盘选择节能型（如WD Red或Seagate IronWolf的低转速型号），避免高功耗的企业级硬盘。</li>
+</ul>
+</li>
+<li><strong>优化设置</strong>：
+<ul>
+<li>启用硬盘休眠功能，闲置时降低功耗。</li>
+<li>避免常开不必要的服务（如媒体服务器、虚拟机）。</li>
+</ul>
+</li>
+<li><strong>性能权衡</strong>：
+<ul>
+<li>如果偶尔需要高算力任务（比如视频转码），可以考虑用PC临时处理，而不是让NAS长期承担高负载。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ol start="4">
+<li><strong>折中方案</strong></li>
+</ol>
+</blockquote>
+<p>如果你既想要低功耗，又偶尔需要高性能，可以选择中端NAS（如Synology DS723+），搭配节能设置：</p>
+<ul>
+<li>平时低功耗运行基本任务。</li>
+<li>需要算力时临时提升性能，任务完成后进入休眠。
+不过这种方案硬件成本稍高，适合预算宽裕的用户。</li>
+</ul>
+<blockquote>
+<ol start="5">
+<li><strong>结论</strong></li>
+</ol>
+</blockquote>
+<p>综合来看，既然你更在意功耗和电费，<strong>时间换算力</strong>（低功耗硬件）是目前最适合你的选择。推荐从低功耗设备入手，满足日常需求的同时把电费控制在最低。如果未来需求增加，再考虑升级硬件或优化方案。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
