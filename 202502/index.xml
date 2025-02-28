@@ -6,7 +6,19 @@
     <description>Recent content in 202502s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Feb 2025 14:43:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202502/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Feb 2025 21:55:14 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202502/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用终端修改飞牛系统（fnOS）的IP地址</title>
+      <link>https://ruohai.wang/202502/fnos-edit-ip-via-terminal/</link>
+      <pubDate>Fri, 28 Feb 2025 21:55:14 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202502/fnos-edit-ip-via-terminal/</guid>
+      <description>fnos的网络配置文件的路径有别于debian官方，不是/etc/network/interfaces，也不是/etc/netplan/xxxx.yaml。
+fnos的网络配置文件正确路径是/etc/NetworkManager/system-connections/xxxx.nmconnection。
+用nano/vim编辑以上文件即可，修改后通过systemctl restart NetworkManager.service重启网络服务后生效。
+参考文章 飞牛fnOS中如何通过命令行修改IP地址~关键时刻可能会成为你的救命稻草~ 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>NAS的CPU该如何选择？算力换时间 VS 时间换算力</title>
       <link>https://ruohai.wang/202502/how-to-select-nas-cpu/</link>
