@@ -23,10 +23,10 @@
 在弹窗中调整大小
 此时通过lsblk命令可以看到对应的磁盘/dev/sda已经变成从原来的10GB变成了15GB，但分区sda1、raid1阵列md0以及存储空间trim_xxxx的空间大小依然还是10GB。
 接下去操作分成四步，依次是：
-1. 扩容磁盘分区
-2. 扩容阵列
-3. 扩容lvm卷
-4. 扩容存储空间
+1. 扩容磁盘分区sda1
+2. 扩容阵列md0
+3. 扩容lvm卷trim-xxxx
+4. 扩容存储空间vol1
 tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用dd命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。
 第一步：扩容磁盘分区
 分区扩容依然用到我们熟悉的fdisk，如果是gpt分区的话可以用gdisk，根据自己的情况使用。
@@ -58,10 +58,10 @@ sudo lvextend -l &#43;100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec307
 在弹窗中调整大小
 此时通过lsblk命令可以看到对应的磁盘/dev/sda已经变成从原来的10GB变成了15GB，但分区sda1、raid1阵列md0以及存储空间trim_xxxx的空间大小依然还是10GB。
 接下去操作分成四步，依次是：
-1. 扩容磁盘分区
-2. 扩容阵列
-3. 扩容lvm卷
-4. 扩容存储空间
+1. 扩容磁盘分区sda1
+2. 扩容阵列md0
+3. 扩容lvm卷trim-xxxx
+4. 扩容存储空间vol1
 tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用dd命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。
 第一步：扩容磁盘分区
 分区扩容依然用到我们熟悉的fdisk，如果是gpt分区的话可以用gdisk，根据自己的情况使用。
@@ -162,10 +162,10 @@ sudo lvextend -l &#43;100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec307
 <p>此时通过<code>lsblk</code>命令可以看到对应的磁盘<code>/dev/sda</code>已经变成从原来的10GB变成了15GB，但分区<code>sda1</code>、raid1阵列<code>md0</code>以及存储空间<code>trim_xxxx</code>的空间大小依然还是10GB。</p>
 <p><img src="https://img.311803.xyz/2025/03/01/2231.jpg" alt=""></p>
 <p>接下去操作分成四步，依次是：</p>
-<p><code>1. 扩容磁盘分区</code></p>
-<p><code>2. 扩容阵列</code></p>
-<p><code>3. 扩容lvm卷</code></p>
-<p><code>4. 扩容存储空间</code></p>
+<p><code>1. 扩容磁盘分区sda1</code></p>
+<p><code>2. 扩容阵列md0</code></p>
+<p><code>3. 扩容lvm卷trim-xxxx</code></p>
+<p><code>4. 扩容存储空间vol1</code></p>
 <p>tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用<code>dd</code>命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。</p>
 <blockquote>
 <p>第一步：扩容磁盘分区</p>
