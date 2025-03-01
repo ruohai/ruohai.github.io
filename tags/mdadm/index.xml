@@ -6,7 +6,47 @@
     <description>Recent content in mdadm on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 14 Nov 2023 12:44:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/mdadm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Mar 2025 22:17:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/mdadm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</title>
+      <link>https://ruohai.wang/202502/fnos-expand-vol-size/</link>
+      <pubDate>Sat, 01 Mar 2025 22:17:00 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202502/fnos-expand-vol-size/</guid>
+      <description>前言 飞牛系统的存储空间用的mdadm + lvm + btrfs的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先d再n然后w最后resize2fs就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。
+自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。
+注意：操作有风险，记得给系统做快照、备份
+操作 磁盘扩容的第一步肯定是换更大的硬盘或者在虚拟机host（pve或者esxi）中调整虚拟磁盘的大小。
+这里以pve为例
+在弹窗中调整大小
+此时通过lsblk命令可以看到对应的磁盘/dev/sda已经变成从原来的10GB变成了15GB，但分区sda1、raid1阵列md0以及存储空间trim_xxxx的空间大小依然还是10GB。
+接下去操作分成四步，依次是：
+1. 扩容磁盘分区
+2. 扩容阵列
+3. 扩容lvm卷
+4. 扩容存储空间
+tips: 如果物理意义上的更换更大容量的硬盘，可以直接换盘让阵列重建，或者用dd命令把旧盘克隆到新盘，然后接下去步骤就完全一样了。
+第一步：扩容磁盘分区
+分区扩容依然用到我们熟悉的fdisk，如果是gpt分区的话可以用gdisk，根据自己的情况使用。
+操作步骤如图所示
+步骤解析：
+第一步是选择要扩容的磁盘，sudo fdisk /dev/sda，会要求输入密码认证，红字提示意思是分区大小和磁盘容量不符（废话我刚扩容了磁盘） 第二步是删除旧分区，敲字母d即可。这一步以及后面几步都无需担心数据丢失，因为操作只保留内存中，只要不保存都不会写入磁盘 第三步是创建新分区，敲字母n即可，然后会依次提示新分区的编号、新分区的起始扇区、新分区的结束扇区，都按回车用默认值 第四步出现红字提示说磁盘上有个旧分区表的签名，是否删除，敲字母n不删除 第五步，确认以上操作都没有问题，敲字母w保存本次操作 至此，分区扩容就完成了。我们用1sblk命令可以看到现在分区/dev/sda1的容量已经从10GB变成15GB惹。
+第二步：扩容阵列
+首先确认要扩容的阵列的名字，我这里的阵列是md0。
+可以先用mdadm -D /dev/md0命令查看阵列的状态
+可以看到阵列md0当前的容量是10GB，状态是clean。
+注意扩容阵列之前一定要留意阵列的状态，不要在非clean状态下扩容，说不定阵列会炸。
+然后用命令mdadm --grow /dev/md0 --size=max进行扩容，会有提示阵列已经扩容到15GB，此时再用mdadm -D /dev/md0可以看到阵列已经变成15GB惹。
+用lsblk再次确认阵列扩容结果
+第三步：扩容lvm卷
+用vgs命令查看当前的lvm卷的信息，可以看到还是10GB。
+用pvresize /dev/md0命令将阵列md0的扩容信息同步给lvm
+然后用vgs确认lvm卷的空间信息，可以看到对应的lvm卷已经多出了5GB的剩余空间。
+接着继续扩容这个lvm卷，可以先用df -h命令获取这个lvm卷的完整路径名（注意不要忘记最后面的那个-0）
+用以下命令扩容
+sudo lvextend -l +100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec30762f9-0 ## 成功提示 Size of logical volume trim_ec850a20_129d_4f06_ad54_21eec30762f9/0 changed from &amp;lt;9.</description>
+    </item>
+    
     <item>
       <title>往mdadm创建的raid5阵列中添加新硬盘以扩容</title>
       <link>https://ruohai.wang/202311/mdadm-add-new-hdd-to-raid5-arrary/</link>
