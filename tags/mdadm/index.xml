@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 01 Mar 2025 22:17:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/mdadm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</title>
-      <link>https://ruohai.wang/202502/fnos-expand-vol-size/</link>
+      <link>https://ruohai.wang/202503/fnos-expand-vol-size/</link>
       <pubDate>Sat, 01 Mar 2025 22:17:00 +0800</pubDate>
       
-      <guid>https://ruohai.wang/202502/fnos-expand-vol-size/</guid>
+      <guid>https://ruohai.wang/202503/fnos-expand-vol-size/</guid>
       <description>前言 飞牛系统的存储空间用的mdadm + lvm + btrfs的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先d再n然后w最后resize2fs就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。
 自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。
 注意：操作有风险，记得给系统做快照、备份

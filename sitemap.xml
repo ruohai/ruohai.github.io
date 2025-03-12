@@ -2,8 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ruohai.wang/202502/</loc>
-    <lastmod>2025-03-01T22:17:00+08:00</lastmod>
+    <loc>https://ruohai.wang/202503/</loc>
+    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202503/laptop-linux-server-config/</loc>
+    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/btrfs/</loc>
     <lastmod>2025-03-01T22:17:00+08:00</lastmod>
@@ -17,14 +29,11 @@
     <loc>https://ruohai.wang/tags/mdadm/</loc>
     <lastmod>2025-03-01T22:17:00+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
+    <loc>https://ruohai.wang/202503/fnos-expand-vol-size/</loc>
     <lastmod>2025-03-01T22:17:00+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2025-03-01T22:17:00+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/202502/fnos-expand-vol-size/</loc>
-    <lastmod>2025-03-01T22:17:00+08:00</lastmod>
+    <loc>https://ruohai.wang/202502/</loc>
+    <lastmod>2025-02-28T21:55:14+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202502/fnos-edit-ip-via-terminal/</loc>
     <lastmod>2025-02-28T21:55:14+08:00</lastmod>
@@ -319,9 +328,6 @@
   </url><url>
     <loc>https://ruohai.wang/202407/memos-update-from-0.15-to-0.17/</loc>
     <lastmod>2024-07-28T17:01:59+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2024-07-25T16:02:37+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202407/samba-enable-symlinks/</loc>
     <lastmod>2024-07-25T16:02:37+08:00</lastmod>

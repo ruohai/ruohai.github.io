@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容"/>
+<meta name="twitter:description" content="前言 飞牛系统的存储空间用的mdadm &#43; lvm &#43; btrfs的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先d再n然后w最后resize2fs就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。
+自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。
+注意：操作有风险，记得给系统做快照、备份
+操作 磁盘扩容的第一步肯定是换更大的硬盘或者在虚拟机host（pve或者esxi）中调整虚拟磁盘的大小。
+这里以pve为例
+在弹窗中调整大小
+此时通过lsblk命令可以看到对应的磁盘/dev/sda已经变成从原来的10GB变成了15GB，但分区sda1、raid1阵列md0以及存储空间trim_xxxx的空间大小依然还是10GB。
+接下去操作分成四步，依次是：
+1. 扩容磁盘分区sda1
+2. 扩容阵列md0
+3. 扩容lvm卷trim-xxxx
+4. 扩容存储空间vol1
+tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用dd命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。
+第一步：扩容磁盘分区
+分区扩容依然用到我们熟悉的fdisk，如果是gpt分区的话可以用gdisk，根据自己的情况使用。
+操作步骤如图所示
+步骤解析：
+第一步是选择要扩容的磁盘，sudo fdisk /dev/sda，会要求输入密码认证，红字提示意思是分区大小和磁盘容量不符（废话我刚扩容了磁盘） 第二步是删除旧分区，敲字母d即可。这一步以及后面几步都无需担心数据丢失，因为操作只保留内存中，只要不保存都不会写入磁盘 第三步是创建新分区，敲字母n即可，然后会依次提示新分区的编号、新分区的起始扇区、新分区的结束扇区，都按回车用默认值 第四步出现红字提示说磁盘上有个旧分区表的签名，是否删除，敲字母n不删除 第五步，确认以上操作都没有问题，敲字母w保存本次操作 至此，分区扩容就完成了。我们用1sblk命令可以看到现在分区/dev/sda1的容量已经从10GB变成15GB惹。
+tips：如果是多盘阵列，则需要依次扩容每个盘位的分区。
+第二步：扩容阵列
+首先确认要扩容的阵列的名字，我这里的阵列是md0。注意，在上一步中需要确认阵列中所有硬盘都已经完成了分区扩容。
+可以先用mdadm -D /dev/md0命令查看阵列的状态
+可以看到阵列md0当前的容量是10GB，状态是clean。
+注意扩容阵列之前一定要留意阵列的状态，不要在非clean状态下扩容，说不定阵列会炸。
+然后用命令mdadm --grow /dev/md0 --size=max进行扩容，会有提示阵列已经扩容到15GB，此时再用mdadm -D /dev/md0可以看到阵列已经变成15GB惹。
+用lsblk再次确认阵列扩容结果
+第三步：扩容lvm卷
+用vgs命令查看当前的lvm卷的信息，可以看到还是10GB。
+用pvresize /dev/md0命令将阵列md0的扩容信息同步给lvm
+然后用vgs确认lvm卷的空间信息，可以看到对应的lvm卷已经多出了5GB的剩余空间。
+接着继续扩容这个lvm卷，可以先用df -h命令获取这个lvm卷的完整路径名（注意不要忘记最后面的那个-0）
+用以下命令扩容
+sudo lvextend -l &#43;100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec30762f9-0 ## 成功提示 Size of logical volume trim_ec850a20_129d_4f06_ad54_21eec30762f9/0 changed from &lt;9."/>
+
+    <meta property="og:title" content="飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容" />
+<meta property="og:description" content="前言 飞牛系统的存储空间用的mdadm &#43; lvm &#43; btrfs的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先d再n然后w最后resize2fs就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。
+自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。
+注意：操作有风险，记得给系统做快照、备份
+操作 磁盘扩容的第一步肯定是换更大的硬盘或者在虚拟机host（pve或者esxi）中调整虚拟磁盘的大小。
+这里以pve为例
+在弹窗中调整大小
+此时通过lsblk命令可以看到对应的磁盘/dev/sda已经变成从原来的10GB变成了15GB，但分区sda1、raid1阵列md0以及存储空间trim_xxxx的空间大小依然还是10GB。
+接下去操作分成四步，依次是：
+1. 扩容磁盘分区sda1
+2. 扩容阵列md0
+3. 扩容lvm卷trim-xxxx
+4. 扩容存储空间vol1
+tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用dd命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。
+第一步：扩容磁盘分区
+分区扩容依然用到我们熟悉的fdisk，如果是gpt分区的话可以用gdisk，根据自己的情况使用。
+操作步骤如图所示
+步骤解析：
+第一步是选择要扩容的磁盘，sudo fdisk /dev/sda，会要求输入密码认证，红字提示意思是分区大小和磁盘容量不符（废话我刚扩容了磁盘） 第二步是删除旧分区，敲字母d即可。这一步以及后面几步都无需担心数据丢失，因为操作只保留内存中，只要不保存都不会写入磁盘 第三步是创建新分区，敲字母n即可，然后会依次提示新分区的编号、新分区的起始扇区、新分区的结束扇区，都按回车用默认值 第四步出现红字提示说磁盘上有个旧分区表的签名，是否删除，敲字母n不删除 第五步，确认以上操作都没有问题，敲字母w保存本次操作 至此，分区扩容就完成了。我们用1sblk命令可以看到现在分区/dev/sda1的容量已经从10GB变成15GB惹。
+tips：如果是多盘阵列，则需要依次扩容每个盘位的分区。
+第二步：扩容阵列
+首先确认要扩容的阵列的名字，我这里的阵列是md0。注意，在上一步中需要确认阵列中所有硬盘都已经完成了分区扩容。
+可以先用mdadm -D /dev/md0命令查看阵列的状态
+可以看到阵列md0当前的容量是10GB，状态是clean。
+注意扩容阵列之前一定要留意阵列的状态，不要在非clean状态下扩容，说不定阵列会炸。
+然后用命令mdadm --grow /dev/md0 --size=max进行扩容，会有提示阵列已经扩容到15GB，此时再用mdadm -D /dev/md0可以看到阵列已经变成15GB惹。
+用lsblk再次确认阵列扩容结果
+第三步：扩容lvm卷
+用vgs命令查看当前的lvm卷的信息，可以看到还是10GB。
+用pvresize /dev/md0命令将阵列md0的扩容信息同步给lvm
+然后用vgs确认lvm卷的空间信息，可以看到对应的lvm卷已经多出了5GB的剩余空间。
+接着继续扩容这个lvm卷，可以先用df -h命令获取这个lvm卷的完整路径名（注意不要忘记最后面的那个-0）
+用以下命令扩容
+sudo lvextend -l &#43;100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec30762f9-0 ## 成功提示 Size of logical volume trim_ec850a20_129d_4f06_ad54_21eec30762f9/0 changed from &lt;9." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202503/fnos-expand-vol-size/" /><meta property="article:section" content="202503" />
+<meta property="article:published_time" content="2025-03-01T22:17:00+08:00" />
+<meta property="article:modified_time" content="2025-03-01T22:17:00+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 1, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
+              <a class="tag" href="https://ruohai.wang/tags/mdadm/">mdadm</a>
+              <a class="tag" href="https://ruohai.wang/tags/lvm/">LVM</a>
+              <a class="tag" href="https://ruohai.wang/tags/btrfs/">btrfs</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>飞牛系统的存储空间用的<code>mdadm + lvm + btrfs</code>的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先<code>d</code>再<code>n</code>然后<code>w</code>最后<code>resize2fs</code>就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。</p>
+<p>自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。</p>
+<p><strong>注意：操作有风险，记得给系统做快照、备份</strong></p>
+<hr>
+<h2 id="操作">操作</h2>
+<p>磁盘扩容的第一步肯定是换更大的硬盘或者在虚拟机host（pve或者esxi）中调整虚拟磁盘的大小。</p>
+<p>这里以pve为例</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2227.jpg" alt=""></p>
+<p>在弹窗中调整大小</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2228.jpg" alt=""></p>
+<p>此时通过<code>lsblk</code>命令可以看到对应的磁盘<code>/dev/sda</code>已经变成从原来的10GB变成了15GB，但分区<code>sda1</code>、raid1阵列<code>md0</code>以及存储空间<code>trim_xxxx</code>的空间大小依然还是10GB。</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2231.jpg" alt=""></p>
+<p>接下去操作分成四步，依次是：</p>
+<p><code>1. 扩容磁盘分区sda1</code></p>
+<p><code>2. 扩容阵列md0</code></p>
+<p><code>3. 扩容lvm卷trim-xxxx</code></p>
+<p><code>4. 扩容存储空间vol1</code></p>
+<p>tips: 如果是换更大容量的硬盘，可以直接换盘让阵列重建，或者用<code>dd</code>命令把旧盘克隆到新盘，后面的步骤就和下面的操作完全一样了。</p>
+<blockquote>
+<p>第一步：扩容磁盘分区</p>
+</blockquote>
+<p>分区扩容依然用到我们熟悉的<code>fdisk</code>，如果是gpt分区的话可以用<code>gdisk</code>，根据自己的情况使用。</p>
+<p>操作步骤如图所示</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2246.jpg" alt=""></p>
+<p>步骤解析：</p>
+<ol>
+<li>第一步是选择要扩容的磁盘，<code>sudo fdisk /dev/sda</code>，会要求输入密码认证，红字提示意思是分区大小和磁盘容量不符（废话我刚扩容了磁盘）</li>
+<li>第二步是删除旧分区，敲字母<code>d</code>即可。这一步以及后面几步都无需担心数据丢失，因为操作只保留内存中，只要不保存都不会写入磁盘</li>
+<li>第三步是创建新分区，敲字母<code>n</code>即可，然后会依次提示新分区的编号、新分区的起始扇区、新分区的结束扇区，都按回车用默认值</li>
+<li>第四步出现红字提示说磁盘上有个旧分区表的签名，是否删除，敲字母<code>n</code>不删除</li>
+<li>第五步，确认以上操作都没有问题，敲字母<code>w</code>保存本次操作</li>
+</ol>
+<p>至此，分区扩容就完成了。我们用<code>1sblk</code>命令可以看到现在分区<code>/dev/sda1</code>的容量已经从10GB变成15GB惹。</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2257.jpg" alt=""></p>
+<p>tips：如果是多盘阵列，则需要依次扩容每个盘位的分区。</p>
+<blockquote>
+<p>第二步：扩容阵列</p>
+</blockquote>
+<p>首先确认要扩容的阵列的名字，我这里的阵列是<code>md0</code>。注意，在上一步中需要确认阵列中所有硬盘都已经完成了分区扩容。</p>
+<p>可以先用<code>mdadm -D /dev/md0</code>命令查看阵列的状态</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2313.jpg" alt=""></p>
+<p>可以看到阵列<code>md0</code>当前的容量是10GB，状态是<code>clean</code>。</p>
+<p>注意扩容阵列之前一定要留意阵列的状态，不要在非clean状态下扩容，说不定阵列会炸。</p>
+<p>然后用命令<code>mdadm --grow /dev/md0 --size=max</code>进行扩容，会有提示阵列已经扩容到15GB，此时再用<code>mdadm -D /dev/md0</code>可以看到阵列已经变成15GB惹。</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2320.jpg" alt=""></p>
+<p>用<code>lsblk</code>再次确认阵列扩容结果</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2323.jpg" alt=""></p>
+<blockquote>
+<p>第三步：扩容lvm卷</p>
+</blockquote>
+<p>用<code>vgs</code>命令查看当前的lvm卷的信息，可以看到还是10GB。</p>
+<p><img src="https://img.311803.xyz/2025/03/01/0023.jpg" alt=""></p>
+<p>用<code>pvresize /dev/md0</code>命令将阵列md0的扩容信息同步给lvm</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2332.jpg" alt=""></p>
+<p>然后用<code>vgs</code>确认lvm卷的空间信息，可以看到对应的lvm卷已经多出了5GB的剩余空间。</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2334.jpg" alt=""></p>
+<p>接着继续扩容这个lvm卷，可以先用<code>df -h</code>命令获取这个lvm卷的完整路径名（注意不要忘记最后面的那个<code>-0</code>）</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2339.jpg" alt=""></p>
+<p>用以下命令扩容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo lvextend -l +100%FREE /dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec30762f9-0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 成功提示</span>
+</span></span><span style="display:flex;"><span>Size of logical volume trim_ec850a20_129d_4f06_ad54_21eec30762f9/0 changed from &lt;9.99 GiB <span style="color:#f92672">(</span><span style="color:#ae81ff">2557</span> extents<span style="color:#f92672">)</span> to &lt;14.99 GiB <span style="color:#f92672">(</span><span style="color:#ae81ff">3837</span> extents<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>  Logical volume trim_ec850a20_129d_4f06_ad54_21eec30762f9/0 successfully resized.
+</span></span></code></pre></div><p>用<code>vgs</code>和<code>lsblk</code>可以看到lvm卷已经完成扩容</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2349.jpg" alt=""></p>
+<blockquote>
+<p>第四步：扩容存储空间</p>
+</blockquote>
+<p>马上要大功告成了。</p>
+<p>飞牛的存储空间底层用的是btrfs文件系统，我要扩容的存储空间是<code>vol1</code>，所以用以下命令扩容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo btrfs filesystem resize max /vol1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 成功提示</span>
+</span></span><span style="display:flex;"><span>Resize device id <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>/dev/mapper/trim_ec850a20_129d_4f06_ad54_21eec30762f9-0<span style="color:#f92672">)</span> from 9.99GiB to max
+</span></span></code></pre></div><p>用<code>df -h</code>确认扩容结果</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2354.jpg" alt=""></p>
+<p>在飞牛的web控制台确认扩容结果</p>
+<p><img src="https://img.311803.xyz/2025/03/01/2355.jpg" alt=""></p>
+<p>到这里终于完成fnos的存储空间扩容了，撒花<em>★,°</em>:.☆(￣▽￣)/$:<em>.°★</em> 。，</p>
+<p>🎉🎉🎉🎉🎉🎉</p>
+<hr>
+<h2 id="参看文章">参看文章</h2>
+<ol>
+<li><a href="https://club.fnnas.com/forum.php?mod=viewthread&amp;tid=14527">记一次扩容Raid和LVM</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

@@ -6,13 +6,33 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Mar 2025 22:17:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Mar 2025 23:47:58 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>笔记本电脑用作Linux Server时合盖&amp;屏幕背光的设置</title>
+      <link>https://ruohai.wang/202503/laptop-linux-server-config/</link>
+      <pubDate>Wed, 12 Mar 2025 23:47:58 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202503/laptop-linux-server-config/</guid>
+      <description>笔记本电脑安装headless linux系统(不带桌面gui)作为服务器使用时，有两个问题需要解决：
+合盖以后系统自动休眠 屏幕常亮 要解决也很简单
+取消合盖休眠 只需要修改/etc/systemd/logind.conf配置文件即可
+找到HandleLidSwitch开头的三个设置项
+HandleLidSwitch=suspend # 合上盖子时休眠 HandleLidSwitchExternalPower=suspend # 接通电源时合上盖子仍休眠 HandleLidSwitchDocked=ignore # 当连接外接显示器时忽略盖子动作 参数释义：
+suspend：休眠（默认行为）。 hibernate：进入深度休眠（需要确保系统支持）。 poweroff：关机。 ignore：忽略盖子关闭动作（不会休眠）。 根据自己的需求，将suspend修改为ignore即可，然后用一下命令重启服务后生效
+sudo systemctl restart systemd-logind.service 关闭屏幕背光 对于关闭屏幕，网上有很多方法都说通过电源控制来管理，但我实测以后发现不仅需要额外安装一堆包而且还不管用，所以最后用的方法是：直接将屏幕亮度设置为0
+可以先用以下命令查看当前屏幕的亮度
+# 不同硬件可能路径不同，请自行调整 cat /sys/class/backlight/intel_backlight/brightness 用以下命令将屏幕亮度设置为0
+echo 0 | sudo tee /sys/class/backlight/intel_backlight/brightness 有些奇怪的硬件可能会自动重置屏幕亮度，也就是明明关闭了背光，但过段时间以后屏幕又会变亮，这种情况可以用crontab配合bash脚本时间自动检测屏幕亮度
+bash脚本如下(需要root权限)
+#!/bin/bash # 通常亮度控制文件位于这个路径 brightness_file=&amp;#34;/sys/class/backlight/intel_backlight/brightness&amp;#34; # 不同系统可能需要调整路径，例如： # /sys/class/backlight/amdgpu_bl0/brightness # /sys/class/backlight/acpi_video0/brightness # 检查文件是否存在 if [ ! -f &amp;#34;$brightness_file&amp;#34; ]; then echo &amp;#34;无法找到亮度控制文件&amp;#34; exit 1 fi # 获取当前亮度 current_brightness=$(cat &amp;#34;$brightness_file&amp;#34;) # 检查亮度是否为0 if [ &amp;#34;$current_brightness&amp;#34; -ne 0 ]; then # 需要root权限来修改亮度 echo 0 | tee &amp;#34;$brightness_file&amp;#34; &amp;gt; /dev/null echo &amp;#34;亮度已设置为0&amp;#34; else echo &amp;#34;亮度已经是0&amp;#34; fi 喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</title>
-      <link>https://ruohai.wang/202502/fnos-expand-vol-size/</link>
+      <link>https://ruohai.wang/202503/fnos-expand-vol-size/</link>
       <pubDate>Sat, 01 Mar 2025 22:17:00 +0800</pubDate>
       
-      <guid>https://ruohai.wang/202502/fnos-expand-vol-size/</guid>
+      <guid>https://ruohai.wang/202503/fnos-expand-vol-size/</guid>
       <description>前言 飞牛系统的存储空间用的mdadm + lvm + btrfs的方案（群晖也是这个方案），如果想要扩容会比较麻烦，因为嵌套太多层了，不能像ext4文件系统那样用fdisk先d再n然后w最后resize2fs就行了，而且飞牛系统fnos截至目前还没有在网页控制台上添加扩容的功能。
 自己盲操一遍发现比预想的复杂，不过最后还是在网上找到了别人的教程，所以写篇博客记录一下。
 注意：操作有风险，记得给系统做快照、备份
