@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决"/>
+<meta name="twitter:description" content="fnos引入虚拟机系统以后在网络设置中添加了一个【启用OVS】的功能，大致是用openswitch工具来创建和管理虚拟网桥之类。
+这个入口和编辑网络的入口放在一起，太过于明显，而且没有防呆设置，所以很容易误点导致开启了ovs网络。
+当前fnos还处在快速开发期，存在很多bug，这个【误操作开启ovs网络】以后，很容易导致fnos出现网络问题，问题大致如下：
+丢失公网，也就是所有公网服务掉线（比如ddns内网穿透、系统更新、数据刮削等等所有需要联网的服务），但局域网可以正常访问。 在上述【问题1】情况下，在【网络设置】中调整网络配置，会导致局域网也掉线，也就是无法访问fnos的网页，至此fnos公网和局域网的全部服务掉线，但重启机器后可以恢复到【问题1】 在上述【问题2】的情况下，如果继续在【网络设置】中开关OVS，不仅会导致fnos网络掉线，还会导致重启后也无法恢复网络，至此，只能通过将机器接上键盘和显示器，通过控制台访问 此处不深究是什么原因导致的网络崩溃，只说如何快速恢复网络：
+将fnos主机接上显示器和键盘，通过控制台输入账户密码登录以后 用ovs-vsctl工具删除网桥即可 # 查看当前的网桥 sudo ovs-vsctl list-br # 删除网桥 sudo ovs-vsctl del-br &lt;br-name&gt; 重启网络或者重启系统 # 重启网络 sudo systemctl restart NetworkManager.service # 重启系统 sudo reboot 到这里网络就恢复正常了。
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决" />
+<meta property="og:description" content="fnos引入虚拟机系统以后在网络设置中添加了一个【启用OVS】的功能，大致是用openswitch工具来创建和管理虚拟网桥之类。
+这个入口和编辑网络的入口放在一起，太过于明显，而且没有防呆设置，所以很容易误点导致开启了ovs网络。
+当前fnos还处在快速开发期，存在很多bug，这个【误操作开启ovs网络】以后，很容易导致fnos出现网络问题，问题大致如下：
+丢失公网，也就是所有公网服务掉线（比如ddns内网穿透、系统更新、数据刮削等等所有需要联网的服务），但局域网可以正常访问。 在上述【问题1】情况下，在【网络设置】中调整网络配置，会导致局域网也掉线，也就是无法访问fnos的网页，至此fnos公网和局域网的全部服务掉线，但重启机器后可以恢复到【问题1】 在上述【问题2】的情况下，如果继续在【网络设置】中开关OVS，不仅会导致fnos网络掉线，还会导致重启后也无法恢复网络，至此，只能通过将机器接上键盘和显示器，通过控制台访问 此处不深究是什么原因导致的网络崩溃，只说如何快速恢复网络：
+将fnos主机接上显示器和键盘，通过控制台输入账户密码登录以后 用ovs-vsctl工具删除网桥即可 # 查看当前的网桥 sudo ovs-vsctl list-br # 删除网桥 sudo ovs-vsctl del-br &lt;br-name&gt; 重启网络或者重启系统 # 重启网络 sudo systemctl restart NetworkManager.service # 重启系统 sudo reboot 到这里网络就恢复正常了。
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202504/fnos-ovs-makes-network-down/" /><meta property="article:section" content="202504" />
+<meta property="article:published_time" content="2025-04-07T14:57:26+08:00" />
+<meta property="article:modified_time" content="2025-04-07T14:57:26+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 7, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>fnos引入虚拟机系统以后在网络设置中添加了一个【启用OVS】的功能，大致是用openswitch工具来创建和管理虚拟网桥之类。</p>
+<p>这个入口和编辑网络的入口放在一起，太过于明显，而且没有防呆设置，所以很容易误点导致开启了ovs网络。</p>
+<p><img src="https://img.311803.xyz/2025/04/07/1500.jpg" alt=""></p>
+<p>当前fnos还处在快速开发期，存在很多bug，这个【误操作开启ovs网络】以后，很容易导致fnos出现网络问题，问题大致如下：</p>
+<blockquote>
+<ol>
+<li>丢失公网，也就是所有公网服务掉线（比如ddns内网穿透、系统更新、数据刮削等等所有需要联网的服务），但局域网可以正常访问。</li>
+<li>在上述【问题1】情况下，在【网络设置】中调整网络配置，会导致局域网也掉线，也就是无法访问fnos的网页，至此fnos公网和局域网的全部服务掉线，但重启机器后可以恢复到【问题1】</li>
+<li>在上述【问题2】的情况下，如果继续在【网络设置】中开关OVS，不仅会导致fnos网络掉线，还会导致重启后也无法恢复网络，至此，只能通过将机器接上键盘和显示器，通过控制台访问</li>
+</ol>
+</blockquote>
+<p>此处不深究是什么原因导致的网络崩溃，只说如何快速恢复网络：</p>
+<ol>
+<li>将fnos主机接上显示器和键盘，通过控制台输入账户密码登录以后</li>
+</ol>
+<p><img src="https://img.311803.xyz/2025/04/07/1519.jpg" alt=""></p>
+<ol start="2">
+<li>用<code>ovs-vsctl</code>工具删除网桥即可</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看当前的网桥</span>
+</span></span><span style="display:flex;"><span>sudo ovs-vsctl list-br
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 删除网桥</span>
+</span></span><span style="display:flex;"><span>sudo ovs-vsctl del-br &lt;br-name&gt;
+</span></span></code></pre></div><ol start="3">
+<li>重启网络或者重启系统</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 重启网络</span>
+</span></span><span style="display:flex;"><span>sudo systemctl restart NetworkManager.service
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启系统</span>
+</span></span><span style="display:flex;"><span>sudo reboot
+</span></span></code></pre></div><p>到这里网络就恢复正常了。</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

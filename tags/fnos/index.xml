@@ -6,7 +6,21 @@
     <description>Recent content in fnOS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Mar 2025 22:17:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Apr 2025 14:57:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决</title>
+      <link>https://ruohai.wang/202504/fnos-ovs-makes-network-down/</link>
+      <pubDate>Mon, 07 Apr 2025 14:57:26 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202504/fnos-ovs-makes-network-down/</guid>
+      <description>fnos引入虚拟机系统以后在网络设置中添加了一个【启用OVS】的功能，大致是用openswitch工具来创建和管理虚拟网桥之类。
+这个入口和编辑网络的入口放在一起，太过于明显，而且没有防呆设置，所以很容易误点导致开启了ovs网络。
+当前fnos还处在快速开发期，存在很多bug，这个【误操作开启ovs网络】以后，很容易导致fnos出现网络问题，问题大致如下：
+丢失公网，也就是所有公网服务掉线（比如ddns内网穿透、系统更新、数据刮削等等所有需要联网的服务），但局域网可以正常访问。 在上述【问题1】情况下，在【网络设置】中调整网络配置，会导致局域网也掉线，也就是无法访问fnos的网页，至此fnos公网和局域网的全部服务掉线，但重启机器后可以恢复到【问题1】 在上述【问题2】的情况下，如果继续在【网络设置】中开关OVS，不仅会导致fnos网络掉线，还会导致重启后也无法恢复网络，至此，只能通过将机器接上键盘和显示器，通过控制台访问 此处不深究是什么原因导致的网络崩溃，只说如何快速恢复网络：
+将fnos主机接上显示器和键盘，通过控制台输入账户密码登录以后 用ovs-vsctl工具删除网桥即可 # 查看当前的网桥 sudo ovs-vsctl list-br # 删除网桥 sudo ovs-vsctl del-br &amp;lt;br-name&amp;gt; 重启网络或者重启系统 # 重启网络 sudo systemctl restart NetworkManager.service # 重启系统 sudo reboot 到这里网络就恢复正常了。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</title>
       <link>https://ruohai.wang/202503/fnos-expand-vol-size/</link>
