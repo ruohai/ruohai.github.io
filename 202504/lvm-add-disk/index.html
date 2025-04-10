@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>往LVM中添加磁盘&amp;扩容 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="往LVM中添加磁盘&amp;扩容"/>
+<meta name="twitter:description" content="前言 手上有很多2GB、8GB之类的小容量U盘，弃之可惜，所以我用lvm将这些u盘拼成了一个逻辑卷lv，将容量积少成多作为大容量存储空间使用。
+比如现在是一个2GB的u盘 &#43; 一个8GB的u盘拼成了一个总容量为9.5GB的lv
+查看物理卷pv信息
+# 命令 pvs # 显示信息 PV VG Fmt Attr PSize PFree /dev/sdc1 music lvm2 a-- &lt;7.45g 0 /dev/sdd1 music lvm2 a-- &lt;1.93g 0 查看物理卷pv详细信息
+# 命令 pvdisplay # 显示结果 --- Physical volume --- PV Name /dev/sdd1 VG Name music PV Size &lt;1.93 GiB / not usable 2.00 MiB Allocatable yes (but full) PE Size 4.00 MiB Total PE 493 Free PE 0 Allocated PE 493 PV UUID Wrn9BJ-ezwM-pGYi-Ohdo-2eT0-Hzq1-wE2R9Y --- Physical volume --- PV Name /dev/sdc1 VG Name music PV Size 7."/>
+
+    <meta property="og:title" content="往LVM中添加磁盘&amp;扩容" />
+<meta property="og:description" content="前言 手上有很多2GB、8GB之类的小容量U盘，弃之可惜，所以我用lvm将这些u盘拼成了一个逻辑卷lv，将容量积少成多作为大容量存储空间使用。
+比如现在是一个2GB的u盘 &#43; 一个8GB的u盘拼成了一个总容量为9.5GB的lv
+查看物理卷pv信息
+# 命令 pvs # 显示信息 PV VG Fmt Attr PSize PFree /dev/sdc1 music lvm2 a-- &lt;7.45g 0 /dev/sdd1 music lvm2 a-- &lt;1.93g 0 查看物理卷pv详细信息
+# 命令 pvdisplay # 显示结果 --- Physical volume --- PV Name /dev/sdd1 VG Name music PV Size &lt;1.93 GiB / not usable 2.00 MiB Allocatable yes (but full) PE Size 4.00 MiB Total PE 493 Free PE 0 Allocated PE 493 PV UUID Wrn9BJ-ezwM-pGYi-Ohdo-2eT0-Hzq1-wE2R9Y --- Physical volume --- PV Name /dev/sdc1 VG Name music PV Size 7." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202504/lvm-add-disk/" /><meta property="article:section" content="202504" />
+<meta property="article:published_time" content="2025-04-10T12:40:34+08:00" />
+<meta property="article:modified_time" content="2025-04-10T12:40:34+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">往LVM中添加磁盘&amp;扩容</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Apr 10, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/lvm/">LVM</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>手上有很多2GB、8GB之类的小容量U盘，弃之可惜，所以我用lvm将这些u盘拼成了一个逻辑卷lv，将容量积少成多作为大容量存储空间使用。</p>
+<p>比如现在是一个2GB的u盘 + 一个8GB的u盘拼成了一个总容量为9.5GB的lv</p>
+<p>查看物理卷pv信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>pvs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示信息</span>
+</span></span><span style="display:flex;"><span>PV         VG    Fmt  Attr PSize  PFree
+</span></span><span style="display:flex;"><span>/dev/sdc1  music lvm2 a--  &lt;7.45g    <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>/dev/sdd1  music lvm2 a--  &lt;1.93g    <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>查看物理卷pv详细信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>pvdisplay
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示结果</span>
+</span></span><span style="display:flex;"><span>--- Physical volume ---
+</span></span><span style="display:flex;"><span>PV Name               /dev/sdd1
+</span></span><span style="display:flex;"><span>VG Name               music
+</span></span><span style="display:flex;"><span>PV Size               &lt;1.93 GiB / not usable 2.00 MiB
+</span></span><span style="display:flex;"><span>Allocatable           yes <span style="color:#f92672">(</span>but full<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PE Size               4.00 MiB
+</span></span><span style="display:flex;"><span>Total PE              <span style="color:#ae81ff">493</span>
+</span></span><span style="display:flex;"><span>Free PE               <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>Allocated PE          <span style="color:#ae81ff">493</span>
+</span></span><span style="display:flex;"><span>PV UUID               Wrn9BJ-ezwM-pGYi-Ohdo-2eT0-Hzq1-wE2R9Y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- Physical volume ---
+</span></span><span style="display:flex;"><span>PV Name               /dev/sdc1
+</span></span><span style="display:flex;"><span>VG Name               music
+</span></span><span style="display:flex;"><span>PV Size               7.45 GiB / not usable 2.00 MiB
+</span></span><span style="display:flex;"><span>Allocatable           yes <span style="color:#f92672">(</span>but full<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PE Size               4.00 MiB
+</span></span><span style="display:flex;"><span>Total PE              <span style="color:#ae81ff">1907</span>
+</span></span><span style="display:flex;"><span>Free PE               <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>Allocated PE          <span style="color:#ae81ff">1907</span>
+</span></span><span style="display:flex;"><span>PV UUID               WJX8gr-AGx2-jRAf-tvwV-rcFV-r7vV-f2LK3F
+</span></span></code></pre></div><p>现在想往这个lv中再加一个u盘进行扩容，本文记录一下操作步骤。</p>
+<hr>
+<h2 id="操作步骤">操作步骤</h2>
+<blockquote>
+<p>第一步：准备新磁盘</p>
+</blockquote>
+<p>我准备了一个16GB容量的u盘，先用<code>lsblk</code>和<code>fdisk</code>工具确认磁盘可以被系统正确识别。</p>
+<p>途中这个<code>/dev/sde</code>就是新插入的u盘</p>
+<p><img src="https://img.311803.xyz/2025/04/10/1256.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>fdisk -l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示信息</span>
+</span></span><span style="display:flex;"><span>Disk /dev/sde: 14.84 GiB, <span style="color:#ae81ff">15931539456</span> bytes, <span style="color:#ae81ff">31116288</span> sectors
+</span></span><span style="display:flex;"><span>Disk model: STORAGE DEVICE
+</span></span><span style="display:flex;"><span>Units: sectors of <span style="color:#ae81ff">1</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span> bytes
+</span></span><span style="display:flex;"><span>Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+</span></span><span style="display:flex;"><span>I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+</span></span></code></pre></div><blockquote>
+<p>第二步：分区（可选）</p>
+</blockquote>
+<p>这一步操作不是必须的，可以将物理卷分区，也可以不分区。我的lvm为了统一物理卷风格，所以都做了分区。</p>
+<p>用<code>fdisk</code>对<code>/dev/sde</code>做个简单分区</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sde           8:64   <span style="color:#ae81ff">1</span> 14.8G  <span style="color:#ae81ff">0</span> disk
+</span></span><span style="display:flex;"><span>└─sde1        8:65   <span style="color:#ae81ff">1</span> 14.8G  <span style="color:#ae81ff">0</span> part
+</span></span></code></pre></div><blockquote>
+<p>第三步：创建物理卷pv</p>
+</blockquote>
+<p>将新磁盘初始化为lvm物理卷。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pvcreate /dev/sde1
+</span></span></code></pre></div><p>注意：如果没有第二步做分区，命令中的<code>/dev/sde1</code>需要调整为<code>/dev/sde</code>。</p>
+<p>查看pv的信息，确认<code>/dev/sde1</code>创建成功。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>pvs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示信息</span>
+</span></span><span style="display:flex;"><span>PV         VG    Fmt  Attr PSize   PFree
+</span></span><span style="display:flex;"><span>/dev/sdc1  music lvm2 a--   &lt;7.45g      <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>/dev/sdd1  music lvm2 a--   &lt;1.93g      <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>/dev/sde1        lvm2 ---  &lt;14.84g &lt;14.84g
+</span></span></code></pre></div><blockquote>
+<p>第四步：将物理卷pv添加到卷组vg</p>
+</blockquote>
+<p>用<code>vgs</code>命令可以查看卷据信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>vgs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 显示信息</span>
+</span></span><span style="display:flex;"><span>VG    <span style="color:#75715e">#PV #LV #SN Attr   VSize  VFree</span>
+</span></span><span style="display:flex;"><span>music   <span style="color:#ae81ff">2</span>   <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">0</span> wz--n- &lt;9.38g    <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>可以确认卷据bg的名字叫做<code>music</code>，然后将pv添加到这个vg。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 添加</span>
+</span></span><span style="display:flex;"><span>vgextend music /dev/sde1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 成功提示</span>
+</span></span><span style="display:flex;"><span>Volume group <span style="color:#e6db74">&#34;music&#34;</span> successfully extended
+</span></span></code></pre></div><p>添加成功后，用<code>vgs</code>命令确认vg信息，可以看到pv从2变成3，容量多出了14.83g的未分配空间。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>vgs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示信息</span>
+</span></span><span style="display:flex;"><span>VG    <span style="color:#75715e">#PV #LV #SN Attr   VSize   VFree</span>
+</span></span><span style="display:flex;"><span>music   <span style="color:#ae81ff">3</span>   <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">0</span> wz--n- &lt;24.21g 14.83g
+</span></span></code></pre></div><blockquote>
+<p>第五步：扩容逻辑卷lv</p>
+</blockquote>
+<p>扩容lv需要获取完整的lv路径名称（lv path），这里用到<code>lvdisplay</code>命令查看</p>
+<p><img src="https://img.311803.xyz/2025/04/10/1322.jpg" alt=""></p>
+<p>获取到完整的lv path以后就可以操作扩容了</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>lvextend -l +100%FREE /dev/music/0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 成功提示</span>
+</span></span><span style="display:flex;"><span>Size of logical volume music/0 changed from &lt;9.38 GiB <span style="color:#f92672">(</span><span style="color:#ae81ff">2400</span> extents<span style="color:#f92672">)</span> to &lt;24.21 GiB <span style="color:#f92672">(</span><span style="color:#ae81ff">6197</span> extents<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Logical volume music/0 successfully resized.
+</span></span></code></pre></div><p>用<code>vgs</code>命令确认扩容结果，未分配空间VFree已经为0</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
+</span></span><span style="display:flex;"><span>vgs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示信息</span>
+</span></span><span style="display:flex;"><span>VG    <span style="color:#75715e">#PV #LV #SN Attr   VSize   VFree</span>
+</span></span><span style="display:flex;"><span>music   <span style="color:#ae81ff">3</span>   <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">0</span> wz--n- &lt;24.21g    <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><blockquote>
+<p>第六步：文件系统扩容</p>
+</blockquote>
+<p>到这一步，就需要根据各自的文件系统用不同的命令进行扩容了。</p>
+<p>如果是<code>ext4</code>，用到的是设备路径，这里是lv path</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>resize2fs /dev/music/0
+</span></span></code></pre></div><p>如果是<code>btrfs</code>，用到的是挂载点（mount point）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>btrfs filesystem resize max /mnt/music
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 成功提示</span>
+</span></span><span style="display:flex;"><span>Resize device id <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>/dev/dm-0<span style="color:#f92672">)</span> from 9.38GiB to max
+</span></span></code></pre></div><p>到此就完成了往lvm中添加新磁盘&amp;扩容的操作。🎉</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

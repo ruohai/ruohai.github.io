@@ -6,7 +6,20 @@
     <description>Recent content in LVM on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Mar 2025 22:17:00 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/lvm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Apr 2025 12:40:34 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/lvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>往LVM中添加磁盘&amp;扩容</title>
+      <link>https://ruohai.wang/202504/lvm-add-disk/</link>
+      <pubDate>Thu, 10 Apr 2025 12:40:34 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202504/lvm-add-disk/</guid>
+      <description>前言 手上有很多2GB、8GB之类的小容量U盘，弃之可惜，所以我用lvm将这些u盘拼成了一个逻辑卷lv，将容量积少成多作为大容量存储空间使用。
+比如现在是一个2GB的u盘 + 一个8GB的u盘拼成了一个总容量为9.5GB的lv
+查看物理卷pv信息
+# 命令 pvs # 显示信息 PV VG Fmt Attr PSize PFree /dev/sdc1 music lvm2 a-- &amp;lt;7.45g 0 /dev/sdd1 music lvm2 a-- &amp;lt;1.93g 0 查看物理卷pv详细信息
+# 命令 pvdisplay # 显示结果 --- Physical volume --- PV Name /dev/sdd1 VG Name music PV Size &amp;lt;1.93 GiB / not usable 2.00 MiB Allocatable yes (but full) PE Size 4.00 MiB Total PE 493 Free PE 0 Allocated PE 493 PV UUID Wrn9BJ-ezwM-pGYi-Ohdo-2eT0-Hzq1-wE2R9Y --- Physical volume --- PV Name /dev/sdc1 VG Name music PV Size 7.</description>
+    </item>
+    
     <item>
       <title>飞牛系统fnos存储空间扩容/mdadm &#43; lvm &#43; btrfs方案的磁盘扩容</title>
       <link>https://ruohai.wang/202503/fnos-expand-vol-size/</link>
