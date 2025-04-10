@@ -133,7 +133,7 @@
 <p>第一步：准备新磁盘</p>
 </blockquote>
 <p>我准备了一个16GB容量的u盘，先用<code>lsblk</code>和<code>fdisk</code>工具确认磁盘可以被系统正确识别。</p>
-<p>途中这个<code>/dev/sde</code>就是新插入的u盘</p>
+<p>图中这个<code>/dev/sde</code>就是新插入的u盘</p>
 <p><img src="https://img.311803.xyz/2025/04/10/1256.jpg" alt=""></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
 </span></span><span style="display:flex;"><span>fdisk -l
@@ -147,7 +147,7 @@
 </span></span></code></pre></div><blockquote>
 <p>第二步：分区（可选）</p>
 </blockquote>
-<p>这一步操作不是必须的，可以将物理卷分区，也可以不分区。我的lvm为了统一物理卷风格，所以都做了分区。</p>
+<p>这一步操作不是必须的，可以将物理磁盘分区，也可以不分区。我的lvm为了统一物理卷风格，所以都做了分区。</p>
 <p>用<code>fdisk</code>对<code>/dev/sde</code>做个简单分区</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sde           8:64   <span style="color:#ae81ff">1</span> 14.8G  <span style="color:#ae81ff">0</span> disk
 </span></span><span style="display:flex;"><span>└─sde1        8:65   <span style="color:#ae81ff">1</span> 14.8G  <span style="color:#ae81ff">0</span> part
@@ -176,13 +176,13 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e">## 显示信息</span>
 </span></span><span style="display:flex;"><span>VG    <span style="color:#75715e">#PV #LV #SN Attr   VSize  VFree</span>
 </span></span><span style="display:flex;"><span>music   <span style="color:#ae81ff">2</span>   <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">0</span> wz--n- &lt;9.38g    <span style="color:#ae81ff">0</span>
-</span></span></code></pre></div><p>可以确认卷据bg的名字叫做<code>music</code>，然后将pv添加到这个vg。</p>
+</span></span></code></pre></div><p>可以看到卷据vg的名字叫做<code>music</code>，然后将pv添加到这个vg。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 添加</span>
 </span></span><span style="display:flex;"><span>vgextend music /dev/sde1
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 成功提示</span>
 </span></span><span style="display:flex;"><span>Volume group <span style="color:#e6db74">&#34;music&#34;</span> successfully extended
-</span></span></code></pre></div><p>添加成功后，用<code>vgs</code>命令确认vg信息，可以看到pv从2变成3，容量多出了14.83g的未分配空间。</p>
+</span></span></code></pre></div><p>添加成功后，用<code>vgs</code>命令确认vg信息，可以看到pv数量从2变成3，容量多出了14.83g的未分配空间。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 命令</span>
 </span></span><span style="display:flex;"><span>vgs
 </span></span><span style="display:flex;"><span>
