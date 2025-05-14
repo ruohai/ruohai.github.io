@@ -2,23 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202505/</loc>
+    <lastmod>2025-05-14T00:03:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/fnos/</loc>
+    <lastmod>2025-05-14T00:03:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2025-05-14T00:03:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2025-05-14T00:03:33+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202505/check-data-consistency/</loc>
+    <lastmod>2025-05-14T00:03:33+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202504/</loc>
     <lastmod>2025-04-10T12:40:34+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/lvm/</loc>
     <lastmod>2025-04-10T12:40:34+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2025-04-10T12:40:34+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2025-04-10T12:40:34+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202504/lvm-add-disk/</loc>
     <lastmod>2025-04-10T12:40:34+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/fnos/</loc>
-    <lastmod>2025-04-07T14:57:26+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202504/fnos-ovs-makes-network-down/</loc>
     <lastmod>2025-04-07T14:57:26+08:00</lastmod>

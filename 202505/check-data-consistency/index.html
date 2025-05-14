@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>在飞牛fnOS上手动进行文件完整性校验 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在飞牛fnOS上手动进行文件完整性校验"/>
+<meta name="twitter:description" content="前言 玩过群晖的朋友都知道群晖的存储池在创建和使用的过程中经常能看到正在校验文件的一致性这个提示，虽然不知道底层原理但看着就让人很安心，让用户觉得文件绝对不会损坏。
+fnos的存储空间的实现方案和群晖一样，都是mdadm &#43; lvm &#43; btrfs，但是fnos的存储空间在创建和使用的过程中，完全看不到校验文件一致性的提示。这不由得让我担心我的文件是否会出现什么宇宙射线引起的比特翻转但系统又没有定期做scrub导致文件损坏。
+那fnos到底有没有进行文件一致性校验，我不知道。
+但是我们可以手动进行文件校验。
+文件校验 fnos的存储空间实现方案是mdadm &#43; lvm &#43; btfs，在2025年5月的更新中加入了ext4的支持，但我这里依然以btrfs为例。
+要进行的文件校验分成两个部分：raid阵列的一致性校验 &amp; 文件数据的一致性校验。
+以下由ai提供的图表
+那接下去就手动开始进行文件校验吧。
+btrfs
+以fnos的存储空间为例，一般挂载点都是/vol1，那btrfs的文件校验是以挂载点为目标
+# 对存储空间1启动文件校验 sudo btrfs scrub start /vol1 # 查看校验的进度 sudo btrfs scrub status /vol1 校验完整后，可以看到输出结果如下
+UUID: 6412be10-xxxx-xxxx-xxxx-xxxxxxxxxxxx Scrub started: Tue May 13 23:22:05 2025 Status: finished Duration: 1:15:23 Total to scrub: 514.29GiB Rate: 116.43MiB/s Error summary: no errors found mdadm
+先确认系统的阵列状态
+cat /proc/mdstat 输出结果示意如下
+Personalities : [raid6] [raid5] [raid4] [raid1] [linear] [raid0] [raid10] md1 : active raid1 sde1[0] 156156928 blocks super 1."/>
+
+    <meta property="og:title" content="在飞牛fnOS上手动进行文件完整性校验" />
+<meta property="og:description" content="前言 玩过群晖的朋友都知道群晖的存储池在创建和使用的过程中经常能看到正在校验文件的一致性这个提示，虽然不知道底层原理但看着就让人很安心，让用户觉得文件绝对不会损坏。
+fnos的存储空间的实现方案和群晖一样，都是mdadm &#43; lvm &#43; btrfs，但是fnos的存储空间在创建和使用的过程中，完全看不到校验文件一致性的提示。这不由得让我担心我的文件是否会出现什么宇宙射线引起的比特翻转但系统又没有定期做scrub导致文件损坏。
+那fnos到底有没有进行文件一致性校验，我不知道。
+但是我们可以手动进行文件校验。
+文件校验 fnos的存储空间实现方案是mdadm &#43; lvm &#43; btfs，在2025年5月的更新中加入了ext4的支持，但我这里依然以btrfs为例。
+要进行的文件校验分成两个部分：raid阵列的一致性校验 &amp; 文件数据的一致性校验。
+以下由ai提供的图表
+那接下去就手动开始进行文件校验吧。
+btrfs
+以fnos的存储空间为例，一般挂载点都是/vol1，那btrfs的文件校验是以挂载点为目标
+# 对存储空间1启动文件校验 sudo btrfs scrub start /vol1 # 查看校验的进度 sudo btrfs scrub status /vol1 校验完整后，可以看到输出结果如下
+UUID: 6412be10-xxxx-xxxx-xxxx-xxxxxxxxxxxx Scrub started: Tue May 13 23:22:05 2025 Status: finished Duration: 1:15:23 Total to scrub: 514.29GiB Rate: 116.43MiB/s Error summary: no errors found mdadm
+先确认系统的阵列状态
+cat /proc/mdstat 输出结果示意如下
+Personalities : [raid6] [raid5] [raid4] [raid1] [linear] [raid0] [raid10] md1 : active raid1 sde1[0] 156156928 blocks super 1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202505/check-data-consistency/" /><meta property="article:section" content="202505" />
+<meta property="article:published_time" content="2025-05-14T00:03:33+08:00" />
+<meta property="article:modified_time" content="2025-05-14T00:03:33+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">在飞牛fnOS上手动进行文件完整性校验</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 14, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>玩过群晖的朋友都知道群晖的存储池在创建和使用的过程中经常能看到<code>正在校验文件的一致性</code>这个提示，虽然不知道底层原理但看着就让人很安心，让用户觉得文件绝对不会损坏。</p>
+<p>fnos的存储空间的实现方案和群晖一样，都是mdadm + lvm + btrfs，但是fnos的存储空间在创建和使用的过程中，完全看不到<code>校验文件一致性</code>的提示。这不由得让我担心我的文件是否会出现什么宇宙射线引起的比特翻转但系统又没有定期做scrub导致文件损坏。</p>
+<p>那fnos到底有没有进行文件一致性校验，我不知道。</p>
+<p>但是我们可以手动进行文件校验。</p>
+<hr>
+<h2 id="文件校验">文件校验</h2>
+<p>fnos的存储空间实现方案是mdadm + lvm + btfs，在2025年5月的更新中加入了ext4的支持，但我这里依然以btrfs为例。</p>
+<p>要进行的<code>文件校验</code>分成两个部分：raid阵列的一致性校验 &amp; 文件数据的一致性校验。</p>
+<p>以下由ai提供的图表</p>
+<p><img src="https://img.311803.xyz/2025/05/14/1047.jpg" alt=""></p>
+<p>那接下去就手动开始进行文件校验吧。</p>
+<blockquote>
+<p>btrfs</p>
+</blockquote>
+<p>以fnos的存储空间为例，一般挂载点都是<code>/vol1</code>，那btrfs的文件校验是以挂载点为目标</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 对存储空间1启动文件校验</span>
+</span></span><span style="display:flex;"><span>sudo btrfs scrub start /vol1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看校验的进度</span>
+</span></span><span style="display:flex;"><span>sudo btrfs scrub status /vol1
+</span></span></code></pre></div><p>校验完整后，可以看到输出结果如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-inf" data-lang="inf"><span style="display:flex;"><span><span style="color:#a6e22e">UUID:             6412be10-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Scrub started:    Tue May 13 23:22:05 2025</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Status:           finished</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Duration:         1:15:23</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Total to scrub:   514.29GiB</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Rate:             116.43MiB/s</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Error summary:    no errors found</span>
+</span></span></code></pre></div><blockquote>
+<p>mdadm</p>
+</blockquote>
+<p>先确认系统的阵列状态</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat /proc/mdstat
+</span></span></code></pre></div><p>输出结果示意如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-inf" data-lang="inf"><span style="display:flex;"><span><span style="color:#a6e22e">Personalities : [raid6] [raid5] [raid4] [raid1] [linear] [raid0] [raid10]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">md1 : active raid1 sde1[0]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">156156928 blocks super 1.2 [1/1] [U]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">bitmap: 0/2 pages [0KB], 65536KB chunk</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">md0 : active raid5 sdd1[2] sdc1[1] sdg1[4] sdb1[0] sdf1[3]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">976261120 blocks super 1.2 level 5, 512k chunk, algorithm 2 [5/5] [UUUUU]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">bitmap: 0/2 pages [0KB], 65536KB chunk</span>
+</span></span></code></pre></div><p>可以看到我的fnos上有一个单盘raid1阵列md1和一个五盘raid5阵列md0，其中五盘raid5阵列md0的状态是<code>UUUUU</code>，表明5个盘都在线。</p>
+<p>用<code>mdadm -D /dev/md0</code>命令查看md0这个阵列的详细信息，确认<code>State : clean</code>表明阵列当前的状态健康可用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-inf" data-lang="inf"><span style="display:flex;"><span><span style="color:#a6e22e">/dev/md0:</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#a6e22e">Version : 1.2</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Creation Time : Wed May  7 14:34:16 2025</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Raid Level : raid5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Array Size : 976261120 (931.04 GiB 999.69 GB)</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Used Dev Size : 244065280 (232.76 GiB 249.92 GB)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Raid Devices : 5</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Total Devices : 5</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">Persistence : Superblock is persistent</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Intent Bitmap : Internal</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">Update Time : Wed May 14 10:02:38 2025</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">State : clean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Active Devices : 5</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">Working Devices : 5</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Failed Devices : 0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Spare Devices : 0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Layout : left-symmetric</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Chunk Size : 512K</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Consistency Policy : bitmap</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">Name : fnOS:0</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">UUID : 885de1e2:xxxxxxxx:xxxxxxxx:xxxxxxxx</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Events : 43</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Number   Major   Minor   RaidDevice State</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">0       8       17        0      active sync   /dev/sdb1</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">1       8       33        1      active sync   /dev/sdc1</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">2       8       49        2      active sync   /dev/sdd1</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">3       8       81        3      active sync   /dev/sdf1</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">4       8       97        4      active sync   /dev/sdg1</span>
+</span></span></code></pre></div><p>然后就可以开始对md0启动完整性校验了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mdadm --action<span style="color:#f92672">=</span>check /dev/md0
+</span></span></code></pre></div><p>查看校验的进度</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 方法一</span>
+</span></span><span style="display:flex;"><span>sudo mdadm -D /dev/md0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 方法二</span>
+</span></span><span style="display:flex;"><span>cat /proc/mdstat
+</span></span></code></pre></div><p>在输出内容中可以看到如下内容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-inf" data-lang="inf"><span style="display:flex;"><span><span style="color:#75715e"># 方法一的输出</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#a6e22e">State : clean, checking</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Active Devices : 5</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">Working Devices : 5</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Failed Devices : 0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">Spare Devices : 0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Layout : left-symmetric</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Chunk Size : 512K</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Consistency Policy : bitmap</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Check Status : 7% complete</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 方法二的输出</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">[</span><span style="color:#f92672">=</span><span style="color:#e6db74">===&gt;................]  check = 24.6% (60277800/244065280) finish=72.9min speed=41962K/sec</span>
+</span></span></code></pre></div><p>好了，到这里就完成了手动触发mdadm和btrfs的文件一致性校验了，如果想要自动化操作，就可以写个bash脚本然后让crontab定期执行即可。</p>
+<p>🎉</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

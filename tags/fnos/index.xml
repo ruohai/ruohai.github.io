@@ -6,7 +6,30 @@
     <description>Recent content in fnOS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 07 Apr 2025 14:57:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 May 2025 00:03:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在飞牛fnOS上手动进行文件完整性校验</title>
+      <link>https://ruohai.wang/202505/check-data-consistency/</link>
+      <pubDate>Wed, 14 May 2025 00:03:33 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202505/check-data-consistency/</guid>
+      <description>前言 玩过群晖的朋友都知道群晖的存储池在创建和使用的过程中经常能看到正在校验文件的一致性这个提示，虽然不知道底层原理但看着就让人很安心，让用户觉得文件绝对不会损坏。
+fnos的存储空间的实现方案和群晖一样，都是mdadm + lvm + btrfs，但是fnos的存储空间在创建和使用的过程中，完全看不到校验文件一致性的提示。这不由得让我担心我的文件是否会出现什么宇宙射线引起的比特翻转但系统又没有定期做scrub导致文件损坏。
+那fnos到底有没有进行文件一致性校验，我不知道。
+但是我们可以手动进行文件校验。
+文件校验 fnos的存储空间实现方案是mdadm + lvm + btfs，在2025年5月的更新中加入了ext4的支持，但我这里依然以btrfs为例。
+要进行的文件校验分成两个部分：raid阵列的一致性校验 &amp;amp; 文件数据的一致性校验。
+以下由ai提供的图表
+那接下去就手动开始进行文件校验吧。
+btrfs
+以fnos的存储空间为例，一般挂载点都是/vol1，那btrfs的文件校验是以挂载点为目标
+# 对存储空间1启动文件校验 sudo btrfs scrub start /vol1 # 查看校验的进度 sudo btrfs scrub status /vol1 校验完整后，可以看到输出结果如下
+UUID: 6412be10-xxxx-xxxx-xxxx-xxxxxxxxxxxx Scrub started: Tue May 13 23:22:05 2025 Status: finished Duration: 1:15:23 Total to scrub: 514.29GiB Rate: 116.43MiB/s Error summary: no errors found mdadm
+先确认系统的阵列状态
+cat /proc/mdstat 输出结果示意如下
+Personalities : [raid6] [raid5] [raid4] [raid1] [linear] [raid0] [raid10] md1 : active raid1 sde1[0] 156156928 blocks super 1.</description>
+    </item>
+    
     <item>
       <title>飞牛系统（fnOS）开启OVS后导致网络掉线的问题解决</title>
       <link>https://ruohai.wang/202504/fnos-ovs-makes-network-down/</link>
