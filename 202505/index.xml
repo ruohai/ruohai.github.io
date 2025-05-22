@@ -6,7 +6,30 @@
     <description>Recent content in 202505s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 14 May 2025 00:03:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202505/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 May 2025 15:50:26 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202505/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>飞牛fnOS下DLNA服务的防火墙设置</title>
+      <link>https://ruohai.wang/202505/fnos-minidlna-filewall-setting/</link>
+      <pubDate>Thu, 22 May 2025 15:50:26 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202505/fnos-minidlna-filewall-setting/</guid>
+      <description>前言 之前我在debian基础上手搓minidlna服务，只需要在ufw中显式添加一条ufw allow proto tcp from 192.168.1.0/24 to any port 8200后，局域网内的设备（比如windows电脑文件管理器、安卓手机上的vlc软件中）都会自动出现dlna服务。
+但是在fnos中，如果防火墙设置如下：
+不勾选【局域网：默认允许访问】 不匹配入站规时禁止访问 然后新增一个DLNA默认端口8200的放行规则 理论上应该和debian + ufw + dlna这套手搓方案一样，局域网的机器就可以收到dlna服务了。
+但实际上局域网内设备无法收到dlna的服务，或者严谨一点说，没有收到dlna的广播。
+所以很长一段时间我都在pve上弄了一个单独的vm跑minidlna，而不是把dlna服务整合到fnos上。
+不过，昨天把这个问题请教了ai以后，终于知道原因了。
+问题原因 简单来讲，dlna除了用到8200/tcp，还需要用到1900/udp，所以只放行8200/tcp是不行的。
+以下是ai提供的回答（其中48200端口是我自定义的dlna端口号）
+到这里，又会出现第二个问题：
+那为什么用debian + ufw的时候，只需要放行8200/tcp就可以了，在fnos下却还需要显示声明1900/udp呢？
+答案是ufw默认会允许局域网流量！
+以下是ai提供的表格
+所以，最后的解决方案，就是在fnos的防火墙入站规则中，添加一条1900/udp即可。
+🎉
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>在飞牛fnOS上手动进行文件完整性校验</title>
       <link>https://ruohai.wang/202505/check-data-consistency/</link>
