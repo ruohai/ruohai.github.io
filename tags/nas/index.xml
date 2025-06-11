@@ -6,7 +6,33 @@
     <description>Recent content in NAS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Feb 2025 14:43:33 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nas/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Jun 2025 20:42:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次RAID5 &#43; BTRFS的文件损坏与恢复</title>
+      <link>https://ruohai.wang/202506/recover-file-damage/</link>
+      <pubDate>Wed, 11 Jun 2025 20:42:41 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202506/recover-file-damage/</guid>
+      <description>1. 前言 上个月的时候我写了一篇《在飞牛fnOS上手动进行文件完整性校验》，当时纯粹是当作了解学习一个新的知识点并顺手做一个记录，但没有想到这么快就派上了用场，因为在不到一个月之后的6月9号，我在自己nas的raid5 + btrfs的存储空间进行btrfs scrub的时候，竟然报了6000多个uncorrectable errors（截图的时候是5000多个，等扫描完了达到6000多个）。
+这可如何是好啊！虽然折腾nas折腾linux也有小2年，但这应该是我第一次发现了文件损坏的情况。
+不过遇事不能慌，要慢慢理顺逻辑，搞清楚这6000多个无法修正的错误代表什么意思，然后想办法修复它们。
+在写下这篇文章的时候，我已经完成了这次文件损坏的恢复，因为万幸我有一个备份nas，最后从备份中恢复了损坏的300多个文件。
+这篇文章简单做个记录，希望对你也有一些帮助。
+tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。 2. 事件回溯 我的NAS配置
+我的nas的软硬件环境如下：
+软件：系统是fnos，存储方案是mdadm + lvm + btrfs 硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6+5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。 中间发生了什么
+在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 + raid5降级运行 + 添加一个新硬盘 + raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
+根据以上回溯信息，大致可以判断，应该是更换机箱 + raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？
+但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。
+3. 文件恢复 虽然btrfs scrub明确提示了有6000多个errors，但是没有明确给出重要信息：
+有没有文件损坏 有多少个文件损坏 是哪些文件损坏 因为6000多个无法修复的错误可能只涉及几个文件，也可能涉及更多文件，具体取决于受损数据块属于哪些文件。
+我有另一个冷备nas上有备份，但这个备份上一次同步已经是2个月之前，没法简单的直接还原。我需要一份准确的损坏的文件清单，然后在备份nas中找到这份清单上的文件进行恢复。
+所以，这次文件恢复的最重要、最核心的任务就明确了：拿到损坏文件的清单。
+tips：因为我的raid5阵列显示健康度clean没有问题，mdadm --check也没有报异常，所以我没有着急备份阵列（或者说备份阵列中的数据）。但我依然建议你如果碰到这种情况，优先进行备份。 方法一：查看内核日志（不推荐）
+btrfs文件系统在进行scrub的过程中，碰到校验和错误，理论上异常信息中会包含对应的文件信息。
+dmesg | grep -i btrfs 输出的日志信息大致如下：</description>
+    </item>
+    
     <item>
       <title>NAS的CPU该如何选择？算力换时间 VS 时间换算力</title>
       <link>https://ruohai.wang/202502/how-to-select-nas-cpu/</link>

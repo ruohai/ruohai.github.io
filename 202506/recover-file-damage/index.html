@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>记录一次RAID5 &#43; BTRFS的文件损坏与恢复 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记录一次RAID5 &#43; BTRFS的文件损坏与恢复"/>
+<meta name="twitter:description" content="1. 前言 上个月的时候我写了一篇《在飞牛fnOS上手动进行文件完整性校验》，当时纯粹是当作了解学习一个新的知识点并顺手做一个记录，但没有想到这么快就派上了用场，因为在不到一个月之后的6月9号，我在自己nas的raid5 &#43; btrfs的存储空间进行btrfs scrub的时候，竟然报了6000多个uncorrectable errors（截图的时候是5000多个，等扫描完了达到6000多个）。
+这可如何是好啊！虽然折腾nas折腾linux也有小2年，但这应该是我第一次发现了文件损坏的情况。
+不过遇事不能慌，要慢慢理顺逻辑，搞清楚这6000多个无法修正的错误代表什么意思，然后想办法修复它们。
+在写下这篇文章的时候，我已经完成了这次文件损坏的恢复，因为万幸我有一个备份nas，最后从备份中恢复了损坏的300多个文件。
+这篇文章简单做个记录，希望对你也有一些帮助。
+tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。 2. 事件回溯 我的NAS配置
+我的nas的软硬件环境如下：
+软件：系统是fnos，存储方案是mdadm &#43; lvm &#43; btrfs 硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6&#43;5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。 中间发生了什么
+在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
+根据以上回溯信息，大致可以判断，应该是更换机箱 &#43; raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？
+但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。
+3. 文件恢复 虽然btrfs scrub明确提示了有6000多个errors，但是没有明确给出重要信息：
+有没有文件损坏 有多少个文件损坏 是哪些文件损坏 因为6000多个无法修复的错误可能只涉及几个文件，也可能涉及更多文件，具体取决于受损数据块属于哪些文件。
+我有另一个冷备nas上有备份，但这个备份上一次同步已经是2个月之前，没法简单的直接还原。我需要一份准确的损坏的文件清单，然后在备份nas中找到这份清单上的文件进行恢复。
+所以，这次文件恢复的最重要、最核心的任务就明确了：拿到损坏文件的清单。
+tips：因为我的raid5阵列显示健康度clean没有问题，mdadm --check也没有报异常，所以我没有着急备份阵列（或者说备份阵列中的数据）。但我依然建议你如果碰到这种情况，优先进行备份。 方法一：查看内核日志（不推荐）
+btrfs文件系统在进行scrub的过程中，碰到校验和错误，理论上异常信息中会包含对应的文件信息。
+dmesg | grep -i btrfs 输出的日志信息大致如下："/>
+
+    <meta property="og:title" content="记录一次RAID5 &#43; BTRFS的文件损坏与恢复" />
+<meta property="og:description" content="1. 前言 上个月的时候我写了一篇《在飞牛fnOS上手动进行文件完整性校验》，当时纯粹是当作了解学习一个新的知识点并顺手做一个记录，但没有想到这么快就派上了用场，因为在不到一个月之后的6月9号，我在自己nas的raid5 &#43; btrfs的存储空间进行btrfs scrub的时候，竟然报了6000多个uncorrectable errors（截图的时候是5000多个，等扫描完了达到6000多个）。
+这可如何是好啊！虽然折腾nas折腾linux也有小2年，但这应该是我第一次发现了文件损坏的情况。
+不过遇事不能慌，要慢慢理顺逻辑，搞清楚这6000多个无法修正的错误代表什么意思，然后想办法修复它们。
+在写下这篇文章的时候，我已经完成了这次文件损坏的恢复，因为万幸我有一个备份nas，最后从备份中恢复了损坏的300多个文件。
+这篇文章简单做个记录，希望对你也有一些帮助。
+tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。 2. 事件回溯 我的NAS配置
+我的nas的软硬件环境如下：
+软件：系统是fnos，存储方案是mdadm &#43; lvm &#43; btrfs 硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6&#43;5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。 中间发生了什么
+在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
+根据以上回溯信息，大致可以判断，应该是更换机箱 &#43; raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？
+但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。
+3. 文件恢复 虽然btrfs scrub明确提示了有6000多个errors，但是没有明确给出重要信息：
+有没有文件损坏 有多少个文件损坏 是哪些文件损坏 因为6000多个无法修复的错误可能只涉及几个文件，也可能涉及更多文件，具体取决于受损数据块属于哪些文件。
+我有另一个冷备nas上有备份，但这个备份上一次同步已经是2个月之前，没法简单的直接还原。我需要一份准确的损坏的文件清单，然后在备份nas中找到这份清单上的文件进行恢复。
+所以，这次文件恢复的最重要、最核心的任务就明确了：拿到损坏文件的清单。
+tips：因为我的raid5阵列显示健康度clean没有问题，mdadm --check也没有报异常，所以我没有着急备份阵列（或者说备份阵列中的数据）。但我依然建议你如果碰到这种情况，优先进行备份。 方法一：查看内核日志（不推荐）
+btrfs文件系统在进行scrub的过程中，碰到校验和错误，理论上异常信息中会包含对应的文件信息。
+dmesg | grep -i btrfs 输出的日志信息大致如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202506/recover-file-damage/" /><meta property="article:section" content="202506" />
+<meta property="article:published_time" content="2025-06-11T20:42:41+08:00" />
+<meta property="article:modified_time" content="2025-06-11T20:42:41+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">记录一次RAID5 &#43; BTRFS的文件损坏与恢复</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 11, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/nas/">NAS</a>
+              <a class="tag" href="https://ruohai.wang/tags/raid/">RAID</a>
+              <a class="tag" href="https://ruohai.wang/tags/btrfs/">btrfs</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="1-前言">1. 前言</h2>
+<p>上个月的时候我写了一篇<a href="https://ruohai.wang/202505/check-data-consistency/">《在飞牛fnOS上手动进行文件完整性校验》</a>，当时纯粹是当作了解学习一个新的知识点并顺手做一个记录，但没有想到这么快就派上了用场，因为在不到一个月之后的6月9号，我在自己nas的raid5 + btrfs的存储空间进行<code>btrfs scrub</code>的时候，竟然报了6000多个uncorrectable errors（截图的时候是5000多个，等扫描完了达到6000多个）。</p>
+<p><img src="https://img.311803.xyz/2025/06/11/2047.jpg" alt=""></p>
+<p>这可如何是好啊！虽然折腾nas折腾linux也有小2年，但这应该是我第一次发现了文件损坏的情况。</p>
+<p>不过遇事不能慌，要慢慢理顺逻辑，搞清楚这6000多个无法修正的错误代表什么意思，然后想办法修复它们。</p>
+<p>在写下这篇文章的时候，我已经完成了这次文件损坏的恢复，因为万幸我有一个备份nas，最后从备份中恢复了损坏的300多个文件。</p>
+<p>这篇文章简单做个记录，希望对你也有一些帮助。</p>
+<h4 id="tips要明确一点btrfs-scrub扫出来的uncorrectable-errors就是无法修正的错误没法通过mdadm-raid进行恢复如果没有备份那就没办法恢复了">tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。</h4>
+<hr>
+<h2 id="2-事件回溯">2. 事件回溯</h2>
+<blockquote>
+<p>我的NAS配置</p>
+</blockquote>
+<p>我的nas的软硬件环境如下：</p>
+<ol>
+<li>软件：系统是fnos，存储方案是mdadm + lvm + btrfs</li>
+<li>硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6+5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。</li>
+</ol>
+<blockquote>
+<p>中间发生了什么</p>
+</blockquote>
+<ol>
+<li>在5月14日的时候执行<code>btrfs scrub</code>提示<code>no errors found</code>，所以此时没有文件损坏。</li>
+<li>在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。</li>
+<li>更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 + raid5降级运行 + 添加一个新硬盘 + raid5阵列重建】，整个过程顺利完成，无异常报错。</li>
+<li>对重建后的这个5盘位raid5阵列进行<code>btrfs scrub</code>操作，出现大量的<code>uncorrectable errors</code>报错。</li>
+<li>对这个raid5阵列进行<code>mdadm --check</code>操作，验证完成后无报错无异常。</li>
+<li>fnos的web控制台中查看存储空间，显示<code>正常</code>。（图片为示意图）</li>
+</ol>
+<p><img src="https://img.311803.xyz/2025/06/11/2115.jpg" alt=""></p>
+<blockquote>
+<p>异常原因分析</p>
+</blockquote>
+<p>根据以上回溯信息，大致可以判断，应该是更换机箱 + raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？</p>
+<p>但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。</p>
+<hr>
+<h2 id="3-文件恢复">3. 文件恢复</h2>
+<p>虽然<code>btrfs scrub</code>明确提示了有6000多个errors，但是没有明确给出重要信息：</p>
+<ol>
+<li>有没有文件损坏</li>
+<li>有多少个文件损坏</li>
+<li>是哪些文件损坏</li>
+</ol>
+<p>因为6000多个无法修复的错误可能只涉及几个文件，也可能涉及更多文件，具体取决于受损数据块属于哪些文件。</p>
+<p>我有另一个冷备nas上有备份，但这个备份上一次同步已经是2个月之前，没法简单的直接还原。我需要一份准确的<code>损坏的文件清单</code>，然后在备份nas中找到这份清单上的文件进行恢复。</p>
+<p>所以，这次文件恢复的最重要、最核心的任务就明确了：<code>拿到损坏文件的清单</code>。</p>
+<h4 id="tips因为我的raid5阵列显示健康度clean没有问题mdadm---check也没有报异常所以我没有着急备份阵列或者说备份阵列中的数据但我依然建议你如果碰到这种情况优先进行备份">tips：因为我的raid5阵列显示健康度clean没有问题，<code>mdadm --check</code>也没有报异常，所以我没有着急备份阵列（或者说备份阵列中的数据）。但我依然建议你如果碰到这种情况，优先进行备份。</h4>
+<blockquote>
+<p>方法一：查看内核日志（不推荐）</p>
+</blockquote>
+<p>btrfs文件系统在进行scrub的过程中，碰到校验和错误，<code>理论上</code>异常信息中会包含对应的文件信息。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dmesg | grep -i btrfs
+</span></span></code></pre></div><p>输出的日志信息大致如下：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">[ 1081.234649] BTRFS info (device dm-1): scrub: started on devid 1
+[ 1106.798652] BTRFS error (device dm-1): unable to fixup (regular) error at logical 3262971904 
+    on dev /dev/mapper/trim_f8875261_e43f_4a86_9e9f_20b560e735c0-0 physical 4345102336
+[ 1106.798720] BTRFS error (device dm-1): unable to fixup (regular) error at logical 3262971904 
+    on dev /dev/mapper/trim_f8875261_e43f_4a86_9e9f_20b560e735c0-0 physical 4345102336
+[ 1106.804440] BTRFS error (device dm-1): unable to fixup (regular) error at logical 3262906368 
+    on dev /dev/mapper/trim_f8875261_e43f_4a86_9e9f_20b560e735c0-0 physical 4345036800
+</code></pre><p>可以看到<code>scrub start</code>的标记，接着输出无法修复的错误所在的逻辑块编号和物理块的编号。</p>
+<p>然后用以下命令查看对应逻辑块<code>3262971904</code>上的文件，我的raid5阵列在fnos中的挂载点是<code>/vol2</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>btrfs inspect-internal logical-resolve <span style="color:#ae81ff">3262971904</span> /vol2
+</span></span></code></pre></div><h4 id="tips我实测这个方法并不可靠显示的信息不全容易遗漏文件">tips：我实测这个方法并不可靠，显示的信息不全，容易遗漏文件。</h4>
+<blockquote>
+<p>方法二：扫描整个文件系统（推荐）</p>
+</blockquote>
+<p>这个方法比较暴力，就是<code>cat</code>命令把存储空间中的每一个文件都读取一遍，如果文件损坏，在读取的时候就会报错，只需要记录出现报错的文件即可获取完整清单。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /vol2 -type f -exec cat <span style="color:#f92672">{}</span> &gt;/dev/null 2&gt;&gt;/path/to/damaged_files.log <span style="color:#ae81ff">\;</span>
+</span></span></code></pre></div><p>也可以用<code>rsync</code>命令，在读取文件的同时也完成了文件的备份（推荐这个方法）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rsync -avh --progress /vol2 /backup/destination 2&gt;&gt;/path/to/backup_errors.log
+</span></span></code></pre></div><h4 id="tips我用的rsync命令既完成了文件系统的遍历也完成了文件的备份一举两得">tips：我用的<code>rsync</code>命令，既完成了文件系统的遍历，也完成了文件的备份，一举两得。</h4>
+<p>这里以<code>rsync</code>为例，在读取到损坏的文件时，会出现异常错误日志，示例如下：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">sending incremental file list
+Photo/2012/10/20121004_135000_E6BE7593.jpg
+
+         32,768  36%  132.78kB/s    0:00:00  
+         90,137 100%  365.25kB/s    0:00:00 (xfr#3, ir-chk=1092/14468)
+rsync: [sender] read errors mapping &#34;/vol2/1000/Archive/Photo/2012/10/20121004_135000_E6BE7593.jpg&#34;: Input/output error (5)
+Photo/2012/11/20121121_022631_D8537437.jpg
+
+         21,846 100%   87.43kB/s    0:00:00  
+         21,846 100%   87.43kB/s    0:00:00 (xfr#4, ir-chk=1062/14833)
+rsync: [sender] read errors mapping &#34;/vol2/1000/Archive/Photo/2012/11/20121121_022631_D8537437.jpg&#34;: Input/output error (5)
+WARNING: Photo/2012/10/20121004_135000_E6BE7593.jpg failed verification -- update discarded (will try again).
+Photo/2013/02/20130207_213239_6CD7224C.jpg
+</code></pre><p>在日志中可以看到错误原因<code>Input/output error</code>，也可以看到完整的文件路径<code>/vol2/1000/Archive/Photo/2012/10/20121004_135000_E6BE7593.jpg</code>。</p>
+<p>等rsync完成同步以后，用ai写个脚本提取错误日志中的损坏文件信息，就可以拿到最终的<code>损坏文件清单</code>了。</p>
+<p>🎉</p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
