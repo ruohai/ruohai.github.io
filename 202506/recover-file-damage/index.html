@@ -23,7 +23,7 @@
 tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。 2. 事件回溯 我的NAS配置
 我的nas的软硬件环境如下：
 软件：系统是fnos，存储方案是mdadm &#43; lvm &#43; btrfs 硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6&#43;5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。 中间发生了什么
-在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
+在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 点亮系统后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
 根据以上回溯信息，大致可以判断，应该是更换机箱 &#43; raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？
 但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。
 3. 文件恢复 虽然btrfs scrub明确提示了有6000多个errors，但是没有明确给出重要信息：
@@ -43,7 +43,7 @@ dmesg | grep -i btrfs 输出的日志信息大致如下："/>
 tips：要明确一点，btrfs scrub扫出来的uncorrectable errors就是无法修正的错误，没法通过mdadm raid进行恢复，如果没有备份，那就没办法恢复了。 2. 事件回溯 我的NAS配置
 我的nas的软硬件环境如下：
 软件：系统是fnos，存储方案是mdadm &#43; lvm &#43; btrfs 硬件：基于intel h55主板diy的主机，有6个原生sata接口。一开始用其中5个sata口组建了5盘位raid5，后来换机箱，用了一块pcie转5 sata转接板实现了6&#43;5一共11个sata接口，这个5盘位raid5阵列，2个盘插在原生sata口，3个盘插在转接的sata口。 中间发生了什么
-在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
+在5月14日的时候执行btrfs scrub提示no errors found，所以此时没有文件损坏。 在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。 点亮系统后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 &#43; raid5降级运行 &#43; 添加一个新硬盘 &#43; raid5阵列重建】，整个过程顺利完成，无异常报错。 对重建后的这个5盘位raid5阵列进行btrfs scrub操作，出现大量的uncorrectable errors报错。 对这个raid5阵列进行mdadm --check操作，验证完成后无报错无异常。 fnos的web控制台中查看存储空间，显示正常。（图片为示意图） 异常原因分析
 根据以上回溯信息，大致可以判断，应该是更换机箱 &#43; raid5换盘重建的过程中出现了问题，但无法确定具体是哪一步、哪一个硬件的问题。也许是pcie转sata口转接板有问题？也许是用拆机二手盘组raid5在重建的时候碰到坏道导致的文件损坏？也许是因为内存不带ecc？也许是新机箱的电气屏蔽不好？也许是老旧的atx电源质量太差稳定性不足？
 但这些都不是当下的重点了，现在的重点是要想办法处理btrfs文件系统的6000多个errors。
 3. 文件恢复 虽然btrfs scrub明确提示了有6000多个errors，但是没有明确给出重要信息：
@@ -113,6 +113,7 @@ dmesg | grep -i btrfs 输出的日志信息大致如下：" />
               <a class="tag" href="https://ruohai.wang/tags/nas/">NAS</a>
               <a class="tag" href="https://ruohai.wang/tags/raid/">RAID</a>
               <a class="tag" href="https://ruohai.wang/tags/btrfs/">btrfs</a>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
         </div>
       </div>
     </header>
@@ -141,7 +142,7 @@ dmesg | grep -i btrfs 输出的日志信息大致如下：" />
 <ol>
 <li>在5月14日的时候执行<code>btrfs scrub</code>提示<code>no errors found</code>，所以此时没有文件损坏。</li>
 <li>在6月7号时更换了机箱，从普通机箱换成了8盘位nas机箱，更换完成后成功点亮系统无异常。</li>
-<li>更换机箱后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 + raid5降级运行 + 添加一个新硬盘 + raid5阵列重建】，整个过程顺利完成，无异常报错。</li>
+<li>点亮系统后，对5盘位的raid5阵列进行了更换其中一块硬盘的操作，也就是【在web控制台停用一块硬盘 + raid5降级运行 + 添加一个新硬盘 + raid5阵列重建】，整个过程顺利完成，无异常报错。</li>
 <li>对重建后的这个5盘位raid5阵列进行<code>btrfs scrub</code>操作，出现大量的<code>uncorrectable errors</code>报错。</li>
 <li>对这个raid5阵列进行<code>mdadm --check</code>操作，验证完成后无报错无异常。</li>
 <li>fnos的web控制台中查看存储空间，显示<code>正常</code>。（图片为示意图）</li>
@@ -205,6 +206,20 @@ WARNING: Photo/2012/10/20121004_135000_E6BE7593.jpg failed verification -- updat
 Photo/2013/02/20130207_213239_6CD7224C.jpg
 </code></pre><p>在日志中可以看到错误原因<code>Input/output error</code>，也可以看到完整的文件路径<code>/vol2/1000/Archive/Photo/2012/10/20121004_135000_E6BE7593.jpg</code>。</p>
 <p>等rsync完成同步以后，用ai写个脚本提取错误日志中的损坏文件信息，就可以拿到最终的<code>损坏文件清单</code>了。</p>
+<p>🎉</p>
+<hr>
+<h2 id="4-nas使用心得和建议">4. nas使用心得和建议</h2>
+<ol>
+<li>文件系统请选btrfs而不是ext4</li>
+</ol>
+<p><img src="https://img.311803.xyz/2025/06/11/2241.jpg" alt=""></p>
+<ol start="2">
+<li>如果是群晖，请一定要开启【文件一致性校验】</li>
+<li>如果是fnos，fnos目前web控制台中没有【文件一致性校验】功能的入口，需要手动执行<code>btrfs scrub</code></li>
+<li>文件一致性校验（btrfs scrub）执行的频率，请根据三个温度来调整：1-硬件稳定性，2-硬盘健康度，3-数据重要性。执行频率短则一周一次，长则1~6个月一次</li>
+<li>raid是硬件冗余而不是备份，如果文件很重要，请备份。如果做不到3-2-1备份，请至少做一个备份</li>
+</ol>
+<p>最后，希望你的nas永远运行稳定，希望你的数据永远安全无损坏。</p>
 <p>🎉</p>
 <hr>
 <h2 id="喝杯奶茶">喝杯奶茶</h2>
