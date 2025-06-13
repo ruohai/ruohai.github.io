@@ -6,7 +6,22 @@
     <description>Recent content in Nginx on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 06 Oct 2023 19:34:41 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Jun 2025 08:09:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>fnOS使用nginx反代后无法访问的问题解决</title>
+      <link>https://ruohai.wang/202506/fnos-nginx-reverse-proxy-config/</link>
+      <pubDate>Fri, 13 Jun 2025 08:09:38 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202506/fnos-nginx-reverse-proxy-config/</guid>
+      <description>fnos自带了ddns，配置方便，用起来也很方便。但我不像把fnos暴露到公网，而且我在局域网中已经部署了一个虚拟机专门用来做反代，所以想把fnos的入口也整合到一起。
+但是fnos用nginx做了反代以后会无法访问，具体表现就是卡在【加载中】最后显示断开连接。
+在网上搜索一番，看了官方论坛里的一些答疑，确认了是我的nginx配置中没有开启websocket的支持，只需要加上以下三行配置即可
+proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &amp;#34;upgrade&amp;#34;; 配置说明 proxy_http_version 1.1;
+WebSocket 协议依赖 HTTP/1.1 的 Upgrade 机制，因此需要明确指定 Nginx 使用 HTTP/1.1 协议与后端服务器通信。 默认情况下，Nginx 可能使用 HTTP/1.0，而 HTTP/1.0 不支持 Upgrade 头，因此必须设置为 1.1。 proxy_set_header Upgrade $http_upgrade;
+用途：将客户端发送的 Upgrade 请求头（如 websocket）转发到后端服务器。 作用：WebSocket 协议的建立需要客户端发送 Upgrade: websocket 请求头，告诉服务器需要切换协议。Nginx 作为反向代理，必须将这个头传递给后端，确保后端知道客户端请求的是 WebSocket 协议。 $http_upgrade 是 Nginx 的变量，表示客户端请求中 Upgrade 头的值。如果没有 Upgrade 头，$http_upgrade 为空。 proxy_set_header Connection &amp;quot;upgrade&amp;quot;;
+用途：将客户端的 Connection 请求头设置为 upgrade，并转发到后端服务器。 作用：WebSocket 协议要求 HTTP 请求头中的 Connection: Upgrade 来指示协议切换。Nginx 需要显式设置 Connection 头为 &amp;quot;upgrade&amp;quot;，以确保后端服务器能够正确识别 WebSocket 请求。 注意：这里直接设置为 &amp;quot;upgrade&amp;quot;，而非使用变量 $http_connection，是因为 WebSocket 协议明确要求 Connection 头值为 upgrade，无需动态获取。 完整的nginx配置如下：</description>
+    </item>
+    
     <item>
       <title>Immich配置SSL证书开启HTTPS访问</title>
       <link>https://ruohai.wang/202310/immich-update-to-https/</link>

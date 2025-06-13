@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>fnOS使用nginx反代后无法访问的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="fnOS使用nginx反代后无法访问的问题解决"/>
+<meta name="twitter:description" content="fnos自带了ddns，配置方便，用起来也很方便。但我不像把fnos暴露到公网，而且我在局域网中已经部署了一个虚拟机专门用来做反代，所以想把fnos的入口也整合到一起。
+但是fnos用nginx做了反代以后会无法访问，具体表现就是卡在【加载中】最后显示断开连接。
+在网上搜索一番，看了官方论坛里的一些答疑，确认了是我的nginx配置中没有开启websocket的支持，只需要加上以下三行配置即可
+proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &#34;upgrade&#34;; 配置说明 proxy_http_version 1.1;
+WebSocket 协议依赖 HTTP/1.1 的 Upgrade 机制，因此需要明确指定 Nginx 使用 HTTP/1.1 协议与后端服务器通信。 默认情况下，Nginx 可能使用 HTTP/1.0，而 HTTP/1.0 不支持 Upgrade 头，因此必须设置为 1.1。 proxy_set_header Upgrade $http_upgrade;
+用途：将客户端发送的 Upgrade 请求头（如 websocket）转发到后端服务器。 作用：WebSocket 协议的建立需要客户端发送 Upgrade: websocket 请求头，告诉服务器需要切换协议。Nginx 作为反向代理，必须将这个头传递给后端，确保后端知道客户端请求的是 WebSocket 协议。 $http_upgrade 是 Nginx 的变量，表示客户端请求中 Upgrade 头的值。如果没有 Upgrade 头，$http_upgrade 为空。 proxy_set_header Connection &quot;upgrade&quot;;
+用途：将客户端的 Connection 请求头设置为 upgrade，并转发到后端服务器。 作用：WebSocket 协议要求 HTTP 请求头中的 Connection: Upgrade 来指示协议切换。Nginx 需要显式设置 Connection 头为 &quot;upgrade&quot;，以确保后端服务器能够正确识别 WebSocket 请求。 注意：这里直接设置为 &quot;upgrade&quot;，而非使用变量 $http_connection，是因为 WebSocket 协议明确要求 Connection 头值为 upgrade，无需动态获取。 完整的nginx配置如下："/>
+
+    <meta property="og:title" content="fnOS使用nginx反代后无法访问的问题解决" />
+<meta property="og:description" content="fnos自带了ddns，配置方便，用起来也很方便。但我不像把fnos暴露到公网，而且我在局域网中已经部署了一个虚拟机专门用来做反代，所以想把fnos的入口也整合到一起。
+但是fnos用nginx做了反代以后会无法访问，具体表现就是卡在【加载中】最后显示断开连接。
+在网上搜索一番，看了官方论坛里的一些答疑，确认了是我的nginx配置中没有开启websocket的支持，只需要加上以下三行配置即可
+proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection &#34;upgrade&#34;; 配置说明 proxy_http_version 1.1;
+WebSocket 协议依赖 HTTP/1.1 的 Upgrade 机制，因此需要明确指定 Nginx 使用 HTTP/1.1 协议与后端服务器通信。 默认情况下，Nginx 可能使用 HTTP/1.0，而 HTTP/1.0 不支持 Upgrade 头，因此必须设置为 1.1。 proxy_set_header Upgrade $http_upgrade;
+用途：将客户端发送的 Upgrade 请求头（如 websocket）转发到后端服务器。 作用：WebSocket 协议的建立需要客户端发送 Upgrade: websocket 请求头，告诉服务器需要切换协议。Nginx 作为反向代理，必须将这个头传递给后端，确保后端知道客户端请求的是 WebSocket 协议。 $http_upgrade 是 Nginx 的变量，表示客户端请求中 Upgrade 头的值。如果没有 Upgrade 头，$http_upgrade 为空。 proxy_set_header Connection &quot;upgrade&quot;;
+用途：将客户端的 Connection 请求头设置为 upgrade，并转发到后端服务器。 作用：WebSocket 协议要求 HTTP 请求头中的 Connection: Upgrade 来指示协议切换。Nginx 需要显式设置 Connection 头为 &quot;upgrade&quot;，以确保后端服务器能够正确识别 WebSocket 请求。 注意：这里直接设置为 &quot;upgrade&quot;，而非使用变量 $http_connection，是因为 WebSocket 协议明确要求 Connection 头值为 upgrade，无需动态获取。 完整的nginx配置如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202506/fnos-nginx-reverse-proxy-config/" /><meta property="article:section" content="202506" />
+<meta property="article:published_time" content="2025-06-13T08:09:38+08:00" />
+<meta property="article:modified_time" content="2025-06-13T08:09:38+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">fnOS使用nginx反代后无法访问的问题解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jun 13, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
+              <a class="tag" href="https://ruohai.wang/tags/nginx/">Nginx</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p>fnos自带了ddns，配置方便，用起来也很方便。但我不像把fnos暴露到公网，而且我在局域网中已经部署了一个虚拟机专门用来做反代，所以想把fnos的入口也整合到一起。</p>
+<p>但是fnos用nginx做了反代以后会无法访问，具体表现就是卡在<code>【加载中】</code>最后显示断开连接。</p>
+<p><img src="https://img.311803.xyz/2025/06/13/0808.jpg" alt=""></p>
+<p>在网上搜索一番，看了官方论坛里的一些答疑，确认了是我的nginx配置中没有开启websocket的支持，只需要加上以下三行配置即可</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">proxy_http_version</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">.1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">proxy_set_header</span> <span style="color:#e6db74">Upgrade</span> $http_upgrade;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">proxy_set_header</span> <span style="color:#e6db74">Connection</span> <span style="color:#e6db74">&#34;upgrade&#34;</span>;
+</span></span></code></pre></div><h4 id="配置说明">配置说明</h4>
+<ol>
+<li>
+<p><strong><code>proxy_http_version 1.1;</code></strong></p>
+<ul>
+<li>WebSocket 协议依赖 HTTP/1.1 的 <code>Upgrade</code> 机制，因此需要明确指定 Nginx 使用 HTTP/1.1 协议与后端服务器通信。</li>
+<li>默认情况下，Nginx 可能使用 HTTP/1.0，而 HTTP/1.0 不支持 <code>Upgrade</code> 头，因此必须设置为 <code>1.1</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>proxy_set_header Upgrade $http_upgrade;</code></strong></p>
+<ul>
+<li><strong>用途</strong>：将客户端发送的 <code>Upgrade</code> 请求头（如 <code>websocket</code>）转发到后端服务器。</li>
+<li><strong>作用</strong>：WebSocket 协议的建立需要客户端发送 <code>Upgrade: websocket</code> 请求头，告诉服务器需要切换协议。Nginx 作为反向代理，必须将这个头传递给后端，确保后端知道客户端请求的是 WebSocket 协议。</li>
+<li><code>$http_upgrade</code> 是 Nginx 的变量，表示客户端请求中 <code>Upgrade</code> 头的值。如果没有 <code>Upgrade</code> 头，<code>$http_upgrade</code> 为空。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>proxy_set_header Connection &quot;upgrade&quot;;</code></strong></p>
+<ul>
+<li><strong>用途</strong>：将客户端的 <code>Connection</code> 请求头设置为 <code>upgrade</code>，并转发到后端服务器。</li>
+<li><strong>作用</strong>：WebSocket 协议要求 HTTP 请求头中的 <code>Connection: Upgrade</code> 来指示协议切换。Nginx 需要显式设置 <code>Connection</code> 头为 <code>&quot;upgrade&quot;</code>，以确保后端服务器能够正确识别 WebSocket 请求。</li>
+<li>注意：这里直接设置为 <code>&quot;upgrade&quot;</code>，而非使用变量 <code>$http_connection</code>，是因为 WebSocket 协议明确要求 <code>Connection</code> 头值为 <code>upgrade</code>，无需动态获取。</li>
+</ul>
+</li>
+</ol>
+<p>完整的nginx配置如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">location</span> <span style="color:#e6db74">/websocket_path</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://backend_server</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_http_version</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">.1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Upgrade</span> $http_upgrade;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Connection</span> <span style="color:#e6db74">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-For</span> $proxy_add_x_forwarded_for;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-Proto</span> $scheme;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>修改配置后重启nginx即可，fnos就可以正常访问了。</p>
+<p>🎉</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://grok.com/share/bGVnYWN5_7a7924d0-a661-411f-9ba1-269e21ed6e9a">nginx websocket配置</a></li>
+<li><a href="https://club.fnnas.com/forum.php?mod=viewthread&amp;tid=10571">飞牛页面在Nginx反向代理下无法加载</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+<p><img src="https://img.311803.xyz/2025/06/13/01.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
