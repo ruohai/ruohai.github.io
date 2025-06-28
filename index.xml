@@ -6,7 +6,25 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 13 Jun 2025 08:09:38 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Jun 2025 20:59:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>飞牛fnOS系统硬盘反复唤醒休眠的问题解决</title>
+      <link>https://ruohai.wang/202506/fnos-hdd-auto-sleep-config/</link>
+      <pubDate>Sat, 28 Jun 2025 20:59:48 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202506/fnos-hdd-auto-sleep-config/</guid>
+      <description>先说一下我的fnos硬件方案：
+pve host上虚拟机部署fnos 通过usb3.0接口外接一个硬盘柜 硬盘柜的固件默认10min无io会将硬盘休眠 在fnos中设置【外置硬盘】的休眠策略为【从不】 在以上的硬件方案下，在fnos的日志中会看到硬盘高频 &amp;amp; 反复出现硬盘休眠、硬盘唤醒的内容。
+nas的硬盘要不要休眠这是一个许多人在争论的话题，有些人觉得功耗高所以选择没有io就要休眠，有些人觉得反复休眠影响硬盘寿命所以选择不休眠。但不管哪个方案下，这种几分钟就往复一次的休眠 + 唤醒都是无法接受的。
+最近几个版本的fnos更新里都会提到硬盘休眠功能的bugfix和优化，但是因为我使用的硬盘柜的固件强制10min无io就自动休眠 &amp;amp; 无法修改，所以fnos暂时无法正确处理我这套硬件方案下的硬盘休眠问题。
+那只能我们自己动手了！
+linux下控制硬盘休眠最常用的工具就是hdparm了，直接ssh连上fnos
+# 禁止休眠 sudo hdparm -S 0 /dev/sdf # 调整电源管理级别 sudo hdparm -B 254 /dev/sdf -S 0，表示禁用 standby 模式，硬盘将不会自动进入休眠状态 -B 254，将 APM 设置为最大性能模式，尽量减少电源管理干预 执行完成后，可以通过以下命令查看电源管理设置是否生效
+sudo hdparm -I /dev/sdf | grep &amp;#39;Advanced power management level&amp;#39; 完成以上设置以后就静观其变了，看下fnos的日志中是否还会出现硬盘反复休眠 + 唤醒的情况。
+如果fnos系统重启以后以上设置被重置，只需要写个bash脚本配合crontab定时执行即可。
+喝杯奶茶 </description>
+    </item>
+    
     <item>
       <title>fnOS使用nginx反代后无法访问的问题解决</title>
       <link>https://ruohai.wang/202506/fnos-nginx-reverse-proxy-config/</link>
