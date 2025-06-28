@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-cn">
   <head>
-    <title>飞牛fnOS系统硬盘反复唤醒休眠的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <title>飞牛fnOS硬盘反复唤醒休眠的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
     <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
@@ -14,7 +14,7 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="飞牛fnOS系统硬盘反复唤醒休眠的问题解决"/>
+<meta name="twitter:title" content="飞牛fnOS硬盘反复唤醒休眠的问题解决"/>
 <meta name="twitter:description" content="先说一下我的fnos硬件方案：
 pve host上虚拟机部署fnos 通过usb3.0接口外接一个硬盘柜 硬盘柜的固件默认10min无io会将硬盘休眠 在fnos中设置【外置硬盘】的休眠策略为【从不】 在以上的硬件方案下，在fnos的日志中会看到硬盘高频 &amp; 反复出现硬盘休眠、硬盘唤醒的内容。
 nas的硬盘要不要休眠这是一个许多人在争论的话题，有些人觉得功耗高所以选择没有io就要休眠，有些人觉得反复休眠影响硬盘寿命所以选择不休眠。但不管哪个方案下，这种几分钟就往复一次的休眠 &#43; 唤醒都是无法接受的。
@@ -26,7 +26,7 @@ sudo hdparm -I /dev/sdf | grep &#39;Advanced power management level&#39; 完成�
 如果fnos系统重启以后以上设置被重置，只需要写个bash脚本配合crontab定时执行即可。
 喝杯奶茶 "/>
 
-    <meta property="og:title" content="飞牛fnOS系统硬盘反复唤醒休眠的问题解决" />
+    <meta property="og:title" content="飞牛fnOS硬盘反复唤醒休眠的问题解决" />
 <meta property="og:description" content="先说一下我的fnos硬件方案：
 pve host上虚拟机部署fnos 通过usb3.0接口外接一个硬盘柜 硬盘柜的固件默认10min无io会将硬盘休眠 在fnos中设置【外置硬盘】的休眠策略为【从不】 在以上的硬件方案下，在fnos的日志中会看到硬盘高频 &amp; 反复出现硬盘休眠、硬盘唤醒的内容。
 nas的硬盘要不要休眠这是一个许多人在争论的话题，有些人觉得功耗高所以选择没有io就要休眠，有些人觉得反复休眠影响硬盘寿命所以选择不休眠。但不管哪个方案下，这种几分钟就往复一次的休眠 &#43; 唤醒都是无法接受的。
@@ -73,7 +73,7 @@ sudo hdparm -I /dev/sdf | grep &#39;Advanced power management level&#39; 完成�
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">飞牛fnOS系统硬盘反复唤醒休眠的问题解决</h1>
+      <h1 class ="post-title">飞牛fnOS硬盘反复唤醒休眠的问题解决</h1>
       <div class="post-meta">
         <div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
