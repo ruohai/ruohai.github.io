@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>升腾F610安装PVE系统后网络掉线、系统假死问题的解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="升腾F610安装PVE系统后网络掉线、系统假死问题的解决"/>
+<meta name="twitter:description" content="前言 最近又从海鲜市场入手了两台升腾c92，都是j1900芯片的版本。
+这已经是我入手的第4、第5台c92了，因为试了一圈小主机以后，我觉得这个机器就是最适合我使用需求的小主机：超级省电、无风扇设计所以0噪音、便宜、够用。
+但是，这次到手的2台机器，我发现其中一台虽然芯片是j1900，但是铭牌上的型号是f610而不是c92。
+网上搜f610这个型号，除了官网的产品介绍，没有太多的其它信息，不过大致可以判断f610就是c92的小改款，拆机以后可以看到主板上的硬件布局、散热片大小就存在明显的区别。
+给f610刷入c92的bios可以正常点亮，然后熟练的装上pve，再还原一大堆vm，最后找个不影响机器散热的小角落放着吃灰就行了。
+不过实际使用时很快就翻车了，我碰到了一个很棘手的问题，故障如下：
+机器运行一段时间后（或长或短，没有固定时间，但大致是3~8个小时），pve的web控制台无法访问，所有vm也无法访问，所有vm的服务也全部掉线，也就是所有vm以及pve本身，看上去应该都是网络掉线了 机器本身的功耗没有出现变化，电源按钮的指示灯依然是绿色（表示机器是运行状态），网口的灯也会闪烁 机器接上显示器，有几次出现linux登录的shell界面，但状态卡死，键盘输入无响应，有几次是无视频信号输出（屏幕不亮） 机器长按电源硬重启后，pve和所有vm都可以正常启动 在pve的web控制台查看系统日志，没有看到特别明显的错误信息 机器继续运行一段时间后，又重复出现如上的故障 机器出现这个问题后让我很头疼，因为很难确定到底是哪个环节出了问题，有可能是硬件问题，比如内存、硬盘、主板，有可能是软件问题，比如pve新版本有bug之类。
+问题解决 使用memtester排除了内存的问题，使用smartmontools排除了硬盘的问题。
+在网上搜索很久，并没有什么有价值的内容，最后还是靠着ai &#43; dmesg日志定位到了原因：acpi错误。
+使用dmesg | grep -i error命令查看内核日志，输出内容中有这么一条：
+[ 0.397469] acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_ERROR) 以下是grok给出的日志分析：
+以下是grok给出的排查建议：
+最后，根据ai建议，进行以下两步配置调整：
+在bios中关闭acpi功能，并关闭所有c6/c7之类的休眠降低功耗的功能 在pve的grub配置文件中增加pcie_aspm=off参数 至此，问题解决，🎉
+结论 问题解决了以后，复盘debug过程，我觉得，大概是f610和c92在硬件上确实有些许区别，所有对c92的bios固件兼容性不佳，导致acpi出现了问题，引起pve运行不稳定，频繁假死。
+所以，还是那句话：捡垃圾有风险！！！！！！！
+喝杯奶茶 "/>
+
+    <meta property="og:title" content="升腾F610安装PVE系统后网络掉线、系统假死问题的解决" />
+<meta property="og:description" content="前言 最近又从海鲜市场入手了两台升腾c92，都是j1900芯片的版本。
+这已经是我入手的第4、第5台c92了，因为试了一圈小主机以后，我觉得这个机器就是最适合我使用需求的小主机：超级省电、无风扇设计所以0噪音、便宜、够用。
+但是，这次到手的2台机器，我发现其中一台虽然芯片是j1900，但是铭牌上的型号是f610而不是c92。
+网上搜f610这个型号，除了官网的产品介绍，没有太多的其它信息，不过大致可以判断f610就是c92的小改款，拆机以后可以看到主板上的硬件布局、散热片大小就存在明显的区别。
+给f610刷入c92的bios可以正常点亮，然后熟练的装上pve，再还原一大堆vm，最后找个不影响机器散热的小角落放着吃灰就行了。
+不过实际使用时很快就翻车了，我碰到了一个很棘手的问题，故障如下：
+机器运行一段时间后（或长或短，没有固定时间，但大致是3~8个小时），pve的web控制台无法访问，所有vm也无法访问，所有vm的服务也全部掉线，也就是所有vm以及pve本身，看上去应该都是网络掉线了 机器本身的功耗没有出现变化，电源按钮的指示灯依然是绿色（表示机器是运行状态），网口的灯也会闪烁 机器接上显示器，有几次出现linux登录的shell界面，但状态卡死，键盘输入无响应，有几次是无视频信号输出（屏幕不亮） 机器长按电源硬重启后，pve和所有vm都可以正常启动 在pve的web控制台查看系统日志，没有看到特别明显的错误信息 机器继续运行一段时间后，又重复出现如上的故障 机器出现这个问题后让我很头疼，因为很难确定到底是哪个环节出了问题，有可能是硬件问题，比如内存、硬盘、主板，有可能是软件问题，比如pve新版本有bug之类。
+问题解决 使用memtester排除了内存的问题，使用smartmontools排除了硬盘的问题。
+在网上搜索很久，并没有什么有价值的内容，最后还是靠着ai &#43; dmesg日志定位到了原因：acpi错误。
+使用dmesg | grep -i error命令查看内核日志，输出内容中有这么一条：
+[ 0.397469] acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_ERROR) 以下是grok给出的日志分析：
+以下是grok给出的排查建议：
+最后，根据ai建议，进行以下两步配置调整：
+在bios中关闭acpi功能，并关闭所有c6/c7之类的休眠降低功耗的功能 在pve的grub配置文件中增加pcie_aspm=off参数 至此，问题解决，🎉
+结论 问题解决了以后，复盘debug过程，我觉得，大概是f610和c92在硬件上确实有些许区别，所有对c92的bios固件兼容性不佳，导致acpi出现了问题，引起pve运行不稳定，频繁假死。
+所以，还是那句话：捡垃圾有风险！！！！！！！
+喝杯奶茶 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202507/centerm-f610-offline-debug/" /><meta property="article:section" content="202507" />
+<meta property="article:published_time" content="2025-07-26T03:24:05+08:00" />
+<meta property="article:modified_time" content="2025-07-26T03:24:05+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">升腾F610安装PVE系统后网络掉线、系统假死问题的解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 26, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/centerm/">Centerm</a>
+              <a class="tag" href="https://ruohai.wang/tags/pve/">PVE</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>最近又从海鲜市场入手了两台升腾c92，都是j1900芯片的版本。</p>
+<p>这已经是我入手的第4、第5台c92了，因为试了一圈小主机以后，我觉得这个机器就是最适合我使用需求的小主机：超级省电、无风扇设计所以0噪音、便宜、够用。</p>
+<p>但是，这次到手的2台机器，我发现其中一台虽然芯片是j1900，但是铭牌上的型号是f610而不是c92。</p>
+<p>网上搜f610这个型号，除了官网的产品介绍，没有太多的其它信息，不过大致可以判断f610就是c92的小改款，拆机以后可以看到主板上的硬件布局、散热片大小就存在明显的区别。</p>
+<p>给f610刷入c92的bios可以正常点亮，然后熟练的装上pve，再还原一大堆vm，最后找个不影响机器散热的小角落放着吃灰就行了。</p>
+<p>不过实际使用时很快就翻车了，我碰到了一个很棘手的问题，故障如下：</p>
+<ol>
+<li>机器运行一段时间后（或长或短，没有固定时间，但大致是3~8个小时），pve的web控制台无法访问，所有vm也无法访问，所有vm的服务也全部掉线，也就是所有vm以及pve本身，看上去应该都是网络掉线了</li>
+<li>机器本身的功耗没有出现变化，电源按钮的指示灯依然是绿色（表示机器是运行状态），网口的灯也会闪烁</li>
+<li>机器接上显示器，有几次出现linux登录的shell界面，但状态卡死，键盘输入无响应，有几次是无视频信号输出（屏幕不亮）</li>
+<li>机器长按电源硬重启后，pve和所有vm都可以正常启动</li>
+<li>在pve的web控制台查看系统日志，没有看到特别明显的错误信息</li>
+<li>机器继续运行一段时间后，又重复出现如上的故障</li>
+</ol>
+<p>机器出现这个问题后让我很头疼，因为很难确定到底是哪个环节出了问题，有可能是硬件问题，比如内存、硬盘、主板，有可能是软件问题，比如pve新版本有bug之类。</p>
+<hr>
+<h2 id="问题解决">问题解决</h2>
+<p>使用<code>memtester</code>排除了内存的问题，使用<code>smartmontools</code>排除了硬盘的问题。</p>
+<p>在网上搜索很久，并没有什么有价值的内容，最后还是靠着ai + dmesg日志定位到了原因：acpi错误。</p>
+<p>使用<code>dmesg | grep -i error</code>命令查看内核日志，输出内容中有这么一条：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">[    0.397469] acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_ERROR)
+</code></pre><p>以下是grok给出的日志分析：</p>
+<p><img src="https://img.311803.xyz/2025/07/26/0405.jpg" alt=""></p>
+<p>以下是grok给出的排查建议：</p>
+<p><img src="https://img.311803.xyz/2025/07/26/0406.jpg" alt=""></p>
+<p>最后，根据ai建议，进行以下两步配置调整：</p>
+<ol>
+<li>在bios中关闭acpi功能，并关闭所有c6/c7之类的休眠降低功耗的功能</li>
+<li>在pve的grub配置文件中增加<code>pcie_aspm=off</code>参数</li>
+</ol>
+<p>至此，问题解决，🎉</p>
+<hr>
+<h2 id="结论">结论</h2>
+<p>问题解决了以后，复盘debug过程，我觉得，大概是f610和c92在硬件上确实有些许区别，所有对c92的bios固件兼容性不佳，导致acpi出现了问题，引起pve运行不稳定，频繁假死。</p>
+<p>所以，还是那句话：<strong>捡垃圾有风险！！！！！！！</strong></p>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

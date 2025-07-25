@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Centerm on 喵ฅ^•ﻌ•^ฅ</title>
-    <link>https://ruohai.wang/tags/centerm/</link>
-    <description>Recent content in Centerm on 喵ฅ^•ﻌ•^ฅ</description>
+    <title>202507s on 喵ฅ^•ﻌ•^ฅ</title>
+    <link>https://ruohai.wang/202507/</link>
+    <description>Recent content in 202507s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 26 Jul 2025 03:24:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/centerm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Jul 2025 03:24:05 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202507/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>升腾F610安装PVE系统后网络掉线、系统假死问题的解决</title>
       <link>https://ruohai.wang/202507/centerm-f610-offline-debug/</link>
@@ -30,20 +30,6 @@
 结论 问题解决了以后，复盘debug过程，我觉得，大概是f610和c92在硬件上确实有些许区别，所有对c92的bios固件兼容性不佳，导致acpi出现了问题，引起pve运行不稳定，频繁假死。
 所以，还是那句话：捡垃圾有风险！！！！！！！
 喝杯奶茶 </description>
-    </item>
-    
-    <item>
-      <title>升腾C92开启USB3.0的设置</title>
-      <link>https://ruohai.wang/202411/centerm-c92-enable-usb3/</link>
-      <pubDate>Wed, 13 Nov 2024 12:30:48 +0000</pubDate>
-      
-      <guid>https://ruohai.wang/202411/centerm-c92-enable-usb3/</guid>
-      <description>前言 手上的升腾c92/J1900刷pve跑虚拟机都有两周了才发现自带的usb3.0接口竟然一直工作在usb2.0模式下，所以赶紧网上搜下一下怎么开启usb3.0，写篇文章做个记录。
-设置 首先确认自己的机器usb3.0功能是否已经开启
-lsusb -t 如下图，如果是5000M则表明已经开启usb3.0功能，如果都是480M或者更低的数字则说明没有开启。
-开机按F2进入bios界面，调整以下设置项来开启usb3.0支持
-Chipset-&amp;gt;South Bridge-&amp;gt;USB Configuration-&amp;gt;USB2.0(EHCI&amp;gt; Support 修改为Disabled Chipset-&amp;gt;South Bridge-&amp;gt;USB Configuration-&amp;gt;XHCI Mode 修改为Enabled 在参考文章中，作者还提供了开启cpu睿频、来电自启的设置方式，有需要的可以到原文中查看。
-参考文章 升腾C92: BIOS开启USB3.0方法 喝杯奶茶 </description>
     </item>
     
   </channel>
