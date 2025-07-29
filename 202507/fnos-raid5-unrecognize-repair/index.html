@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决 // 喵ฅ^•ﻌ•^ฅ</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta property="og:site_name" content="喵ฅ^•ﻌ•^ฅ">
+    <meta name="generator" content="Hugo 0.111.3">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Ruohai Wang" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.da30c98f9942ec671d45447781f2ff089c06a4c2f4fc85c728b8f8755627a970.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决"/>
+<meta name="twitter:description" content="前言 nas玩家迟早都会碰到的一个问题：因为突然断电，阵列无法识别了。
+今天我就很不幸的遇到了，但幸运的是，在grok ai的帮助下，我最后成功的把阵列救了回来。
+在这里做个记录，希望对你也有帮助。
+注意事项：如无十分把握，请务必提前用dd命令给硬盘做镜像，避免raid修复失败导致数据彻底报废
+问题描述 我用的nas系统是fnos，存储空间是3盘位raid5。因为一次意外断电，导致raid5阵列无法被fnos系统识别。
+表现症状是：
+在【硬盘信息】中可以看到硬盘，但都显示【未识别】或【未挂载】，以及【文件系统未知】，示意图如下。 在【存储空间】中无任何显示
+ssh访问fnos，查看阵列的当前状态信息
+一：用lsblk查看硬盘信息，确认阵列名称为/dev/md125。因为系统会尝试识别raid但最后识别失败，所以会出现2种结果。
+# 系统识别raid有3个盘 sdh 8:112 0 232.9G 0 disk └─sdh1 8:113 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdj 8:144 0 232.9G 0 disk └─sdj1 8:145 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdk 8:160 0 232.9G 0 disk └─sdk1 8:161 0 232.9G 0 part └─md125 9:125 0 0B 0 md # 系统判定2个盘掉线，只有1个盘在线 sdh 8:112 0 232."/>
+
+    <meta property="og:title" content="飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决" />
+<meta property="og:description" content="前言 nas玩家迟早都会碰到的一个问题：因为突然断电，阵列无法识别了。
+今天我就很不幸的遇到了，但幸运的是，在grok ai的帮助下，我最后成功的把阵列救了回来。
+在这里做个记录，希望对你也有帮助。
+注意事项：如无十分把握，请务必提前用dd命令给硬盘做镜像，避免raid修复失败导致数据彻底报废
+问题描述 我用的nas系统是fnos，存储空间是3盘位raid5。因为一次意外断电，导致raid5阵列无法被fnos系统识别。
+表现症状是：
+在【硬盘信息】中可以看到硬盘，但都显示【未识别】或【未挂载】，以及【文件系统未知】，示意图如下。 在【存储空间】中无任何显示
+ssh访问fnos，查看阵列的当前状态信息
+一：用lsblk查看硬盘信息，确认阵列名称为/dev/md125。因为系统会尝试识别raid但最后识别失败，所以会出现2种结果。
+# 系统识别raid有3个盘 sdh 8:112 0 232.9G 0 disk └─sdh1 8:113 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdj 8:144 0 232.9G 0 disk └─sdj1 8:145 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdk 8:160 0 232.9G 0 disk └─sdk1 8:161 0 232.9G 0 part └─md125 9:125 0 0B 0 md # 系统判定2个盘掉线，只有1个盘在线 sdh 8:112 0 232." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/" /><meta property="article:section" content="202507" />
+<meta property="article:published_time" content="2025-07-29T16:21:29+08:00" />
+<meta property="article:modified_time" content="2025-07-29T16:21:29+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://ruohai.wang/"><img class="app-header-avatar" src="/avatar.jpg" alt="Ruohai Wang" /></a>
+      <span class="app-header-title">喵ฅ^•ﻌ•^ฅ</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">主页</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">标签</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/about/">关于</a>
+      </nav>
+      <p>这种失落会持久吗~</p>
+      <div class="app-header-social">
+        
+          <a href="https://t.me/ruohai" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 29, 2025
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          5 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://ruohai.wang/tags/fnos/">fnOS</a>
+              <a class="tag" href="https://ruohai.wang/tags/raid/">RAID</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>nas玩家迟早都会碰到的一个问题：因为突然断电，阵列无法识别了。</p>
+<p>今天我就很不幸的遇到了，但幸运的是，在grok ai的帮助下，我最后成功的把阵列救了回来。</p>
+<p>在这里做个记录，希望对你也有帮助。</p>
+<p><strong>注意事项：如无十分把握，请务必提前用dd命令给硬盘做镜像，避免raid修复失败导致数据彻底报废</strong></p>
+<hr>
+<h2 id="问题描述">问题描述</h2>
+<p>我用的nas系统是fnos，存储空间是3盘位raid5。因为一次意外断电，导致raid5阵列无法被fnos系统识别。</p>
+<p>表现症状是：</p>
+<ol>
+<li>在【硬盘信息】中可以看到硬盘，但都显示【未识别】或【未挂载】，以及【文件系统未知】，示意图如下。</li>
+</ol>
+<p><img src="https://img.311803.xyz/2025/07/29/1636.jpg" alt=""></p>
+<ol start="2">
+<li>
+<p>在【存储空间】中无任何显示</p>
+</li>
+<li>
+<p>ssh访问fnos，查看阵列的当前状态信息</p>
+</li>
+</ol>
+<blockquote>
+<p>一：用<code>lsblk</code>查看硬盘信息，确认阵列名称为<code>/dev/md125</code>。因为系统会尝试识别raid但最后识别失败，所以会出现2种结果。</p>
+</blockquote>
+<pre tabindex="0"><code class="language-log" data-lang="log"># 系统识别raid有3个盘
+sdh                                                 8:112  0 232.9G  0 disk
+└─sdh1                                              8:113  0 232.9G  0 part
+  └─md125                                           9:125  0     0B  0 md
+sdj                                                 8:144  0 232.9G  0 disk
+└─sdj1                                              8:145  0 232.9G  0 part
+  └─md125                                           9:125  0     0B  0 md
+sdk                                                 8:160  0 232.9G  0 disk
+└─sdk1                                              8:161  0 232.9G  0 part
+  └─md125                                           9:125  0     0B  0 md
+  
+# 系统判定2个盘掉线，只有1个盘在线
+sdh                                                 8:112  0 232.9G  0 disk
+└─sdh1                                              8:113  0 232.9G  0 part
+  └─md125                                           9:125  0     0B  0 raid5
+sdj                                                 8:144  0 232.9G  0 disk
+└─sdj1                                              8:145  0 232.9G  0 part
+sdk                                                 8:160  0 232.9G  0 disk
+└─sdk1                                              8:161  0 232.9G  0 part
+</code></pre><blockquote>
+<p>二：用【<code>cat /proc/mdstat</code>】命令查看阵列状态，同样会有2种不同的结果</p>
+</blockquote>
+<pre tabindex="0"><code class="language-log" data-lang="log"># raid状态为inactive，三个盘的状态都为(S)，也就是备用盘（Spare）
+md125 : inactive sdh1[1](S) sdk1[2](S) sdj1[0](S)
+      732195840 blocks super 1.2
+      
+# raid状态为inactive，系统判定2个盘掉线，只有1个盘在线
+md125 : inactive sdh1[1]
+      244065280 blocks super 1.2
+</code></pre><blockquote>
+<p>三：用【<code>mdadm -D /dev/md125</code>】命令确认raid的详细状态，依然是2种结果。</p>
+</blockquote>
+<pre tabindex="0"><code class="language-log" data-lang="log"># raid未激活，识别到3个盘
+/dev/md125:
+           Version : 1.2
+        Raid Level : raid5
+     Total Devices : 3
+       Persistence : Superblock is persistent
+
+             State : inactive
+   Working Devices : 3
+
+              Name : fnOS:0
+              UUID : 3ba3d465:9252aa97:6372896b:8f9e96af
+            Events : 239
+
+    Number   Major   Minor   RaidDevice
+
+       -       8      161        -        /dev/sdk1
+       -       8      145        -        /dev/sdj1
+       -       8      113        -        /dev/sdh1
+
+# raid已激活，但2个盘掉线，只有1个盘在线
+/dev/md125:
+           Version : 1.2
+     Creation Time : Fri Feb 28 23:37:01 2025
+        Raid Level : raid5
+     Used Dev Size : 244065280 (232.76 GiB 249.92 GB)
+      Raid Devices : 3
+     Total Devices : 1
+       Persistence : Superblock is persistent
+
+       Update Time : Tue Jul 29 14:51:51 2025
+             State : active, FAILED, Not Started
+    Active Devices : 1
+   Working Devices : 1
+    Failed Devices : 0
+     Spare Devices : 0
+
+            Layout : left-symmetric
+        Chunk Size : 512K
+
+Consistency Policy : unknown
+
+              Name : fnOS:0
+              UUID : 3ba3d465:9252aa97:6372896b:8f9e96af
+            Events : 243
+
+    Number   Major   Minor   RaidDevice State
+       -       0        0        0      removed
+       -       0        0        1      removed
+       -       0        0        2      removed
+
+       -       8      113        1      sync   /dev/sdh1
+</code></pre><p>好了，到这里可以确认，这个3盘位raid5阵列的问题是：有2个盘因为一些原因，被系统判定掉线，导致raid5无法完成组装。</p>
+<hr>
+<h2 id="问题分析">问题分析</h2>
+<p>根据以上得到的raid信息，可以确定是系统只能识别1个盘，判定另外2个盘掉线。</p>
+<p>那接下去分别校验这三个盘，判断是哪里出了问题。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mdadm --examine /dev/sdh1
+</span></span><span style="display:flex;"><span>sudo mdadm --examine /dev/sdj1
+</span></span><span style="display:flex;"><span>sudo mdadm --examine /dev/sdk1
+</span></span></code></pre></div><p>最后得到以下信息：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">/dev/sdh1:
+          Magic : a92b4efc
+        Version : 1.2
+    Feature Map : 0x1
+     Array UUID : 3ba3d465:9252aa97:6372896b:8f9e96af
+           Name : fnOS:0
+  Creation Time : Fri Feb 28 23:37:01 2025
+     Raid Level : raid5
+   Raid Devices : 3
+
+ Avail Dev Size : 488130560 sectors (232.76 GiB 249.92 GB)
+     Array Size : 488130560 KiB (465.52 GiB 499.85 GB)
+    Data Offset : 264192 sectors
+   Super Offset : 8 sectors
+   Unused Space : before=264112 sectors, after=0 sectors
+          State : clean
+    Device UUID : db80a296:cb7c4968:3fa20022:6a52ab84
+
+Internal Bitmap : 8 sectors from superblock
+    Update Time : Tue Jul 29 14:51:51 2025
+  Bad Block Log : 512 entries available at offset 16 sectors
+       Checksum : c53acbf1 - correct
+         Events : 243
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+   Device Role : Active device 1
+   Array State : .A. (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+
+#################################################################################
+/dev/sdj1:
+          Magic : a92b4efc
+        Version : 1.2
+    Feature Map : 0x1
+     Array UUID : 3ba3d465:9252aa97:6372896b:8f9e96af
+           Name : fnOS:0
+  Creation Time : Fri Feb 28 23:37:01 2025
+     Raid Level : raid5
+   Raid Devices : 3
+
+ Avail Dev Size : 488130560 sectors (232.76 GiB 249.92 GB)
+     Array Size : 488130560 KiB (465.52 GiB 499.85 GB)
+    Data Offset : 264192 sectors
+   Super Offset : 8 sectors
+   Unused Space : before=264112 sectors, after=0 sectors
+          State : clean
+    Device UUID : 16d083ad:0fc3c159:87702a0b:ec88f787
+
+Internal Bitmap : 8 sectors from superblock
+    Update Time : Tue Jul 29 14:33:35 2025
+  Bad Block Log : 512 entries available at offset 16 sectors
+       Checksum : ba0861f2 - correct
+         Events : 239
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+   Device Role : Active device 0
+   Array State : AAA (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+   
+#################################################################################
+/dev/sdk1:
+          Magic : a92b4efc
+        Version : 1.2
+    Feature Map : 0x1
+     Array UUID : 3ba3d465:9252aa97:6372896b:8f9e96af
+           Name : fnOS:0
+  Creation Time : Fri Feb 28 23:37:01 2025
+     Raid Level : raid5
+   Raid Devices : 3
+
+ Avail Dev Size : 488130560 sectors (232.76 GiB 249.92 GB)
+     Array Size : 488130560 KiB (465.52 GiB 499.85 GB)
+    Data Offset : 264192 sectors
+   Super Offset : 8 sectors
+   Unused Space : before=264112 sectors, after=0 sectors
+          State : clean
+    Device UUID : 33db5e3c:58f52bb1:07e0deaf:4c74d658
+
+Internal Bitmap : 8 sectors from superblock
+    Update Time : Tue Jul 29 14:33:35 2025
+  Bad Block Log : 512 entries available at offset 16 sectors
+       Checksum : 15e0fa3b - correct
+         Events : 239
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+   Device Role : Active device 2
+   Array State : AAA (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+</code></pre><p>提取以上信息的重点：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">/dev/sdh1:
+    Update Time : Tue Jul 29 14:51:51 2025
+    Events : 243
+    Array State : .A. (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+    
+/dev/sdj1:
+    Update Time : Tue Jul 29 14:33:35 2025
+    Events : 239
+    Array State : AAA (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+    
+/dev/sdk1:
+    Update Time : Tue Jul 29 14:33:35 2025
+    Events : 239
+    Array State : AAA (&#39;A&#39; == active, &#39;.&#39; == missing, &#39;R&#39; == replacing)
+</code></pre><p>借助ai的分析，可以得出以下判断：因为突然掉线，3个盘的元数据未完成同步，导致系统无法正确的组装raid。</p>
+<p><img src="https://img.311803.xyz/2025/07/29/1723.jpg" alt=""></p>
+<hr>
+<h2 id="问题解决">问题解决</h2>
+<p>好了，知道了问题原因，接下去就是找办法修复这个raid惹。</p>
+<blockquote>
+<p>一：停止raid</p>
+</blockquote>
+<p>系统当前识别<code>md125</code>阵列有1个盘在线，后续我们操作元数据同步时，需要3个盘都是离线状态。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mdadm --stop /dev/md125
+</span></span></code></pre></div><blockquote>
+<p>二：强制组装raid。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 强制组装raid</span>
+</span></span><span style="display:flex;"><span>sudo mdadm --assemble --force -v /dev/md125 /dev/sdh1 /dev/sdj1 /dev/sdk1
+</span></span></code></pre></div><p>成功重组raid的输出信息</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">mdadm: looking for devices for /dev/md125
+mdadm: /dev/sdh1 is identified as a member of /dev/md125, slot 1.
+mdadm: /dev/sdj1 is identified as a member of /dev/md125, slot 0.
+mdadm: /dev/sdk1 is identified as a member of /dev/md125, slot 2.
+mdadm: forcing event count in /dev/sdj1(0) from 239 up to 243
+mdadm: forcing event count in /dev/sdk1(2) from 239 up to 243
+mdadm: added /dev/sdh1 to /dev/md125 as 1
+mdadm: added /dev/sdk1 to /dev/md125 as 2
+mdadm: added /dev/sdj1 to /dev/md125 as 0
+mdadm: /dev/md125 has been started with 3 drives.
+</code></pre><p><strong>注意：<code>force</code>参数会强制同步 Events 计数，优先使用最新元数据（/dev/sdh1 的 Events: 243）</strong></p>
+<p>好了，到此raid就修复完成，系统就可以正确识别这个3盘位raid5，fnos也可以识别到这个存储空间，只需要在fnos的web控制台中点击<code>去挂载</code>就可以完成存储空间的恢复。</p>
+<p>🎉</p>
+<hr>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://club.fnnas.com/forum.php?mod=viewthread&amp;tid=27089&amp;highlight=">RAID5掉盘，恢复过程另一块硬盘出现问题处理过程</a></li>
+<li><a href="https://grok.com/share/bGVnYWN5_f3bce3fc-3d2f-4078-98ed-f5e7f5c34443">Linux RAID Array Assembly Guide</a></li>
+</ol>
+<hr>
+<h2 id="喝杯奶茶">喝杯奶茶</h2>
+<p><img src="/buy-me-a-bubble-tea.jpg" alt=""></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

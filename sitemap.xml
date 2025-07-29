@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202507/</loc>
-    <lastmod>2025-07-26T03:24:05+08:00</lastmod>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/fnos/</loc>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/raid/</loc>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/</loc>
+    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/centerm/</loc>
     <lastmod>2025-07-26T03:24:05+08:00</lastmod>
@@ -11,19 +26,10 @@
     <loc>https://ruohai.wang/tags/pve/</loc>
     <lastmod>2025-07-26T03:24:05+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2025-07-26T03:24:05+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202507/centerm-f610-offline-debug/</loc>
     <lastmod>2025-07-26T03:24:05+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2025-07-26T03:24:05+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202506/</loc>
-    <lastmod>2025-06-28T20:59:48+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/fnos/</loc>
     <lastmod>2025-06-28T20:59:48+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/hdparm/</loc>
@@ -42,9 +48,6 @@
     <lastmod>2025-06-11T20:42:41+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/nas/</loc>
-    <lastmod>2025-06-11T20:42:41+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/raid/</loc>
     <lastmod>2025-06-11T20:42:41+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202506/recover-file-damage/</loc>

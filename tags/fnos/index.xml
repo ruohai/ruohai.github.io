@@ -6,7 +6,25 @@
     <description>Recent content in fnOS on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 28 Jun 2025 20:59:48 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Jul 2025 16:21:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/fnos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决</title>
+      <link>https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/</link>
+      <pubDate>Tue, 29 Jul 2025 16:21:29 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/</guid>
+      <description>前言 nas玩家迟早都会碰到的一个问题：因为突然断电，阵列无法识别了。
+今天我就很不幸的遇到了，但幸运的是，在grok ai的帮助下，我最后成功的把阵列救了回来。
+在这里做个记录，希望对你也有帮助。
+注意事项：如无十分把握，请务必提前用dd命令给硬盘做镜像，避免raid修复失败导致数据彻底报废
+问题描述 我用的nas系统是fnos，存储空间是3盘位raid5。因为一次意外断电，导致raid5阵列无法被fnos系统识别。
+表现症状是：
+在【硬盘信息】中可以看到硬盘，但都显示【未识别】或【未挂载】，以及【文件系统未知】，示意图如下。 在【存储空间】中无任何显示
+ssh访问fnos，查看阵列的当前状态信息
+一：用lsblk查看硬盘信息，确认阵列名称为/dev/md125。因为系统会尝试识别raid但最后识别失败，所以会出现2种结果。
+# 系统识别raid有3个盘 sdh 8:112 0 232.9G 0 disk └─sdh1 8:113 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdj 8:144 0 232.9G 0 disk └─sdj1 8:145 0 232.9G 0 part └─md125 9:125 0 0B 0 md sdk 8:160 0 232.9G 0 disk └─sdk1 8:161 0 232.9G 0 part └─md125 9:125 0 0B 0 md # 系统判定2个盘掉线，只有1个盘在线 sdh 8:112 0 232.</description>
+    </item>
+    
     <item>
       <title>飞牛fnOS硬盘反复唤醒休眠的问题解决</title>
       <link>https://ruohai.wang/202506/fnos-hdd-auto-sleep-config/</link>
