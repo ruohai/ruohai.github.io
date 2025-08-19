@@ -6,7 +6,23 @@
     <description>Recent content on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 29 Jul 2025 16:21:29 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Aug 2025 21:42:17 +0800</lastBuildDate><atom:link href="https://ruohai.wang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE 9.0 系统软件源的配置</title>
+      <link>https://ruohai.wang/202508/pve-9-source-config/</link>
+      <pubDate>Tue, 19 Aug 2025 21:42:17 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202508/pve-9-source-config/</guid>
+      <description>前言 pve9正式上线已经有两周了，debian13也已经上线一周，今天换主机装pve，我也装了最新的pve9系统。
+但是装完系统进行配置调整的时候，发现软件源配置文件从传统格式变成了deb822格式，而且当前（2025/08/19）时间清华的开源软件镜像站还没有更新pve的软件源配置。
+经过简单摸索，搞定了deb822格式的debian软件源和pve软件源的配置。
+debian的软件源配置 配置文件路径：/etc/apt/sources.list.d/debian.sources
+首先备份一下原文件
+mv /etc/apt/sources.list.d/debian.sources /etc/apt/sources.list.d/debian.sources.bak 然后创建一个自己的配置文件
+touch /etc/apt/sources.list.d/debian.sources 然后用nano或者vim编辑debian.sources文件，粘贴以下内容后保存退出。
+Types: deb URIs: https://mirrors.tuna.tsinghua.edu.cn/debian Suites: trixie trixie-updates trixie-backports Components: main contrib non-free non-free-firmware Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释 # Types: deb-src # URIs: https://mirrors.tuna.tsinghua.edu.cn/debian # Suites: trixie trixie-updates trixie-backports # Components: main contrib non-free non-free-firmware # Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg # 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换 Types: deb URIs: https://mirrors.tuna.tsinghua.edu.cn/debian-security Suites: trixie-security Components: main contrib non-free non-free-firmware Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg # Types: deb-src # URIs: https://mirrors.</description>
+    </item>
+    
     <item>
       <title>飞牛fnOS突然掉电导致RAID5存储空间无法识别的问题解决</title>
       <link>https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/</link>

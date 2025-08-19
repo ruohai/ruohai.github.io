@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://ruohai.wang/202508/</loc>
+    <lastmod>2025-08-19T21:42:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/pve/</loc>
+    <lastmod>2025-08-19T21:42:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202508/pve-9-source-config/</loc>
+    <lastmod>2025-08-19T21:42:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2025-08-19T21:42:17+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2025-08-19T21:42:17+08:00</lastmod>
+  </url><url>
     <loc>https://ruohai.wang/202507/</loc>
     <lastmod>2025-07-29T16:21:29+08:00</lastmod>
   </url><url>
@@ -11,19 +26,10 @@
     <loc>https://ruohai.wang/tags/raid/</loc>
     <lastmod>2025-07-29T16:21:29+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
-    <lastmod>2025-07-29T16:21:29+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202507/fnos-raid5-unrecognize-repair/</loc>
     <lastmod>2025-07-29T16:21:29+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/centerm/</loc>
-    <lastmod>2025-07-26T03:24:05+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/pve/</loc>
     <lastmod>2025-07-26T03:24:05+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202507/centerm-f610-offline-debug/</loc>
