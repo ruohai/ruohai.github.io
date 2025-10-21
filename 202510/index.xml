@@ -6,7 +6,25 @@
     <description>Recent content in 202510s on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 13 Oct 2025 16:44:49 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202510/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Oct 2025 04:16:46 +0800</lastBuildDate><atom:link href="https://ruohai.wang/202510/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>netplan &#43; systemd-networkd网络配置工具组合下如何设置静态ipv4地址 </title>
+      <link>https://ruohai.wang/202510/how-to-set-static-ipv4-address-with-netplan/</link>
+      <pubDate>Wed, 22 Oct 2025 04:16:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/202510/how-to-set-static-ipv4-address-with-netplan/</guid>
+      <description>以前在debian下配置静态ipv4地址，都是ifupdown工具，但是随着systemd集成度越来越高，越来越多的linux发行版的网络配置工具慢慢切换到了netplan，导致以前掌握的配置静态ipv4地址的方法也不一样了。
+之前已经写过一篇，但时过境迁，当时写的罗里吧嗦说不到重点，而且设置方法也不太合理，所以重写一篇。
+ifupdown的配置文件路径/etc/network/interfaces，静态ipv4地址的配置格式一般如下：
+#iface eth0 inet dhcp # 这行是默认配置，网卡eth0启用dhcp，需要注释掉 iface eth0 inet static address 192.168.1.201 netmask 255.255.255.0 gateway 192.168.1.1 dns-nameservers 192.168.1.1 netplan + systemd-netwokd的配置文件是在/etc/netplan目录下，比如我的玩客云的配置文件是/etc/netplan/10-dhcp-all-interfaces.yaml。
+现在需要把我们熟悉的ifupdown格式的配置调整为netplan + systemd-netwokd的yaml格式。
+yaml中的内容很多，这里截取我们需要的一部分，针对网卡eth0的配置：
+all-eth-interfaces: match: name: &amp;#34;e*&amp;#34; dhcp4: yes dhcp6: yes ipv6-privacy: yes 改成我们需要的静态ipv4地址，注意yaml格式严谨，使用空格缩进，不要用tab。
+all-eth-interfaces: match: name: &amp;#34;e*&amp;#34; # 这里开始修改 dhcp4: no addresses: - 192.168.1.100/24 routes: - to: default via: 192.168.1.1 nameservers: addresses: - 192.168.1.1 # 这里修改结束 dhcp6: yes ipv6-privacy: yes 配置完成后保存。
+首先验证语法，命令跑完无输出即为OK。
+sudo netplan generate 然后跑一下测试，2分钟后会回滚</description>
+    </item>
+    
     <item>
       <title>3D打印如何赚钱的一些经验和思考</title>
       <link>https://ruohai.wang/202510/how-to-make-money-by-3d-print/</link>

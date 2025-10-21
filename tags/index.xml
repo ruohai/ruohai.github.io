@@ -6,7 +6,43 @@
     <description>Recent content in Tags on 喵ฅ^•ﻌ•^ฅ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 13 Oct 2025 16:44:49 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Oct 2025 04:16:46 +0800</lastBuildDate><atom:link href="https://ruohai.wang/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian</title>
+      <link>https://ruohai.wang/tags/debian/</link>
+      <pubDate>Wed, 22 Oct 2025 04:16:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/debian/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://ruohai.wang/tags/linux/</link>
+      <pubDate>Wed, 22 Oct 2025 04:16:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Netplan</title>
+      <link>https://ruohai.wang/tags/netplan/</link>
+      <pubDate>Wed, 22 Oct 2025 04:16:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/netplan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>systemd</title>
+      <link>https://ruohai.wang/tags/systemd/</link>
+      <pubDate>Wed, 22 Oct 2025 04:16:46 +0800</pubDate>
+      
+      <guid>https://ruohai.wang/tags/systemd/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>3D打印</title>
       <link>https://ruohai.wang/tags/3d%E6%89%93%E5%8D%B0/</link>
@@ -125,29 +161,11 @@
     </item>
     
     <item>
-      <title>Linux</title>
-      <link>https://ruohai.wang/tags/linux/</link>
-      <pubDate>Wed, 12 Mar 2025 23:47:58 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>mdadm</title>
       <link>https://ruohai.wang/tags/mdadm/</link>
       <pubDate>Sat, 01 Mar 2025 22:17:00 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/mdadm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Debian</title>
-      <link>https://ruohai.wang/tags/debian/</link>
-      <pubDate>Sun, 29 Dec 2024 16:48:48 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/debian/</guid>
       <description></description>
     </item>
     
@@ -175,15 +193,6 @@
       <pubDate>Sun, 22 Dec 2024 22:32:26 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/samba/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>systemd</title>
-      <link>https://ruohai.wang/tags/systemd/</link>
-      <pubDate>Sun, 22 Dec 2024 22:32:26 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/systemd/</guid>
       <description></description>
     </item>
     
@@ -409,15 +418,6 @@
       <pubDate>Mon, 07 Oct 2024 19:38:32 +0800</pubDate>
       
       <guid>https://ruohai.wang/tags/sqlite/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Netplan</title>
-      <link>https://ruohai.wang/tags/netplan/</link>
-      <pubDate>Sat, 05 Oct 2024 17:44:14 +0800</pubDate>
-      
-      <guid>https://ruohai.wang/tags/netplan/</guid>
       <description></description>
     </item>
     

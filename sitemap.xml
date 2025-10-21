@@ -3,18 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ruohai.wang/202510/</loc>
-    <lastmod>2025-10-13T16:44:49+08:00</lastmod>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/debian/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/linux/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/netplan/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/202510/how-to-set-static-ipv4-address-with-netplan/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/systemd/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/tags/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
+  </url><url>
+    <loc>https://ruohai.wang/</loc>
+    <lastmod>2025-10-22T04:16:46+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/3d%E6%89%93%E5%8D%B0/</loc>
     <lastmod>2025-10-13T16:44:49+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202510/how-to-make-money-by-3d-print/</loc>
-    <lastmod>2025-10-13T16:44:49+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/</loc>
-    <lastmod>2025-10-13T16:44:49+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/</loc>
     <lastmod>2025-10-13T16:44:49+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202509/</loc>
@@ -110,9 +125,6 @@
     <loc>https://ruohai.wang/202503/</loc>
     <lastmod>2025-03-12T23:47:58+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/linux/</loc>
-    <lastmod>2025-03-12T23:47:58+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/202503/laptop-linux-server-config/</loc>
     <lastmod>2025-03-12T23:47:58+08:00</lastmod>
   </url><url>
@@ -134,9 +146,6 @@
     <loc>https://ruohai.wang/202412/</loc>
     <lastmod>2024-12-29T16:48:48+08:00</lastmod>
   </url><url>
-    <loc>https://ruohai.wang/tags/debian/</loc>
-    <lastmod>2024-12-29T16:48:48+08:00</lastmod>
-  </url><url>
     <loc>https://ruohai.wang/tags/qbittorrent/</loc>
     <lastmod>2024-12-29T16:48:48+08:00</lastmod>
   </url><url>
@@ -147,9 +156,6 @@
     <lastmod>2024-12-22T22:32:26+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/samba/</loc>
-    <lastmod>2024-12-22T22:32:26+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/systemd/</loc>
     <lastmod>2024-12-22T22:32:26+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/202412/systemd-mount-nfs-and-samba/</loc>
@@ -307,9 +313,6 @@
   </url><url>
     <loc>https://ruohai.wang/202410/sqlite3-guidance-on-openwrt/</loc>
     <lastmod>2024-10-07T19:38:32+08:00</lastmod>
-  </url><url>
-    <loc>https://ruohai.wang/tags/netplan/</loc>
-    <lastmod>2024-10-05T17:44:14+08:00</lastmod>
   </url><url>
     <loc>https://ruohai.wang/tags/networkmanager/</loc>
     <lastmod>2024-10-05T17:44:14+08:00</lastmod>
